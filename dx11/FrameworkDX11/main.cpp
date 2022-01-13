@@ -24,6 +24,12 @@
 #include "resource.h"
 
 #include"Window.h"
+
+#include "ECS/EntityComponentSystem.h"
+#include "ECS/Components.h"
+
+using namespace Engine::ECS;
+
 //--------------------------------------------------------------------------------------
 // Forward declarations
 //--------------------------------------------------------------------------------------
@@ -44,6 +50,7 @@ ID3D11Device1* g_pd3dDevice1;
 ID3D11DeviceContext1* g_pImmediateContext1;
 IDXGISwapChain1* g_pSwapChain1;
 
+
 Window WindowSetting;
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -54,37 +61,56 @@ int WINAPI wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     UNREFERENCED_PARAMETER( hPrevInstance );
     UNREFERENCED_PARAMETER( lpCmdLine );
 
-    //this would not be set here
-    WindowSetting.SetWindow(1280, 720, L"Window");
+    EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
+    EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
+    EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
 
-    if( FAILED(WindowSetting.InitWindow( hInstance, nCmdShow ) ) )
-        return 0;
+    Entity player = EntityComponentSystem::Instance()->CreateEntity();
+    EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(player, IdentificationComponent());
+    EntityComponentSystem::Instance()->AddComponent<TransformComponent>(player, TransformComponent());
+    EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(player, PhysicsComponent());
 
-    if( FAILED( InitDevice() ) )
-    {
-        CleanupDevice();
-        return 0;
-    }
+    Entity log = EntityComponentSystem::Instance()->CreateEntity();
+    EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(log, IdentificationComponent());
+    EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(log, PhysicsComponent());
 
-    // Main message loop
-    MSG msg = {0};
-    while( WM_QUIT != msg.message )
-    {
-        if( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
-        {
-            TranslateMessage( &msg );
-            DispatchMessage( &msg );
-        }
-        else
-        {
-            Update();
-            Render();
-        }
-    }
+    Entity renderable = EntityComponentSystem::Instance()->CreateEntity();
+    EntityComponentSystem::Instance()->AddComponent<TransformComponent>(renderable, TransformComponent());
+    EntityComponentSystem::Instance()->DebugEntities();
 
-    CleanupDevice();
+    ////this would not be set here
+    //WindowSetting.SetWindow(1280, 720, L"Window");
 
-    return ( int )msg.wParam;
+    //if( FAILED(WindowSetting.InitWindow( hInstance, nCmdShow ) ) )
+    //    return 0;
+
+    //if( FAILED( InitDevice() ) )
+    //{
+    //    CleanupDevice();
+    //    return 0;
+    //}
+
+    //// Main message loop
+    //MSG msg = {0};
+    //while( WM_QUIT != msg.message )
+    //{
+    //    if( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
+    //    {
+    //        TranslateMessage( &msg );
+    //        DispatchMessage( &msg );
+    //    }
+    //    else
+    //    {
+    //        Update();
+    //        Render();
+    //    }
+    //}
+
+    //CleanupDevice();
+
+    //return ( int )msg.wParam;
+
+    return 0;
 }
 
 //--------------------------------------------------------------------------------------
