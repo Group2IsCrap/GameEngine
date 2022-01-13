@@ -34,3 +34,5 @@
 
 /.vs/*
 /dx11/.vs/FrameworkDX11
+/dx11/x64/Debug
+/dx11/FrameworkDX11/x64/Debug
