@@ -1,5 +1,8 @@
 #include "GraphicsHandler.h"
 
+#include "imgui.h"
+#include "backends/imgui_impl_dx11.h"
+
 #include "../Utils/ErrorManager.h"
 #include "../Utils/AdapterReader.h"
 
@@ -12,6 +15,8 @@ namespace Firelight::Graphics
 
     GraphicsHandler::~GraphicsHandler()
     {
+		ImGui_ImplDX11_Shutdown();
+		ImGui::DestroyContext();
     }
 
     GraphicsHandler& GraphicsHandler::Instance()
@@ -26,6 +31,9 @@ namespace Firelight::Graphics
 
         bool result = InitialiseDirectX(hwnd, windowWidth, windowHeight);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
+
+		result = InitialiseImGui();
+		ASSERT_RETURN(result, "ImGui initialisation failed", false);
 
 		m_initialised = true;
 
@@ -155,6 +163,18 @@ namespace Firelight::Graphics
         return true;
     }
 
+	bool GraphicsHandler::InitialiseImGui()
+	{
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+		ImGui::StyleColorsDark();
+		ImGui_ImplDX11_Init(GetDevice(), GetDeviceContext());
+
+		return true;
+	}
+
     ID3D11Device* GraphicsHandler::GetDevice() const
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
@@ -186,6 +206,18 @@ namespace Firelight::Graphics
 		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		// TODO: Do fancy render stuff here
+		ImGui_ImplDX11_NewFrame();
+		ImGui::NewFrame();
+
+		// Example
+		ImGui::Begin("Test Window");
+		ImGui::Text("This is a text");
+		ImGui::End();
+
+		// ImGui Render
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
 
 		m_swapChain->Present(true, NULL);
     }
