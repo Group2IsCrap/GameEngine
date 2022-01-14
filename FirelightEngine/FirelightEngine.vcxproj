@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Events\Event.h" />
+    <ClInclude Include="Source\Events\EventDispatcher.h" />
     <ClInclude Include="Source\Graphics\Data\Model.h" />
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
@@ -386,6 +388,7 @@
     <ClInclude Include="Source\Maths\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Events\EventDispatcher.cpp" />
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
     <ClCompile Include="Source\Graphics\Data\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
