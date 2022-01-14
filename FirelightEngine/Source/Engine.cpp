@@ -1,7 +1,7 @@
 #include "Engine.h"
 
 #include "Graphics/GraphicsHandler.h"
-
+#include"Input/ProcessInput.h"
 namespace Firelight
 {
     Engine::Engine::Engine() :
@@ -47,12 +47,15 @@ namespace Firelight
 
     void Engine::Update()
     {
+        ProcessInput::Instance()->ControllerInput();
         m_frameTimer.Stop();
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
 
         (void)deltaTime;
         // Update engine systems with deltaTime here
+
+        ProcessInput::Instance()->TestInput();
     }
 
     void Engine::RenderFrame()

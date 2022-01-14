@@ -1,12 +1,13 @@
 #include "WindowContainer.h"
-
+#include "Input/ProcessInput.h"
 //extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Firelight
 {
 	WindowContainer::WindowContainer()
 	{
-		static bool rawInputInitialized = false;
+		ProcessInput::Instance()->Initialize();
+		/*static bool rawInputInitialized = false;
 		if (rawInputInitialized == false)
 		{
 			RAWINPUTDEVICE rawInputDevice;
@@ -22,7 +23,7 @@ namespace Firelight
 			}
 
 			rawInputInitialized = true;
-		}
+		}*/
 	}
 
 	LRESULT WindowContainer::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -32,7 +33,7 @@ namespace Firelight
 		{
 			return true;
 		}*/
-
+		ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam);
 		switch (uMsg)
 		{
 		// Keyboard messages

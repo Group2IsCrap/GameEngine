@@ -1,18 +1,5 @@
-﻿  Model.cpp
-  Mesh.cpp
-  Colour.cpp
-  AdapterReader.cpp
-  GraphicsHandler.cpp
-C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Graphics\GraphicsHandler.cpp(172,40): warning C4100: 'deltaTime': unreferenced formal parameter
-  ErrorManager.cpp
-  Engine.cpp
-  DDSTextureLoader.cpp
-  Window.cpp
+﻿  Engine.cpp
+  ProcessInput.cpp
   WindowContainer.cpp
-  Texture.cpp
-  Vertex.cpp
-  Vector2.cpp
-  Vector3.cpp
-  Vector4.cpp
   Generating Code...
-  FirelightEngine.vcxproj -> C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\x64\Debug\FirelightEngine.lib
+  FirelightEngine.vcxproj -> C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\x64\Debug\FirelightEngine.lib
