@@ -1,5 +1,10 @@
-﻿  Engine.cpp
-  ProcessInput.cpp
-  WindowContainer.cpp
-  Generating Code...
+﻿  ControllerInput.cpp
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(61,72): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(62,72): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(150,27): warning C4458: declaration of 'state' hides class member
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.h(50,15): message : see declaration of 'ControllerInput::state'
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(169,15): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(180,33): warning C4244: '=': conversion from 'int' to 'WORD', possible loss of data
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(181,34): warning C4244: '=': conversion from 'int' to 'WORD', possible loss of data
+C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\FirelightEngine\Source\Input\ControllerInput.cpp(165,52): warning C4100: 'rightVal': unreferenced formal parameter
   FirelightEngine.vcxproj -> C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\x64\Debug\FirelightEngine.lib

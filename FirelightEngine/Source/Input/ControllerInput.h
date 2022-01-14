@@ -31,14 +31,21 @@ private:
 	int m_DeadzoneRightThum=0;
 	int m_TriggerThreshold=0;
 	
-	float leftTrigger=0;
-	float rightTrigger = 0;
+	double m_LeftTriggerPress=0;
+	double m_RightTriggerPress = 0;
 
-	float normLX = 0;
-	float normLY = 0;
+	double m_NormalLeftThumX = 0;
+	double m_NormalLeftThumY = 0;
 
-	float normRX = 0;
-	float normRY = 0;
+	double m_NormalRightThumX = 0;
+	double m_NormalRightThumY = 0;
+
+	double m_MagnitudeRightThum = 0;
+	double m_NormalizedRightThumbMagnitude = 0;
+
+
+	double m_MagnitudeLeftThum = 0;
+	double m_NormalizedLeftThumbMagnitude = 0;
 
 	XINPUT_STATE state;
 

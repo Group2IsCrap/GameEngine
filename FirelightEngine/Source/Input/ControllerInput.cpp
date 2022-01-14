@@ -23,83 +23,80 @@ bool ControllerInput::IsConnected()
     {
         isconnected = true;
         //trigger press amount between 0 and 1
-         leftTrigger = (float)state.Gamepad.bLeftTrigger / 255;
-         rightTrigger = (float)state.Gamepad.bRightTrigger / 255;
+        m_LeftTriggerPress = (float)state.Gamepad.bLeftTrigger / 255;
+        m_RightTriggerPress = (float)state.Gamepad.bRightTrigger / 255;
        
-         //dead zone
-         float LX = state.Gamepad.sThumbLX;
-         float LY = state.Gamepad.sThumbLY;
+         //dead zone right Thumb
+        double RX = state.Gamepad.sThumbRX;
+        double RY = state.Gamepad.sThumbRY;
 
          //determine how far the controller is pushed
-         float magnitude = sqrt(LX * LX + LY * LY);
+         m_MagnitudeRightThum = sqrt(RX * RX + RY * RY);
 
          //determine the direction the controller is pushed
-         float normalizedLX = LX / magnitude;
-         float normalizedLY = LY / magnitude;
+         m_NormalRightThumX = RX / m_MagnitudeRightThum;
+         m_NormalRightThumY = RY / m_MagnitudeRightThum;
 
-         float normalizedMagnitude = 0;
 
          //check if the controller is outside a circular dead zone
-         if (magnitude > m_DeadzoneLeftThum)
+         if (m_MagnitudeRightThum > m_DeadzoneLeftThum)
          {
              //clip the magnitude at its expected maximum value
-             if (magnitude > 32767) magnitude = 32767;
+             if (m_MagnitudeRightThum > 32767) m_MagnitudeRightThum = 32767;
 
              //adjust magnitude relative to the end of the dead zone
-             magnitude -= m_DeadzoneLeftThum;
+             m_MagnitudeRightThum -= m_DeadzoneLeftThum;
 
              //optionally normalize the magnitude with respect to its expected range
              //giving a magnitude value of 0.0 to 1.0
-             normalizedMagnitude = magnitude / (32767 - m_DeadzoneLeftThum);
+             m_NormalizedRightThumbMagnitude = m_MagnitudeRightThum / (32767 - m_DeadzoneLeftThum);
          }
          else //if the controller is in the deadzone zero out the magnitude
          {
-             magnitude = 0.0;
-             normalizedMagnitude = 0.0;
+             m_MagnitudeRightThum = 0.0;
+             m_NormalizedRightThumbMagnitude = 0.0;
          }
 
         //sticks movement between -1 and 1
-         normLX = fmaxf(-1, (float)state.Gamepad.sThumbLX / 32767);
-         normLY = fmaxf(-1, (float)state.Gamepad.sThumbLY / 32767);
+         m_NormalRightThumX = fmaxf(-1, (double)state.Gamepad.sThumbRX / 32767);
+         m_NormalRightThumY = fmaxf(-1, (double)state.Gamepad.sThumbRY / 32767);
 
 
 
 
-         float RX = state.Gamepad.sThumbRX;
-         float RY = state.Gamepad.sThumbRY;
+         double LX = state.Gamepad.sThumbLX;
+         double LY = state.Gamepad.sThumbLY;
 
          //determine how far the controller is pushed
-         float magnitudeR = sqrt(RX * RX + RY * RY);
+         m_MagnitudeLeftThum = sqrt(LX * LX + LY * LY);
 
          //determine the direction the controller is pushed
-         float normalizedRX = RX / magnitude;
-         float normalizedRY = RY / magnitude;
+         m_NormalLeftThumX = LX / m_MagnitudeLeftThum;
+         m_NormalLeftThumY = LY / m_MagnitudeLeftThum;
 
-         float normalizedMagnitudeR = 0;
-
+  
          //check if the controller is outside a circular dead zone
-         if (magnitude > m_DeadzoneRightThum)
+         if (m_MagnitudeLeftThum > m_DeadzoneRightThum)
          {
              //clip the magnitude at its expected maximum value
-             if (magnitude > 32767) magnitude = 32767;
+             if (m_MagnitudeLeftThum > 32767) m_MagnitudeLeftThum = 32767;
 
              //adjust magnitude relative to the end of the dead zone
-             magnitude -= m_DeadzoneRightThum;
+             m_MagnitudeLeftThum -= m_DeadzoneRightThum;
 
              //optionally normalize the magnitude with respect to its expected range
              //giving a magnitude value of 0.0 to 1.0
-             normalizedMagnitude = magnitude / (32767 - m_DeadzoneRightThum);
+             m_NormalizedLeftThumbMagnitude = m_MagnitudeLeftThum / (32767 - m_DeadzoneRightThum);
          }
          else //if the controller is in the deadzone zero out the magnitude
          {
-             magnitude = 0.0;
-             normalizedMagnitude = 0.0;
+             m_MagnitudeLeftThum = 0.0;
+             m_NormalizedLeftThumbMagnitude = 0.0;
          }
 
+         m_NormalLeftThumX = fmaxf(-1, (float)state.Gamepad.sThumbLX / 32767);
+         m_NormalLeftThumY = fmaxf(-1, (float)state.Gamepad.sThumbLY / 32767);
 
-
-         normRX = fmaxf(-1, (float)state.Gamepad.sThumbRX / 32767);
-         normRY = fmaxf(-1, (float)state.Gamepad.sThumbRY / 32767);
         return true;
     }
     else
@@ -126,10 +123,23 @@ void ControllerInput::ProcessInput()
         VibrateStop();
     }
 
-    if (leftTrigger >= 0.5) {
+    if (m_LeftTriggerPress >= 0.5) {
         Vibrate(0.5, 0.5);
     }
 
+    if (m_NormalRightThumX == 1) {
+        Vibrate(0.5, 0.5);
+    }
+    if (m_NormalRightThumX == -1) {
+        Vibrate(0.5, 0.5);
+    }
+
+    if (m_NormalRightThumY == 1) {
+        Vibrate(0.5, 0.5);
+    }
+    if (m_NormalRightThumY == -1) {
+        Vibrate(0.5, 0.5);
+    }
 }
 
 //Directly get State from xinput
