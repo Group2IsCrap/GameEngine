@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include "Graphics/GraphicsHandler.h"
+
 namespace TempEngineNamespace
 {
     TempEngineName::TempEngineName::TempEngineName() :
@@ -28,6 +30,9 @@ namespace TempEngineNamespace
         bool result = mWindowContainer.GetWindow().Initialise(&mWindowContainer, hInstance, windowTitle, windowClass, windowWidth, windowHeight);
         ASSERT_RETURN(result, "Window container failed to initialise", false);
 
+        result = Graphics::GraphicsHandler::Instance().Initialize(mWindowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
+        ASSERT_RETURN(result, "DirectXManager failed to initialise", false);
+
         // TODO: Initalise other systems here
 
         mInitialised = true;
@@ -52,5 +57,6 @@ namespace TempEngineNamespace
 
     void TempEngineName::RenderFrame()
     {
+        Graphics::GraphicsHandler::Instance().Render();
     }
 }

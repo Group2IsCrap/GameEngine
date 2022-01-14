@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Utils\AdapterReader.h" />
+    <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
     <ClInclude Include="Source\Utils\Errors\COMError.h" />
     <ClInclude Include="Source\Utils\Errors\Error.h" />
@@ -375,6 +377,8 @@
     <ClInclude Include="Source\WindowContainer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Utils\AdapterReader.cpp" />
+    <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Includes\DDSTextureLoader.cpp" />

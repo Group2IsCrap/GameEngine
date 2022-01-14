@@ -66,6 +66,15 @@ namespace TempEngineNamespace::Utils
 	throw *err;\
 }
 
+// Alert the user of an error, log it and throw it
+#define ERROR_THROW(msg)\
+{\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_DISPLAY_ERROR(err);\
+	INTERNAL_LOG_ERROR(err);\
+	throw *err;\
+}
+
 // Alert the user of an error and quit the application
 #define ERROR_FATAL(msg)\
 {\
