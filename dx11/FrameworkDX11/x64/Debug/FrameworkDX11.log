@@ -1,8 +1,0 @@
-﻿  DDSTextureLoader.cpp
-  main.cpp
-  Window.cpp
-C:\Users\rug11\OneDrive - Staffordshire University\3rd year\Group\GameEngine\dx11\FrameworkDX11\Window.cpp(36,23): warning C4838: conversion from 'unsigned int' to 'LONG' requires a narrowing conversion
-C:\Users\rug11\OneDrive - Staffordshire University\3rd year\Group\GameEngine\dx11\FrameworkDX11\Window.cpp(36,32): warning C4838: conversion from 'unsigned int' to 'LONG' requires a narrowing conversion
-  Generating Code...
-C:\Users\rug11\OneDrive - Staffordshire University\3rd year\Group\GameEngine\dx11\FrameworkDX11\Window.cpp(50): warning C4715: 'Window::InitWindow': not all control paths return a value
-  FrameworkDX11.vcxproj -> C:\Users\rug11\OneDrive - Staffordshire University\3rd year\Group\GameEngine\dx11\x64\Debug\FrameworkDX11.exe
