@@ -34,10 +34,10 @@ namespace Firelight::Graphics
         bool result = InitialiseDirectX(hwnd, windowWidth, windowHeight);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
 
+		m_initialised = true;
+
 		result = InitialiseImGui(hwnd);
 		ASSERT_RETURN(result, "ImGui initialisation failed", false);
-
-		m_initialised = true;
 
         return true;
     }
@@ -234,7 +234,8 @@ namespace Firelight::Graphics
 		// ImGui Render
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
 
 		m_swapChain->Present(true, NULL);
     }

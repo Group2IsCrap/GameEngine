@@ -363,6 +363,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="Includes\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="Includes\imgui\imconfig.h" />
+    <ClInclude Include="Includes\imgui\imgui.h" />
+    <ClInclude Include="Includes\imgui\imgui_internal.h" />
+    <ClInclude Include="Includes\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Includes\imgui\imstb_textedit.h" />
+    <ClInclude Include="Includes\imgui\imstb_truetype.h" />
+    <ClInclude Include="Includes\imgui\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="Source\ECS\ComponentManager.h" />
     <ClInclude Include="Source\ECS\Components.h" />
     <ClInclude Include="Source\ECS\ECSDefines.h" />
@@ -400,6 +409,14 @@
     <ClInclude Include="Source\Maths\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="Includes\imgui\imgui.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Includes\imgui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\ECS\ComponentManager.cpp" />
     <ClCompile Include="Source\ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityManager.cpp" />
@@ -432,6 +449,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug\vc142.idb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Includes\imgui\misc\fonts\Cousine-Regular.ttf" />
+    <Font Include="Includes\imgui\misc\fonts\DroidSans.ttf" />
+    <Font Include="Includes\imgui\misc\fonts\Karla-Regular.ttf" />
+    <Font Include="Includes\imgui\misc\fonts\ProggyClean.ttf" />
+    <Font Include="Includes\imgui\misc\fonts\ProggyTiny.ttf" />
+    <Font Include="Includes\imgui\misc\fonts\Roboto-Medium.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
