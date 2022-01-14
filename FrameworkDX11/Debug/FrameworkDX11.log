@@ -1,0 +1,8 @@
+﻿  ErrorManager.cpp
+  Engine.cpp
+  DDSTextureLoader.cpp
+  Window.cpp
+  WindowContainer.cpp
+  Generating Code...
+ErrorManager.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  FrameworkDX11.vcxproj -> C:\Users\fbob9\source\repos\FergusGriggs\GameEngine\Debug\FrameworkDX11.dll
