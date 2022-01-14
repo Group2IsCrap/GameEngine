@@ -21,7 +21,7 @@ namespace TempEngineNamespace
 		Error(const std::string& msg, const std::string& fileName, const std::string& functionName, int line, ErrorType errorType = ErrorType::e_Standard) :
 			mErrorType(errorType),
 			mMessage(msg),
-			mFileName(Utils::StringHelpers::RemoveBeforeString(fileName, "FrameworkDX11")),
+			mFileName(Utils::StringHelpers::RemoveBeforeString(fileName, "GameEngine")),
 			mFunctionName(functionName),
 			mLine(line)
 		{
