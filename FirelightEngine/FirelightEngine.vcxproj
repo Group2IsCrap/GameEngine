@@ -369,6 +369,13 @@
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
+    <ClInclude Include="Source\Input\ControllerInput.h" />
+    <ClInclude Include="Source\Input\ControllerManager.h" />
+    <ClInclude Include="Source\Input\KeyboardEvent.h" />
+    <ClInclude Include="Source\Input\KeyboardInput.h" />
+    <ClInclude Include="Source\Input\MouseEvent.h" />
+    <ClInclude Include="Source\Input\MouseInput.h" />
+    <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -392,6 +399,13 @@
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
     <ClCompile Include="Source\Graphics\Data\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
+    <ClCompile Include="Source\Input\ControllerInput.cpp" />
+    <ClCompile Include="Source\Input\ControllerManager.cpp" />
+    <ClCompile Include="Source\Input\KeyboardEvent.cpp" />
+    <ClCompile Include="Source\Input\KeyboardInput.cpp" />
+    <ClCompile Include="Source\Input\MouseEvent.cpp" />
+    <ClCompile Include="Source\Input\MouseInput.cpp" />
+    <ClCompile Include="Source\Input\ProcessInput.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
@@ -407,6 +421,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Debug\vc142.idb" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
