@@ -6,7 +6,7 @@ namespace Firelight
 {
 	WindowContainer::WindowContainer()
 	{
-		ProcessInput::Instance()->Initialize();
+		Input::ProcessInput::Instance()->Initialize();
 		/*static bool rawInputInitialized = false;
 		if (rawInputInitialized == false)
 		{
@@ -33,7 +33,7 @@ namespace Firelight
 		{
 			return true;
 		}*/
-		ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam);
+		Input::ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam);
 		switch (uMsg)
 		{
 		// Keyboard messages

@@ -4,7 +4,7 @@
 #include"MouseInput.h"
 #include"KeyboardInput.h"
 #include"ControllerManager.h"
-
+namespace Firelight::Input {
 	ProcessInput::ProcessInput()
 	{
 	}
@@ -20,9 +20,9 @@
 	}
 	void ProcessInput::Initialize()
 	{
-		m_KeyboardCaptuer = std::make_unique<KeyboardInput>();
-		m_MouseCaptuer = std::make_unique <MouseInput>();
-		m_ControllerManager = std::make_unique <ControllerManager>();
+		m_KeyboardCaptuer = std::make_unique<Input::KeyboardInput>();
+		m_MouseCaptuer = std::make_unique <Input::MouseInput>();
+		m_ControllerManager = std::make_unique <Input::ControllerManager>();
 	}
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
@@ -189,3 +189,4 @@
 	{
 		m_ControllerManager->ProcessInput();
 	}
+}

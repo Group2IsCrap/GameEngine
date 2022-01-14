@@ -47,7 +47,7 @@ namespace Firelight
 
     void Engine::Update()
     {
-        ProcessInput::Instance()->ControllerInput();
+        Input::ProcessInput::Instance()->ControllerInput();
         m_frameTimer.Stop();
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
@@ -55,7 +55,7 @@ namespace Firelight
         (void)deltaTime;
         // Update engine systems with deltaTime here
 
-        ProcessInput::Instance()->TestInput();
+        Input::ProcessInput::Instance()->TestInput();
     }
 
     void Engine::RenderFrame()
