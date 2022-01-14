@@ -3,6 +3,7 @@
 
 #include "Source/Engine.h"
 #include "Source/Utils/ErrorManager.h"
+#include "Source/Maths/Vec3.inl"
 
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
