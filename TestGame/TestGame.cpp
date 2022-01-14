@@ -22,17 +22,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
 
 		Entity player = EntityComponentSystem::Instance()->CreateEntity();
-		EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(player, IdentificationComponent());
-		EntityComponentSystem::Instance()->AddComponent<TransformComponent>(player, TransformComponent());
-		EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(player, PhysicsComponent());
+		EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(player, new IdentificationComponent());
+		EntityComponentSystem::Instance()->AddComponent<TransformComponent>(player, new TransformComponent());
 
-		Entity log = EntityComponentSystem::Instance()->CreateEntity();
-		EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(log, IdentificationComponent());
-		EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(log, PhysicsComponent());
-
-		Entity renderable = EntityComponentSystem::Instance()->CreateEntity();
-		EntityComponentSystem::Instance()->AddComponent<TransformComponent>(renderable, TransformComponent());
 		EntityComponentSystem::Instance()->DebugEntities();
+
+		EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(player, new PhysicsComponent());
+		EntityComponentSystem::Instance()->DebugEntities();
+
+		EntityComponentSystem::Instance()->RemoveComponent<TransformComponent>(player);
+		EntityComponentSystem::Instance()->DebugEntities();
+
+		IdentificationComponent* playerID = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(player);
+		playerID->name = "Test";
+
+		EntityComponentSystem::Instance()->DebugEntities();
+
+		EntityComponentSystem::Instance()->RemoveEntity(player);
+
+		EntityComponentSystem::Instance()->DebugEntities();
+
+		// ToDo: Test Remove Entity
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

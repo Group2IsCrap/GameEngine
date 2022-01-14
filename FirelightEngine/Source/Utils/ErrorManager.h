@@ -45,14 +45,14 @@ namespace Firelight::Utils
 // Log an error without a message box
 #define ERROR_SILENT(msg)\
 {\
-	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(msg);\
 	INTERNAL_LOG_ERROR(err);\
 }
 
 // Alert the user of an error and log it
 #define ERROR_STANDARD(msg)\
 {\
-	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(msg);\
 	INTERNAL_DISPLAY_ERROR(err);\
 	INTERNAL_LOG_ERROR(err);\
 }
@@ -60,7 +60,7 @@ namespace Firelight::Utils
 // Alert the user of an error, log it and throw it
 #define ERROR_THROW(msg)\
 {\
-	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(msg);\
 	INTERNAL_DISPLAY_ERROR(err);\
 	INTERNAL_LOG_ERROR(err);\
 	throw *err;\
@@ -69,7 +69,7 @@ namespace Firelight::Utils
 // Alert the user of an error, log it and throw it
 #define ERROR_THROW(msg)\
 {\
-	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(msg);\
 	INTERNAL_DISPLAY_ERROR(err);\
 	INTERNAL_LOG_ERROR(err);\
 	throw *err;\
@@ -78,7 +78,7 @@ namespace Firelight::Utils
 // Alert the user of an error and quit the application
 #define ERROR_FATAL(msg)\
 {\
-	INTERNAL_ALLOCATE_STANDARD_ERROR(hr, msg);\
+	INTERNAL_ALLOCATE_STANDARD_ERROR(msg);\
 	INTERNAL_DISPLAY_ERROR(err);\
 	exit(-1);\
 }

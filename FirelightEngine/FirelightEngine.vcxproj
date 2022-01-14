@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -363,6 +363,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\ComponentManager.h" />
+    <ClInclude Include="Source\ECS\Components.h" />
+    <ClInclude Include="Source\ECS\ECSDefines.h" />
+    <ClInclude Include="Source\ECS\EntityComponentSystem.h" />
+    <ClInclude Include="Source\ECS\EntityManager.h" />
     <ClInclude Include="Source\Graphics\Data\Model.h" />
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
@@ -386,6 +391,9 @@
     <ClInclude Include="Source\Maths\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\ComponentManager.cpp" />
+    <ClCompile Include="Source\ECS\EntityComponentSystem.cpp" />
+    <ClCompile Include="Source\ECS\EntityManager.cpp" />
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
     <ClCompile Include="Source\Graphics\Data\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />

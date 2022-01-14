@@ -17,7 +17,6 @@ namespace Firelight::ECS
 		void RemoveEntity(Entity entity);
 		Signature GetEntitySignature(Entity entity);
 		std::vector<Entity> GetEntities();
-		//void DebugEntities();
 
 		EntityManager() = default;
 		~EntityManager() = default;

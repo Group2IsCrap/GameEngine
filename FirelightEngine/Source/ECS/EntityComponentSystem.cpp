@@ -23,6 +23,9 @@ namespace Firelight::ECS
 		m_componentManager = std::make_unique<ComponentManager>();
 	}
 
+	/// <summary>
+	/// Outputs debug data on all entities
+	/// </summary>
 	void EntityComponentSystem::DebugEntities()
 	{
 		OutputDebugStringA("-------------------------------------\n");
@@ -37,12 +40,15 @@ namespace Firelight::ECS
 			}
 			output += "\n";
 			OutputDebugStringA(output.c_str());
-			for (auto componentType : m_componentManager->GetComponentData())
+			for (auto& componentType : m_componentManager->GetComponentData())
 			{
 				output = "Component: ";
 				if (signature[componentType.first])
 				{
 					output += m_componentManager->GetComponentName(componentType.first);
+					output += "Value: ";
+					BaseComponent* component = m_componentManager->GetComponent(componentType.first, entity);
+					output += component->Output();
 					output += "\n";
 					OutputDebugStringA(output.c_str());
 				}
