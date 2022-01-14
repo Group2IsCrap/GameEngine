@@ -1,6 +1,5 @@
-﻿  Scene.cpp
-C:\Users\n020868i\Documents\GitHub\GameEngine\FirelightEngine\Source\SceneManagement\Scene.cpp(15,46): warning C4100: 'name': unreferenced formal parameter
-C:\Users\n020868i\Documents\GitHub\GameEngine\FirelightEngine\Source\SceneManagement\Scene.cpp(25,28): warning C4100: 'deltaTime': unreferenced formal parameter
-  SceneManager.cpp
+﻿  ProcessInput.cpp
+  Engine.cpp
+  WindowContainer.cpp
   Generating Code...
-  FirelightEngine.vcxproj -> C:\Users\n020868i\Documents\GitHub\GameEngine\x64\Debug\FirelightEngine.lib
+  FirelightEngine.vcxproj -> C:\Users\m017227i\OneDrive - Staffordshire University\3rd year\GameEngine\x64\Debug\FirelightEngine.lib
