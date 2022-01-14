@@ -35,6 +35,7 @@
 /.vs/
 /x64/
 /Firelight/x64/
+/FirelightEngine/x64/
 /TestGame/x64/
 *.ilk
 *.pdb
