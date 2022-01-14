@@ -1,0 +1,18 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (FrameworkDX11.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Model.cpp
+  Mesh.cpp
+  Colour.cpp
+  AdapterReader.cpp
+  GraphicsHandler.cpp
+C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Graphics\GraphicsHandler.cpp(172,40): warning C4100: 'deltaTime': unreferenced formal parameter
+  ErrorManager.cpp
+  Engine.cpp
+  DDSTextureLoader.cpp
+  Window.cpp
+  WindowContainer.cpp
+  Texture.cpp
+  Vertex.cpp
+  Vector2.cpp
+  Vector3.cpp
+  Generating Code...
+  FirelightEngine.vcxproj -> C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\x64\Debug\FirelightEngine.lib
