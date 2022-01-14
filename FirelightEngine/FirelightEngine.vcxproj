@@ -367,6 +367,8 @@
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
+    <ClInclude Include="Source\SceneManagement\Scene.h" />
+    <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -389,6 +391,8 @@
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
     <ClCompile Include="Source\Graphics\Data\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
+    <ClCompile Include="Source\SceneManagement\Scene.cpp" />
+    <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
