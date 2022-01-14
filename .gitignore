@@ -32,5 +32,9 @@
 *.out
 *.app
 
-/.vs/*
-/dx11/.vs/FrameworkDX11
+/.vs/
+/x64/
+/Firelight/x64/
+/TestGame/x64/
+*.ilk
+*.pdb
