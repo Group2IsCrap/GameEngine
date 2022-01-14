@@ -14,7 +14,7 @@ namespace Firelight::Graphics
 
         bool Initialize(HWND hwnd, int windowWidth, int windowHeight);
         bool InitialiseDirectX(HWND hwnd, int windowWidth, int windowHeight);
-        bool InitialiseImGui();
+        bool InitialiseImGui(HWND hwnd);
 
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;

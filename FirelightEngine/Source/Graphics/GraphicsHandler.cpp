@@ -1,6 +1,7 @@
 #include "GraphicsHandler.h"
 
 #include "imgui.h"
+#include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx11.h"
 
 #include "../Utils/ErrorManager.h"
@@ -16,6 +17,7 @@ namespace Firelight::Graphics
     GraphicsHandler::~GraphicsHandler()
     {
 		ImGui_ImplDX11_Shutdown();
+		ImGui_ImplWin32_Shutdown();
 		ImGui::DestroyContext();
     }
 
@@ -32,7 +34,7 @@ namespace Firelight::Graphics
         bool result = InitialiseDirectX(hwnd, windowWidth, windowHeight);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
 
-		result = InitialiseImGui();
+		result = InitialiseImGui(hwnd);
 		ASSERT_RETURN(result, "ImGui initialisation failed", false);
 
 		m_initialised = true;
@@ -163,13 +165,27 @@ namespace Firelight::Graphics
         return true;
     }
 
-	bool GraphicsHandler::InitialiseImGui()
+	bool GraphicsHandler::InitialiseImGui(HWND hwnd)
 	{
+		ImGui_ImplWin32_EnableDpiAwareness();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
 		ImGui::StyleColorsDark();
+
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
+		ImGui_ImplWin32_Init(hwnd);
 		ImGui_ImplDX11_Init(GetDevice(), GetDeviceContext());
 
 		return true;
@@ -207,6 +223,7 @@ namespace Firelight::Graphics
 
 		// TODO: Do fancy render stuff here
 		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
 		// Example
