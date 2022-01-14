@@ -4,7 +4,7 @@
 #include <iostream> 
 #include <string> 
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	EntityComponentSystem* EntityComponentSystem::sm_instance = nullptr;
 

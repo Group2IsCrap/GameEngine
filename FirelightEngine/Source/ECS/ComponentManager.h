@@ -9,7 +9,7 @@
 #include<unordered_map>
 #include<typeinfo>
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	class ComponentManager
 	{

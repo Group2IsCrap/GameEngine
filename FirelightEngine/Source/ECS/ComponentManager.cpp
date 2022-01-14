@@ -1,6 +1,6 @@
 #include "ComponentManager.h"
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 

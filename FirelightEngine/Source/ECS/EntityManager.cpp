@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 #include <assert.h> 
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	Entity EntityManager::sm_nextEntity = 0;
 

@@ -3,7 +3,7 @@
 #include "ECSDefines.h"
 #include <string>
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	struct IdentificationComponent : BaseComponent
 	{

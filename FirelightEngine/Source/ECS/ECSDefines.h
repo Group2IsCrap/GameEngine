@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	typedef std::uint32_t Entity;
 	typedef std::uint16_t ComponentTypeID;

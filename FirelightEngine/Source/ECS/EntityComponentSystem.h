@@ -5,7 +5,7 @@
 
 #include <memory>
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	class EntityComponentSystem
 	{

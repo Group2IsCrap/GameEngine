@@ -5,7 +5,7 @@
 #include <vector>
 #include <unordered_map>
 
-namespace Engine::ECS
+namespace Firelight::ECS
 {
 	typedef std::vector<bool> Signature;
 
