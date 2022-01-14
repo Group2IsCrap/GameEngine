@@ -1,18 +1,5 @@
-﻿  Model.cpp
-  Mesh.cpp
-  Colour.cpp
-  AdapterReader.cpp
-  GraphicsHandler.cpp
-C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Graphics\GraphicsHandler.cpp(172,40): warning C4100: 'deltaTime': unreferenced formal parameter
-  ErrorManager.cpp
-  Engine.cpp
-  DDSTextureLoader.cpp
-  Window.cpp
-  WindowContainer.cpp
-  Texture.cpp
-  Vertex.cpp
-  Vector2.cpp
-  Vector3.cpp
-  Vector4.cpp
-  Generating Code...
-  FirelightEngine.vcxproj -> C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\x64\Debug\FirelightEngine.lib
+﻿  Engine.cpp
+C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Maths\Random.h(23,19): error C2672: 'Firelight::Maths::Random::ZeroToOne': no matching overloaded function found
+C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Maths\Random.h(23,19): error C2783: 'T Firelight::Maths::Random::ZeroToOne(void)': could not deduce template argument for 'T'
+C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Maths\Random.h(15): message : see declaration of 'Firelight::Maths::Random::ZeroToOne'
+C:\Users\g012090i\source\repos\Group2IsCrap\GameEngine\FirelightEngine\Source\Maths\Random.h(23,19): message : 'ZeroToOne': function declaration must be available as none of the arguments depend on a template parameter

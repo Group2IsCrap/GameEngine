@@ -367,6 +367,8 @@
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
+    <ClInclude Include="Source\Maths\Random.h" />
+    <ClInclude Include="Source\Maths\Rect.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -381,9 +383,8 @@
     <ClInclude Include="Source\WindowContainer.h" />
     <ClInclude Include="Source\Graphics\Data\Texture.h" />
     <ClInclude Include="Source\Graphics\Data\Vertex.h" />
-    <ClInclude Include="Source\Maths\Vector2.h" />
-    <ClInclude Include="Source\Maths\Vector3.h" />
-    <ClInclude Include="Source\Maths\Vector4.h" />
+    <ClInclude Include="Source\Maths\Vec2.h" />
+    <ClInclude Include="Source\Maths\Vec3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
@@ -398,12 +399,14 @@
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
     <ClCompile Include="Source\Graphics\Data\Vertex.cpp" />
-    <ClCompile Include="Source\Maths\Vector2.cpp" />
-    <ClCompile Include="Source\Maths\Vector3.cpp" />
-    <ClCompile Include="Source\Maths\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Maths\Rect.inl" />
+    <None Include="Source\Maths\Vec2.inl" />
+    <None Include="Source\Maths\Vec3.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
