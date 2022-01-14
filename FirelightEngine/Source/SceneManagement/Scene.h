@@ -11,22 +11,22 @@ namespace Firelight::SceneManagement
 	class Scene
 	{
 	public:
-		std::vector<std::string*> m_entities; // TODO : Change string to Entity class
+		std::vector<std::string*> m_entities; // TODO : Change string to Entity Wrapper class
 
 	private:
 		template<typename T>
-		void OnComponentAdded(std::string, T& component); // TODO : Change string to Entity
+		void OnComponentAdded(std::string, T& component); // TODO : Change string to Entity Wrapper
 
 	public:
 		Scene();
 		~Scene();
 
-		void CreateEntity(const std::string& name = std::string()); // TODO : Change void to Entity class
-		void DestroyEntity(std::string entity); // TODO : Change string to Entity class
+		void CreateEntity(const std::string& name = std::string()); // TODO : Change void to Entity Wrapper class
+		void DestroyEntity(std::string entity); // TODO : Change string to Entity Wrapper class
 
 		void Update(double deltaTime);
 
-		void GetMainCamera(); // TODO : Change to Entity class
+		void GetMainCamera(); // TODO : Change to Entity Wrapper class
 
 	};
 }
