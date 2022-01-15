@@ -6,8 +6,12 @@
 
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
+#include "Source/ImGuiUI/ImGuiManager.h"
+
+#include "ImGuiTestLayer.h"
 
 using namespace Firelight::ECS;
+using namespace Firelight::ImGuiUI;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -41,6 +45,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		EntityComponentSystem::Instance()->RemoveEntity(player);
 
 		EntityComponentSystem::Instance()->DebugEntities();
+
+		// ImGui Test code
+		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
+		ImGuiManager::Instance()->AddRenderLayer(testLayer);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

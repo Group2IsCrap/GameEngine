@@ -383,6 +383,8 @@
     <ClInclude Include="Source\Graphics\Data\Mesh.h" />
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
+    <ClInclude Include="Source\ImGuiUI\ImGuiLayer.h" />
+    <ClInclude Include="Source\ImGuiUI\ImGuiManager.h" />
     <ClInclude Include="Source\Input\ControllerInput.h" />
     <ClInclude Include="Source\Input\ControllerManager.h" />
     <ClInclude Include="Source\Input\KeyboardEvent.h" />
@@ -424,6 +426,8 @@
     <ClCompile Include="Source\Graphics\Data\Model.cpp" />
     <ClCompile Include="Source\Graphics\Data\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
+    <ClCompile Include="Source\ImGuiUI\ImGuiLayer.cpp" />
+    <ClCompile Include="Source\ImGuiUI\ImGuiManager.cpp" />
     <ClCompile Include="Source\Input\ControllerInput.cpp" />
     <ClCompile Include="Source\Input\ControllerManager.cpp" />
     <ClCompile Include="Source\Input\KeyboardEvent.cpp" />
