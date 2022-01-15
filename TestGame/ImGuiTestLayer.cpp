@@ -4,7 +4,5 @@
 
 void ImGuiTestLayer::Render()
 {
-	ImGui::Begin("Test Window");
-	ImGui::Text("Test");
-	ImGui::End();
+	ImGui::ShowDemoWindow();
 }
