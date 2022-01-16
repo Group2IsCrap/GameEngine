@@ -52,7 +52,7 @@ namespace Firelight::ECS
 		/// <param name="typeID"></param>
 		/// <param name="entity"></param>
 		/// <returns>BaseComponent*</returns>
-		BaseComponent* GetComponent(ComponentTypeID typeID, Entity entity)
+		BaseComponent* GetComponent(ComponentTypeID typeID, EntityID entity)
 		{
 			return m_componentData[typeID][entity];
 		}
@@ -65,7 +65,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <returns>T*</returns>
 		template<typename T>
-		T* GetComponent(Entity entity)
+		T* GetComponent(EntityID entity)
 		{
 			const char* typeName = typeid(T).name();
 
@@ -81,7 +81,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void AddComponent(Entity entity, T* component)
+		void AddComponent(EntityID entity, T* component)
 		{
 			const char* typeName = typeid(T).name();
 
@@ -103,7 +103,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void RemoveComponent(Entity entity)
+		void RemoveComponent(EntityID entity)
 		{
 			const char* typeName = typeid(T).name();
 
@@ -122,7 +122,7 @@ namespace Firelight::ECS
 		/// Removes all components associated with the given entity
 		/// </summary>
 		/// <param name="entity"></param>
-		void RemoveEntity(Entity entity)
+		void RemoveEntity(EntityID entity)
 		{
 			for (auto& componentType : m_componentData)
 			{
@@ -147,7 +147,7 @@ namespace Firelight::ECS
 
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;
-		std::unordered_map<ComponentTypeID, std::unordered_map<Entity,std::vector<int>>> m_componentMap;
+		std::unordered_map<ComponentTypeID, std::unordered_map<EntityID,std::vector<int>>> m_componentMap;
 		std::unordered_map<const char*, ComponentTypeID> m_componentTypes;
 		std::unordered_map<ComponentTypeID, const char*> m_componentNames;
 

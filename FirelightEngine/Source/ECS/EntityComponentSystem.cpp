@@ -29,7 +29,7 @@ namespace Firelight::ECS
 	void EntityComponentSystem::DebugEntities()
 	{
 		OutputDebugStringA("-------------------------------------\n");
-		for (Entity entity : m_entityManager->GetEntities())
+		for (EntityID entity : m_entityManager->GetEntities())
 		{
 			std::string output = "";
 			Signature signature = m_entityManager->GetEntitySignature(entity);
