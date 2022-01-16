@@ -6,6 +6,7 @@
 #include "Source/Maths/Vec3.inl"
 
 #include "Source/ECS/EntityComponentSystem.h"
+#include "Source/ECS/Entity.h"
 #include "Source/ECS/Components.h"
 
 using namespace Firelight::ECS;
@@ -22,24 +23,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
 		EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
 
-		Entity player = EntityComponentSystem::Instance()->CreateEntity();
-		EntityComponentSystem::Instance()->AddComponent<IdentificationComponent>(player, new IdentificationComponent());
-		EntityComponentSystem::Instance()->AddComponent<TransformComponent>(player, new TransformComponent());
-
+		Entity* player = new Entity();
+		player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+		player->AddComponent<TransformComponent>(new TransformComponent());
 		EntityComponentSystem::Instance()->DebugEntities();
 
-		EntityComponentSystem::Instance()->AddComponent<PhysicsComponent>(player, new PhysicsComponent());
+		player->AddComponent<PhysicsComponent>(new PhysicsComponent());
 		EntityComponentSystem::Instance()->DebugEntities();
 
-		EntityComponentSystem::Instance()->RemoveComponent<TransformComponent>(player);
+		player->RemoveComponent<TransformComponent>();
 		EntityComponentSystem::Instance()->DebugEntities();
 
-		IdentificationComponent* playerID = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(player);
+		IdentificationComponent* playerID = player->GetComponent<IdentificationComponent>();
 		playerID->name = "Test";
 
 		EntityComponentSystem::Instance()->DebugEntities();
 
-		EntityComponentSystem::Instance()->RemoveEntity(player);
+		delete player;
 
 		EntityComponentSystem::Instance()->DebugEntities();
 

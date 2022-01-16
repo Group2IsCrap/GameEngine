@@ -5,7 +5,7 @@
 
 namespace Firelight::ECS
 {
-	typedef std::uint32_t Entity;
+	typedef std::uint32_t EntityID;
 	typedef std::uint16_t ComponentTypeID;
 
 	/// <summary>

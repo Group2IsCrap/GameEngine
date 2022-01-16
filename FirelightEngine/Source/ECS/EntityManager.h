@@ -12,19 +12,19 @@ namespace Firelight::ECS
 	class EntityManager
 	{
 	public:
-		Entity CreateEntity();
-		void UpdateEntitySignature(Entity entity, ComponentTypeID componentID, bool contains);
-		void RemoveEntity(Entity entity);
-		Signature GetEntitySignature(Entity entity);
-		std::vector<Entity> GetEntities();
+		EntityID CreateEntity();
+		void UpdateEntitySignature(EntityID entity, ComponentTypeID componentID, bool contains);
+		void RemoveEntity(EntityID entity);
+		Signature GetEntitySignature(EntityID entity);
+		std::vector<EntityID> GetEntities();
 
 		EntityManager() = default;
 		~EntityManager() = default;
 	private:
-		std::vector<Entity> m_entities;
-		std::unordered_map<Entity,Signature> m_signatures;
+		std::vector<EntityID> m_entities;
+		std::unordered_map<EntityID,Signature> m_signatures;
 
-		static Entity sm_nextEntity;
+		static EntityID sm_nextEntity;
 
 	};
 }
