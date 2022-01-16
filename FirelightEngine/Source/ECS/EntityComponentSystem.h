@@ -103,6 +103,9 @@ namespace Firelight::ECS
 
 		void DebugEntities();
 
+		std::vector<EntityID> GetEntities();
+		Signature GetSignature(EntityID entityID);
+
 		static EntityComponentSystem* Instance();
 	private:
 		EntityComponentSystem();

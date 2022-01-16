@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ECSDefines.h"
-
 #include "EntityManager.h"
+
+#include "../Utils/ErrorManager.h"
 
 #include<vector>
 #include<unordered_map>
@@ -54,7 +55,7 @@ namespace Firelight::ECS
 		/// <returns>BaseComponent*</returns>
 		BaseComponent* GetComponent(ComponentTypeID typeID, EntityID entity)
 		{
-			return m_componentData[typeID][entity];
+			return m_componentData[typeID][m_componentMap[typeID][entity][0]];
 		}
 
 		/// <summary>
@@ -71,7 +72,11 @@ namespace Firelight::ECS
 
 			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
 			ComponentTypeID typeID = m_componentTypes[typeName];
-			return dynamic_cast<T*>(m_componentData[typeID][entity]);
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				return dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][0]]);
+			}
+			return nullptr;
 		}
 
 		/// <summary>
@@ -131,8 +136,11 @@ namespace Firelight::ECS
 					std::vector<int> componentIndexesToRemove = m_componentMap[componentType.first][entity];
 					for (auto& index : componentIndexesToRemove)
 					{
+						// Delete the component
 						delete m_componentData[componentType.first][index];
+						// Remove ptr form list
 						m_componentData[componentType.first].erase(m_componentData[componentType.first].begin() + index);
+						UpdateComponentMap(componentType.first, index);
 					}
 					m_componentMap[componentType.first].erase(entity);
 				}
@@ -145,6 +153,8 @@ namespace Firelight::ECS
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentData();
 		const char* GetComponentName(ComponentTypeID typeID);
 
+	private:
+		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;
 		std::unordered_map<ComponentTypeID, std::unordered_map<EntityID,std::vector<int>>> m_componentMap;

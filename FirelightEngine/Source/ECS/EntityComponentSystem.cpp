@@ -54,6 +54,14 @@ namespace Firelight::ECS
 				}
 			}
 		}
-		OutputDebugStringA("-------------------------------------\n");
+		OutputDebugStringA("***********************************\n");
+	}
+	std::vector<EntityID> EntityComponentSystem::GetEntities()
+	{
+		return m_entityManager->GetEntities();
+	}
+	Signature EntityComponentSystem::GetSignature(EntityID entityID)
+	{
+		return m_entityManager->GetEntitySignature(entityID);
 	}
 }
