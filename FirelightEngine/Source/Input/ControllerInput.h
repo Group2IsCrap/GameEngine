@@ -12,9 +12,8 @@ namespace Firelight::Input {
 	{
 	public:
 		ControllerInput();
+		ControllerInput(int ControllerIndex, double DeadZoneLeftThumb, double DeadZoneRightThumb, double TriggerThreshold);
 		~ControllerInput();
-
-		bool IsConnected();
 
 		void ProcessInput();
 		XINPUT_STATE GetState();
@@ -22,14 +21,25 @@ namespace Firelight::Input {
 		void VibrateStop();
 		void Vibrate(float leftVal, float rightVal);
 
+		void TestInput();
 		bool IsPressed(WORD buttion);
-		bool isconnected = false;
+
+
+		void SetDeadZoneLeftThumb(double Deadzone);
+		void SetDeadZoneRightThumb(double Deadzone);
+		void SetTriggerThreshold(double TriggerThreshold);
+	private:
+		bool IsConnected();
+	public:
+		bool m_Isconnected = false;
+
+
 	private:
 		int m_User_ID = 0;
 
-		int m_DeadzoneLeftThum = 0;
-		int m_DeadzoneRightThum = 0;
-		int m_TriggerThreshold = 0;
+		double m_DeadzoneLeftThum = 0;
+		double m_DeadzoneRightThum = 0;
+		double m_TriggerThreshold = 0;
 
 		double m_LeftTriggerPress = 0;
 		double m_RightTriggerPress = 0;
@@ -47,8 +57,9 @@ namespace Firelight::Input {
 		double m_MagnitudeLeftThum = 0;
 		double m_NormalizedLeftThumbMagnitude = 0;
 
-		XINPUT_STATE state;
+		XINPUT_STATE m_State;
 
+		
 	};
 
 }

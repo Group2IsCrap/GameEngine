@@ -27,6 +27,8 @@
 			std::unique_ptr<Input::MouseInput> m_MouseCaptuer;
 			std::unique_ptr <Input::KeyboardInput> m_KeyboardCaptuer;
 			std::unique_ptr <Input::ControllerManager> m_ControllerManager;
+
+		
 		};
 
 	}

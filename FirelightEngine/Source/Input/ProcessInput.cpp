@@ -1,6 +1,6 @@
 #include "ProcessInput.h"
-
-
+#include<cstdio>
+#include<string>
 #include"MouseInput.h"
 #include"KeyboardInput.h"
 #include"ControllerManager.h"
@@ -187,6 +187,31 @@ namespace Firelight::Input {
 
 	void ProcessInput::TestInput()
 	{
+		//test controller input
 		m_ControllerManager->ProcessInput();
+
+		while (!m_KeyboardCaptuer->CharBufferIsEmpty())
+		{
+			unsigned char ch = m_KeyboardCaptuer->Raedchar();
+			m_KeyboardCaptuer->DisableAutoRepeatChars();
+
+			
+
+		}
+
+		while (!m_KeyboardCaptuer->KeyBufferIsEmpty())
+		{
+			KeyboardEvent Key = m_KeyboardCaptuer->ReadKey();
+			m_KeyboardCaptuer->DisableAutoRepeatKeys();
+
+
+
+		}
+
+		while (!m_MouseCaptuer->EventBufferIsEmpty())
+		{
+			MouseEvent mEvent = m_MouseCaptuer->ReadEvent();
+
+		}
 	}
 }

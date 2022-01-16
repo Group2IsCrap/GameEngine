@@ -1,6 +1,4 @@
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\x64\debug\firelightengine.pdb
-c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vector4.obj
-c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vector3.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vector2.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vertex.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\texture.obj
@@ -11,9 +9,6 @@ c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\fireli
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\errormanager.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\graphicshandler.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\adapterreader.obj
-c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\colour.obj
-c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\mesh.obj
-c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\model.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\processinput.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\mouseinput.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\mouseevent.obj
@@ -21,6 +16,11 @@ c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\fireli
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\keyboardevent.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\controllermanager.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\controllerinput.obj
+c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\colour.obj
+c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\mesh.obj
+c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\model.obj
+c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vector4.obj
+c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\vector3.obj
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\x64\debug\firelightengine.lib
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\firelightengine.tlog\cl.command.1.tlog
 c:\users\m017227i\onedrive - staffordshire university\3rd year\gameengine\firelightengine\x64\debug\firelightengine.tlog\cl.read.1.tlog
