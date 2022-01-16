@@ -3,6 +3,7 @@
 
 #include "Source/Engine.h"
 #include "Source/Utils/ErrorManager.h"
+#include "Source/Maths/Vec3.inl"
 
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Entity.h"
@@ -41,8 +42,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		delete player;
 
 		EntityComponentSystem::Instance()->DebugEntities();
-
-		// ToDo: Test Remove Entity
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

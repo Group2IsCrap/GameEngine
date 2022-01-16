@@ -1,7 +1,9 @@
 #include "Engine.h"
 
 #include "Graphics/GraphicsHandler.h"
-#include"Input/ProcessInput.h"
+#include "Input/ProcessInput.h"
+#include "Maths/Random.h"
+
 namespace Firelight
 {
     Engine::Engine::Engine() :
@@ -23,6 +25,7 @@ namespace Firelight
     {
         ASSERT_RETURN(!m_initialised, "Engine has already been initialsed", false);
 
+        // Initialise COM library stuffs
         HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
         COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
 
@@ -30,8 +33,12 @@ namespace Firelight
         bool result = m_windowContainer.GetWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, windowWidth, windowHeight);
         ASSERT_RETURN(result, "Window container failed to initialise", false);
 
+        // Initialise graphics handler
         result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
         ASSERT_RETURN(result, "DirectXManager failed to initialise", false);
+
+        // Seed random
+        Maths::Random::SeedWithCurrentTime();
 
         // TODO: Initalise other systems here
 
