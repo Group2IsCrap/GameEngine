@@ -18,7 +18,7 @@ namespace Firelight::Graphics
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;
 
-        void Update(float deltaTime);
+        void Update(double deltaTime);
         void Render();
 
     private:

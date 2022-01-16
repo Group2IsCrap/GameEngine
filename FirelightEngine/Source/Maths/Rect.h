@@ -15,3 +15,5 @@ namespace Firelight::Maths
 
     typedef Rect<float> Rectf;
 }
+
+#include "Rect.inl"

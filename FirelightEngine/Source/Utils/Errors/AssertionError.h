@@ -8,19 +8,19 @@ namespace Firelight
 	{
 	public:
 		AssertionError(const char* assertion, const std::string& msg, const std::string& fileName, const std::string& functionName, int line) :
-			mAssertion(assertion),
+			m_assertion(assertion),
 			Error(msg, fileName, functionName, line, ErrorType::e_Assertion)
 		{
 		}
 
 		virtual void ConstructWhatMessage() override
 		{
-			mWhatMessage += "Assertion: " + mAssertion + "\n";
+			m_whatMessage += "Assertion: " + m_assertion + "\n";
 
 			Error::ConstructWhatMessage();
 		}
 
 	private:
-		std::string mAssertion;
+		std::string m_assertion;
 	};
 }
