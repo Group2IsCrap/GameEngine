@@ -19,7 +19,7 @@ namespace Firelight::ECS
 		template<typename T>
 		T* GetComponent(int index = 0)
 		{
-			return EntityComponentSystem::Instance()->GetComponent<T>(>entityID, index);
+			return EntityComponentSystem::Instance()->GetComponent<T>(m_entityID, index);
 		}
 
 		/// <summary>
