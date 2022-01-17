@@ -22,14 +22,14 @@ namespace Firelight::Graphics
 		Texture(const std::string& filePath);
 		Texture(const uint8_t* pData, size_t size);
 
-		bool Initialize(const std::string& filePath);
+		bool Initialise(const std::string& filePath);
 
 		Microsoft::WRL::ComPtr<ID3D11Resource>&           GetResource();
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
 	private:
-		void InitializeColourTexture(const Colour* colourData, UINT width, UINT height);
-		void Initialize1x1ColourTexture(const Colour& colour);
+		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);
+		void Initialise1x1ColourTexture(const Colour& colour);
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Resource>           m_texture;

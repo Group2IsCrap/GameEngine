@@ -19,27 +19,26 @@ namespace Firelight::Graphics
 
 namespace Firelight::Graphics
 {
-    class ResourceManager
+    class AssetManager
     {
     public:
-        ~ResourceManager();
+        ~AssetManager();
 
-        static ResourceManager& Instance();
+        static AssetManager& Instance();
 
 		bool Initialise();
 
 		// Standard resource getters
 		Texture*       GetTexturePtr(const std::string& path);
-		Texture*       GetTexturePtr(const std::string& path, const uint8_t* pData, size_t size);
 		Texture*       GetColourTexturePtr(Colour colour);
-		Material*      GetMaterialPtr(const std::string& name);
+		Material*      GetMaterialPtr(const std::string& path);
 		template<typename VertexType>
 		Model*         GetModelPtr(const std::string& path);
 
 		template<typename VertexType>
-		VertexShader*  GetVSPtr(const std::string& name);
-		PixelShader*   GetPSPtr(const std::string& name);
-		ComputeShader* GetCSPtr(const std::string& name);
+		VertexShader*  GetVSPtr(const std::string& path);
+		PixelShader*   GetPSPtr(const std::string& path);
+		ComputeShader* GetCSPtr(const std::string& path);
 
 		// Default resource getters
 		Texture*       GetDefaultTexturePtr();
@@ -51,7 +50,7 @@ namespace Firelight::Graphics
 		ComputeShader* GetDefaultCSPtr();
 
     private:
-        ResourceManager();
+		AssetManager();
 
 	private:
 		std::unordered_map<std::string, Texture*>     m_textures;
@@ -73,4 +72,4 @@ namespace Firelight::Graphics
     };
 }
 
-#include "ResourceManager.inl"
+#include "AssetManager.inl"

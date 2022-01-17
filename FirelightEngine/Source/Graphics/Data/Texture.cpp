@@ -16,19 +16,19 @@ namespace Firelight::Graphics
 	Texture::Texture(const Colour& colour) :
 		Texture()
 	{
-		Initialize1x1ColourTexture(colour);
+		Initialise1x1ColourTexture(colour);
 	}
 
 	Texture::Texture(const Colour* colourData, UINT width, UINT height) :
 		Texture()
 	{
-		InitializeColourTexture(colourData, width, height);
+		InitialiseColourTexture(colourData, width, height);
 	}
 
 	Texture::Texture(const std::string& filePath) :
 		Texture()
 	{
-		Initialize(filePath);
+		Initialise(filePath);
 	}
 
 	Texture::Texture(const uint8_t* pData, size_t size) :
@@ -38,7 +38,7 @@ namespace Firelight::Graphics
 		COM_ERROR_IF_FAILED(hr, "Failed to create texture from memory");
 	}
 
-	bool Texture::Initialize(const std::string& filePath)
+	bool Texture::Initialise(const std::string& filePath)
 	{
 		try 
 		{
@@ -56,7 +56,7 @@ namespace Firelight::Graphics
 		catch (COMError& comError)
 		{
 			(void)comError;
-			Initialize1x1ColourTexture(Colours::sc_unhandledTextureColour);
+			Initialise1x1ColourTexture(Colours::sc_unhandledTextureColour);
 			return false;
 		}
 		
@@ -73,7 +73,7 @@ namespace Firelight::Graphics
 		return m_textureView;
 	}
 
-	void Texture::InitializeColourTexture(const Colour* colourData, UINT width, UINT height)
+	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
 	{
 		CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
 
@@ -94,8 +94,8 @@ namespace Firelight::Graphics
 		COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view for colour texture");
 	}
 
-	void Texture::Initialize1x1ColourTexture(const Colour& colour)
+	void Texture::Initialise1x1ColourTexture(const Colour& colour)
 	{
-		InitializeColourTexture(&colour, 1, 1);
+		InitialiseColourTexture(&colour, 1, 1);
 	}
 }

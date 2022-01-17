@@ -7,7 +7,7 @@ namespace Firelight::Graphics
 	class ComputeShader : public IShader
 	{
 	public:
-		bool                 Initialise(std::string shaderFilePath);
+		bool                 Initialise(const char* shaderFilePath);
 		ID3D11ComputeShader* GetShader();
 
 	private:

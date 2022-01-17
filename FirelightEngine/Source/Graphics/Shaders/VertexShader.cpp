@@ -6,9 +6,9 @@
 
 namespace Firelight::Graphics
 {
-	bool VertexShader::Initialise(std::string shaderFilePath, D3D11_INPUT_ELEMENT_DESC* layoutDesc, UINT numElements)
+	bool VertexShader::Initialise(const char* shaderFilePath, D3D11_INPUT_ELEMENT_DESC* layoutDesc, UINT numElements)
 	{
-		IShader::Initialise(shaderFilePath);
+		IShader::Initialise(shaderFilePath, "main", "vs_5_0");
 
 		HRESULT hr;
 		hr = GraphicsHandler::Instance().GetDevice()->CreateVertexShader(m_shaderBuffer->GetBufferPointer(), m_shaderBuffer->GetBufferSize(), NULL, m_shader.GetAddressOf());

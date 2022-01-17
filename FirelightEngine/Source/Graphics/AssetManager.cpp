@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+#include "AssetManager.h"
 
 #include "Data/Texture.h"
 #include "Data/Material.h"
@@ -12,7 +12,7 @@
 
 namespace Firelight::Graphics
 {
-    ResourceManager::ResourceManager() :
+    AssetManager::AssetManager() :
         m_defaultTexture(nullptr),
         m_defaultMaterial(nullptr),
         m_defaultModel(nullptr),
@@ -23,30 +23,30 @@ namespace Firelight::Graphics
     {
     }
 
-    ResourceManager::~ResourceManager()
+    AssetManager::~AssetManager()
     {
     }
 
-    ResourceManager& ResourceManager::Instance()
+    AssetManager& AssetManager::Instance()
     {
-        static ResourceManager instance;
+        static AssetManager instance;
         return instance;
     }
 
-    bool ResourceManager::Initialise()
+    bool AssetManager::Initialise()
     {
-        m_defaultTexture = GetTexturePtr("Resources/Engine/Textures/missing.png");
-        m_defaultMaterial = GetMaterialPtr("Resources/Engine/Materials/default");
-        m_defaultModel = GetModelPtr<FancyLitVertex>("Resources/Engine/Models/cube.obj");
+        m_defaultTexture = GetTexturePtr("$ENGINE/Textures/missing.png");
+        m_defaultMaterial = GetMaterialPtr("$ENGINE/Materials/default");
+        m_defaultModel = GetModelPtr<FancyLitVertex>("$ENGINE/Models/cube.obj");
 
-        m_defaultVS = GetVSPtr<FancyLitVertex>("default");
-        m_defaultPS = GetPSPtr("default");
+        m_defaultVS = GetVSPtr<FancyLitVertex>("$ENGINE/Shaders/Vertex/Unlit");
+        m_defaultPS = GetPSPtr("$ENGINE/Shaders/Pixel/Unlit");
         m_defaultCS = nullptr;
 
         return true;
     }
 
-    Texture* ResourceManager::GetTexturePtr(const std::string& path)
+    Texture* AssetManager::GetTexturePtr(const std::string& path)
     {
         const auto& textureItr = m_textures.find(path);
         if (textureItr != m_textures.end())
@@ -56,7 +56,7 @@ namespace Firelight::Graphics
         else
         {
             Texture* loadedTexture = new Texture();
-            if (!loadedTexture->Initialise(path))
+            if (!loadedTexture->Initialise("Resources/" + path))
             {
                 delete loadedTexture;
                 loadedTexture = m_defaultTexture;
@@ -66,27 +66,7 @@ namespace Firelight::Graphics
         }
     }
 
-    Texture* ResourceManager::GetTexturePtr(const std::string& path, const uint8_t* pData, size_t size)
-    {
-        const auto& textureItr = m_textures.find(path);
-        if (textureItr != m_textures.end())
-        {
-            return textureItr->second;
-        }
-        else
-        {
-            Texture* newTexture = new Texture(pData, size);
-            if (!newTexture->Initialise(path))
-            {
-                delete newTexture;
-                newTexture = m_defaultTexture;
-            }
-            m_textures.insert({ path, newTexture });
-            return newTexture;
-        }
-    }
-
-    Texture* ResourceManager::GetColourTexturePtr(Colour colour)
+    Texture* AssetManager::GetColourTexturePtr(Colour colour)
     {
         const auto& textureItr = m_colourTextures.find(colour.GetUnsignedInt());
         if (textureItr != m_colourTextures.end())
@@ -101,9 +81,9 @@ namespace Firelight::Graphics
         }
     }
 
-    Material* ResourceManager::GetMaterialPtr(const std::string& name)
+    Material* AssetManager::GetMaterialPtr(const std::string& path)
     {
-        const auto& materialItr = m_materials.find(name);
+        const auto& materialItr = m_materials.find(path);
         if (materialItr != m_materials.end())
         {
             return materialItr->second;
@@ -111,19 +91,19 @@ namespace Firelight::Graphics
         else
         {
             Material* newMaterial = new Material();
-            if (!newMaterial->Initialise(name))
+            if (!newMaterial->Initialise("Resources/" + path))
             {
                 delete newMaterial;
                 newMaterial = m_defaultMaterial;
             }
-            m_materials.insert({ name, newMaterial });
+            m_materials.insert({ path, newMaterial });
             return newMaterial;
         }
     }
 
-    PixelShader* ResourceManager::GetPSPtr(const std::string& name)
+    PixelShader* AssetManager::GetPSPtr(const std::string& path)
     {
-        const auto& pixelShaderItr = m_pixelShaders.find(name);
+        const auto& pixelShaderItr = m_pixelShaders.find(path);
         if (pixelShaderItr != m_pixelShaders.end())
         {
             return pixelShaderItr->second;
@@ -131,20 +111,20 @@ namespace Firelight::Graphics
         else
         {
             PixelShader* newPixelShader = new PixelShader();
-            std::string shaderPath = GraphicsHandler::Instance().GetCompiledShaderFolder() + "ps_" + name + ".cso";
+            std::string shaderPath = "Resources/" + path + ".hlsl";
             if (!newPixelShader->Initialise(shaderPath.c_str()))
             {
                 delete newPixelShader;
                 newPixelShader = m_defaultPS;
             }
-            m_pixelShaders.insert({ name, newPixelShader });
+            m_pixelShaders.insert({ path, newPixelShader });
             return newPixelShader;
         }
     }
 
-    ComputeShader* ResourceManager::GetCSPtr(const std::string& name)
+    ComputeShader* AssetManager::GetCSPtr(const std::string& path)
     {
-        const auto& computeShaderItr = m_computeShaders.find(name);
+        const auto& computeShaderItr = m_computeShaders.find(path);
         if (computeShaderItr != m_computeShaders.end())
         {
             return computeShaderItr->second;
@@ -152,43 +132,43 @@ namespace Firelight::Graphics
         else
         {
             ComputeShader* newComputeShader = new ComputeShader();
-            std::string shaderPath = GraphicsHandler::Instance().GetCompiledShaderFolder() + "cs_" + name + ".cso";
+            std::string shaderPath = "Resources/" + path + ".hlsl";
             if (!newComputeShader->Initialise(shaderPath.c_str()))
             {
                 delete newComputeShader;
                 newComputeShader = m_defaultCS;
             }
-            m_computeShaders.insert({ name, newComputeShader });
+            m_computeShaders.insert({ path, newComputeShader });
             return newComputeShader;
         }
     }
 
-    Texture* ResourceManager::GetDefaultTexturePtr()
+    Texture* AssetManager::GetDefaultTexturePtr()
     {
         return m_defaultTexture;
     }
 
-    Material* ResourceManager::GetDefaultMaterialPtr()
+    Material* AssetManager::GetDefaultMaterialPtr()
     {
         return m_defaultMaterial;
     }
 
-    Model* ResourceManager::GetDefaultModelPtr()
+    Model* AssetManager::GetDefaultModelPtr()
     {
         return m_defaultModel;
     }
 
-    VertexShader* ResourceManager::GetDefaultVSPtr()
+    VertexShader* AssetManager::GetDefaultVSPtr()
     {
         return m_defaultVS;
     }
 
-    PixelShader* ResourceManager::GetDefaultPSPtr()
+    PixelShader* AssetManager::GetDefaultPSPtr()
     {
         return m_defaultPS;
     }
 
-    ComputeShader* ResourceManager::GetDefaultCSPtr()
+    ComputeShader* AssetManager::GetDefaultCSPtr()
     {
         return m_defaultCS;
     }

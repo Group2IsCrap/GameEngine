@@ -6,9 +6,9 @@
 
 namespace Firelight::Graphics
 {
-	bool ComputeShader::Initialise(std::string shaderFilePath)
+	bool ComputeShader::Initialise(const char* shaderFilePath)
 	{
-		IShader::Initialise(shaderFilePath);
+		IShader::Initialise(shaderFilePath, "CSMain", "cs_5_0");
 
 		HRESULT hr;
 		hr = GraphicsHandler::Instance().GetDevice()->CreateComputeShader(m_shaderBuffer->GetBufferPointer(), m_shaderBuffer->GetBufferSize(), NULL, m_shader.GetAddressOf());
