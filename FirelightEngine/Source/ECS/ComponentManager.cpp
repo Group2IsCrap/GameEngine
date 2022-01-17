@@ -42,4 +42,34 @@ namespace Firelight::ECS
 			}
 		}
 	}
+
+	/// <summary>
+	/// Removes all components associated with the given entity
+	/// </summary>
+	/// <param name="entity"></param>
+	void ComponentManager::RemoveEntity(EntityID entity)
+	{
+		for (auto& componentType : m_componentData)
+		{
+			if (m_componentMap[componentType.first].find(entity) != m_componentMap[componentType.first].end())
+			{
+				std::vector<int> componentIndexesToRemove = m_componentMap[componentType.first][entity];
+				std::sort(componentIndexesToRemove.begin(), componentIndexesToRemove.end());
+				for (auto& index : componentIndexesToRemove)
+				{
+					// Delete the component
+					delete m_componentData[componentType.first][index];
+					// Remove ptr form list
+					m_componentData[componentType.first].erase(m_componentData[componentType.first].begin() + index);
+					UpdateComponentMap(componentType.first, index);
+					//Decrement indices to reflect erased index's removal
+					for (auto& index2 : componentIndexesToRemove)
+					{
+						index2--;
+					}
+				}
+				m_componentMap[componentType.first].erase(entity);
+			}
+		}
+	}
 }

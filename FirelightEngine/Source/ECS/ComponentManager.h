@@ -53,9 +53,9 @@ namespace Firelight::ECS
 		/// <param name="typeID"></param>
 		/// <param name="entity"></param>
 		/// <returns>BaseComponent*</returns>
-		BaseComponent* GetComponent(ComponentTypeID typeID, EntityID entity)
+		BaseComponent* GetComponent(ComponentTypeID typeID, EntityID entity, int index = 0)
 		{
-			return m_componentData[typeID][m_componentMap[typeID][entity][0]];
+			return m_componentData[typeID][m_componentMap[typeID][entity][index]];
 		}
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <returns>T*</returns>
 		template<typename T>
-		T* GetComponent(EntityID entity)
+		T* GetComponent(EntityID entity, int index = 0)
 		{
 			const char* typeName = typeid(T).name();
 
@@ -74,7 +74,7 @@ namespace Firelight::ECS
 			ComponentTypeID typeID = m_componentTypes[typeName];
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
 			{
-				return dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][0]]);
+				return dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
 			}
 			return nullptr;
 		}
@@ -108,7 +108,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void RemoveComponent(EntityID entity)
+		void RemoveComponent(EntityID entity, int index = 0)
 		{
 			const char* typeName = typeid(T).name();
 
@@ -117,34 +117,33 @@ namespace Firelight::ECS
 
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
 			{
-				int index = m_componentMap[typeID][entity][0];
-				m_componentData[typeID].erase(m_componentData[typeID].begin() + index);
-				m_componentMap[typeID].erase(entity);
+				ASSERT_THROW(index < m_componentMap[typeID][entity].size(), ("Component does not exist at that index"));
+				int componentIndex = m_componentMap[typeID][entity][index];
+				m_componentData[typeID].erase(m_componentData[typeID].begin() + componentIndex);
+				m_componentMap[typeID][entity].erase(m_componentMap[typeID][entity].begin() + index);
+				UpdateComponentMap(typeID, index);
+				if (m_componentMap[typeID][entity].size() == 0)
+				{
+					m_componentMap[typeID].erase(entity);
+				}
 			}
 		}
 
 		/// <summary>
-		/// Removes all components associated with the given entity
+		/// Function that returns a bool representing whether a given entity contains a given component type
 		/// </summary>
+		/// <typeparam name="T"></typeparam>
 		/// <param name="entity"></param>
-		void RemoveEntity(EntityID entity)
+		/// <returns></returns>
+		template<typename T>
+		bool HasComponent(EntityID entity)
 		{
-			for (auto& componentType : m_componentData)
-			{
-				if (m_componentMap[componentType.first].find(entity) != m_componentMap[componentType.first].end())
-				{
-					std::vector<int> componentIndexesToRemove = m_componentMap[componentType.first][entity];
-					for (auto& index : componentIndexesToRemove)
-					{
-						// Delete the component
-						delete m_componentData[componentType.first][index];
-						// Remove ptr form list
-						m_componentData[componentType.first].erase(m_componentData[componentType.first].begin() + index);
-						UpdateComponentMap(componentType.first, index);
-					}
-					m_componentMap[componentType.first].erase(entity);
-				}
-			}
+			const char* typeName = typeid(T).name();
+
+			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
+			ComponentTypeID typeID = m_componentTypes[typeName];
+
+			return (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end());
 		}
 
 		ComponentManager() = default;
@@ -152,6 +151,7 @@ namespace Firelight::ECS
 
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentData();
 		const char* GetComponentName(ComponentTypeID typeID);
+		void RemoveEntity(EntityID entity);
 
 	private:
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
