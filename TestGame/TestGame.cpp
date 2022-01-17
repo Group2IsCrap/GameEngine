@@ -21,8 +21,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", 1280, 720))
 	{
-		// ToDo: Test Remove Entity
-
 		// ImGui Test code
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
