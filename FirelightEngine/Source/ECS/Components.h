@@ -27,7 +27,7 @@ namespace Firelight::ECS
 
 		std::string Output() override
 		{
-			return "X: " + std::to_string(posX) + "Y: " + std::to_string(posY);
+			return "X: " + std::to_string(posX) + ", Y: " + std::to_string(posY);
 		}
 	};
 
@@ -40,7 +40,7 @@ namespace Firelight::ECS
 		int velY;
 		std::string Output() override
 		{
-			return "X: " + std::to_string(velX) + "Y: " + std::to_string(velY);
+			return "X: " + std::to_string(velX) + ", Y: " + std::to_string(velY);
 		}
 	};
 }

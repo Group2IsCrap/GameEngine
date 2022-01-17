@@ -363,9 +363,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\GameEntity.h" />
     <ClInclude Include="Source\ECS\ComponentManager.h" />
     <ClInclude Include="Source\ECS\Components.h" />
     <ClInclude Include="Source\ECS\ECSDefines.h" />
+    <ClInclude Include="Source\ECS\Entity.h" />
     <ClInclude Include="Source\ECS\EntityComponentSystem.h" />
     <ClInclude Include="Source\ECS\EntityManager.h" />
     <ClInclude Include="Source\Events\Event.h" />
@@ -401,7 +403,9 @@
     <ClInclude Include="Source\Maths\Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\GameEntity.cpp" />
     <ClCompile Include="Source\ECS\ComponentManager.cpp" />
+    <ClCompile Include="Source\ECS\Entity.cpp" />
     <ClCompile Include="Source\ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityManager.cpp" />
     <ClCompile Include="Source\Events\EventDispatcher.cpp" />
