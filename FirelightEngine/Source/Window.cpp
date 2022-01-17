@@ -40,19 +40,21 @@ namespace Firelight
 		windowRect.right = windowRect.left + width;
 		windowRect.bottom = windowRect.top + height;
 
-		AdjustWindowRect(&windowRect, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+		DWORD windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
-		m_handle = CreateWindowEx(0,                   // Default style
+		AdjustWindowRect(&windowRect, windowStyle, FALSE);
+
+		m_handle = CreateWindowEx(0,					// Default style
 			m_windowClassWide.c_str(),
 			m_windowTitleWide.c_str(),
-			WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, // Window style
-			windowRect.left,                          // X pos
-			windowRect.top,                           // Y pos
-			windowRect.right - windowRect.left,       // Width
-			windowRect.bottom - windowRect.top,       // Height
-			NULL,                                     // Parent window non existent
-			NULL,                                     // Child window non existent
-			m_hInstance,                               // Module instance for window
+			windowStyle,								// Window style
+			windowRect.left,							// X pos
+			windowRect.top,								// Y pos
+			windowRect.right - windowRect.left,			// Width
+			windowRect.bottom - windowRect.top,			// Height
+			NULL,										// Parent window non existent
+			NULL,										// Child window non existent
+			m_hInstance,								// Module instance for window
 			windowContainer);
 
 		if (m_handle == NULL)
@@ -90,7 +92,7 @@ namespace Firelight
 			}
 		}
 
-		return true;
+		return !m_isDestroyed;
 	}
 
 	HWND Window::GetHWND() const
@@ -98,17 +100,23 @@ namespace Firelight
 		return m_handle;
 	}
 
+	void Window::Destroy()
+	{
+		m_isDestroyed = true;
+	}
+
 	LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		WindowContainer* const pWindow = reinterpret_cast<WindowContainer*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
 		switch (uMsg)
 		{
-		case WM_CLOSE:
+		case WM_CLOSE:			
+			pWindow->GetWindow().Destroy();
 			DestroyWindow(hwnd);
 			return 0;
 
 		default:
-			WindowContainer* const pWindow = reinterpret_cast<WindowContainer*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-
 			return pWindow->WindowProc(hwnd, uMsg, wParam, lParam);
 		}
 	}

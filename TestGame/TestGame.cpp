@@ -3,6 +3,15 @@
 
 #include "Source/Engine.h"
 #include "Source/Utils/ErrorManager.h"
+#include "Source/ECS/EntityComponentSystem.h"
+#include "Source/ECS/Components.h"
+#include "Source/ImGuiUI/ImGuiManager.h"
+#include "Source/Maths/Vec3.inl"
+
+#include "ImGuiTestLayer.h"
+
+using namespace Firelight::ECS;
+using namespace Firelight::ImGuiUI;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -12,6 +21,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", 1280, 720))
 	{
+		// ToDo: Test Remove Entity
+
+		// ImGui Test code
+		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
+		ImGuiManager::Instance()->AddRenderLayer(testLayer);
+		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
+
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Firelight::Engine::Instance().Update();
@@ -21,4 +37,3 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return 0;
 }
-
