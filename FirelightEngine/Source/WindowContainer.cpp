@@ -1,6 +1,7 @@
 #include "WindowContainer.h"
 #include "Input/ProcessInput.h"
-//extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Firelight
 {
@@ -29,10 +30,11 @@ namespace Firelight
 	LRESULT WindowContainer::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		// Uncomment when ImGui needs to take input
-		/*if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
+		if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
 		{
 			return true;
-		}*/
+		}
+
 		Input::ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam);
 		switch (uMsg)
 		{
