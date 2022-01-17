@@ -372,9 +372,11 @@
     <ClInclude Include="Includes\imgui\imstb_textedit.h" />
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
     <ClInclude Include="Includes\imgui\misc\cpp\imgui_stdlib.h" />
+    <ClInclude Include="Source\ECS\GameEntity.h" />
     <ClInclude Include="Source\ECS\ComponentManager.h" />
     <ClInclude Include="Source\ECS\Components.h" />
     <ClInclude Include="Source\ECS\ECSDefines.h" />
+    <ClInclude Include="Source\ECS\Entity.h" />
     <ClInclude Include="Source\ECS\EntityComponentSystem.h" />
     <ClInclude Include="Source\ECS\EntityManager.h" />
     <ClInclude Include="Source\Events\Event.h" />
@@ -392,6 +394,8 @@
     <ClInclude Include="Source\Input\MouseEvent.h" />
     <ClInclude Include="Source\Input\MouseInput.h" />
     <ClInclude Include="Source\Input\ProcessInput.h" />
+    <ClInclude Include="Source\Maths\Random.h" />
+    <ClInclude Include="Source\Maths\Rect.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -406,9 +410,8 @@
     <ClInclude Include="Source\WindowContainer.h" />
     <ClInclude Include="Source\Graphics\Data\Texture.h" />
     <ClInclude Include="Source\Graphics\Data\Vertex.h" />
-    <ClInclude Include="Source\Maths\Vector2.h" />
-    <ClInclude Include="Source\Maths\Vector3.h" />
-    <ClInclude Include="Source\Maths\Vector4.h" />
+    <ClInclude Include="Source\Maths\Vec2.h" />
+    <ClInclude Include="Source\Maths\Vec3.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
@@ -419,7 +422,9 @@
     <ClCompile Include="Includes\imgui\imgui_tables.cpp" />
     <ClCompile Include="Includes\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Includes\imgui\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Source\ECS\GameEntity.cpp" />
     <ClCompile Include="Source\ECS\ComponentManager.cpp" />
+    <ClCompile Include="Source\ECS\Entity.cpp" />
     <ClCompile Include="Source\ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityManager.cpp" />
     <ClCompile Include="Source\Events\EventDispatcher.cpp" />
@@ -444,15 +449,14 @@
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
     <ClCompile Include="Source\Graphics\Data\Vertex.cpp" />
-    <ClCompile Include="Source\Maths\Vector2.cpp" />
-    <ClCompile Include="Source\Maths\Vector3.cpp" />
-    <ClCompile Include="Source\Maths\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug\vc142.idb" />
+    <None Include="Source\Maths\Rect.inl" />
+    <None Include="Source\Maths\Vec2.inl" />
+    <None Include="Source\Maths\Vec3.inl" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Includes\imgui\misc\fonts\Cousine-Regular.ttf" />

@@ -39,9 +39,9 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <returns>T*</returns>
 		template<typename T>
-		T* GetComponent(Entity entity)
+		T* GetComponent(EntityID entity, int index = 0)
 		{
-			return m_componentManager->GetComponent<T>(entity);
+			return m_componentManager->GetComponent<T>(entity, index);
 		}
 
 		/// <summary>
@@ -50,9 +50,9 @@ namespace Firelight::ECS
 		/// <param name="typeID"></param>
 		/// <param name="entity"></param>
 		/// <returns>BaseComponent*</returns>
-		BaseComponent* GetComponent(ComponentTypeID typeID, Entity entity)
+		BaseComponent* GetComponent(ComponentTypeID typeID, EntityID entity, int index = 0)
 		{
-			return m_componentManager->GetComponent(typeID, entity);
+			return m_componentManager->GetComponent(typeID, entity, index);
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void AddComponent(Entity entity, T* component)
+		void AddComponent(EntityID entity, T* component)
 		{
 			m_componentManager->AddComponent<T>(entity, component);
 			m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), true);
@@ -75,17 +75,32 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void RemoveComponent(Entity entity)
+		void RemoveComponent(EntityID entity, int index = 0)
 		{
-			m_componentManager->RemoveComponent<T>(entity);
-			m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), false);
+			m_componentManager->RemoveComponent<T>(entity, index);
+			if (!HasComponent<T>(entity))
+			{
+				m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), false);
+			}
+		}
+
+		/// <summary>
+		/// Function that returns a bool representing whether a given entity contains a given component type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <returns></returns>
+		template<typename T>
+		bool HasComponent(EntityID entity)
+		{
+			return m_componentManager->HasComponent<T>(entity);
 		}
 
 		/// <summary>
 		/// Creates a new entity
 		/// </summary>
 		/// <returns></returns>
-		Entity CreateEntity()
+		EntityID CreateEntity()
 		{
 			return m_entityManager->CreateEntity();
 		}
@@ -94,7 +109,7 @@ namespace Firelight::ECS
 		/// Removes an entity
 		/// </summary>
 		/// <param name="entity"></param>
-		void RemoveEntity(Entity entity)
+		void RemoveEntity(EntityID entity)
 		{
 			m_entityManager->RemoveEntity(entity);
 
@@ -102,6 +117,9 @@ namespace Firelight::ECS
 		}
 
 		void DebugEntities();
+
+		std::vector<EntityID> GetEntities();
+		Signature GetSignature(EntityID entityID);
 
 		static EntityComponentSystem* Instance();
 	private:

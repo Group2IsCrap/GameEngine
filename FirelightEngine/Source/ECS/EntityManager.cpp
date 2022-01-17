@@ -3,15 +3,15 @@
 
 namespace Firelight::ECS
 {
-	Entity EntityManager::sm_nextEntity = 0;
+	EntityID EntityManager::sm_nextEntity = 0;
 
 	/// <summary>
 	/// Creates a new entity with a unique ID
 	/// </summary>
 	/// <returns></returns>
-	Entity EntityManager::CreateEntity()
+	EntityID EntityManager::CreateEntity()
 	{
-		Entity entity = sm_nextEntity++;
+		EntityID entity = sm_nextEntity++;
 		m_entities.push_back(entity);
 		// To Do: Make signature size update based on the number of components
 		m_signatures.insert({ entity, Signature(3) });
@@ -24,7 +24,7 @@ namespace Firelight::ECS
 	/// <param name="entity"></param>
 	/// <param name="componentID"></param>
 	/// <param name="contains"></param>
-	void EntityManager::UpdateEntitySignature(Entity entity, ComponentTypeID componentID, bool contains)
+	void EntityManager::UpdateEntitySignature(EntityID entity, ComponentTypeID componentID, bool contains)
 	{
 		m_signatures[entity][componentID] = contains;
 	}
@@ -33,7 +33,7 @@ namespace Firelight::ECS
 	/// Removes an entity
 	/// </summary>
 	/// <param name="entity"></param>
-	void EntityManager::RemoveEntity(Entity entity)
+	void EntityManager::RemoveEntity(EntityID entity)
 	{
 		const auto& it = std::find(m_entities.begin(), m_entities.end(), entity);
 
@@ -49,7 +49,7 @@ namespace Firelight::ECS
 	/// </summary>
 	/// <param name="entity"></param>
 	/// <returns></returns>
-	Signature EntityManager::GetEntitySignature(Entity entity)
+	Signature EntityManager::GetEntitySignature(EntityID entity)
 	{
 		return m_signatures[entity];
 	}
@@ -58,7 +58,7 @@ namespace Firelight::ECS
 	/// Gets all entities
 	/// </summary>
 	/// <returns></returns>
-	std::vector<Entity> EntityManager::GetEntities()
+	std::vector<EntityID> EntityManager::GetEntities()
 	{
 		return m_entities;
 	}
