@@ -11,4 +11,12 @@ namespace Firelight::ECS
 	{
 		EntityComponentSystem::Instance()->RemoveEntity(this->entityID);
 	}
+	EntityID Entity::GetEntityID()
+	{
+		return this->entityID;
+	}
+	Signature Entity::GetSignature()
+	{
+		return EntityComponentSystem::Instance()->GetSignature(this->entityID);
+	}
 }

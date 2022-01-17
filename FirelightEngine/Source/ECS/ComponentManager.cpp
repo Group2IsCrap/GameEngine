@@ -22,4 +22,24 @@ namespace Firelight::ECS
 	{
 		return m_componentNames[typeID];
 	}
+
+	/// <summary>
+	/// When a component is removed, the position of other components is shifted. 
+	/// This needs to be reflected in the component map, else the map will become invalidated
+	/// </summary>
+	/// <param name="componentType"></param>
+	/// <param name="removedIndex">The index of the removed component</param>
+	void ComponentManager::UpdateComponentMap(ComponentTypeID componentType, int removedIndex)
+	{
+		for (auto& map : m_componentMap[componentType])
+		{
+			for (auto& index : map.second)
+			{
+				if (index > removedIndex)
+				{
+					index--;
+				}
+			}
+		}
+	}
 }

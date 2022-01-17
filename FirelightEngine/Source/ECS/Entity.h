@@ -46,7 +46,10 @@ namespace Firelight::ECS
 			EntityComponentSystem::Instance()->RemoveComponent<T>(this->entityID);
 		}
 
-	private:
+		EntityID GetEntityID();
+		Signature GetSignature();
+
+	protected:
 		EntityID entityID;
 	};
 }
