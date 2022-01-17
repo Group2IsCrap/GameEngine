@@ -53,12 +53,12 @@ namespace Firelight::Graphics
 		return GraphicsHandler::Instance().GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, m_buffer.GetAddressOf());
 	}
 
-	ID3D11Buffer* VertexBuffer::Get() const
+	ID3D11Buffer* VertexBuffer::GetBuffer() const
 	{
 		return m_buffer.Get();
 	}
 
-	ID3D11Buffer* const* VertexBuffer::GetAddressOf() const
+	ID3D11Buffer* const* VertexBuffer::GetAddressOfBuffer() const
 	{
 		return m_buffer.GetAddressOf();
 	}

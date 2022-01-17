@@ -9,6 +9,8 @@ namespace Firelight::Graphics
 {
 	template<typename VertexType>
 	inline Mesh::Mesh(std::vector<VertexType>& vertices, std::vector<DWORD>& indices) :
+		m_name("null"),
+
 		m_texture(nullptr),
 		m_material(nullptr),
 
@@ -19,6 +21,8 @@ namespace Firelight::Graphics
 
 	template<typename VertexType>
 	inline Mesh::Mesh(std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Texture* texture) :
+		m_name("null"),
+
 		m_texture(texture),
 		m_material(nullptr),
 
@@ -28,7 +32,9 @@ namespace Firelight::Graphics
 	}
 
 	template<typename VertexType>
-	inline Mesh::Mesh(std::vector<VertexType>& vertices, std::vector<DWORD>& indices, const DirectX::XMMATRIX& transformMatrix) :
+	inline Mesh::Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, const DirectX::XMMATRIX& transformMatrix) :
+		m_name(name),
+
 		m_texture(nullptr),
 		m_material(nullptr),
 
@@ -38,7 +44,9 @@ namespace Firelight::Graphics
 	}
 
 	template<typename VertexType>
-	inline Mesh::Mesh(std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Material* material, const DirectX::XMMATRIX& transformMatrix) :
+	inline Mesh::Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Material* material, const DirectX::XMMATRIX& transformMatrix) :
+		m_name(name),
+
 		m_texture(nullptr),
 		m_material(material),
 

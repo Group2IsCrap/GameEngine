@@ -465,6 +465,7 @@
     <None Include="Source\Graphics\Buffers\ConstantBuffer.inl" />
     <None Include="Source\Graphics\Data\Mesh.inl" />
     <None Include="Source\Graphics\AssetManager.inl" />
+    <None Include="Source\Graphics\Data\Model.inl" />
     <None Include="Source\Maths\Rect.inl" />
     <None Include="Source\Maths\Vec2.inl" />
     <None Include="Source\Maths\Vec3.inl" />

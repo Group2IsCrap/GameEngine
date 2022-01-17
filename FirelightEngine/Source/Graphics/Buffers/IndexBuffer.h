@@ -13,8 +13,8 @@ namespace Firelight::Graphics
 
 		HRESULT              Initialize(DWORD* data, UINT indexCount);
 
-		ID3D11Buffer*        Get() const;
-		ID3D11Buffer* const* GetAddressOf() const;
+		ID3D11Buffer*        GetBuffer() const;
+		ID3D11Buffer* const* GetAddressOfBuffer() const;
 
 		UINT                 GetIndexCount() const;
 

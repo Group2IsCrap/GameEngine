@@ -32,6 +32,8 @@ namespace Firelight::Graphics
 
     bool Material::Initialise(const std::string& name)
     {
+        ERROR("Material::Initialise called but it has not been implemented");
+
         // TODO: Make materials actually load data here
 
         return true;

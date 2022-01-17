@@ -19,8 +19,8 @@ namespace Firelight::Graphics
 
 		HRESULT Initialize(const void* data, UINT stride, UINT vertexCount);
 
-		ID3D11Buffer*        Get() const;
-		ID3D11Buffer* const* GetAddressOf() const;
+		ID3D11Buffer*        GetBuffer() const;
+		ID3D11Buffer* const* GetAddressOfBuffer() const;
 
 		const UINT  GetStride() const;
 		const UINT* GetStridePtr() const;
