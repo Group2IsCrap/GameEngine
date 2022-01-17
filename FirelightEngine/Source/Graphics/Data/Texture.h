@@ -6,9 +6,6 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
-#include <WICTextureLoader.h>
-#include <DDSTextureLoader.h>
-
 #include "Colour.h"
 
 namespace Firelight::Graphics

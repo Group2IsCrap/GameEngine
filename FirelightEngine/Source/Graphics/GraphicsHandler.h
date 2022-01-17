@@ -43,6 +43,5 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11RasterizerState>   m_rasterizerState;
         Microsoft::WRL::ComPtr<ID3D11BlendState>        m_blendState;
         Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_samplerState;
-
     };
 }

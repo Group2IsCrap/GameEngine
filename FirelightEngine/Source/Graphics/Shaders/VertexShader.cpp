@@ -10,7 +10,10 @@ namespace Firelight::Graphics
 {
 	bool VertexShader::Initialise(const char* shaderFilePath)
 	{
-		IShader::Initialise(shaderFilePath, "main", "vs_5_0");
+        if (!IShader::Initialise(shaderFilePath, "main", "vs_5_0"))
+        {
+            return false;
+        }
 
 		HRESULT hr;
 		hr = GraphicsHandler::Instance().GetDevice()->CreateVertexShader(m_shaderBuffer->GetBufferPointer(), m_shaderBuffer->GetBufferSize(), NULL, m_shader.GetAddressOf());

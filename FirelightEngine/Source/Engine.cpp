@@ -1,6 +1,8 @@
 #include "Engine.h"
 
 #include "Graphics/GraphicsHandler.h"
+#include "Graphics/AssetManager.h"
+
 #include "Input/ProcessInput.h"
 #include "Maths/Random.h"
 
@@ -35,7 +37,11 @@ namespace Firelight
 
         // Initialise graphics handler
         result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
-        ASSERT_RETURN(result, "DirectXManager failed to initialise", false);
+        ASSERT_RETURN(result, "GraphicsHandler failed to initialise", false);
+
+        // Initialise asset manager
+        result = Graphics::AssetManager::Instance().Initialise();
+        ASSERT_RETURN(result, "AssetManager failed to initialise", false);
 
         // Seed random
         Maths::Random::SeedWithCurrentTime();

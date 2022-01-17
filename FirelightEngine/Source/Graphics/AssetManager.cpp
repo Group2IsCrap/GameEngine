@@ -39,8 +39,8 @@ namespace Firelight::Graphics
         m_defaultMaterial = GetMaterial("$ENGINE/Materials/default");
         m_defaultModel = GetModel<FancyLitVertex>("$ENGINE/Models/cube.obj");
 
-        m_defaultVS = GetVS("$ENGINE/Shaders/Vertex/Unlit");
-        m_defaultPS = GetPS("$ENGINE/Shaders/Pixel/Unlit");
+        m_defaultVS = GetVertexShader("$ENGINE/Shaders/Vertex/Unlit");
+        m_defaultPS = GetPixelShader("$ENGINE/Shaders/Pixel/Unlit");
         m_defaultCS = nullptr;
 
         return true;
@@ -101,7 +101,7 @@ namespace Firelight::Graphics
         }
     }
 
-    VertexShader* AssetManager::GetVS(const std::string& path)
+    VertexShader* AssetManager::GetVertexShader(const std::string& path)
     {
         const auto& vertexShaderItr = m_vertexShaders.find(path);
         if (vertexShaderItr != m_vertexShaders.end())
@@ -122,7 +122,7 @@ namespace Firelight::Graphics
         }
     }
 
-    PixelShader* AssetManager::GetPS(const std::string& path)
+    PixelShader* AssetManager::GetPixelShader(const std::string& path)
     {
         const auto& pixelShaderItr = m_pixelShaders.find(path);
         if (pixelShaderItr != m_pixelShaders.end())
@@ -143,7 +143,7 @@ namespace Firelight::Graphics
         }
     }
 
-    ComputeShader* AssetManager::GetCS(const std::string& path)
+    ComputeShader* AssetManager::GetComputeShader(const std::string& path)
     {
         const auto& computeShaderItr = m_computeShaders.find(path);
         if (computeShaderItr != m_computeShaders.end())
@@ -179,17 +179,17 @@ namespace Firelight::Graphics
         return m_defaultModel;
     }
 
-    VertexShader* AssetManager::GetDefaultVS()
+    VertexShader* AssetManager::GetDefaultVertexShader()
     {
         return m_defaultVS;
     }
 
-    PixelShader* AssetManager::GetDefaultPS()
+    PixelShader* AssetManager::GetDefaultPixelShader()
     {
         return m_defaultPS;
     }
 
-    ComputeShader* AssetManager::GetDefaultCS()
+    ComputeShader* AssetManager::GetDefaultComputeShader()
     {
         return m_defaultCS;
     }

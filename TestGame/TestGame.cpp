@@ -8,6 +8,10 @@
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
 
+#include "Source/Graphics/AssetManager.h"
+#include "Source/Graphics/Data/Model.h"
+#include "Source/Graphics/Data/VertexTypes.h"
+
 using namespace Firelight::ECS;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -42,6 +46,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		EntityComponentSystem::Instance()->RemoveEntity(player);
 
 		EntityComponentSystem::Instance()->DebugEntities();
+
+		Firelight::Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

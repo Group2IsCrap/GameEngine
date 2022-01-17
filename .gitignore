@@ -39,3 +39,11 @@
 /TestGame/x64/
 *.ilk
 *.pdb
+
+# Allow
+!/x64/Debug/assimp-vc140-mt.dll
+!/x64/Debug/D3DCompiler_42.dll
+!/x64/Debug/D3DX9_42.dll
+
+!/x64/Debug/DirectXTK.lib
+!/x64/Debug/!/x64/Debug/DirectXTK.lib.lib

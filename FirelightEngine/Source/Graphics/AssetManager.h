@@ -35,27 +35,27 @@ namespace Firelight::Graphics
 		template<typename VertexType>
 		Model*         GetModel(const std::string& path);
 
-		VertexShader*  GetVS(const std::string& path);
-		PixelShader*   GetPS(const std::string& path);
-		ComputeShader* GetCS(const std::string& path);
+		VertexShader*  GetVertexShader(const std::string& path);
+		PixelShader*   GetPixelShader(const std::string& path);
+		ComputeShader* GetComputeShader(const std::string& path);
 
 		// Default resource getters
 		Texture*       GetDefaultTexture();
 		Material*      GetDefaultMaterial();
 		Model*         GetDefaultModel();
 
-		VertexShader*  GetDefaultVS();
-		PixelShader*   GetDefaultPS();
-		ComputeShader* GetDefaultCS();
+		VertexShader*  GetDefaultVertexShader();
+		PixelShader*   GetDefaultPixelShader();
+		ComputeShader* GetDefaultComputeShader();
 
     private:
 		AssetManager();
 
 	private:
-		std::unordered_map<std::string, Texture*>     m_textures;
-		std::unordered_map<unsigned int, Texture*>    m_colourTextures;
-		std::unordered_map<std::string, Material*>    m_materials;
-		std::unordered_map<std::string, Model*>       m_models;
+		std::unordered_map<std::string, Texture*>  m_textures;
+		std::unordered_map<unsigned int, Texture*> m_colourTextures;
+		std::unordered_map<std::string, Material*> m_materials;
+		std::unordered_map<std::string, Model*>    m_models;
 
 		std::unordered_map<std::string, VertexShader*>  m_vertexShaders;
 		std::unordered_map<std::string, PixelShader*>   m_pixelShaders;
