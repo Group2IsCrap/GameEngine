@@ -17,7 +17,7 @@ namespace Firelight::Graphics
 		Model();
 
 		template<typename VertexType>
-		bool Initialize(const std::string& filePath);
+		bool Initialise(const std::string& filePath);
 
 		void Draw(const DirectX::XMMATRIX& modelMatrix, ConstantBuffer<PerObjectCB>* perObjectCB, bool bindPSData = true) const;
 		void DrawRaw(bool bindPSData = true);

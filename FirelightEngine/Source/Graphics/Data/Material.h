@@ -25,12 +25,29 @@ namespace Firelight::Graphics
     class Material
     {
     public:
+        enum class TextureType
+        {
+            e_Albedo,
+            e_Roughness,
+            e_Normal,
+            e_Metallic,
+            e_Emission,
+            e_Depth,
+            e_NumTypes,
+        };
+
+    public:
         Material();
         ~Material();
 
-        bool Initialise(const std::string& name);
+        bool Initialise(const std::string& path);
 
         void Bind(bool bindPSData = true) const;
+
+        Texture* GetDefaultTexture(TextureType textureType);
+
+    private:
+        void AssignDefaultTextures();
 
     private:
         std::vector<MaterialTexture> m_textures;

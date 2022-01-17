@@ -1,6 +1,8 @@
 
 #include "IShader.h"
 
+#include <d3dcompiler.h>
+
 #include "../GraphicsHandler.h"
 #include "../../Utils/ErrorManager.h"
 
@@ -20,8 +22,12 @@ namespace Firelight::Graphics
 	{
         if (!shaderFilePath || !entryPoint || !profile)
         {
-            // Using assert for the above 'if' makes D3DCompileFromFile complain
-            ERROR("Failed to load shader at path: " + std::string(shaderFilePath));
+            std::string errorMessage = "Failed to load shader at path: ";
+            if (shaderFilePath)
+            {
+                errorMessage += shaderFilePath;
+            }
+            ERROR_STANDARD(errorMessage);
             return false;
         }
 

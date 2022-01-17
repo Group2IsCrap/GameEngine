@@ -31,7 +31,7 @@ namespace Firelight::Graphics
 		for (UINT i = 0; i < mesh->mNumVertices; i++)
 		{
 
-			Vertex vertex;
+			VertexType vertex;
 			vertex.FillUsingAssimpMesh(mesh, i);
 
 			meshVertices.push_back(vertex);
@@ -51,7 +51,7 @@ namespace Firelight::Graphics
 	}
 
 	template<typename VertexType>
-	inline bool Model::Initialize(const std::string& filePath)
+	inline bool Model::Initialise(const std::string& filePath)
 	{
 		m_filePath = filePath;
 		m_directory = Utils::StringHelpers::GetDirectoryFromPath(filePath);

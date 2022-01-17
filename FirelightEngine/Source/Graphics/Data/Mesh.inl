@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 
 #include "../GraphicsHandler.h"
+#include "../../Utils/ErrorManager.h"
 
 namespace Firelight::Graphics
 {

@@ -35,18 +35,18 @@ namespace Firelight::Graphics
 
     bool AssetManager::Initialise()
     {
-        m_defaultTexture = GetTexturePtr("$ENGINE/Textures/missing.png");
-        m_defaultMaterial = GetMaterialPtr("$ENGINE/Materials/default");
-        m_defaultModel = GetModelPtr<FancyLitVertex>("$ENGINE/Models/cube.obj");
+        m_defaultTexture = GetTexture("$ENGINE/Textures/missing.png");
+        m_defaultMaterial = GetMaterial("$ENGINE/Materials/default");
+        m_defaultModel = GetModel<FancyLitVertex>("$ENGINE/Models/cube.obj");
 
-        m_defaultVS = GetVSPtr<FancyLitVertex>("$ENGINE/Shaders/Vertex/Unlit");
-        m_defaultPS = GetPSPtr("$ENGINE/Shaders/Pixel/Unlit");
+        m_defaultVS = GetVS("$ENGINE/Shaders/Vertex/Unlit");
+        m_defaultPS = GetPS("$ENGINE/Shaders/Pixel/Unlit");
         m_defaultCS = nullptr;
 
         return true;
     }
 
-    Texture* AssetManager::GetTexturePtr(const std::string& path)
+    Texture* AssetManager::GetTexture(const std::string& path)
     {
         const auto& textureItr = m_textures.find(path);
         if (textureItr != m_textures.end())
@@ -66,7 +66,7 @@ namespace Firelight::Graphics
         }
     }
 
-    Texture* AssetManager::GetColourTexturePtr(Colour colour)
+    Texture* AssetManager::GetColourTexture(Colour colour)
     {
         const auto& textureItr = m_colourTextures.find(colour.GetUnsignedInt());
         if (textureItr != m_colourTextures.end())
@@ -81,7 +81,7 @@ namespace Firelight::Graphics
         }
     }
 
-    Material* AssetManager::GetMaterialPtr(const std::string& path)
+    Material* AssetManager::GetMaterial(const std::string& path)
     {
         const auto& materialItr = m_materials.find(path);
         if (materialItr != m_materials.end())
@@ -101,7 +101,28 @@ namespace Firelight::Graphics
         }
     }
 
-    PixelShader* AssetManager::GetPSPtr(const std::string& path)
+    VertexShader* AssetManager::GetVS(const std::string& path)
+    {
+        const auto& vertexShaderItr = m_vertexShaders.find(path);
+        if (vertexShaderItr != m_vertexShaders.end())
+        {
+            return vertexShaderItr->second;
+        }
+        else
+        {
+            VertexShader* newVertexShader = new VertexShader();
+            std::string shaderPath = "Resources/" + path + ".hlsl";
+            if (!newVertexShader->Initialise(shaderPath.c_str()))
+            {
+                delete newVertexShader;
+                newVertexShader = m_defaultVS;
+            }
+            m_vertexShaders.insert({ path, newVertexShader });
+            return newVertexShader;
+        }
+    }
+
+    PixelShader* AssetManager::GetPS(const std::string& path)
     {
         const auto& pixelShaderItr = m_pixelShaders.find(path);
         if (pixelShaderItr != m_pixelShaders.end())
@@ -122,7 +143,7 @@ namespace Firelight::Graphics
         }
     }
 
-    ComputeShader* AssetManager::GetCSPtr(const std::string& path)
+    ComputeShader* AssetManager::GetCS(const std::string& path)
     {
         const auto& computeShaderItr = m_computeShaders.find(path);
         if (computeShaderItr != m_computeShaders.end())
@@ -143,32 +164,32 @@ namespace Firelight::Graphics
         }
     }
 
-    Texture* AssetManager::GetDefaultTexturePtr()
+    Texture* AssetManager::GetDefaultTexture()
     {
         return m_defaultTexture;
     }
 
-    Material* AssetManager::GetDefaultMaterialPtr()
+    Material* AssetManager::GetDefaultMaterial()
     {
         return m_defaultMaterial;
     }
 
-    Model* AssetManager::GetDefaultModelPtr()
+    Model* AssetManager::GetDefaultModel()
     {
         return m_defaultModel;
     }
 
-    VertexShader* AssetManager::GetDefaultVSPtr()
+    VertexShader* AssetManager::GetDefaultVS()
     {
         return m_defaultVS;
     }
 
-    PixelShader* AssetManager::GetDefaultPSPtr()
+    PixelShader* AssetManager::GetDefaultPS()
     {
         return m_defaultPS;
     }
 
-    ComputeShader* AssetManager::GetDefaultCSPtr()
+    ComputeShader* AssetManager::GetDefaultCS()
     {
         return m_defaultCS;
     }

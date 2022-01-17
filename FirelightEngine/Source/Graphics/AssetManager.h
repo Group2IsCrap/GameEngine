@@ -29,25 +29,24 @@ namespace Firelight::Graphics
 		bool Initialise();
 
 		// Standard resource getters
-		Texture*       GetTexturePtr(const std::string& path);
-		Texture*       GetColourTexturePtr(Colour colour);
-		Material*      GetMaterialPtr(const std::string& path);
+		Texture*       GetTexture(const std::string& path);
+		Texture*       GetColourTexture(Colour colour);
+		Material*      GetMaterial(const std::string& path);
 		template<typename VertexType>
-		Model*         GetModelPtr(const std::string& path);
+		Model*         GetModel(const std::string& path);
 
-		template<typename VertexType>
-		VertexShader*  GetVSPtr(const std::string& path);
-		PixelShader*   GetPSPtr(const std::string& path);
-		ComputeShader* GetCSPtr(const std::string& path);
+		VertexShader*  GetVS(const std::string& path);
+		PixelShader*   GetPS(const std::string& path);
+		ComputeShader* GetCS(const std::string& path);
 
 		// Default resource getters
-		Texture*       GetDefaultTexturePtr();
-		Material*      GetDefaultMaterialPtr();
-		Model*         GetDefaultModelPtr();
+		Texture*       GetDefaultTexture();
+		Material*      GetDefaultMaterial();
+		Model*         GetDefaultModel();
 
-		VertexShader*  GetDefaultVSPtr();
-		PixelShader*   GetDefaultPSPtr();
-		ComputeShader* GetDefaultCSPtr();
+		VertexShader*  GetDefaultVS();
+		PixelShader*   GetDefaultPS();
+		ComputeShader* GetDefaultCS();
 
     private:
 		AssetManager();

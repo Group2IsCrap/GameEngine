@@ -64,7 +64,7 @@ namespace Firelight::Graphics
 				std::string meshMaterialName;
 				materialsFile >> meshMaterialName;
 
-				meshMaterials.insert(std::make_pair(meshName, AssetManager::Instance().GetMaterialPtr(meshMaterialName)));
+				meshMaterials.insert(std::make_pair(meshName, AssetManager::Instance().GetMaterial(meshMaterialName)));
 			}
 
 			materialsFile.close();
@@ -83,7 +83,7 @@ namespace Firelight::Graphics
 		// Assign default materials
 		for (int meshIndex = 0; meshIndex < m_meshes.size(); ++meshIndex)
 		{
-			meshMaterials.insert(std::make_pair(m_meshes[meshIndex].GetName(), AssetManager::Instance().GetDefaultMaterialPtr()));
+			meshMaterials.insert(std::make_pair(m_meshes[meshIndex].GetName(), AssetManager::Instance().GetDefaultMaterial()));
 		}
 	}
 
