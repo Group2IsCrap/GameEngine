@@ -82,7 +82,7 @@ namespace Firelight::ImGuiUI
 	
 	void ImGuiManager::RemoveRenderLayer(ImGuiLayer* layer)
 	{
-
+		m_itemsToRender.erase(std::find(m_itemsToRender.begin(), m_itemsToRender.end(), layer), m_itemsToRender.end());
 	}
 	
 	void ImGuiManager::ClearRenderLayer()

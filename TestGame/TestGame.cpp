@@ -26,6 +26,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// ImGui Test code
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
+		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
