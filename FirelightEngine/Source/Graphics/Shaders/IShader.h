@@ -14,10 +14,10 @@ namespace Firelight::Graphics
 	class IShader
 	{
 	public:
-		IShader() = delete;
+		IShader();
 		virtual ~IShader();
 
-		virtual bool Initialise(const std::string& shaderFilePath);
+		bool         Initialise(const char* shaderFilePath, const char* entryPoint, const char* profile);
 		ID3D10Blob*  GetBuffer();
 
 	protected:
