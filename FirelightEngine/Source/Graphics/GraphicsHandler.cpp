@@ -4,8 +4,6 @@
 #include "../Utils/AdapterReader.h"
 #include "../ImGuiUI/ImGuiManager.h"
 
-#include "../Maths/Vec2.h"
-
 namespace Firelight::Graphics
 {
     GraphicsHandler::GraphicsHandler() :
@@ -24,11 +22,11 @@ namespace Firelight::Graphics
         return instance;
     }
 
-    bool GraphicsHandler::Initialize(HWND hwnd, int windowWidth, int windowHeight)
+    bool GraphicsHandler::Initialize(HWND hwnd, const Maths::Vec2i& dimensions)
     {
         ASSERT_RETURN(!m_initialised, "GraphicsHandler was aleady initialised", false);
 
-        bool result = InitialiseDirectX(hwnd, windowWidth, windowHeight);
+        bool result = InitialiseDirectX(hwnd, dimensions);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
 
 		m_initialised = true;
@@ -39,7 +37,7 @@ namespace Firelight::Graphics
         return true;
     }
 
-    bool GraphicsHandler::InitialiseDirectX(HWND hwnd, int windowWidth, int windowHeight)
+    bool GraphicsHandler::InitialiseDirectX(HWND hwnd, const Maths::Vec2i& dimensions)
     {
 		// Get graphics card adapters
 		std::vector<Utils::AdapterData> adapters = Utils::AdapterReader::Instance().GetAdapters();
@@ -49,8 +47,8 @@ namespace Firelight::Graphics
 		DXGI_SWAP_CHAIN_DESC swapChainDescription;
 		ZeroMemory(&swapChainDescription, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-		swapChainDescription.BufferDesc.Width = windowWidth;
-		swapChainDescription.BufferDesc.Height = windowHeight;
+		swapChainDescription.BufferDesc.Width = dimensions.x;
+		swapChainDescription.BufferDesc.Height = dimensions.y;
 		swapChainDescription.BufferDesc.RefreshRate.Numerator = 120; // VSync fps
 		swapChainDescription.BufferDesc.RefreshRate.Denominator = 1;
 
@@ -87,7 +85,7 @@ namespace Firelight::Graphics
 
 		// Create depth stencil texture and view
 		{
-			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, windowWidth, windowHeight);
+			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, dimensions.x, dimensions.y);
 			depthStencilTextureDesc.MipLevels = 1;
 			depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 
@@ -108,7 +106,7 @@ namespace Firelight::Graphics
 		}
 
 		// Create viewport
-		m_defaultViewport = CD3D11_VIEWPORT(0.0f, 0.0f, (float)windowWidth, (float)windowHeight);
+		m_defaultViewport = CD3D11_VIEWPORT(0.0f, 0.0f, (float)dimensions.x, (float)dimensions.y);
 
 		// Create rasterizer state
 		{

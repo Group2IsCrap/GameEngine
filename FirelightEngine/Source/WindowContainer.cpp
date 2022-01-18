@@ -110,8 +110,15 @@ namespace Firelight
 		}
 	}
 
-	Window& WindowContainer::GetWindow()
+	
+	const Window& WindowContainer::GetWindow() const
 	{
 		return m_window;
 	}
+
+	Window& WindowContainer::GetWritableWindow()
+	{
+		return m_window;
+	}
+
 }

@@ -23,7 +23,7 @@ namespace Firelight
         return instance;
     }
 
-    bool Engine::Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int windowWidth, int windowHeight)
+    bool Engine::Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions)
     {
         ASSERT_RETURN(!m_initialised, "Engine has already been initialsed", false);
 
@@ -32,11 +32,11 @@ namespace Firelight
         COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
 
         // Initialise window container
-        bool result = m_windowContainer.GetWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, windowWidth, windowHeight);
+        bool result = m_windowContainer.GetWritableWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, dimensions);
         ASSERT_RETURN(result, "Window container failed to initialise", false);
 
         // Initialise graphics handler
-        result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
+        result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), dimensions);
         ASSERT_RETURN(result, "GraphicsHandler failed to initialise", false);
 
         // Initialise asset manager
@@ -55,7 +55,17 @@ namespace Firelight
 
     bool Engine::ProcessMessages()
     {
-        return m_windowContainer.GetWindow().ProcessMessages();
+        return m_windowContainer.GetWritableWindow().ProcessMessages();
+    }
+
+    const Maths::Vec2i& Engine::GetWindowDimensions() const
+    {
+        return m_windowContainer.GetWindow().GetDimensions();
+    }
+
+    const Maths::Vec2f& Engine::GetWindowDimensionsFloat() const
+    {
+        return m_windowContainer.GetWindow().GetDimensionsFloat();
     }
 
     void Engine::Update()

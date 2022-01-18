@@ -55,6 +55,7 @@ namespace Firelight::Maths
     };
 
     typedef Vec2<float> Vec2f;
+    typedef Vec2<int> Vec2i;
 }
 
 #include "Vec2.inl"

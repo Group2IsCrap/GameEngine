@@ -66,6 +66,7 @@ namespace Firelight::Maths
     };
 
     typedef Vec3<float> Vec3f;
+    typedef Vec3<int> Vec3i;
 }
 
 #include "Vec3.inl"

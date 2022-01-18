@@ -2,6 +2,10 @@
 
 #include "Rect.h"
 
+#include "../Graphics/Data/VertexTypes.h"
+
+#include "../Engine.h"
+
 namespace Firelight::Maths
 {
 	template<typename T>
@@ -15,6 +19,11 @@ namespace Firelight::Maths
 		y(_y),
 		w(_w),
 		h(_h)
+	{
+	}
+
+	template<typename T>
+	inline void Rect<T>::AddNDCVerticiesToVector(const Rect<T>& destRect, const Rect<T>& sourceRect, std::vector<Graphics::UnlitVertex>& verticies)
 	{
 	}
 }

@@ -3,6 +3,8 @@
 #include <d3d11.h>
 #include <wrl/client.h>
 
+#include "../Maths/Vec2.h"
+
 namespace Firelight::Graphics
 {
     class GraphicsHandler
@@ -12,8 +14,8 @@ namespace Firelight::Graphics
 
         static GraphicsHandler& Instance();
 
-        bool Initialize(HWND hwnd, int windowWidth, int windowHeight);
-        bool InitialiseDirectX(HWND hwnd, int windowWidth, int windowHeight);
+        bool Initialize(HWND hwnd, const Maths::Vec2i& dimensions);
+        bool InitialiseDirectX(HWND hwnd, const Maths::Vec2i& dimensions);
 
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;

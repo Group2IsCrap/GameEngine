@@ -14,9 +14,7 @@ namespace Firelight::Graphics
 		m_texture(nullptr),
 		m_textureView(nullptr),
 
-		m_width(0),
-		m_height(0),
-		m_depth(0)
+		m_dimensions(0)
 	{
 	}
 
@@ -84,25 +82,15 @@ namespace Firelight::Graphics
 		return m_textureView;
 	}
 
-	int Texture::GetWidth() const
+	const Maths::Vec3i& Texture::GetDimensions() const
 	{
-		return m_width;
-	}
-
-	int Texture::GetHeight() const
-	{
-		return m_height;
-	}
-
-	int Texture::GetDepth() const
-	{
-		return m_depth;
+		return m_dimensions;
 	}
 
 	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
 	{
-		m_width = width;
-		m_height = height;
+		m_dimensions.x = width;
+		m_dimensions.y = height;
 
 		CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
 
@@ -140,8 +128,8 @@ namespace Firelight::Graphics
 				D3D11_TEXTURE2D_DESC desc;
 				pTextureInterface->GetDesc(&desc);
 
-				m_width = desc.Width;
-				m_height = desc.Height;
+				m_dimensions.x = desc.Width;
+				m_dimensions.y = desc.Height;
 			}
 		}
 	}

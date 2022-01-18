@@ -8,6 +8,8 @@
 
 #include "Colour.h"
 
+#include "../../Maths/Vec3.h"
+
 namespace Firelight::Graphics
 {
 	class Texture
@@ -24,9 +26,7 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Resource>&           GetResource();
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
-		int GetWidth() const;
-		int GetHeight() const;
-		int GetDepth() const;
+		const Maths::Vec3i& GetDimensions() const;
 
 	private:
 		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);
@@ -38,6 +38,6 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Resource>           m_texture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textureView;
 
-		int                                              m_width, m_height, m_depth;
+		Maths::Vec3i                                     m_dimensions;
 	};
 }

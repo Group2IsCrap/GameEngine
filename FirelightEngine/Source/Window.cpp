@@ -5,7 +5,19 @@
 
 namespace Firelight
 {
-	Window::Window()
+	Window::Window() :
+		m_handle(NULL),
+		m_hInstance(NULL),
+		
+		m_windowTitle(""),
+		m_windowTitleWide(L""),
+		m_windowClass(""),
+		m_windowClassWide(L""),
+		
+		m_dimensions(0),
+		m_floatDimensions(0.0f),
+		
+		m_isDestroyed(false)
 	{
 	}
 
@@ -18,27 +30,27 @@ namespace Firelight
 		}
 	}
 
-	bool Window::Initialise(WindowContainer* windowContainer, HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int width, int height)
+	bool Window::Initialise(WindowContainer* windowContainer, HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions)
 	{
 		m_hInstance = hInstance;
 		m_windowTitle = windowTitle;
 		m_windowTitleWide = Utils::StringHelpers::StringToWide(windowTitle);
 		m_windowClass = windowClass;
 		m_windowClassWide = Utils::StringHelpers::StringToWide(windowClass);
-		m_width = width;
-		m_height = height;
+		m_dimensions = dimensions;
+		m_floatDimensions = Maths::Vec2f((float)dimensions.x, (float)dimensions.y);
 
 		RegisterWindowClass();
 
-		int screenCentreX = GetSystemMetrics(SM_CXSCREEN) / 2 - m_width / 2;
-		int screenCentreY = GetSystemMetrics(SM_CYSCREEN) / 2 - m_height / 2;
+		int screenCentreX = GetSystemMetrics(SM_CXSCREEN) / 2 - m_dimensions.x / 2;
+		int screenCentreY = GetSystemMetrics(SM_CYSCREEN) / 2 - m_dimensions.y / 2;
 
 		RECT windowRect;
 
 		windowRect.left = screenCentreX;
 		windowRect.top = screenCentreY;
-		windowRect.right = windowRect.left + width;
-		windowRect.bottom = windowRect.top + height;
+		windowRect.right = windowRect.left + m_dimensions.x;
+		windowRect.bottom = windowRect.top + m_dimensions.y;
 
 		DWORD windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
@@ -105,6 +117,16 @@ namespace Firelight
 		m_isDestroyed = true;
 	}
 
+	const Maths::Vec2i& Window::GetDimensions() const
+	{
+		return m_dimensions;
+	}
+
+	const Maths::Vec2f& Window::GetDimensionsFloat() const
+	{
+		return m_floatDimensions;
+	}
+
 	LRESULT CALLBACK HandleMsgRedirect(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		WindowContainer* const pWindow = reinterpret_cast<WindowContainer*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -112,7 +134,7 @@ namespace Firelight
 		switch (uMsg)
 		{
 		case WM_CLOSE:			
-			pWindow->GetWindow().Destroy();
+			pWindow->GetWritableWindow().Destroy();
 			DestroyWindow(hwnd);
 			return 0;
 
