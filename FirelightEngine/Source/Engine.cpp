@@ -1,8 +1,15 @@
 #include "Engine.h"
 
 #include "Graphics/GraphicsHandler.h"
+#include "Graphics/AssetManager.h"
+
 #include "Input/ProcessInput.h"
 #include "Maths/Random.h"
+
+#include "ECS/EntityComponentSystem.h"
+#include "ECS/Components.h"
+
+using namespace Firelight::ECS;
 
 namespace Firelight
 {
@@ -35,16 +42,29 @@ namespace Firelight
 
         // Initialise graphics handler
         result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
-        ASSERT_RETURN(result, "DirectXManager failed to initialise", false);
+        ASSERT_RETURN(result, "GraphicsHandler failed to initialise", false);
+
+        // Initialise asset manager
+        result = Graphics::AssetManager::Instance().Initialise();
+        ASSERT_RETURN(result, "AssetManager failed to initialise", false);
 
         // Seed random
         Maths::Random::SeedWithCurrentTime();
 
         // TODO: Initalise other systems here
 
+        RegisterEngineComponents();
+
         m_initialised = true;
 
         return true;
+    }
+
+    void Engine::RegisterEngineComponents()
+    {
+        EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
     }
 
     bool Engine::ProcessMessages()

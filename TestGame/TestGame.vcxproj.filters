@@ -23,6 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\cube.mtls" />
+    <None Include="Assets\%24ENGINE\Materials\default.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="ImGuiTestLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

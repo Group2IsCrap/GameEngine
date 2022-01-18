@@ -19,11 +19,11 @@ namespace Firelight
 	{
 	public:
 		Error(const std::string& msg, const std::string& fileName, const std::string& functionName, int line, ErrorType errorType = ErrorType::e_Standard) :
-			mErrorType(errorType),
-			mMessage(msg),
-			mFileName(Utils::StringHelpers::RemoveBeforeString(fileName, "GameEngine")),
-			mFunctionName(functionName),
-			mLine(line)
+			m_errorType(errorType),
+			m_message(msg),
+			m_fileName(Utils::StringHelpers::RemoveBeforeString(fileName, "GameEngine")),
+			m_functionName(functionName),
+			m_line(line)
 		{
 		}
 
@@ -39,29 +39,29 @@ namespace Firelight
 
 		void AddCodeAreaToMessage()
 		{
-			mWhatMessage += "\nFile: " + mFileName + "\n";
-			mWhatMessage += "Function: " + mFunctionName + "\n";
-			mWhatMessage += "Line: " + std::to_string(mLine);
+			m_whatMessage += "\nFile: " + m_fileName + "\n";
+			m_whatMessage += "Function: " + m_functionName + "\n";
+			m_whatMessage += "Line: " + std::to_string(m_line);
 		}
 
 		virtual void ConstructWhatMessage()
 		{
-			mWhatMessage += "Msg: " + mMessage + "\n";
+			m_whatMessage += "Msg: " + m_message + "\n";
 		}
 
 		ErrorType GetType() const
 		{
-			return mErrorType;
+			return m_errorType;
 		}
 
 		const wchar_t* GetName() const
 		{
-			switch (mErrorType)
+			switch (m_errorType)
 			{
 			case ErrorType::e_Standard:
 				return L"Error";
 			case ErrorType::e_COM:
-				return L"HR Failed";
+				return L"COM Error";
 			case ErrorType::e_Assertion:
 				return L"Assertion Failed";
 			}
@@ -71,17 +71,17 @@ namespace Firelight
 
 		const char* what() const override
 		{
-			return mWhatMessage.c_str();
+			return m_whatMessage.c_str();
 		}
 
 	protected:
-		ErrorType          mErrorType;
+		ErrorType          m_errorType;
 
-		const std::string mMessage;
-		const std::string mFileName;
-		const std::string mFunctionName;
-		const int         mLine;
+		const std::string m_message;
+		const std::string m_fileName;
+		const std::string m_functionName;
+		const int         m_line;
 
-		std::string mWhatMessage;
+		std::string m_whatMessage;
 	};
 }

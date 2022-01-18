@@ -4,6 +4,8 @@
 #include "../Utils/AdapterReader.h"
 #include "../ImGuiUI/ImGuiManager.h"
 
+#include "../Maths/Vec2.h"
+
 namespace Firelight::Graphics
 {
     GraphicsHandler::GraphicsHandler() :
@@ -60,11 +62,9 @@ namespace Firelight::Graphics
 		swapChainDescription.SampleDesc.Quality = 0; // Lowest image quality
 
 		swapChainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-
 		swapChainDescription.BufferCount = 1;
 
 		swapChainDescription.OutputWindow = hwnd;
-
 		swapChainDescription.Windowed = TRUE;
 
 		swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -174,10 +174,11 @@ namespace Firelight::Graphics
         return m_deviceContext.Get();
     }
 
-    void GraphicsHandler::Update(float deltaTime)
+    void GraphicsHandler::Update(double deltaTime)
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
 
+		(void)deltaTime;// Remove me when deltatime is actually needed
     }
 
     void GraphicsHandler::Render()

@@ -10,6 +10,10 @@
 
 #include "ImGuiTestLayer.h"
 
+#include "Source/Graphics/AssetManager.h"
+#include "Source/Graphics/Data/Model.h"
+#include "Source/Graphics/Data/VertexTypes.h"
+
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
 
@@ -25,6 +29,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
 		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
+
+		Firelight::Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

@@ -96,14 +96,9 @@ namespace Firelight::ECS
 			return m_componentManager->HasComponent<T>(entity);
 		}
 
-		/// <summary>
-		/// Creates a new entity
-		/// </summary>
-		/// <returns></returns>
-		EntityID CreateEntity()
-		{
-			return m_entityManager->CreateEntity();
-		}
+		EntityID CreateEntity();
+		EntityID CreateEntity(EntityID id);
+
 
 		/// <summary>
 		/// Removes an entity
