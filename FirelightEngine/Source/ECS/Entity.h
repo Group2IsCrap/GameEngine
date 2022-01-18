@@ -7,6 +7,7 @@ namespace Firelight::ECS
 	{
 	public:
 		Entity();
+		Entity(EntityID id);
 		~Entity();
 
 		/// <summary>
@@ -35,6 +36,18 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
+		/// Associates a component to the given entity
+		/// </summary>
+		/// <typeparam name="T">Component Type</typeparam>
+		/// <param name="entity"></param>
+		/// <param name="component"></param>
+		template<typename T>
+		void AddComponent()
+		{
+			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, new T());
+		}
+
+		/// <summary>
 		/// Disassociates a component of type T with the given entity
 		/// </summary>
 		/// <typeparam name="T">Component Type</typeparam>
@@ -57,9 +70,20 @@ namespace Firelight::ECS
 			return EntityComponentSystem::Instance()->HasComponent<T>(m_entityID);
 		}
 
+		bool operator==(Entity& entity)
+		{
+			return m_entityID == entity.m_entityID;
+		}
+		bool operator!=(Entity& entity)
+		{
+			return m_entityID != entity.m_entityID;
+		}
+
 		EntityID GetEntityID();
 		Signature GetSignature();
-
+	private:
+		Entity(const Entity&) = delete;
+		Entity& operator=(const Entity&) = delete;
 	protected:
 		EntityID m_entityID;
 	};

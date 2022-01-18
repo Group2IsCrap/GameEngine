@@ -13,6 +13,7 @@ namespace Firelight::ECS
 	{
 	public:
 		EntityID CreateEntity();
+		EntityID CreateEntity(EntityID id);
 		void UpdateEntitySignature(EntityID entity, ComponentTypeID componentID, bool contains);
 		void RemoveEntity(EntityID entity);
 		Signature GetEntitySignature(EntityID entity);

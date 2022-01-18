@@ -11,7 +11,7 @@ namespace Firelight
 	{
 	public:
 		COMError(HRESULT hr, const std::string& msg, const std::string& fileName, const std::string& functionName, int line) :
-			mHResult(hr),
+			m_hResult(hr),
 			Error(msg, fileName, functionName, line, ErrorType::e_COM)
 		{
 		}
@@ -20,12 +20,12 @@ namespace Firelight
 		{
 			Error::ConstructWhatMessage();
 
-			_com_error error(mHResult);
+			_com_error error(m_hResult);
 
-			mWhatMessage += "HR: " + Utils::StringHelpers::WideStringToString(error.ErrorMessage()) + "\n";
+			m_whatMessage += "HR: " + Utils::StringHelpers::WideStringToString(error.ErrorMessage()) + "\n";
 		}
 
 	private:
-		HRESULT mHResult;
+		HRESULT m_hResult;
 	};
 }

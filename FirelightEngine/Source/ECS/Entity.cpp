@@ -7,6 +7,11 @@ namespace Firelight::ECS
 		m_entityID = EntityComponentSystem::Instance()->CreateEntity();
 	}
 
+	Entity::Entity(EntityID id)
+	{
+		m_entityID = EntityComponentSystem::Instance()->CreateEntity(id);
+	}
+
 	Entity::~Entity()
 	{
 		EntityComponentSystem::Instance()->RemoveEntity(m_entityID);
