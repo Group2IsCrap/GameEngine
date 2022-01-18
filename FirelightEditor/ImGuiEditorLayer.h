@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include "Source/ImGuiUI/ImGuiLayer.h"
 #include "Source/ECS/Entity.h"
 
@@ -22,8 +23,14 @@ private:
 	void RenderHiearchy();
 	void DrawEntityNode(Firelight::ECS::Entity* gameEntity);
 
+	void RenderPropertiesPanel();
+	void DrawComponents(Firelight::ECS::Entity* gameEntity);
+
+	void RenderContentBrowserPanel();
+
 private:
 	std::vector<Firelight::ECS::Entity*> m_entitiesInScene;
-	Firelight::ECS::Entity* m_selectionContext;
+	Firelight::ECS::Entity* m_selectionContextHierarchy;
 
+	std::filesystem::path m_CurrentDirectory;
 };

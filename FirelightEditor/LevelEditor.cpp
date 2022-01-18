@@ -17,6 +17,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	// Register components required
 	EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
 	EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
+	EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
 
 	// ImGui Test code
 	ImGuiEditorLayer* testLayer = new ImGuiEditorLayer();

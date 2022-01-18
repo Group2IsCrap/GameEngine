@@ -6,17 +6,26 @@
 #include <Source/ECS/Entity.h>
 #include <Source/ECS/GameEntity.h>
 #include <Source/ECS/Components.h>
+#include <Source/Utils/ErrorManager.h>
+#include <Source/Maths/Vec2.h>
 
 using namespace Firelight::ECS;
+using namespace Firelight::Maths;
 
-ImGuiEditorLayer::ImGuiEditorLayer()
+static const std::filesystem::path s_assetPath = "assets";
+
+#define _CRT_SECURE_NO_WARNINGS
+
+ImGuiEditorLayer::ImGuiEditorLayer() : m_CurrentDirectory(s_assetPath)
 {
-	m_selectionContext = {};
+	m_selectionContextHierarchy = {};
 
 	GameEntity* test = new GameEntity();
 	test->GetComponent<IdentificationComponent>()->name = "TestObject";
 
 	m_entitiesInScene.push_back(test);
+
+	// TODO : Create textures for icons
 }
 
 ImGuiEditorLayer::~ImGuiEditorLayer()
@@ -56,6 +65,8 @@ void ImGuiEditorLayer::Render()
 	
 	RenderMenuBar();
 	RenderHiearchy();
+	RenderPropertiesPanel();
+	RenderContentBrowserPanel();
 	
 
 	ImGui::End();
@@ -107,7 +118,7 @@ void ImGuiEditorLayer::RenderHiearchy()
 	}
 
 	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-		m_selectionContext = {};
+		m_selectionContextHierarchy = {};
 
 	// Right-click on blank space
 	if (ImGui::BeginPopupContextWindow(0, 1, false))
@@ -129,13 +140,13 @@ void ImGuiEditorLayer::DrawEntityNode(Entity* entity)
 	auto tag = entity->GetComponent<IdentificationComponent>()->name;
 
 	// Don't show arrow if the object does not have any child objects
-	ImGuiTreeNodeFlags flags = ((m_selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+	ImGuiTreeNodeFlags flags = ((m_selectionContextHierarchy == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
 
 	// Selected node
 	if (ImGui::IsItemClicked())
-		m_selectionContext = entity;
+		m_selectionContextHierarchy = entity;
 
 	bool isEntityDeleted = false;
 	// Right-click to delete
@@ -155,7 +166,218 @@ void ImGuiEditorLayer::DrawEntityNode(Entity* entity)
 	if (isEntityDeleted)
 	{
 		// Destroy entity here
-		if (m_selectionContext == entity)
-			m_selectionContext = {};
+		if (m_selectionContextHierarchy == entity)
+			m_selectionContextHierarchy = {};
 	}
+}
+
+void ImGuiEditorLayer::RenderPropertiesPanel()
+{
+	ImGui::Begin("Properties");
+
+	if (m_selectionContextHierarchy)
+		DrawComponents(m_selectionContextHierarchy);
+
+	ImGui::End();
+}
+
+static void DrawVec2Control(const std::string& label, int& x, int& y, float resetValue = 0.0f, float columnWidth = 100.0f)
+{
+	ImGuiIO& io = ImGui::GetIO();
+	auto boldFont = io.Fonts->Fonts[0];
+
+	ImGui::PushID(label.c_str());
+
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, columnWidth);
+	ImGui::Text(label.c_str());
+	ImGui::NextColumn();
+
+	ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+	float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushFont(boldFont);
+	ImGui::Button("X", buttonSize);
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+
+	ImGui::SameLine();
+	ImGui::DragInt("##X", &x, 1.0f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushFont(boldFont);
+	ImGui::Button("Y", buttonSize);
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+
+	ImGui::SameLine();
+	ImGui::DragInt("##Y", &y, 1.0f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+
+	ImGui::PopStyleVar();
+
+	ImGui::Columns(1);
+
+	ImGui::PopID();
+}
+
+template<typename T, typename UIFunction>
+static void DrawComponent(const std::string& name, Entity* entity, UIFunction uiFunction)
+{
+	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
+	if (entity->HasComponent<T>())
+	{
+		auto component = entity->GetComponent<T>();
+		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImGui::Separator();
+		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+		ImGui::PopStyleVar(
+		);
+
+		/*
+		ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
+		if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+		{
+			ImGui::OpenPopup("ComponentSettings");
+		}
+
+		bool removeComponent = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
+		{
+			if (ImGui::MenuItem("Remove component"))
+				removeComponent = true;
+
+			ImGui::EndPopup();
+		}
+		*/
+
+		if (open)
+		{
+			uiFunction(component);
+			ImGui::TreePop();
+		}
+
+		/*
+		if (removeComponent)
+			entity->RemoveComponent<T>();
+		*/
+	}
+}
+
+void ImGuiEditorLayer::DrawComponents(Firelight::ECS::Entity* gameEntity)
+{
+	if (gameEntity->HasComponent<IdentificationComponent>())
+	{
+		auto& tag = gameEntity->GetComponent<IdentificationComponent>()->name;
+
+		char buffer[256];
+		memset(buffer, 0, sizeof(buffer));
+		std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+		if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+			tag = std::string(buffer);
+
+		/*
+		ImGui::SameLine();
+		ImGui::PushItemWidth(-1);
+
+		if (ImGui::Button("Add Component"))
+			ImGui::OpenPopup("AddComponent");
+
+		if (ImGui::BeginPopup("AddComponent"))
+		{
+			if (ImGui::MenuItem("Physics"))
+			{
+				if (!m_selectionContextHierarchy->HasComponent<PhysicsComponent>())
+					m_selectionContextHierarchy->AddComponent<PhysicsComponent>(new PhysicsComponent());
+				else
+					ERROR_SILENT("Entity already has a Physics Component!");
+
+				ImGui::CloseCurrentPopup();
+			}
+
+			ImGui::EndPopup();
+		}
+		ImGui::PopItemWidth();
+		*/
+
+		DrawComponent<TransformComponent>("Transform", gameEntity, [](auto& component)
+		{
+			DrawVec2Control("Position", component->posX, component->posY);
+		});
+	}
+}
+
+void ImGuiEditorLayer::RenderContentBrowserPanel()
+{
+	ImGui::Begin("Content Browser");
+
+	if (m_CurrentDirectory != std::filesystem::path(s_assetPath))
+	{
+		if (ImGui::Button("<-"))
+		{
+			m_CurrentDirectory = m_CurrentDirectory.parent_path();
+		}
+	}
+
+	static float padding = 16.0f;
+	static float thumbnailSize = 128.0f;
+	float cellSize = thumbnailSize + padding;
+
+	float panelWidth = ImGui::GetContentRegionAvail().x;
+	int columnCount = (int)(panelWidth / cellSize);
+	if (columnCount < 1)
+		columnCount = 1;
+
+	ImGui::Columns(columnCount, 0, false);
+
+	for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
+	{
+		const auto& path = directoryEntry.path();
+		auto relativePath = std::filesystem::relative(path, s_assetPath);
+		std::string filenameString = relativePath.filename().string();
+
+		ImGui::PushID(filenameString.c_str());
+		// Set icon based on whether it is a file or not
+		//Texture2D icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		//ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+		ImGui::Button("ICON HERE");
+
+		if (ImGui::BeginDragDropSource())
+		{
+			const wchar_t* itemPath = relativePath.c_str();
+			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+			ImGui::EndDragDropSource();
+		}
+
+		ImGui::PopStyleColor();
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			if (directoryEntry.is_directory())
+				m_CurrentDirectory /= path.filename();
+
+		}
+		ImGui::TextWrapped(filenameString.c_str());
+
+		ImGui::NextColumn();
+
+		ImGui::PopID();
+	}
+
+	ImGui::Columns(1);
+
+	ImGui::End();
 }
