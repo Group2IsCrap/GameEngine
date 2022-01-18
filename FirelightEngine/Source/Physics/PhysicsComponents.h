@@ -7,8 +7,8 @@
 // Simple physics component used for testing
 struct PhysicsComponent : Firelight::ECS::BaseComponent
 {
-	int posX, posY, Height, Width, Radius;
-	bool hasBoxCollision, HasCircleCollision
+	int posX, posY, Height, Width, Radius, velX, VelY;
+	bool hasBoxCollision, HasCircleCollision, IsCollidable;
 
 		std::string Output() override
 	{

@@ -9,27 +9,46 @@ void CollisionHandler::Update(double dt)
         {
             if (entity != entity2)
             {
-                if (entity->GetComponent<PhysicsComponentt>(hasBox))
+                if (entity->GetComponent<PhysicsComponent>(IsCollidable) && entity2->GetComponent<PhysicsComponent>(IsCollidable))
                 {
-
+                    if (entity->GetComponent<PhysicsComponent>(hasBoxCollision) && entity2->GetComponent<PhysicsComponent>(hasBoxCollision))
+                    {
+                        if (CheckBoxOnBoxCollision(entity, entity2))
+                        {
+                            entity->GetComponent<PhysicsComponent>(velX) = 0;
+                            entity->GetComponent<PhysicsComponent>(velY) = 0;
+                        }
+                    }
+                    else if (entity->GetComponent<PhysicsComponent>(hasCircleCollision) && entity2->GetComponent<PhysicsComponent>(hasCircleCollision))
+                    {
+                        if (CheckCircleOnCircleCollision(entity, entity2))
+                        {
+                            entity->GetComponent<PhysicsComponent>(velX) = 0;
+                            entity->GetComponent<PhysicsComponent>(velY) = 0;
+                        }
+                    }
+                    else if (entity->GetComponent<PhysicsComponent>(hasBoxCollision) && entity2->GetComponent<PhysicsComponent>(hasCircleCollision))
+                    {
+                        if (CheckBoxOnCircleCollision(entity, entity2))
+                        {
+                            entity->GetComponent<PhysicsComponent>(velX) = 0;
+                            entity->GetComponent<PhysicsComponent>(velY) = 0;
+                        }
+                    }
                 }
-                CheckBoxOnBoxCollision(entity->GetComponent<TransformComponent>(), )
-
-
-
             }
         }
     }
 }
 
-bool CollisionHandler::CheckBoxOnBoxCollision(Firelight::ECS::TransformComponent Obj1, Firelight::ECS::TransformComponent Obj2) //checks for collision between two objects using axis aligned bounding boxes
+bool CollisionHandler::CheckBoxOnBoxCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) //checks for collision between two objects using axis aligned bounding boxes
 {
-
+    
     if (
-        Obj1.posX < Obj2.posX + Obj2.width &&
-        Obj1.posX + Obj1.width > Obj2.posX &&
-        Obj1.posY < Obj2.posY + Obj2.height &&
-        Obj1.posY + Obj1.height > Obj2.posY
+        Obj1.posX < Obj2.posX + Obj2.Width &&
+        Obj1.posX + Obj1.Width > Obj2.posX &&
+        Obj1.posY < Obj2.posY + Obj2.Height &&
+        Obj1.posY + Obj1.Height > Obj2.posY
         )
     {
         return true;
@@ -40,9 +59,10 @@ bool CollisionHandler::CheckBoxOnBoxCollision(Firelight::ECS::TransformComponent
     }
 }
 
-bool CollisionHandler::CheckCircleOnCircleCollision(Firelight::ECS::TransformComponent Obj1, Firelight::ECS::TransformComponent Obj2)
+bool CollisionHandler::CheckCircleOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle
+
 {
-    if ((Obj1.posX - Obj2.posX) * (Obj1.posX - Obj2.posX) + (Obj1.posY - Obj2.posY) * (Obj1.posY - Obj2.posY) < Obj1.radius * Obj2.radius)
+    if ((Obj1.posX - Obj2.posX) * (Obj1.posX - Obj2.posX) + (Obj1.posY - Obj2.posY) * (Obj1.posY - Obj2.posY) < Obj1.Radius * Obj2.Radius)
     {
         return true;
     }
@@ -52,40 +72,11 @@ bool CollisionHandler::CheckCircleOnCircleCollision(Firelight::ECS::TransformCom
     }
 }
 
+bool CollisionHandler::CheckBoxOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle and a box
 
-//test function - delete later
-int main(Firelight::ECS::TransformComponent Obj1, Firelight::ECS::TransformComponent Obj2)
 {
-
-    CollisionHandler collisionHandler;
-    Obj1.posX = 10;
-    Obj1.posY = 10;
-    Obj1.height = 10;
-    Obj1.width = 10;
-    Obj1.radius = 20;
-
-    Obj2.posX = 10;
-    Obj2.posY = 10;
-    Obj2.height = 10;
-    Obj2.width = 10;
-    Obj2.radius = 20;
-
-    if (collisionHandler.CheckCircleOnCircleCollision(Obj1, Obj2))
-    {
-        std::cout << "Circle Collision Detected\n";
-    }
-    else
-    {
-        std::cout << "No Circle Collision\n";
-    }
-
-    if (collisionHandler.CheckBoxOnBoxCollision(Obj1, Obj2))
-    {
-        std::cout << "Box Collision Detected\n";
-    }
-    else
-    {
-        std::cout << "Box Circle Collision\n";
-    }
+    //do this
 }
+
+
 
