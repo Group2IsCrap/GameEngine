@@ -232,14 +232,13 @@ static void DrawVec2Control(const std::string& label, int& x, int& y, float rese
 }
 
 template<typename T, typename UIFunction>
-static void DrawComponent(const std::string& name, Entity* entity, UIFunction uiFunction)
+static void DrawComponent(const std::string& name, Entity* entity, UIFunction uiFunction, bool allowDeletion = false)
 {
 	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 	if (entity->HasComponent<T>())
 	{
 		auto component = entity->GetComponent<T>();
 		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
-
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImGui::Separator();
@@ -247,33 +246,19 @@ static void DrawComponent(const std::string& name, Entity* entity, UIFunction ui
 		ImGui::PopStyleVar(
 		);
 
-		/*
-		ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
-		if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
+		if (allowDeletion)
 		{
-			ImGui::OpenPopup("ComponentSettings");
+			ImGui::Spacing();
+			if (ImGui::Button("Remove Component"))
+				entity->RemoveComponent<T>();
+			ImGui::Spacing();
 		}
-
-		bool removeComponent = false;
-		if (ImGui::BeginPopup("ComponentSettings"))
-		{
-			if (ImGui::MenuItem("Remove component"))
-				removeComponent = true;
-
-			ImGui::EndPopup();
-		}
-		*/
 
 		if (open)
 		{
 			uiFunction(component);
 			ImGui::TreePop();
 		}
-
-		/*
-		if (removeComponent)
-			entity->RemoveComponent<T>();
-		*/
 	}
 }
 
@@ -292,12 +277,23 @@ void ImGuiEditorLayer::DrawComponents(Firelight::ECS::Entity* gameEntity)
 		if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			tag = std::string(buffer);
 
-		/*
-		ImGui::SameLine();
-		ImGui::PushItemWidth(-1);
+		DrawComponent<TransformComponent>("Transform", gameEntity, [](auto& component)
+		{
+			DrawVec2Control("Position", component->posX, component->posY);
+		});
 
+		DrawComponent<PhysicsComponent>("Physics", gameEntity, [](auto& component)
+		{
+			DrawVec2Control("Velocity", component->velX, component->velY);
+		}, true);
+
+		ImGui::Spacing();
+		ImGui::PushItemWidth(-1);
 		if (ImGui::Button("Add Component"))
+		{
 			ImGui::OpenPopup("AddComponent");
+		}
+		ImGui::PopItemWidth();
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
@@ -305,21 +301,10 @@ void ImGuiEditorLayer::DrawComponents(Firelight::ECS::Entity* gameEntity)
 			{
 				if (!m_selectionContextHierarchy->HasComponent<PhysicsComponent>())
 					m_selectionContextHierarchy->AddComponent<PhysicsComponent>(new PhysicsComponent());
-				else
-					ERROR_SILENT("Entity already has a Physics Component!");
-
-				ImGui::CloseCurrentPopup();
+				else ERROR_SILENT("Entity already has a Physics Component!");
 			}
-
 			ImGui::EndPopup();
 		}
-		ImGui::PopItemWidth();
-		*/
-
-		DrawComponent<TransformComponent>("Transform", gameEntity, [](auto& component)
-		{
-			DrawVec2Control("Position", component->posX, component->posY);
-		});
 	}
 }
 
