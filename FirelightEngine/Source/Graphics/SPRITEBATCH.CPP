@@ -7,49 +7,55 @@
 
 namespace Firelight::Graphics
 {
-
-    //creates a quad and adds it to map
-    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, const Maths::Rectf& sourceRect, const float layer, Texture* texture)
+    SpriteBatch::SpriteBatch()
     {
-        Quad quad;
-        quad.m_layer = layer;
+    }
 
-        quad.m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, 0);
+    SpriteBatch::~SpriteBatch()
+    {
+    }
+
+    // Creates a quad and adds it to map
+    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, const Maths::Rectf& sourceRect, int layer, Texture* texture)
+    {
+        float depthFromLayer = (float)layer / 64.0f;
+
+        Quad quad;
+        quad.m_depth = depthFromLayer;
+
+        quad.m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, depthFromLayer);
         quad.m_topLeft.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y));
 
-        quad.m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, 0);
+        quad.m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, depthFromLayer);
         quad.m_topRight.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
 
-        quad.m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y + destRectNDC.h, 0);
+        quad.m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y - destRectNDC.h, depthFromLayer);
         quad.m_bottomLeft.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
 
-        quad.m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y + destRectNDC.h, 0);
+        quad.m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h, depthFromLayer);
         quad.m_bottomRight.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
 
-        //add quad and group next to other quads
+        // Add quad and group next to other quads
         m_spriteQuadsMap[texture].push_back(quad);
     }
 
-
-    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, const Maths::Rectf& sourceRect, const float layer, Texture* texture)
+    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, const Maths::Rectf& sourceRect, int layer, Texture* texture)
     {
         Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect();
 
         NDCDraw(destRectNDC, sourceRect, layer, texture);
     }
 
-
-    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, const Maths::Rectf& sourceRect, const float layer, Texture* texture)
+    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, const Maths::Rectf& sourceRect, int layer, Texture* texture)
     {
-        //To do: convert from world space when we can
+        // To do: convert from world space when we can
         NDCDraw(destRectWorld, sourceRect, layer, texture);
     }
 
-    //Creates a mesh for each texture
+    // Creates a mesh for each texture
     void SpriteBatch::CreateBatches()
     {
         m_spriteBatches.clear();
-
 
         std::vector<UnlitVertex> vertices;
         std::vector<DWORD> indices;

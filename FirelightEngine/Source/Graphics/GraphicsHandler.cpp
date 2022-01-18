@@ -1,8 +1,14 @@
 #include "GraphicsHandler.h"
 
+#include "AssetManager.h"
+#include "SpriteBatch.h"
+
 #include "../Utils/ErrorManager.h"
 #include "../Utils/AdapterReader.h"
 #include "../ImGuiUI/ImGuiManager.h"
+
+#include "Shaders/VertexShader.h"
+#include "Shaders/PixelShader.h"
 
 namespace Firelight::Graphics
 {
@@ -33,6 +39,8 @@ namespace Firelight::Graphics
 
 		result = Firelight::ImGuiUI::ImGuiManager::Instance()->Initialise(hwnd, GetDevice(), GetDeviceContext());
 		ASSERT_RETURN(result, "ImGui initialisation failed", false);
+
+		m_spriteBatch = std::make_unique<SpriteBatch>();
 
         return true;
     }
@@ -172,6 +180,11 @@ namespace Firelight::Graphics
         return m_deviceContext.Get();
     }
 
+	SpriteBatch* GraphicsHandler::GetSpriteBatch()
+	{
+		return m_spriteBatch.get();
+	}
+
     void GraphicsHandler::Update(double deltaTime)
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
@@ -190,6 +203,26 @@ namespace Firelight::Graphics
 		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		// TODO: Do fancy render stuff here
+		m_deviceContext->RSSetViewports(1, &m_defaultViewport);
+
+		m_deviceContext->RSSetState(m_rasterizerState.Get());
+		m_deviceContext->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
+
+		m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+		m_deviceContext->OMSetBlendState(m_blendState.Get(), NULL, 0xFFFFFFFF);
+
+		m_deviceContext->IASetInputLayout(AssetManager::Instance().GetDefaultVertexShader()->GetInputLayout());
+		m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		m_deviceContext->VSSetShader(AssetManager::Instance().GetDefaultVertexShader()->GetShader(), NULL, 0);
+		m_deviceContext->PSSetShader(AssetManager::Instance().GetDefaultPixelShader()->GetShader(), NULL, 0);
+
+		// Render Sprite batch batches
+		m_spriteBatch->CreateBatches();
+		for (auto& batch : m_spriteBatch->GetBatches())
+		{
+			batch.Draw(true);
+		}
 
 		// ImGui Render
 		Firelight::ImGuiUI::ImGuiManager::Instance()->Render();

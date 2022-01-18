@@ -2,8 +2,14 @@
 
 #include <d3d11.h>
 #include <wrl/client.h>
+#include <memory>
 
 #include "../Maths/Vec2.h"
+
+namespace Firelight::Graphics
+{
+    class SpriteBatch;
+}
 
 namespace Firelight::Graphics
 {
@@ -19,6 +25,8 @@ namespace Firelight::Graphics
 
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;
+
+        SpriteBatch*         GetSpriteBatch();
 
         void Update(double deltaTime);
         void Render();
@@ -45,5 +53,7 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11RasterizerState>   m_rasterizerState;
         Microsoft::WRL::ComPtr<ID3D11BlendState>        m_blendState;
         Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_samplerState;
+
+        std::unique_ptr<SpriteBatch>                    m_spriteBatch;
     };
 }

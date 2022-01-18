@@ -26,7 +26,7 @@ namespace Firelight::Maths
 	inline Rect<T> Rect<T>::CreateNDCRectFromPixelRect() const
 	{
 		const Maths::Vec2f& dimensions = Engine::Instance().GetWindowDimensionsFloat();
-		Rect<T> returnRect(0);
+		Rect<T> returnRect;
 
 		returnRect.x = (x / dimensions.x) * 2.0f - 1.0f;
 		returnRect.y = (1.0f - (y / dimensions.y)) * 2.0f - 1.0f;
