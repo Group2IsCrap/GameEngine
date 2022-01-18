@@ -158,8 +158,8 @@
     <ClCompile Include="TestGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\$ENGINE\Materials\default.json" />
-    <None Include="Resources\cube.mtls" />
+    <None Include="Assets\%24ENGINE\Materials\default.json" />
+    <None Include="Assets\cube.mtls" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,7 +16,7 @@ namespace Firelight::Graphics
         else
         {
             Model* loadedModel = new Model();
-            if (!loadedModel->Initialise<VertexType>("Resources/" + path))
+            if (!loadedModel->Initialise<VertexType>("Assets/" + path))
             {
                 delete loadedModel;
                 loadedModel = m_defaultModel;

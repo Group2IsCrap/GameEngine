@@ -56,7 +56,7 @@ namespace Firelight::Graphics
         else
         {
             Texture* loadedTexture = new Texture();
-            if (!loadedTexture->Initialise("Resources/" + path))
+            if (!loadedTexture->Initialise("Assets/" + path))
             {
                 delete loadedTexture;
                 loadedTexture = m_defaultTexture;
@@ -91,7 +91,7 @@ namespace Firelight::Graphics
         else
         {
             Material* newMaterial = new Material();
-            if (!newMaterial->Initialise("Resources/" + path))
+            if (!newMaterial->Initialise("Assets/" + path))
             {
                 delete newMaterial;
                 newMaterial = m_defaultMaterial;
@@ -111,7 +111,7 @@ namespace Firelight::Graphics
         else
         {
             VertexShader* newVertexShader = new VertexShader();
-            std::string shaderPath = "Resources/" + path + ".hlsl";
+            std::string shaderPath = "Assets/" + path + ".hlsl";
             if (!newVertexShader->Initialise(shaderPath.c_str()))
             {
                 delete newVertexShader;
@@ -132,7 +132,7 @@ namespace Firelight::Graphics
         else
         {
             PixelShader* newPixelShader = new PixelShader();
-            std::string shaderPath = "Resources/" + path + ".hlsl";
+            std::string shaderPath = "Assets/" + path + ".hlsl";
             if (!newPixelShader->Initialise(shaderPath.c_str()))
             {
                 delete newPixelShader;
@@ -153,7 +153,7 @@ namespace Firelight::Graphics
         else
         {
             ComputeShader* newComputeShader = new ComputeShader();
-            std::string shaderPath = "Resources/" + path + ".hlsl";
+            std::string shaderPath = "Assets/" + path + ".hlsl";
             if (!newComputeShader->Initialise(shaderPath.c_str()))
             {
                 delete newComputeShader;

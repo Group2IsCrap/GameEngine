@@ -446,9 +446,9 @@
     <Image Include="Resources\icon\directx %28unused%29.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\$ENGINE\Materials\default.json" />
-    <None Include="Resources\$ENGINE\Models\cube.mtls" />
-    <None Include="Resources\%24ENGINE\Shaders\Shared\VSPSTransfers.hlsli">
+    <None Include="Assets\%24ENGINE\Materials\default.json" />
+    <None Include="Assets\%24ENGINE\Models\cube.mtls" />
+    <None Include="Assets\%24ENGINE\Shaders\Shared\VSPSTransfers.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">true</ExcludedFromBuild>
@@ -456,7 +456,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Resources\%24ENGINE\Shaders\Shared\VSInputs.hlsli">
+    <None Include="Assets\%24ENGINE\Shaders\Shared\VSInputs.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">true</ExcludedFromBuild>
@@ -473,10 +473,10 @@
     <None Include="Source\Maths\Vec3.inl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\$ENGINE_readme.txt" />
+    <Text Include="Assets\%24ENGINE_readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\%24ENGINE\Shaders\Pixel\Unlit.hlsl">
+    <FxCompile Include="Assets\%24ENGINE\Shaders\Pixel\Unlit.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Pixel</ShaderType>
@@ -490,7 +490,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="Resources\%24ENGINE\Shaders\Vertex\Unlit.hlsl">
+    <FxCompile Include="Assets\%24ENGINE\Shaders\Vertex\Unlit.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">true</ExcludedFromBuild>
