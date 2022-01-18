@@ -19,17 +19,16 @@ void InspectorPanel::Draw()
 	ImGui::End();
 }
 
-static void DrawVec2Control(const std::string& label, int& x, int& y, float resetValue = 0.0f, float columnWidth = 100.0f)
+static void DrawVec3Control(const std::string& label, float& x, float& y, float& z, float columnWidth = 100.0f)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	auto boldFont = io.Fonts->Fonts[0];
 
 	ImGui::PushID(label.c_str());
 
-	ImGui::Columns(2);
-	ImGui::SetColumnWidth(0, columnWidth);
+	ImGui::Unindent();
+	ImGui::AlignTextToFramePadding();
 	ImGui::Text(label.c_str());
-	ImGui::NextColumn();
 
 	ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
 	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
@@ -46,7 +45,7 @@ static void DrawVec2Control(const std::string& label, int& x, int& y, float rese
 	ImGui::PopStyleColor(3);
 
 	ImGui::SameLine();
-	ImGui::DragInt("##X", &x, 1.0f, 0.0f, 0.0f, "%.2f");
+	ImGui::DragFloat("##X", &x, 0.1f, 0.0f, 0.0f, "%.2f");
 	ImGui::PopItemWidth();
 	ImGui::SameLine();
 
@@ -59,14 +58,28 @@ static void DrawVec2Control(const std::string& label, int& x, int& y, float rese
 	ImGui::PopStyleColor(3);
 
 	ImGui::SameLine();
-	ImGui::DragInt("##Y", &y, 1.0f, 0.0f, 0.0f, "%.2f");
+	ImGui::DragFloat("##Y", &y, 0.1f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+	ImGui::PushFont(boldFont);
+	ImGui::Button("Z", buttonSize);
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+
+	ImGui::SameLine();
+	ImGui::DragFloat("##Z", &z, 0.1f, 0.0f, 0.0f, "%.2f");
 	ImGui::PopItemWidth();
 
 	ImGui::PopStyleVar();
 
-	ImGui::Columns(1);
-
 	ImGui::PopID();
+
+	ImGui::Indent();
+	ImGui::Spacing();
 }
 
 template<typename T, typename UIFunction>
@@ -86,10 +99,11 @@ static void DrawComponent(const std::string& name, Firelight::ECS::Entity* entit
 
 		if (allowDeletion)
 		{
+			ImGui::Unindent();
 			ImGui::Spacing();
 			if (ImGui::Button("Remove Component"))
 				entity->RemoveComponent<T>();
-			ImGui::Spacing();
+			ImGui::Indent();
 		}
 
 		if (open)
@@ -116,18 +130,21 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			tag = std::string(buffer);
 
 		DrawComponent<Firelight::ECS::TransformComponent>("Transform", entity, [](auto& component)
-			{
-				DrawVec2Control("Position", component->posX, component->posY);
-			});
+		{
+			DrawVec3Control("Position", component->position.x, component->position.y, component->position.z);
+			ImGui::Spacing();
+		});
 
 		DrawComponent<Firelight::ECS::PhysicsComponent>("Physics", entity, [](auto& component)
-			{
-				DrawVec2Control("Velocity", component->velX, component->velY);
-			}, true);
+		{
+			DrawVec3Control("Velocity", component->velocity.x, component->velocity.y, component->velocity.z);
+			ImGui::Spacing();
+		}, true);
 
 		ImGui::Spacing();
 		ImGui::PushItemWidth(-1);
-		if (ImGui::Button("Add Component"))
+		ImVec2 buttonSize = { ImGui::GetWindowWidth() - 15.0f, 25.0f };
+		if (ImGui::Button("Add Component", buttonSize))
 		{
 			ImGui::OpenPopup("AddComponent");
 		}
