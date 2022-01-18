@@ -116,14 +116,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\x64\Debug\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,6 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiEditorLayer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\$ENGINE\Materials\default.json" />
+    <None Include="assets\$ENGINE\Models\cube.mtls" />
+    <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
+    <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,6 +3,7 @@
 #include <filesystem>
 #include "Source/ImGuiUI/ImGuiLayer.h"
 #include "Source/ECS/Entity.h"
+#include "Source/Graphics/Data/Texture.h"
 
 #include <vector>
 
@@ -33,4 +34,7 @@ private:
 	Firelight::ECS::Entity* m_selectionContextHierarchy;
 
 	std::filesystem::path m_CurrentDirectory;
+
+	Firelight::Graphics::Texture* m_DirectoryIcon;
+	Firelight::Graphics::Texture* m_FileIcon;
 };

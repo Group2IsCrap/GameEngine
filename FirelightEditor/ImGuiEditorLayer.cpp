@@ -8,9 +8,13 @@
 #include <Source/ECS/Components.h>
 #include <Source/Utils/ErrorManager.h>
 #include <Source/Maths/Vec2.h>
+#include <Source/Graphics/AssetManager.h>
+#include <Source/Utils/StringHelpers.h>
 
 using namespace Firelight::ECS;
 using namespace Firelight::Maths;
+using namespace Firelight::Graphics;
+using namespace Firelight::Utils;
 
 static const std::filesystem::path s_assetPath = "assets";
 
@@ -26,6 +30,8 @@ ImGuiEditorLayer::ImGuiEditorLayer() : m_CurrentDirectory(s_assetPath)
 	m_entitiesInScene.push_back(test);
 
 	// TODO : Create textures for icons
+	m_DirectoryIcon = AssetManager::Instance().GetTexture("Icons/DirectoryIcon.png");
+	m_FileIcon = AssetManager::Instance().GetTexture("Icons/FileIcon.png");
 }
 
 ImGuiEditorLayer::~ImGuiEditorLayer()
@@ -35,6 +41,8 @@ ImGuiEditorLayer::~ImGuiEditorLayer()
 		delete entity;
 		entity = nullptr;
 	}
+
+	m_entitiesInScene.clear();
 }
 
 
@@ -312,16 +320,18 @@ void ImGuiEditorLayer::RenderContentBrowserPanel()
 {
 	ImGui::Begin("Content Browser");
 
-	if (m_CurrentDirectory != std::filesystem::path(s_assetPath))
+	
+	ImGui::BeginDisabled(m_CurrentDirectory == std::filesystem::path(s_assetPath));
+	if (ImGui::Button("<-"))
 	{
-		if (ImGui::Button("<-"))
-		{
-			m_CurrentDirectory = m_CurrentDirectory.parent_path();
-		}
+		m_CurrentDirectory = m_CurrentDirectory.parent_path();
 	}
+	ImGui::EndDisabled();
+	ImGui::SameLine();
+	ImGui::Text(m_CurrentDirectory.relative_path().string().c_str());
 
 	static float padding = 16.0f;
-	static float thumbnailSize = 128.0f;
+	static float thumbnailSize = 64.0f;
 	float cellSize = thumbnailSize + padding;
 
 	float panelWidth = ImGui::GetContentRegionAvail().x;
@@ -334,15 +344,22 @@ void ImGuiEditorLayer::RenderContentBrowserPanel()
 	for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 	{
 		const auto& path = directoryEntry.path();
+
+		std::string lowerPath = path.string();
+		StringHelpers::StringToLower(lowerPath);
+		if (lowerPath.starts_with("assets\\$engine"))
+			continue;
+
 		auto relativePath = std::filesystem::relative(path, s_assetPath);
 		std::string filenameString = relativePath.filename().string();
 
 		ImGui::PushID(filenameString.c_str());
 		// Set icon based on whether it is a file or not
-		//Texture2D icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
+		
+		Texture* icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		//ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
-		ImGui::Button("ICON HERE");
+		ImGui::ImageButton((ImTextureID)icon->GetShaderResourceView().Get(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+		//ImGui::Button("ICON HERE");
 
 		if (ImGui::BeginDragDropSource())
 		{
