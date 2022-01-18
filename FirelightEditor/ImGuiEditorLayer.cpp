@@ -281,6 +281,9 @@ void ImGuiEditorLayer::DrawComponents(Firelight::ECS::Entity* gameEntity)
 {
 	if (gameEntity->HasComponent<IdentificationComponent>())
 	{
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text("Name:");
+		ImGui::SameLine();
 		auto& tag = gameEntity->GetComponent<IdentificationComponent>()->name;
 
 		char buffer[256];
