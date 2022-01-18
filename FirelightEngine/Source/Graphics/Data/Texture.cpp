@@ -87,6 +87,16 @@ namespace Firelight::Graphics
 		return m_dimensions;
 	}
 
+	Maths::Vec2f Texture::GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord)
+	{
+		Maths::Vec2f returnVec;
+
+		returnVec.x = sourcePixelCoord.x / m_dimensions.x;
+		returnVec.y = sourcePixelCoord.y / m_dimensions.y;
+
+		return returnVec;
+	}
+
 	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
 	{
 		m_dimensions.x = width;

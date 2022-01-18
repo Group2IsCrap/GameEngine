@@ -27,6 +27,7 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
 		const Maths::Vec3i& GetDimensions() const;
+		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord);
 
 	private:
 		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);
