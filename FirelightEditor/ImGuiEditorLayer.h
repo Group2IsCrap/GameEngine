@@ -1,9 +1,11 @@
 #pragma once
 
-#include <filesystem>
 #include "Source/ImGuiUI/ImGuiLayer.h"
 #include "Source/ECS/Entity.h"
 #include "Source/Graphics/Data/Texture.h"
+#include "Source/Panels/ContentBrowserPanel.h"
+#include "Source/Panels/HierarchyPanel.h"
+#include "Source/Panels/InspectorPanel.h"
 
 #include <vector>
 
@@ -21,20 +23,14 @@ private:
 
 	void RenderMenuBar();
 
-	void RenderHiearchy();
-	void DrawEntityNode(Firelight::ECS::Entity* gameEntity);
-
 	void RenderPropertiesPanel();
 	void DrawComponents(Firelight::ECS::Entity* gameEntity);
-
-	void RenderContentBrowserPanel();
 
 private:
 	std::vector<Firelight::ECS::Entity*> m_entitiesInScene;
 	Firelight::ECS::Entity* m_selectionContextHierarchy;
 
-	std::filesystem::path m_CurrentDirectory;
-
-	Firelight::Graphics::Texture* m_DirectoryIcon;
-	Firelight::Graphics::Texture* m_FileIcon;
+	ContentBrowserPanel* m_contentBrowserPanel;
+	HierarchyPanel* m_hierarchyPanel;
+	InspectorPanel* m_inspectorPanel;
 };
