@@ -1,5 +1,6 @@
 #include "KeyboardInput.h"
 #include"KeyboardEvent.h"
+#include"..\Events\EventDispatcher.h"
 namespace Firelight::Input {
     KeyboardInput::KeyboardInput()
     {
@@ -7,6 +8,9 @@ namespace Firelight::Input {
         {
             m_Keystates[i] = false;
         }
+
+        //Events::EventDispatcher::Subscribe(KeyboardEvent::sm_Des, std::bind(KeyboardEvent));
+        
     }
 
     bool KeyboardInput::KeyIsPress(const unsigned char key)
@@ -53,13 +57,17 @@ namespace Firelight::Input {
     void KeyboardInput::OnKeyPress(const unsigned char key)
     {
         m_Keystates[key] = true;
+        
         m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::press, key));
+        
     }
 
     void KeyboardInput::OnKeyRelace(const unsigned char key)
     {
         m_Keystates[key] = false;
         m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::release, key));
+
+        Events::EventDispatcher::InvokeEvent(KeyboardEvent());
     }
 
     void KeyboardInput::OnChar(const unsigned char key)

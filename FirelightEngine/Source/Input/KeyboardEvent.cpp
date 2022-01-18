@@ -1,4 +1,5 @@
 #include "KeyboardEvent.h"
+
 namespace Firelight::Input {
     KeyboardEvent::KeyboardEvent() :
         m_Type(KeyEvent::Invalid),

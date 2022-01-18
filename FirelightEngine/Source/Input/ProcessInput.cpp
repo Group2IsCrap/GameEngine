@@ -4,6 +4,7 @@
 #include"MouseInput.h"
 #include"KeyboardInput.h"
 #include"ControllerManager.h"
+
 namespace Firelight::Input {
 	ProcessInput::ProcessInput()
 	{
@@ -23,6 +24,8 @@ namespace Firelight::Input {
 		m_KeyboardCaptuer = std::make_unique<Input::KeyboardInput>();
 		m_MouseCaptuer = std::make_unique <Input::MouseInput>();
 		m_ControllerManager = std::make_unique <Input::ControllerManager>();
+
+		
 	}
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
@@ -204,7 +207,7 @@ namespace Firelight::Input {
 			KeyboardEvent Key = m_KeyboardCaptuer->ReadKey();
 			m_KeyboardCaptuer->DisableAutoRepeatKeys();
 
-
+			
 
 		}
 

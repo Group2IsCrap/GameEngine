@@ -1,4 +1,6 @@
 #pragma once
+#include"..\Events\Event.h"
+
 namespace Firelight::Input {
 	class MouseEvent
 	{
@@ -35,7 +37,8 @@ namespace Firelight::Input {
 		int GetMouseX();
 		int GetMouseY();
 
-
+	
+		
 	public:
 		e_MouseEventType m_Type;
 		int m_XPos;

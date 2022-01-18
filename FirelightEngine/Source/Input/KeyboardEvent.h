@@ -1,6 +1,7 @@
 #pragma once
+#include"..\Events\Event.h"
 namespace Firelight::Input {
-	class KeyboardEvent
+	class KeyboardEvent: public Events::Event
 	{
 	public:
 		enum class KeyEvent
@@ -17,6 +18,13 @@ namespace Firelight::Input {
 		bool isReleased() const;
 		bool isValid() const;
 		unsigned char GetKeyCode() const;
+		
+		static constexpr DescriptorType sm_Des= "KeyboardEvent";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Des;
+		}
 	private:
 		KeyEvent m_Type;
 		unsigned char m_Key;
