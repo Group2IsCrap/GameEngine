@@ -363,6 +363,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Physics\CollisionHandler.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -403,6 +404,7 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\Physics\PhysicsComponents.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
@@ -425,6 +427,7 @@
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Physics\CollisionHandler.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />
