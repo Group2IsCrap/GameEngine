@@ -11,7 +11,25 @@ namespace Firelight::ECS
 	/// <returns></returns>
 	EntityID EntityManager::CreateEntity()
 	{
+		while (std::find(m_entities.begin(), m_entities.end(), sm_nextEntity) != m_entities.end())
+		{
+			sm_nextEntity++;
+		}
 		EntityID entity = sm_nextEntity++;
+		m_entities.push_back(entity);
+		// To Do: Make signature size update based on the number of components
+		m_signatures.insert({ entity, Signature(3) });
+		return entity;
+	}
+
+	EntityID EntityManager::CreateEntity(EntityID id)
+	{
+		if (std::find(m_entities.begin(), m_entities.end(), id) != m_entities.end())
+		{
+			return id;
+		}
+		
+		EntityID entity = id;
 		m_entities.push_back(entity);
 		// To Do: Make signature size update based on the number of components
 		m_signatures.insert({ entity, Signature(3) });
@@ -37,7 +55,10 @@ namespace Firelight::ECS
 	{
 		const auto& it = std::find(m_entities.begin(), m_entities.end(), entity);
 
-		assert(it != m_entities.end());
+		if (it == m_entities.end())
+		{
+			return;
+		}
 
 		// Entity was found so it can be removed
 		m_signatures.erase(entity);

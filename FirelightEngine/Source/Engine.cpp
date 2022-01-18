@@ -6,6 +6,11 @@
 #include "Input/ProcessInput.h"
 #include "Maths/Random.h"
 
+#include "ECS/EntityComponentSystem.h"
+#include "ECS/Components.h"
+
+using namespace Firelight::ECS;
+
 namespace Firelight
 {
     Engine::Engine::Engine() :
@@ -48,9 +53,18 @@ namespace Firelight
 
         // TODO: Initalise other systems here
 
+        RegisterEngineComponents();
+
         m_initialised = true;
 
         return true;
+    }
+
+    void Engine::RegisterEngineComponents()
+    {
+        EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
     }
 
     bool Engine::ProcessMessages()
