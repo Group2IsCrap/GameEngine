@@ -18,6 +18,9 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 
 	m_hierarchyPanel->m_entitiesInScene.push_back(test);
 	m_hierarchyPanel->m_inspectorPanel = m_inspectorPanel;
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/$editor/fonts/opensans/OpenSans-Regular.ttf", 16.0f);
 }
 
 ImGuiEditorLayer::~ImGuiEditorLayer()
@@ -43,6 +46,8 @@ void ImGuiEditorLayer::Render()
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
+	
+
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

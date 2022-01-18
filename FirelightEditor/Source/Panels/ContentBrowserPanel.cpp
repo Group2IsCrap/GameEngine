@@ -16,9 +16,22 @@ void ContentBrowserPanel::Draw()
 {
 	ImGui::Begin("Content Browser");
 
+	// Right-click in the context browser
+	if (ImGui::BeginPopupContextWindow(0, 1, false))
+	{
+		ImGui::MenuItem("New");
+		if (ImGui::MenuItem("Folder"))
+		{
+
+		}
+			// CREATE NEW ENTITY HERE
+
+		ImGui::EndPopup();
+	}
+
 
 	ImGui::BeginDisabled(m_currentDirectory == std::filesystem::path(s_assetPath));
-	if (ImGui::Button("<-"))
+	if (ImGui::Button("<--"))
 	{
 		m_currentDirectory = m_currentDirectory.parent_path();
 	}
