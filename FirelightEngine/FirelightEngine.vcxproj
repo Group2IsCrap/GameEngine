@@ -405,6 +405,8 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\SceneManagement\Scene.h" />
+    <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -458,6 +460,8 @@
     <ClCompile Include="Source\Input\MouseEvent.cpp" />
     <ClCompile Include="Source\Input\MouseInput.cpp" />
     <ClCompile Include="Source\Input\ProcessInput.cpp" />
+    <ClCompile Include="Source\SceneManagement\Scene.cpp" />
+    <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
