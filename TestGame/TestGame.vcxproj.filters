@@ -19,4 +19,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cube.mtls" />
+    <None Include="Resources\$ENGINE\Materials\default.json" />
+  </ItemGroup>
 </Project>

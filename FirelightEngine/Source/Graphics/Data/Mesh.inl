@@ -57,6 +57,7 @@ namespace Firelight::Graphics
 	}
 
 	inline Mesh::Mesh(const Mesh& mesh) :
+		m_name(mesh.m_name),
 		m_indexBuffer(mesh.m_indexBuffer),
 		m_vertexBuffer(mesh.m_vertexBuffer),
 		m_texture(mesh.m_texture),

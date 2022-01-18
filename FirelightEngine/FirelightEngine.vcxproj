@@ -446,6 +446,8 @@
     <Image Include="Resources\icon\directx %28unused%29.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\$ENGINE\Materials\default.json" />
+    <None Include="Resources\$ENGINE\Models\cube.mtls" />
     <None Include="Resources\%24ENGINE\Shaders\Shared\VSPSTransfers.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

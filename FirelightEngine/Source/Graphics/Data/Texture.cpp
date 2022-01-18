@@ -12,7 +12,11 @@ namespace Firelight::Graphics
 {
 	Texture::Texture() :
 		m_texture(nullptr),
-		m_textureView(nullptr)
+		m_textureView(nullptr),
+
+		m_width(0),
+		m_height(0),
+		m_depth(0)
 	{
 	}
 
@@ -39,6 +43,8 @@ namespace Firelight::Graphics
 	{
 		HRESULT hr = DirectX::CreateWICTextureFromMemory(GraphicsHandler::Instance().GetDevice(), pData, size, m_texture.GetAddressOf(), m_textureView.GetAddressOf());
 		COM_ERROR_IF_FAILED(hr, "Failed to create texture from memory");
+
+		UpdateDimensionsUsingResource2D();
 	}
 
 	bool Texture::Initialise(const std::string& filePath)
@@ -55,6 +61,8 @@ namespace Firelight::Graphics
 				HRESULT hr = DirectX::CreateWICTextureFromFile(GraphicsHandler::Instance().GetDevice(), Utils::StringHelpers::StringToWide(filePath).c_str(), m_texture.GetAddressOf(), m_textureView.GetAddressOf());
 				COM_ERROR_THROW_IF_FAILED(hr, "Failed to load texture at path: " + filePath);
 			}
+
+			UpdateDimensionsUsingResource2D();
 		}
 		catch (COMError& comError)
 		{
@@ -76,8 +84,26 @@ namespace Firelight::Graphics
 		return m_textureView;
 	}
 
+	int Texture::GetWidth() const
+	{
+		return m_width;
+	}
+
+	int Texture::GetHeight() const
+	{
+		return m_height;
+	}
+
+	int Texture::GetDepth() const
+	{
+		return m_depth;
+	}
+
 	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
 	{
+		m_width = width;
+		m_height = height;
+
 		CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
 
 		ID3D11Texture2D* p2DTexture = nullptr;
@@ -100,5 +126,23 @@ namespace Firelight::Graphics
 	void Texture::Initialise1x1ColourTexture(const Colour& colour)
 	{
 		InitialiseColourTexture(&colour, 1, 1);
+	}
+
+	void Texture::UpdateDimensionsUsingResource2D()
+	{
+		if (m_texture.Get() != nullptr)
+		{
+			ID3D11Texture2D* pTextureInterface = nullptr;
+			m_texture->QueryInterface<ID3D11Texture2D>(&pTextureInterface);
+
+			ASSERT_IF(pTextureInterface != nullptr, "Failed to create texture dimensions, could not query interface for texture");
+			{
+				D3D11_TEXTURE2D_DESC desc;
+				pTextureInterface->GetDesc(&desc);
+
+				m_width = desc.Width;
+				m_height = desc.Height;
+			}
+		}
 	}
 }
