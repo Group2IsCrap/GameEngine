@@ -13,8 +13,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", 1280, 720))
 	{
-		// ToDo: Test Remove Entity
-
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Firelight::Engine::Instance().Update();

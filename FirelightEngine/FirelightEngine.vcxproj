@@ -401,6 +401,7 @@
     <ClInclude Include="Source\Graphics\Data\Vertex.h" />
     <ClInclude Include="Source\Maths\Vec2.h" />
     <ClInclude Include="Source\Maths\Vec3.h" />
+    <ClInclude Include="Source\ECS\System.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\GameEntity.cpp" />
@@ -428,6 +429,7 @@
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
     <ClCompile Include="Source\Graphics\Data\Vertex.cpp" />
+    <ClCompile Include="Source\ECS\System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

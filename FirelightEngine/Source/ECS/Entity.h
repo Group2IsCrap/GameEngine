@@ -7,6 +7,7 @@ namespace Firelight::ECS
 	{
 	public:
 		Entity();
+		Entity(EntityID id);
 		~Entity();
 
 		/// <summary>
@@ -19,7 +20,7 @@ namespace Firelight::ECS
 		template<typename T>
 		T* GetComponent(int index = 0)
 		{
-			return EntityComponentSystem::Instance()->GetComponent<T>(this->entityID, index);
+			return EntityComponentSystem::Instance()->GetComponent<T>(entityID, index);
 		}
 
 		/// <summary>
@@ -31,7 +32,19 @@ namespace Firelight::ECS
 		template<typename T>
 		void AddComponent(T* component)
 		{
-			EntityComponentSystem::Instance()->AddComponent<T>(this->entityID, component);
+			EntityComponentSystem::Instance()->AddComponent<T>(entityID, component);
+		}
+
+		/// <summary>
+		/// Associates a component to the given entity
+		/// </summary>
+		/// <typeparam name="T">Component Type</typeparam>
+		/// <param name="entity"></param>
+		/// <param name="component"></param>
+		template<typename T>
+		void AddComponent()
+		{
+			EntityComponentSystem::Instance()->AddComponent<T>(entityID, new T());
 		}
 
 		/// <summary>
@@ -43,7 +56,7 @@ namespace Firelight::ECS
 		template<typename T>
 		void RemoveComponent(int index = 0)
 		{
-			EntityComponentSystem::Instance()->RemoveComponent<T>(this->entityID, index);
+			EntityComponentSystem::Instance()->RemoveComponent<T>(entityID, index);
 		}
 
 		/// <summary>
@@ -54,12 +67,23 @@ namespace Firelight::ECS
 		template<typename T>
 		bool HasComponent()
 		{
-			return EntityComponentSystem::Instance()->HasComponent<T>(this->entityID);
+			return EntityComponentSystem::Instance()->HasComponent<T>(entityID);
+		}
+
+		bool operator==(Entity& entity)
+		{
+			return entityID == entity.entityID;
+		}
+		bool operator!=(Entity& entity)
+		{
+			return entityID != entity.entityID;
 		}
 
 		EntityID GetEntityID();
 		Signature GetSignature();
-
+	private:
+		Entity(const Entity&) = delete;
+		Entity& operator=(const Entity&) = delete;
 	protected:
 		EntityID entityID;
 	};
