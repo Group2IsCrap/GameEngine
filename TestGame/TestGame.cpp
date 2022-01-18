@@ -7,6 +7,7 @@
 #include "Source/ECS/Components.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 #include "Source/Maths/Vec3.inl"
+#include "Source/Maths/Vec2.inl"
 
 #include "ImGuiTestLayer.h"
 
@@ -23,7 +24,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", 1280, 720))
+	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", Firelight::Maths::Vec2i(1280, 720)))
 	{
 		// ImGui Test code
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();

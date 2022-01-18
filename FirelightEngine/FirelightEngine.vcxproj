@@ -393,6 +393,7 @@
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Shaders\IShader.h" />
     <ClInclude Include="Source\Graphics\Shaders\PixelShader.h" />
+    <ClInclude Include="Source\Graphics\SpriteBatch.h" />
     <ClInclude Include="Source\ImGuiUI\ImGuiLayer.h" />
     <ClInclude Include="Source\ImGuiUI\ImGuiManager.h" />
     <ClInclude Include="Source\Input\ControllerInput.h" />
@@ -447,6 +448,7 @@
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
     <ClCompile Include="Source\Graphics\Data\VertexTypes.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\IShader.cpp" />
+    <ClCompile Include="Source\Graphics\SpriteBatch.cpp" />
     <ClCompile Include="Source\ImGuiUI\ImGuiLayer.cpp" />
     <ClCompile Include="Source\ImGuiUI\ImGuiManager.cpp" />
     <ClCompile Include="Source\Input\ControllerInput.cpp" />
