@@ -27,4 +27,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\cube.mtls" />
+    <None Include="Assets\%24ENGINE\Materials\default.json" />
+  </ItemGroup>
 </Project>
