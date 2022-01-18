@@ -12,6 +12,7 @@ namespace Firelight::Maths
         Rect(const T& _x, const T& _y, const T& _w, const T& _h);
 
         Rect<T> CreateNDCRectFromPixelRect() const;
+        bool    IsValid() const;
 
     public:
         T x, y, w, h;

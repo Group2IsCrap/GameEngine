@@ -17,8 +17,6 @@ namespace Firelight::Graphics
 {
 	struct Quad
 	{
-		float m_depth;// Between 0 and 1
-
 		// Corners of Quad
 		UnlitVertex m_topLeft;
 		UnlitVertex m_topRight;
@@ -32,9 +30,12 @@ namespace Firelight::Graphics
 		SpriteBatch();
 		~SpriteBatch();
 
-		void NDCDraw(const Maths::Rectf& destRectNDC, const Maths::Rectf& sourceRect, int layer, Texture* texture);
-		void PixelDraw(const Maths::Rectf& destRectPixel, const Maths::Rectf& sourceRect, int layer, Texture* texture);
-		void WorldDraw(const Maths::Rectf& destRectWorld, const Maths::Rectf& sourceRect, int layer, Texture* texture);
+		// Draw with a dest rect in NDC
+		void NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer = 32, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		// Draw with a dest rect in screen pixels
+		void PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer = 32, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		// Draw with a dest rect in world units
+		void WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer = 32, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
 
 		void CreateBatches();
 		const std::vector<Mesh>& GetBatches();

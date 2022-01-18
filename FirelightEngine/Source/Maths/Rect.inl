@@ -35,4 +35,10 @@ namespace Firelight::Maths
 
 		return returnRect;
 	}
+
+	template<typename T>
+	inline bool Rect<T>::IsValid() const
+	{
+		return w >= (T)0 && h >= (T)0;
+	}
 }

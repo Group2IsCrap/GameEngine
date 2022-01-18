@@ -19,6 +19,7 @@
 
 #include "Source/Graphics/SpriteBatch.h"
 
+using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
 
@@ -28,25 +29,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Firelight::Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", Firelight::Maths::Vec2i(1280, 720)))
+	if (Engine::Instance().Initialise(hInstance, "Test Window", "windowClass", Firelight::Maths::Vec2i(1280, 720)))
 	{
 		// ImGui Test code
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
 		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
 
-		Firelight::Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
-		Firelight::Graphics::Texture* textureTest = Firelight::Graphics::AssetManager::Instance().GetDefaultTexture();
+		Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
+		Graphics::Texture* textureTest = Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.jpg");
 
-		while (Firelight::Engine::Instance().ProcessMessages())
+		while (Engine::Instance().ProcessMessages())
 		{
-			Firelight::Engine::Instance().Update();
+			Engine::Instance().Update();
 
-			Firelight::Maths::Rectf dest(100.0f, 100.0f, 200.0f, 200.0f);
-			Firelight::Maths::Rectf source(0.0f, 0.0f, 1024.0f, 1024.0f);
+			for (int pepeIndex = 0; pepeIndex < 100; ++pepeIndex)
+			{
+				Maths::Vec2f pepePos = Engine::Instance().GetWindowDimensionsFloat() * 0.5f + Maths::Vec2f(2.0f, 1.0f) * Maths::Vec2f::GetRandomVector() * Engine::Instance().GetWindowDimensionsFloat().y * 0.5f;
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepePos.x - 100.0f, pepePos.y - 100.0f, 200.0f, 200.0f), textureTest);
+			}
 
-			Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(dest, source, 0, textureTest);
-			Firelight::Engine::Instance().RenderFrame();
+			Engine::Instance().RenderFrame();
 		}
 	}
 

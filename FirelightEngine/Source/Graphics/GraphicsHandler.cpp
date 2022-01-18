@@ -196,12 +196,6 @@ namespace Firelight::Graphics
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
 
-		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencilView.Get());
-
-		float clearColour[4] = { 0.8f, 0.2f, 0.2f, 1.0f };
-		m_deviceContext->ClearRenderTargetView(m_swapChainRenderTargetView.Get(), clearColour);
-		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
 		// TODO: Do fancy render stuff here
 		m_deviceContext->RSSetViewports(1, &m_defaultViewport);
 
@@ -210,6 +204,12 @@ namespace Firelight::Graphics
 
 		m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
 		m_deviceContext->OMSetBlendState(m_blendState.Get(), NULL, 0xFFFFFFFF);
+
+		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencilView.Get());
+
+		float clearColour[4] = { 0.8f, 0.2f, 0.2f, 1.0f };
+		m_deviceContext->ClearRenderTargetView(m_swapChainRenderTargetView.Get(), clearColour);
+		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		m_deviceContext->IASetInputLayout(AssetManager::Instance().GetDefaultVertexShader()->GetInputLayout());
 		m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -221,7 +221,7 @@ namespace Firelight::Graphics
 		m_spriteBatch->CreateBatches();
 		for (auto& batch : m_spriteBatch->GetBatches())
 		{
-			batch.Draw(true);
+			batch.Draw();
 		}
 
 		// ImGui Render

@@ -3,13 +3,13 @@
 
 struct UnlitLitVSPSTransfer
 {
-    float4 pos : POSITION;
+    float4 pos : SV_POSITION;
     float2 texCoord : TEXCOORD;
 };
 
 struct SimpleLitVSPSTransfer
 {
-    float4 pos : POSITION;
+    float4 pos : SV_POSITION;
     float3 normal : NORMAL;
     float2 texCoord : TEXCOORD;
     float3 worldPos : WORLD_POS;
@@ -17,7 +17,7 @@ struct SimpleLitVSPSTransfer
 
 struct FancyLitVSPSTransfer
 {
-    float4 pos : POSITION;
+    float4 pos : SV_POSITION;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 bitangent : BITANGENT;
