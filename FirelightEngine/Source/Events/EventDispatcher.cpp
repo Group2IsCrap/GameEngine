@@ -2,11 +2,12 @@
 
 namespace Firelight::Events
 {
-	std::map<Event::DescriptorType, std::vector<EventDispatcher::CallbackFunctionType>> EventDispatcher::sm_observers;
+	std::map<Event::DescriptorType, std::vector<Listener*>> EventDispatcher::sm_observers;
 
-	void EventDispatcher::Subscribe(const Event::DescriptorType& descriptor, CallbackFunctionType&& callbackFunction)
+	//subscribe the function
+	void EventDispatcher::Subscribe(const Event::DescriptorType& descriptor, Listener* listener)
 	{
-		sm_observers[descriptor].push_back(callbackFunction);
+		sm_observers[descriptor].emplace_back(listener);
 	}
 
 	void EventDispatcher::Unsubscribe(const Event::DescriptorType& descriptor, const int index)
@@ -22,11 +23,11 @@ namespace Firelight::Events
 		sm_observers[descriptor].clear();
 	}
 
-	void EventDispatcher::InvokeEvent(const Event& event)
+	void EventDispatcher::InvokeEvent(const Event& event, void* data)
 	{
+		// we want to pass the arguments here for keycode, yes a char of keycode?
 		auto type = event.Type();
 
-		// Return if no observers
 		if (sm_observers.find(type) == sm_observers.end())
 		{
 			return;
@@ -36,7 +37,7 @@ namespace Firelight::Events
 
 		for (auto&& observer : observers)
 		{
-			observer(event);
+			observer->HandleEvents(data);
 		}
 	}
 }

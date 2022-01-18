@@ -373,6 +373,8 @@
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\ECS\Entity.h" />
     <ClInclude Include="Source\ECS\GameEntity.h" />
+    <ClInclude Include="Source\Events\EventTesting.h" />
+    <ClInclude Include="Source\Events\Listener.h" />
     <ClInclude Include="Source\Graphics\Data\Material.h" />
     <ClInclude Include="Source\Graphics\AssetManager.h" />
     <ClInclude Include="Source\Graphics\Shaders\ComputeShader.h" />
@@ -464,7 +466,6 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
-    <ClCompile Include="Source\Graphics\Data\Vertex.cpp" />
     <ClCompile Include="Source\ECS\System.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\VertexShader.cpp" />
   </ItemGroup>
