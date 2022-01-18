@@ -16,7 +16,7 @@ using namespace Firelight::Maths;
 using namespace Firelight::Graphics;
 using namespace Firelight::Utils;
 
-static const std::filesystem::path s_assetPath = "assets";
+static const std::filesystem::path s_assetPath = "Assets";
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -347,7 +347,7 @@ void ImGuiEditorLayer::RenderContentBrowserPanel()
 
 		std::string lowerPath = path.string();
 		StringHelpers::StringToLower(lowerPath);
-		if (lowerPath.starts_with("assets\\$engine"))
+		if (lowerPath.starts_with("assets\\$"))
 			continue;
 
 		auto relativePath = std::filesystem::relative(path, s_assetPath);

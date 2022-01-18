@@ -150,10 +150,10 @@
     <ClInclude Include="ImGuiEditorLayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\$ENGINE\Materials\default.json" />
-    <None Include="assets\$ENGINE\Models\cube.mtls" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
+    <None Include="Assets\%24ENGINE\Materials\default.json" />
+    <None Include="Assets\%24ENGINE\Models\cube.mtls" />
+    <None Include="Assets\%24ENGINE\Shaders\Shared\VSInputs.hlsli" />
+    <None Include="Assets\%24ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
