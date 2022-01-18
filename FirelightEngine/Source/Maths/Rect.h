@@ -11,7 +11,7 @@ namespace Firelight::Maths
         Rect();
         Rect(const T& _x, const T& _y, const T& _w, const T& _h);
 
-        static void AddNDCVerticiesToVector(const Rect<T>& dest, const Rect<T>& source, std::vector<Graphics::UnlitVertex>& verticies);
+        Rect<T> CreateNDCRectFromPixelRect() const;
 
     public:
         T x, y, w, h;
