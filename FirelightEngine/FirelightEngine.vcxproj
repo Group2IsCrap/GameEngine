@@ -373,7 +373,6 @@
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\ECS\Entity.h" />
     <ClInclude Include="Source\ECS\GameEntity.h" />
-    <ClInclude Include="Source\Events\EventTesting.h" />
     <ClInclude Include="Source\Events\Listener.h" />
     <ClInclude Include="Source\Graphics\Data\Material.h" />
     <ClInclude Include="Source\Graphics\AssetManager.h" />
