@@ -40,6 +40,11 @@ namespace Firelight::SceneManagement
 		/// <returns></returns>
 		int GetBuildIndex(Scene* scene);
 
+		/// <summary>
+		// Returns current active scene
+		/// </summary>
+		Scene* GetActiveScene() { return m_activeScene; }
+
 	private:
 
 		SceneManager();
@@ -49,7 +54,7 @@ namespace Firelight::SceneManagement
 		/// Unloads the scene if it is active
 		/// </summary>
 		/// <param name="index">Scene buildIndex</param>
-		void UnloadScene(int index);
+		void UnloadScene(Scene* scene);
 
 		/// <summary>
 		/// Sets the build index of a scene
