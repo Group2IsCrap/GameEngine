@@ -8,6 +8,7 @@
 
 #include "Colour.h"
 
+#include "../../Maths/Vec2.h"
 #include "../../Maths/Vec3.h"
 
 namespace Firelight::Graphics
@@ -27,7 +28,7 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
 		const Maths::Vec3i& GetDimensions() const;
-		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord);
+		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const;
 
 	private:
 		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);

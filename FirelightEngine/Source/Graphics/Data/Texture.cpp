@@ -87,7 +87,7 @@ namespace Firelight::Graphics
 		return m_dimensions;
 	}
 
-	Maths::Vec2f Texture::GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord)
+	Maths::Vec2f Texture::GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const
 	{
 		Maths::Vec2f returnVec;
 
