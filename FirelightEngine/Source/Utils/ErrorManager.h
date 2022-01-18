@@ -133,6 +133,16 @@ if (!(assertion))\
 	exit(-1);\
 }
 
+// If the assertion fails, dont enter the if, alert the user of an assertion error and log it
+#define ASSERT_IF(assertion, msg)\
+if (!(assertion))\
+{\
+	INTERNAL_ALLOCATE_ASSERTION_ERROR(assertion, msg);\
+	INTERNAL_DISPLAY_ERROR(err);\
+	INTERNAL_LOG_ERROR(err);\
+}\
+else\
+
 // -------------------------------------------------------------------------------------
 // Standard COM Errors
 // -------------------------------------------------------------------------------------

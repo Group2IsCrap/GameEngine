@@ -4,24 +4,24 @@ namespace Firelight::ECS
 {
 	Entity::Entity()
 	{
-		entityID = EntityComponentSystem::Instance()->CreateEntity();
+		m_entityID = EntityComponentSystem::Instance()->CreateEntity();
 	}
 
 	Entity::Entity(EntityID id)
 	{
-		entityID = EntityComponentSystem::Instance()->CreateEntity(id);
+		m_entityID = EntityComponentSystem::Instance()->CreateEntity(id);
 	}
 
 	Entity::~Entity()
 	{
-		EntityComponentSystem::Instance()->RemoveEntity(entityID);
+		EntityComponentSystem::Instance()->RemoveEntity(m_entityID);
 	}
 	EntityID Entity::GetEntityID()
 	{
-		return entityID;
+		return m_entityID;
 	}
 	Signature Entity::GetSignature()
 	{
-		return EntityComponentSystem::Instance()->GetSignature(entityID);
+		return EntityComponentSystem::Instance()->GetSignature(m_entityID);
 	}
 }

@@ -2,6 +2,9 @@
 
 #include "../Utils/ErrorManager.h"
 #include "../Utils/AdapterReader.h"
+#include "../ImGuiUI/ImGuiManager.h"
+
+#include "../Maths/Vec2.h"
 
 namespace Firelight::Graphics
 {
@@ -12,6 +15,7 @@ namespace Firelight::Graphics
 
     GraphicsHandler::~GraphicsHandler()
     {
+		
     }
 
     GraphicsHandler& GraphicsHandler::Instance()
@@ -28,6 +32,9 @@ namespace Firelight::Graphics
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
 
 		m_initialised = true;
+
+		result = Firelight::ImGuiUI::ImGuiManager::Instance()->Initialise(hwnd, GetDevice(), GetDeviceContext());
+		ASSERT_RETURN(result, "ImGui initialisation failed", false);
 
         return true;
     }
@@ -55,11 +62,9 @@ namespace Firelight::Graphics
 		swapChainDescription.SampleDesc.Quality = 0; // Lowest image quality
 
 		swapChainDescription.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-
 		swapChainDescription.BufferCount = 1;
 
 		swapChainDescription.OutputWindow = hwnd;
-
 		swapChainDescription.Windowed = TRUE;
 
 		swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -169,10 +174,11 @@ namespace Firelight::Graphics
         return m_deviceContext.Get();
     }
 
-    void GraphicsHandler::Update(float deltaTime)
+    void GraphicsHandler::Update(double deltaTime)
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
 
+		(void)deltaTime;// Remove me when deltatime is actually needed
     }
 
     void GraphicsHandler::Render()
@@ -186,6 +192,9 @@ namespace Firelight::Graphics
 		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		// TODO: Do fancy render stuff here
+
+		// ImGui Render
+		Firelight::ImGuiUI::ImGuiManager::Instance()->Render();
 
 		m_swapChain->Present(true, NULL);
     }
