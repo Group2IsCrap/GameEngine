@@ -44,6 +44,7 @@ static void DrawVec3Control(const std::string& label, float& x, float& y, float&
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 	ImGui::PushFont(boldFont);
 	ImGui::Button("X", buttonSize);
+	ImGui::AlignTextToFramePadding();
 	ImGui::PopFont();
 	ImGui::PopStyleColor(3);
 

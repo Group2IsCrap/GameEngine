@@ -22,9 +22,7 @@ public:
 private:
 
 	void RenderMenuBar();
-
-	void RenderPropertiesPanel();
-	void DrawComponents(Firelight::ECS::Entity* gameEntity);
+	void SetupTheme();
 
 private:
 	std::vector<Firelight::ECS::Entity*> m_entitiesInScene;
