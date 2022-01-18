@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Entity.h" />
+    <ClInclude Include="Source\ECS\GameEntity.h" />
     <ClInclude Include="Source\Graphics\Data\Material.h" />
     <ClInclude Include="Source\Graphics\AssetManager.h" />
     <ClInclude Include="Source\Graphics\Shaders\ComputeShader.h" />
@@ -382,6 +384,8 @@
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Shaders\IShader.h" />
     <ClInclude Include="Source\Graphics\Shaders\PixelShader.h" />
+    <ClInclude Include="Source\ImGuiUI\ImGuiLayer.h" />
+    <ClInclude Include="Source\ImGuiUI\ImGuiManager.h" />
     <ClInclude Include="Source\Input\ControllerInput.h" />
     <ClInclude Include="Source\Input\ControllerManager.h" />
     <ClInclude Include="Source\Input\KeyboardEvent.h" />
@@ -410,6 +414,8 @@
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Entity.cpp" />
+    <ClCompile Include="Source\ECS\GameEntity.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Material.cpp" />
@@ -425,6 +431,8 @@
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
     <ClCompile Include="Source\Graphics\Data\VertexTypes.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\IShader.cpp" />
+    <ClCompile Include="Source\ImGuiUI\ImGuiLayer.cpp" />
+    <ClCompile Include="Source\ImGuiUI\ImGuiManager.cpp" />
     <ClCompile Include="Source\Input\ControllerInput.cpp" />
     <ClCompile Include="Source\Input\ControllerManager.cpp" />
     <ClCompile Include="Source\Input\KeyboardEvent.cpp" />
