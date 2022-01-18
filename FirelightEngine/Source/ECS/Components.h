@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ECSDefines.h"
+#include "../Maths/Vec3.h"
 #include <string>
 
 namespace Firelight::ECS
@@ -22,12 +23,13 @@ namespace Firelight::ECS
 	/// </summary>
 	struct TransformComponent : BaseComponent
 	{
-		int posX;
-		int posY;
+		Firelight::Maths::Vec3f position;
+		// TODO : Add some form of rotation, unsure what everyone wants.
+		Firelight::Maths::Vec3f scale;
 
 		std::string Output() override
 		{
-			return "X: " + std::to_string(posX) + ", Y: " + std::to_string(posY);
+			return "X: " + std::to_string(position.x) + ", Y: " + std::to_string(position.y) + ", Z: " + std::to_string(position.z);
 		}
 	};
 
@@ -36,11 +38,11 @@ namespace Firelight::ECS
 	/// </summary>
 	struct PhysicsComponent : BaseComponent
 	{
-		int velX;
-		int velY;
+		Firelight::Maths::Vec3f velocity;
+
 		std::string Output() override
 		{
-			return "X: " + std::to_string(velX) + ", Y: " + std::to_string(velY);
+			return "X: " + std::to_string(velocity.x) + ", Y: " + std::to_string(velocity.y);
 		}
 	};
 }
