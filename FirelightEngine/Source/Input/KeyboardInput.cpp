@@ -55,7 +55,7 @@ namespace Firelight::Input {
     {
         m_Keystates[key] = true;
         
-        m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::press, key));
+        //m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::press, key));
         Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
         
     }
@@ -64,13 +64,13 @@ namespace Firelight::Input {
     {
         m_Keystates[key] = false;
 
-        m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::release, key));
+        //m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::release, key));
         Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyRelease(), (void*)key);
     }
 
     void KeyboardInput::OnChar(const unsigned char key)
     {
-        m_CharBuff.push(key);
+        //m_CharBuff.push(key);
         //Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
     }
 
