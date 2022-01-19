@@ -1,2 +1,3 @@
-﻿  TestGame.cpp
-  TestGame.vcxproj -> C:\Users\n020868i\Documents\GitHub\GameEngine\x64\Debug\TestGame.exe
+﻿DirectXTK.lib(pch.obj) : warning LNK4099: PDB 'DirectXTK.pdb' was not found with 'DirectXTK.lib(pch.obj)' or at 'D:\GroupSimGameEngine\x64\Debug\DirectXTK.pdb'; linking object as if no debug info
+DirectXTK.lib(WICTextureLoader.obj) : warning LNK4099: PDB 'DirectXTK.pdb' was not found with 'DirectXTK.lib(WICTextureLoader.obj)' or at 'D:\GroupSimGameEngine\x64\Debug\DirectXTK.pdb'; linking object as if no debug info
+  TestGame.vcxproj -> D:\GroupSimGameEngine\x64\Debug\TestGame.exe

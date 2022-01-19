@@ -6,6 +6,8 @@
 #include "Source/Panels/ContentBrowserPanel.h"
 #include "Source/Panels/HierarchyPanel.h"
 #include "Source/Panels/InspectorPanel.h"
+#include "Source/Panels/ViewportPanel.h"
+#include "Source/Panels/AnimationWindow.h"
 
 #include <vector>
 
@@ -31,4 +33,8 @@ private:
 	ContentBrowserPanel* m_contentBrowserPanel;
 	HierarchyPanel* m_hierarchyPanel;
 	InspectorPanel* m_inspectorPanel;
+	ViewportPanel* m_viewportPanel;
+	AnimationWindow* m_animationWindow;
+
+	bool m_drawAnimationWindow;
 };

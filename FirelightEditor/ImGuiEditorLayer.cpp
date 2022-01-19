@@ -10,6 +10,8 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 	m_contentBrowserPanel = new ContentBrowserPanel();
 	m_hierarchyPanel = new HierarchyPanel();
 	m_inspectorPanel = new InspectorPanel();
+	m_viewportPanel = new ViewportPanel();
+	m_animationWindow = new AnimationWindow();
 
 	m_selectionContextHierarchy = {};
 
@@ -18,6 +20,8 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 
 	m_hierarchyPanel->m_entitiesInScene.push_back(test);
 	m_hierarchyPanel->m_inspectorPanel = m_inspectorPanel;
+
+	m_drawAnimationWindow = false;
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.Fonts->AddFontFromFileTTF("assets/$editor/fonts/opensans/OpenSans-Bold.ttf", 16.0f);
@@ -35,6 +39,21 @@ ImGuiEditorLayer::~ImGuiEditorLayer()
 	}
 
 	m_entitiesInScene.clear();
+
+	delete m_contentBrowserPanel;
+	m_contentBrowserPanel = nullptr;
+
+	delete m_hierarchyPanel;
+	m_hierarchyPanel = nullptr;
+
+	delete m_inspectorPanel;
+	m_inspectorPanel = nullptr;
+
+	delete m_viewportPanel;
+	m_viewportPanel = nullptr;
+
+	delete m_animationWindow;
+	m_animationWindow = nullptr;
 }
 
 void ImGuiEditorLayer::Render()
@@ -74,6 +93,10 @@ void ImGuiEditorLayer::Render()
 	m_contentBrowserPanel->Draw();
 	m_hierarchyPanel->Draw();
 	m_inspectorPanel->Draw();
+	m_viewportPanel->Draw();
+
+	if (m_drawAnimationWindow)
+		m_animationWindow->Draw();
 
 	ImGui::End();
 }
@@ -99,6 +122,11 @@ void ImGuiEditorLayer::RenderMenuBar()
 			if (ImGui::MenuItem("New Game Entity"))
 
 			ImGui::MenuItem("Reset Camera Position");
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Window"))
+		{
+			ImGui::MenuItem("Animation", NULL, &m_drawAnimationWindow);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))
