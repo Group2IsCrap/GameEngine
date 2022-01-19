@@ -46,13 +46,16 @@ namespace Firelight::Graphics
 
         Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
         Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencilBuffer;
-        Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_defaultDepthStencilState;
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_disabledDepthStencilState;
 
         CD3D11_VIEWPORT m_defaultViewport;
 
         Microsoft::WRL::ComPtr<ID3D11RasterizerState>   m_rasterizerState;
         Microsoft::WRL::ComPtr<ID3D11BlendState>        m_blendState;
-        Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_samplerState;
+
+        Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_wrapSamplerState;
+        Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_clampSamplerState;
 
         std::unique_ptr<SpriteBatch>                    m_spriteBatch;
     };

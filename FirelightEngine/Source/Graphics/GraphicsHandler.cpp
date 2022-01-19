@@ -41,6 +41,7 @@ namespace Firelight::Graphics
 		ASSERT_RETURN(result, "ImGui initialisation failed", false);
 
 		m_spriteBatch = std::make_unique<SpriteBatch>();
+		m_spriteBatch->SetSortMode(SpriteBatch::SortMode::e_BackToFrontTexture);
 
         return true;
     }
@@ -104,12 +105,22 @@ namespace Firelight::Graphics
 			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil view.", false);
 		}
 
-		// Create depth stencil state
+		// Create default depth stencil state
 		{
 			CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);
 			depthStencilDesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 
-			hr = m_device->CreateDepthStencilState(&depthStencilDesc, m_depthStencilState.GetAddressOf());
+			hr = m_device->CreateDepthStencilState(&depthStencilDesc, m_defaultDepthStencilState.GetAddressOf());
+			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil state.", false);
+		}
+
+		// Create disabled depth stencil state
+		{
+			CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);
+			depthStencilDesc.DepthEnable = false;
+			depthStencilDesc.StencilEnable = false;
+
+			hr = m_device->CreateDepthStencilState(&depthStencilDesc, m_disabledDepthStencilState.GetAddressOf());
 			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil state.", false);
 		}
 
@@ -151,15 +162,27 @@ namespace Firelight::Graphics
 			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create default blend state.", false);
 		}
 
-		// Create sampler state
+		// Create wrap sampler state
 		{
 			CD3D11_SAMPLER_DESC samplerDesc(D3D11_DEFAULT);
-			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;//D3D11_FILTER_MIN_MAG_MIP_LINEAR
+			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 			samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 
-			hr = m_device->CreateSamplerState(&samplerDesc, m_samplerState.GetAddressOf());
+			hr = m_device->CreateSamplerState(&samplerDesc, m_wrapSamplerState.GetAddressOf());
+			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create sampler state", false);
+		}
+
+		// Create clamp sampler state
+		{
+			CD3D11_SAMPLER_DESC samplerDesc(D3D11_DEFAULT);
+			samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+			samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+			samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+			samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+			hr = m_device->CreateSamplerState(&samplerDesc, m_clampSamplerState.GetAddressOf());
 			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create sampler state", false);
 		}
 
@@ -200,9 +223,9 @@ namespace Firelight::Graphics
 		m_deviceContext->RSSetViewports(1, &m_defaultViewport);
 
 		m_deviceContext->RSSetState(m_rasterizerState.Get());
-		m_deviceContext->OMSetDepthStencilState(m_depthStencilState.Get(), 0);
+		m_deviceContext->OMSetDepthStencilState(m_defaultDepthStencilState.Get(), 0);
 
-		m_deviceContext->PSSetSamplers(0, 1, m_samplerState.GetAddressOf());
+		m_deviceContext->PSSetSamplers(0, 1, m_clampSamplerState.GetAddressOf());
 		m_deviceContext->OMSetBlendState(m_blendState.Get(), NULL, 0xFFFFFFFF);
 
 		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencilView.Get());
@@ -218,6 +241,8 @@ namespace Firelight::Graphics
 		m_deviceContext->PSSetShader(AssetManager::Instance().GetDefaultPixelShader()->GetShader(), NULL, 0);
 
 		// Render Sprite batch batches
+		m_deviceContext->OMSetDepthStencilState(m_disabledDepthStencilState.Get(), 0);
+
 		m_spriteBatch->CreateBatches();
 		for (auto& batch : m_spriteBatch->GetBatches())
 		{

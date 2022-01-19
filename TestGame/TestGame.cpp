@@ -37,37 +37,49 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
 
 		Graphics::Model* model = Graphics::AssetManager::Instance().GetModel<Graphics::FancyLitVertex>("cube.obj");
-		Graphics::Texture* textureTest = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
 
-		Maths::Vec2f pepePositions[100];
-		Maths::Vec2f pepeVelocities[100];
-		int pepeLayers[100];
+		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
+
+		struct Pepe
+		{
+			Maths::Vec2f pos;
+			Maths::Vec2f vel;
+			float rot;
+			float rotSpeed;
+			int layer;
+		};
+		Pepe pepes[100];
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
 		for (int pepeIndex = 0; pepeIndex < 100; ++pepeIndex)
 		{
-			pepeVelocities[pepeIndex] = Maths::Vec2f::GetRandomVector();
-			pepeLayers[pepeIndex] = (int)(Maths::Random::ZeroToOne<float>() * 64.0f);
+			pepes[pepeIndex].vel = Maths::Vec2f::GetRandomVector() * 300.0f;
+			pepes[pepeIndex].layer = (int)(Maths::Random::ZeroToOne<float>() * 64.0f);
+			pepes[pepeIndex].rotSpeed = Maths::Random::NegOneToOne<float>() * 10.0f;
+			pepes[pepeIndex].rot = 0.0f;
 		}
 
 		while (Engine::Instance().ProcessMessages())
 		{
-			Engine::Instance().Update();
+			double deltaTime = Engine::Instance().Update();
 			for (int pepeIndex = 0; pepeIndex < 100; ++pepeIndex)
 			{
-				Maths::Vec2f& pepePos = pepePositions[pepeIndex];
-				pepePositions[pepeIndex] += pepeVelocities[pepeIndex];
+				Pepe& pepe = pepes[pepeIndex];
 
-				if (pepePos.x > windowDimensions.x + 100.0f) pepePos.x -= windowDimensions.x + 200.0f;
-				if (pepePos.x < -100.0f) pepePos.x += windowDimensions.x + 200.0f;
-				if (pepePos.y > windowDimensions.y + 100.0f) pepePos.y -= windowDimensions.y + 200.0f;
-				if (pepePos.y < -100.0f) pepePos.y += windowDimensions.y + 200.0f;
+				pepe.pos += pepe.vel * (float)deltaTime;
+				pepe.rot += pepe.rotSpeed * (float)deltaTime;
 
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepePositions[pepeIndex].x - 100.0f, pepePos.y - 100.0f, 200.0f, 200.0f), textureTest, pepeLayers[pepeIndex]);
+				if (pepe.pos.x > windowDimensions.x + 100.0f) pepe.pos.x -= windowDimensions.x + 200.0f;
+				if (pepe.pos.x < -100.0f) pepe.pos.x += windowDimensions.x + 200.0f;
+				if (pepe.pos.y > windowDimensions.y + 100.0f) pepe.pos.y -= windowDimensions.y + 200.0f;
+				if (pepe.pos.y < -100.0f) pepe.pos.y += windowDimensions.y + 200.0f;
+
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeIndex % 2 == 0 ? pepeTexture : glowTexture, pepes[pepeIndex].layer, (double)pepe.rot);
 			}
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 0);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
 
 			Engine::Instance().RenderFrame();
 		}

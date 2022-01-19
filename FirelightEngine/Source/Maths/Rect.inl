@@ -41,4 +41,16 @@ namespace Firelight::Maths
 	{
 		return w >= (T)0 && h >= (T)0;
 	}
+
+	template<typename T>
+	inline Vec2<T> Rect<T>::GetCentre() const
+	{
+		return Vec2<T>(x + w * 0.5, y + h * 0.5);
+	}
+
+	template<typename T>
+	inline Vec2<T> Rect<T>::GetCentreNDC() const
+	{
+		return Vec2<T>(x + w * 0.5, y - h * 0.5);
+	}
 }

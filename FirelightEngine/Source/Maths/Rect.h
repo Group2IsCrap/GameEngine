@@ -2,6 +2,8 @@
 
 #include "../Graphics/Data/VertexTypes.h"
 
+#include "Vec2.h"
+
 namespace Firelight::Maths
 {
     template<typename T>
@@ -13,6 +15,9 @@ namespace Firelight::Maths
 
         Rect<T> CreateNDCRectFromPixelRect() const;
         bool    IsValid() const;
+
+        Vec2<T> GetCentre() const;
+        Vec2<T> GetCentreNDC() const;
 
     public:
         T x, y, w, h;

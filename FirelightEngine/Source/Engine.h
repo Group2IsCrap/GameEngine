@@ -23,9 +23,9 @@ namespace Firelight
         const Maths::Vec2i& GetWindowDimensions() const;
         const Maths::Vec2f& GetWindowDimensionsFloat() const;
 
-        bool ProcessMessages();
-        void Update();
-        void RenderFrame();
+        bool   ProcessMessages();
+        double Update();
+        void   RenderFrame();
 
     private:
         Engine();

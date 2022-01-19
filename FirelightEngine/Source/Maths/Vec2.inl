@@ -208,4 +208,26 @@ namespace Firelight::Maths
     {
         return vector1 + (vector2 - vector1) * delta;
     }
+
+    template<typename T>
+    inline Vec2<T> Vec2<T>::RotateAroundPoint(const Vec2<T>& toRotate, const Vec2<T>& point, double rotation, bool correctNDC, float aspect)
+    {
+        Vec2<T> offset = toRotate - point;
+        Vec2<T> rotatedOffset;
+
+        if (correctNDC)
+        {
+            offset.y /= aspect;
+        }
+
+        rotatedOffset.x = (T)(cos(rotation) * (double)offset.x - sin(rotation) * (double)offset.y);
+        rotatedOffset.y = (T)(sin(rotation) * (double)offset.x + cos(rotation) * (double)offset.y);
+
+        if (correctNDC)
+        {
+            rotatedOffset.y *= aspect;
+        }
+
+        return point + rotatedOffset;
+    }
 }

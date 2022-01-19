@@ -50,6 +50,8 @@ namespace Firelight::Maths
         static Vec2<T> GetRandomDirection();
         static Vec2<T> Lerp(const Vec2<T>& vector1, const Vec2<T>& Vec2, T delta);
 
+        static Vec2<T> RotateAroundPoint(const Vec2<T>& toRotate, const Vec2<T>& point, double rotation, bool correctNDC = false, float aspect = 0.0f);
+
     public:
         T x, y;
     };

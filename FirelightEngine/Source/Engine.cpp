@@ -68,7 +68,7 @@ namespace Firelight
         return m_windowContainer.GetWindow().GetDimensionsFloat();
     }
 
-    void Engine::Update()
+    double Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
         m_frameTimer.Stop();
@@ -79,6 +79,8 @@ namespace Firelight
         // Update engine systems with deltaTime here
 
         Input::ProcessInput::Instance()->TestInput();
+
+        return deltaTime;
     }
 
     void Engine::RenderFrame()
