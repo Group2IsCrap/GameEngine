@@ -18,7 +18,7 @@ namespace Firelight::Graphics
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;
 
-        void Update(float deltaTime);
+        void Update(double deltaTime);
         void Render();
 
     private:
@@ -43,6 +43,5 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11RasterizerState>   m_rasterizerState;
         Microsoft::WRL::ComPtr<ID3D11BlendState>        m_blendState;
         Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_samplerState;
-
     };
 }

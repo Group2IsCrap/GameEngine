@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "CppUnitTest.h"
 
 #include "Source/ECS/GameEntity.h"
 
@@ -69,6 +68,22 @@ namespace UnitTests::ECS
 		}
 
 		/// <summary>
+		/// Test to confirm that when a component is added to an Entity, the component pointer can be retrieved
+		/// </summary>
+		TEST_METHOD(EntityComponentAutoCreatedRetrievalTest)
+		{
+			//Arrange
+			Entity* player = new Entity();
+
+			//Act
+			player->AddComponent<IdentificationComponent>();
+
+			//Assert
+			Assert::IsNotNull(player->GetComponent<IdentificationComponent>());
+			delete player;
+		}
+
+		/// <summary>
 		/// Test to confirm that retrieving a non existant component returns a nullptr
 		/// </summary>
 		TEST_METHOD(EntityRetrieveNonExistantComponentTest)
@@ -83,6 +98,67 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::IsNull(player->GetComponent<PhysicsComponent>());
 			delete player;
+		}
+
+		/// <summary>
+		/// Test to confirm that two entities are equal
+		/// </summary>
+		TEST_METHOD(EntityEqualityOperatorFalseTest)
+		{
+			//Arrange
+			Entity ent1 = Entity();
+			Entity ent2 = Entity();
+
+			//Act
+			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+
+			//Assert
+			Assert::IsFalse(ent1 == ent2);
+		}
+
+
+		TEST_METHOD(EntityEqualityOperatorTrueTest)
+		{
+			//Arrange
+			Entity ent1 = Entity();
+			Entity ent2 = Entity(ent1.GetEntityID());
+
+			//Act
+			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+
+			//Assert
+			Assert::IsTrue(ent1 == ent2);
+		}
+
+		TEST_METHOD(EntityNoEqualityOperatorTrueTest)
+		{
+			//Arrange
+			Entity ent1 = Entity();
+			Entity ent2 = Entity();
+
+			//Act
+			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+
+			//Assert
+			Assert::IsTrue(ent1 != ent2);
+		}
+
+
+		TEST_METHOD(EntityNoEqualityOperatorFalseTest)
+		{
+			//Arrange
+			Entity ent1 = Entity();
+			Entity ent2 = Entity(ent1.GetEntityID());
+
+			//Act
+			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+
+			//Assert
+			Assert::IsFalse(ent1 != ent2);
 		}
 
 		/// <summary>

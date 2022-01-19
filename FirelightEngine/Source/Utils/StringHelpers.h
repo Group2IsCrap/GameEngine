@@ -8,10 +8,16 @@
 
 namespace Firelight::Utils::StringHelpers
 {
+	static void StringToLower(std::string& str)
+	{
+		std::transform(str.begin(), str.end(), str.begin(),
+			[](unsigned char c) { return std::tolower(c); });
+	}
+
 	static std::wstring StringToWide(const std::string& str)
 	{
-		std::wstring wide_string(str.begin(), str.end());
-		return wide_string;
+		std::wstring wideString(str.begin(), str.end());
+		return wideString;
 	}
 
 	static std::string WideStringToString(const std::wstring& wideString)

@@ -23,6 +23,27 @@ namespace Firelight::ECS
 		m_componentManager = std::make_unique<ComponentManager>();
 	}
 
+
+	/// <summary>
+	/// Creates a new entity
+	/// </summary>
+	/// <returns></returns>
+	EntityID EntityComponentSystem::CreateEntity()
+	{
+		return m_entityManager->CreateEntity();
+	}
+
+	/// <summary>
+	/// Creates a new entity with the given ID
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	EntityID EntityComponentSystem::CreateEntity(EntityID id)
+	{
+		return m_entityManager->CreateEntity(id);
+	}
+
+
 	/// <summary>
 	/// Outputs debug data on all entities
 	/// </summary>

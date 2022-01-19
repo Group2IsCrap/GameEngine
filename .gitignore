@@ -5,8 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
-*.pdb
 
 # Precompiled Headers
 *.gch
@@ -36,7 +34,25 @@
 /x64/
 /Firelight/x64/
 /FirelightEngine/x64/
+/FirelightEditor/x64/
+/x64/Debug/*.pdb
+/x64/Debug/*.obj
+/x64/Debug/*.ilk
+x64/Debug/*.exe
 /TestGame/x64/
 /UnitTests/x64/
-*.ilk
-*.pdb
+/FirelightEngine/x64/
+/UnitTests/x64/
+
+# Allow
+!/Firelight/Resources/*.obj
+
+!/x64/Debug/assimp-vc140-mt.dll
+!/x64/Debug/D3DCompiler_42.dll
+!/x64/Debug/D3DX9_42.dll
+
+!/Libs/Shared/assimp-vc140-mt.lib
+!/Libs/x64/Debug/DirectXTK.lib
+!/Libs/x64/Release/DirectXTK.lib
+!/Libs/x86/Debug/DirectXTK.lib
+!/Libs/x86/Release/DirectXTK.lib
