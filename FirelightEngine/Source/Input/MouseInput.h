@@ -39,10 +39,10 @@ namespace Firelight::Input {
 		HRESULT RegisterMouseDevise();
 
 		bool EventBufferIsEmpty();
-		MouseEvent ReadEvent();
+		Events::Input::MouseEvent ReadEvent();
 
 	private:
-		std::queue<MouseEvent> m_MouseEventBuffer;
+		std::queue<Events::Input::MouseEvent> m_MouseEventBuffer;
 
 		bool m_IsLeftDown = false;
 		bool m_IsRightDown = false;

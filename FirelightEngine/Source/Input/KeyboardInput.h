@@ -11,7 +11,7 @@ namespace Firelight::Input {
 		bool KeyBufferIsEmpty();
 		bool CharBufferIsEmpty();
 
-		KeyboardEvent ReadKey();
+		Events::Input::KeyboardEvent ReadKey();
 		unsigned char Raedchar();
 
 		void OnKeyPress(const unsigned char key);
@@ -29,11 +29,11 @@ namespace Firelight::Input {
 		bool IsKeysAutoRepat();
 
 	private:
-		bool m_AutoRepeatKeys = false;
+		bool m_AutoRepeatKeys = true;
 		bool m_AutoRepeatChars = false;
 		bool m_Keystates[256];
 
-		std::queue<KeyboardEvent> m_KeyBuffer;
+		std::queue<Events::Input::KeyboardEvent> m_KeyBuffer;
 		std::queue<unsigned char> m_CharBuff;
 	};
 

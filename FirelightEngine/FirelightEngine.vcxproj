@@ -363,6 +363,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Input\GetInput.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -426,6 +427,7 @@
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />

@@ -7,10 +7,7 @@ namespace Firelight::Input {
         for (int i = 0; i < 256; i++)
         {
             m_Keystates[i] = false;
-        }
-
-        //Events::EventDispatcher::Subscribe(KeyboardEvent::sm_Des, std::bind(KeyboardEvent));
-        
+        } 
     }
 
     bool KeyboardInput::KeyIsPress(const unsigned char key)
@@ -28,14 +25,14 @@ namespace Firelight::Input {
         return m_CharBuff.empty();
     }
 
-    KeyboardEvent KeyboardInput::ReadKey()
+    Events::Input::KeyboardEvent KeyboardInput::ReadKey()
     {
         if (m_KeyBuffer.empty()) {
-            return KeyboardEvent();
+            return Events::Input::KeyboardEvent();
         }
         else
         {
-            KeyboardEvent event = m_KeyBuffer.front();
+            Events::Input::KeyboardEvent event = m_KeyBuffer.front();
             m_KeyBuffer.pop();
             return event;
         }
@@ -58,23 +55,26 @@ namespace Firelight::Input {
     {
         m_Keystates[key] = true;
         
-        m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::press, key));
+        m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::press, key));
+        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
         
     }
 
     void KeyboardInput::OnKeyRelace(const unsigned char key)
     {
         m_Keystates[key] = false;
-        m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::release, key));
 
-        Events::EventDispatcher::InvokeEvent(KeyboardEvent());
+        m_KeyBuffer.push(Events::Input::KeyboardEvent(Events::Input::KeyboardEvent::KeyEvent::release, key));
+        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyRelease(), (void*)key);
     }
 
     void KeyboardInput::OnChar(const unsigned char key)
     {
         m_CharBuff.push(key);
+        //Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
     }
 
+    //repeat keyinput
     void KeyboardInput::EnableAutoRepeatKeys()
     {
         m_AutoRepeatKeys = true;

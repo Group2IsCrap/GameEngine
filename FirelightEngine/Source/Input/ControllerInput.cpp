@@ -1,6 +1,7 @@
 #include "ControllerInput.h"
 #include <math.h>
 #include<cstdio>
+#include"..\Events\EventDispatcher.h"
 namespace Firelight::Input {
     ControllerInput::ControllerInput():
         m_User_ID(0),
@@ -27,12 +28,21 @@ namespace Firelight::Input {
     bool ControllerInput::IsConnected()
     {
         DWORD dwResult;
-
-        ZeroMemory(&m_State, sizeof(XINPUT_STATE));
+        XINPUT_STATE CollectedState;
+        ZeroMemory(&CollectedState, sizeof(XINPUT_STATE));
 
         //Simply get the state of the controller from XInput.
-        dwResult = XInputGetState(m_User_ID, &m_State);
+        dwResult = XInputGetState(m_User_ID, &CollectedState);
 
+
+        if (CollectedState.dwPacketNumber == m_State.dwPacketNumber) {
+            return false;
+        }
+        else
+        {
+            ZeroMemory(&m_State, sizeof(XINPUT_STATE));
+            m_State = CollectedState;
+        }
         if (dwResult == ERROR_SUCCESS)
         {
             m_Isconnected = true;
@@ -51,10 +61,9 @@ namespace Firelight::Input {
     //Translate into Non Xinput Data
     void ControllerInput::ProcessInput()
     {
-        if (IsConnected()) {
-            //trigger press amount between 0 and 1
-            m_LeftTriggerPress = (float)m_State.Gamepad.bLeftTrigger / 255;
-            m_RightTriggerPress = (float)m_State.Gamepad.bRightTrigger / 255;
+        if (IsConnected()) {  
+            ControllerState State;
+           
 
             //dead zone right Thumb
             double RX = m_State.Gamepad.sThumbRX;
@@ -80,16 +89,17 @@ namespace Firelight::Input {
                 //optionally normalize the magnitude with respect to its expected range
                 //giving a magnitude value of 0.0 to 1.0
                 m_NormalizedRightThumbMagnitude = m_MagnitudeRightThum / (32767 - m_DeadzoneLeftThum);
+
+                State.RightStick = Maths::Vec2f(m_NormalRightThumX, m_NormalRightThumY);
             }
             else //if the controller is in the deadzone zero out the magnitude
             {
+                State.RightStick = Maths::Vec2f(0, 0);
                 m_MagnitudeRightThum = 0.0;
                 m_NormalizedRightThumbMagnitude = 0.0;
             }
 
-            //sticks movement between -1 and 1
-            /*m_NormalRightThumX = fmaxf(-1, (double)state.Gamepad.sThumbRX / 32767);
-            m_NormalRightThumY = fmaxf(-1, (double)state.Gamepad.sThumbRY / 32767);*/
+           
 
 
 
@@ -117,15 +127,50 @@ namespace Firelight::Input {
                 //optionally normalize the magnitude with respect to its expected range
                 //giving a magnitude value of 0.0 to 1.0
                 m_NormalizedLeftThumbMagnitude = m_MagnitudeLeftThum / (32767 - m_DeadzoneRightThum);
+                State.LeftStick = Maths::Vec2f(m_NormalLeftThumX, m_NormalLeftThumY);
             }
             else //if the controller is in the deadzone zero out the magnitude
             {
+                State.RightStick = Maths::Vec2f(0, 0);
                 m_MagnitudeLeftThum = 0.0;
                 m_NormalizedLeftThumbMagnitude = 0.0;
             }
 
-          /*  m_NormalLeftThumX = fmaxf(-1, (float)state.Gamepad.sThumbLX / 32767);
-            m_NormalLeftThumY = fmaxf(-1, (float)state.Gamepad.sThumbLY / 32767);*/
+            
+           
+            if (m_State.Gamepad.bLeftTrigger > m_TriggerThreshold) {
+                m_LeftTriggerPress = (float)m_State.Gamepad.bLeftTrigger / 255;
+                State.LeftTrigger = m_LeftTriggerPress;
+                State.RightTrigger = 0;
+            }
+            if (m_State.Gamepad.bRightTrigger > m_TriggerThreshold) {
+                m_RightTriggerPress = (float)m_State.Gamepad.bRightTrigger / 255;
+                State.RightTrigger = m_RightTriggerPress;
+            }
+            else
+            {
+                State.RightTrigger = 0;
+            }
+
+            //converson to understadable state
+          
+            State.A = IsPressed(XINPUT_GAMEPAD_A);
+            State.B = IsPressed(XINPUT_GAMEPAD_B);
+            State.Y = IsPressed(XINPUT_GAMEPAD_Y);
+            State.X = IsPressed(XINPUT_GAMEPAD_X);
+            State.DPADUp = IsPressed(XINPUT_GAMEPAD_DPAD_UP);
+            State.DPADDown = IsPressed(XINPUT_GAMEPAD_DPAD_DOWN);
+            State.DPADLeft = IsPressed(XINPUT_GAMEPAD_DPAD_LEFT);
+            State.DPADRight = IsPressed(XINPUT_GAMEPAD_DPAD_RIGHT);
+            State.LeftBumber = IsPressed(XINPUT_GAMEPAD_LEFT_SHOULDER);
+            State.RightBumber = IsPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER);
+            State.Back = IsPressed(XINPUT_GAMEPAD_BACK);
+            State.Start = IsPressed(XINPUT_GAMEPAD_START);
+            State.StickLeftPress = IsPressed(XINPUT_GAMEPAD_LEFT_THUMB);
+            State.StickRightPress = IsPressed(XINPUT_GAMEPAD_RIGHT_THUMB);
+
+                Events::EventDispatcher::InvokeListeners(Events::Input::ContollerEvent(), (void*)&State);
+            
         }
        
     }
@@ -196,6 +241,90 @@ namespace Firelight::Input {
         return (m_State.Gamepad.wButtons & buttion) != 0;
     }
 
+    Maths::Vec2f ControllerInput::GetLeftStickState()
+    { //dead zone left
+        double LX = m_State.Gamepad.sThumbLX;
+        double LY = m_State.Gamepad.sThumbLY;
+
+        //determine how far the controller is pushed
+        m_MagnitudeLeftThum = sqrt(LX * LX + LY * LY);
+
+        //determine the direction the controller is pushed
+        m_NormalLeftThumX = LX / m_MagnitudeLeftThum;
+        m_NormalLeftThumY = LY / m_MagnitudeLeftThum;
+
+
+        //check if the controller is outside a circular dead zone
+        if (m_MagnitudeLeftThum > m_DeadzoneRightThum)
+        {
+            //clip the magnitude at its expected maximum value
+            if (m_MagnitudeLeftThum > 32767) m_MagnitudeLeftThum = 32767;
+
+            //adjust magnitude relative to the end of the dead zone
+            m_MagnitudeLeftThum -= m_DeadzoneRightThum;
+
+            //optionally normalize the magnitude with respect to its expected range
+            //giving a magnitude value of 0.0 to 1.0
+            m_NormalizedLeftThumbMagnitude = m_MagnitudeLeftThum / (32767 - m_DeadzoneRightThum);
+            return Maths::Vec2f(m_NormalLeftThumX, m_NormalLeftThumY);
+        }
+        else //if the controller is in the deadzone zero out the magnitude
+        {
+            m_MagnitudeLeftThum = 0.0;
+            m_NormalizedLeftThumbMagnitude = 0.0;
+        }
+
+        return Maths::Vec2f();
+        
+    }
+
+    Maths::Vec2f ControllerInput::GetRightStickState()
+    {
+        //dead zone right Thumb
+        double RX = m_State.Gamepad.sThumbRX;
+        double RY = m_State.Gamepad.sThumbRY;
+
+        //determine how far the controller is pushed
+        m_MagnitudeRightThum = sqrt(RX * RX + RY * RY);
+
+        //determine the direction the controller is pushed
+        m_NormalRightThumX = RX / m_MagnitudeRightThum;
+        m_NormalRightThumY = RY / m_MagnitudeRightThum;
+
+
+        //check if the controller is outside a circular dead zone
+        if (m_MagnitudeRightThum > m_DeadzoneLeftThum)
+        {
+            //clip the magnitude at its expected maximum value
+            if (m_MagnitudeRightThum > 32767) m_MagnitudeRightThum = 32767;
+
+            //adjust magnitude relative to the end of the dead zone
+            m_MagnitudeRightThum -= m_DeadzoneLeftThum;
+
+            //optionally normalize the magnitude with respect to its expected range
+            //giving a magnitude value of 0.0 to 1.0
+            m_NormalizedRightThumbMagnitude = m_MagnitudeRightThum / (32767 - m_DeadzoneLeftThum);
+
+            return Maths::Vec2f(m_NormalRightThumX, m_NormalRightThumY);
+        }
+        else //if the controller is in the deadzone zero out the magnitude
+        {
+            m_MagnitudeRightThum = 0.0;
+            m_NormalizedRightThumbMagnitude = 0.0;
+        }
+       return Maths::Vec2f();
+    }
+
+    float ControllerInput::GetRightTriggerState()
+    {
+        return  m_RightTriggerPress = (float)m_State.Gamepad.bRightTrigger / 255;;
+    }
+
+    float ControllerInput::GetLeftTriggerState()
+    {
+        return m_LeftTriggerPress = (float)m_State.Gamepad.bLeftTrigger / 255;;
+    }
+
     void ControllerInput::SetDeadZoneLeftThumb(double Deadzone)
     { 
         m_DeadzoneLeftThum = Deadzone;
@@ -212,4 +341,15 @@ namespace Firelight::Input {
     }
   
    
+  
+
+} 
+namespace Firelight::Events::Input {
+    ContollerEvent::ContollerEvent()
+    {
+    }
+
+    ContollerEvent::~ContollerEvent()
+    {
+    }
 }

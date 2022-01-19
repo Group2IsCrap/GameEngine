@@ -1,17 +1,10 @@
 #pragma once
 #include"..\Events\Event.h"
-
-namespace Firelight::Input {
-	class MouseEvent
-	{
-	public:
-		struct MousePoint
-		{
-			int x;
-			int y;
-		};
-
-		enum class e_MouseEventType
+#include"..\Maths\Vec2.h"
+namespace Firelight::Events::Input {	
+	
+	
+	enum class e_MouseEventType
 		{
 			LPress,
 			LRelease,
@@ -26,23 +19,97 @@ namespace Firelight::Input {
 			Invalid
 		};
 
+	class MouseEvent:public Event
+	{
+	public:
+		
+
+	
 		MouseEvent();
 		MouseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseEvent();
 
 		bool IsValid();
 		e_MouseEventType GetType();
-		MousePoint GetPos();
+		Maths::Vec2f GetPos();
 
 		int GetMouseX();
 		int GetMouseY();
 
-	
-		
+		static constexpr DescriptorType sm_Des = "MouseEvent";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Des;
+		}
+
 	public:
 		e_MouseEventType m_Type;
 		int m_XPos;
 		int m_YPos;
 	};
+
+	class MouseButtionReleaseEvent :public MouseEvent
+	{
+	public:
+
+
+
+		MouseButtionReleaseEvent();
+		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
+		~MouseButtionReleaseEvent();
+
+		static constexpr DescriptorType sm_Des = "Mouse_Buttion_Release";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Des;
+		}
+
+
+	};
+	class MouseButtionPressEvent :public MouseEvent
+	{
+	public:
+
+
+
+		MouseButtionPressEvent();
+		MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y);
+		~MouseButtionPressEvent();
+
+		static constexpr DescriptorType sm_Des = "Mouse_Buttion_Press";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Des;
+		}
+
+
+	};
+
+
+
+	class MouseMoveEvent :public MouseEvent
+	{
+	public:
+
+
+
+		MouseMoveEvent();
+		MouseMoveEvent(const e_MouseEventType type, const int x, const int y);
+		~MouseMoveEvent();
+
+		static constexpr DescriptorType sm_Des = "Mouse_Move";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Des;
+		}
+
+
+	};
+
+
 
 }

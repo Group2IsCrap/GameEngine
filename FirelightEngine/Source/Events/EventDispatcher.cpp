@@ -26,7 +26,7 @@ namespace Firelight::Events
 	void EventDispatcher::InvokeListeners(const Event& event, void* data)
 	{
 		auto type = event.Type();
-
+		
 		if (sm_listeners.find(type) == sm_listeners.end())
 		{
 			return;

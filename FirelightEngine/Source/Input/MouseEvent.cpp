@@ -1,5 +1,5 @@
 #include "MouseEvent.h"
-namespace Firelight::Input {
+namespace Firelight::Events::Input {
 	MouseEvent::MouseEvent() :
 		m_Type(e_MouseEventType::Invalid),
 		m_XPos(0),
@@ -23,14 +23,14 @@ namespace Firelight::Input {
 		return m_Type != e_MouseEventType::Invalid;
 	}
 
-	MouseEvent::e_MouseEventType MouseEvent::GetType()
+	Events::Input::e_MouseEventType MouseEvent::GetType()
 	{
 		return m_Type;
 	}
 
-	MouseEvent::MousePoint MouseEvent::GetPos()
+	Maths::Vec2f MouseEvent::GetPos()
 	{
-		return{ m_XPos,m_YPos };
+		return Maths::Vec2f( m_XPos,m_YPos );
 	}
 
 	int MouseEvent::GetMouseX()
@@ -41,5 +41,32 @@ namespace Firelight::Input {
 	int MouseEvent::GetMouseY()
 	{
 		return m_YPos;
+	}
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent()
+	{
+	}
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y)
+	{
+	}
+	Input::MouseButtionReleaseEvent::~MouseButtionReleaseEvent()
+	{
+	}
+	Input::MouseButtionPressEvent::MouseButtionPressEvent()
+	{
+	}
+	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y)
+	{
+	}
+	Input::MouseButtionPressEvent::~MouseButtionPressEvent()
+	{
+	}
+	Input::MouseMoveEvent::MouseMoveEvent()
+	{
+	}
+	Input::MouseMoveEvent::MouseMoveEvent(const e_MouseEventType type, const int x, const int y)
+	{
+	}
+	Input::MouseMoveEvent::~MouseMoveEvent()
+	{
 	}
 }

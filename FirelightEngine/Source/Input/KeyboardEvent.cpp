@@ -1,6 +1,6 @@
 #include "KeyboardEvent.h"
 
-namespace Firelight::Input {
+namespace Firelight::Events::Input {
     KeyboardEvent::KeyboardEvent() :
         m_Type(KeyEvent::Invalid),
         m_Key('A')
@@ -31,5 +31,25 @@ namespace Firelight::Input {
     unsigned char KeyboardEvent::GetKeyCode() const
     {
         return m_Key;
+    }
+
+    Input::OnKeyPress::OnKeyPress()
+    {
+    }
+
+    Input::OnKeyPress::OnKeyPress(const KeyEvent type, const unsigned char key):KeyboardEvent(type, key)
+    {
+    }
+    Input::OnKeyPress::~OnKeyPress()
+    {
+    }
+    Input::OnKeyRelease::OnKeyRelease()
+    {
+    }
+    Input::OnKeyRelease::OnKeyRelease(const KeyEvent type, const unsigned char key):KeyboardEvent(type, key)
+    {
+    }
+    Input::OnKeyRelease::~OnKeyRelease()
+    {
     }
 }
