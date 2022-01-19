@@ -1,10 +1,15 @@
 ﻿#include "ContentBrowserPanel.h"
 
 #include "Source/Graphics/AssetManager.h"
+#include "imgui/misc/cpp/imgui_stdlib.h"
+
+#include <filesystem>
 
 static const std::filesystem::path s_assetPath = "Assets";
 
 #define _CRT_SECURE_NO_WARNINGS
+
+static std::string s_folderName;
 
 ContentBrowserPanel::ContentBrowserPanel() : m_currentDirectory(s_assetPath)
 {
@@ -16,19 +21,26 @@ void ContentBrowserPanel::Draw()
 {
 	ImGui::Begin("Content Browser");
 
-	// Right-click in the context browser
+	// Right-click on blank space
+	bool createFolder = false;
 	if (ImGui::BeginPopupContextWindow(0, 1, false))
 	{
-		ImGui::MenuItem("New");
-		if (ImGui::MenuItem("Folder"))
+		if (ImGui::BeginMenu("New"))
 		{
+			if (ImGui::MenuItem("Folder"))
+				createFolder = true;
 
+			ImGui::EndMenu();
 		}
-			// CREATE NEW ENTITY HERE
-
 		ImGui::EndPopup();
 	}
 
+	if (createFolder)
+	{
+		ImGui::OpenPopup("New Folder");
+	}
+
+	CreateFolder();
 
 	ImGui::BeginDisabled(m_currentDirectory == std::filesystem::path(s_assetPath));
 	if (ImGui::Button("<--"))
@@ -92,4 +104,48 @@ void ContentBrowserPanel::Draw()
 	ImGui::Columns(1);
 
 	ImGui::End();
+}
+
+void ContentBrowserPanel::CreateFolder()
+{
+	std::string output{ "assets/" };
+
+	// Always center this window when appearing
+	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+	if (ImGui::BeginPopupModal("New Folder", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Enter Folder Name\n");
+
+		char buffer[256];
+		memset(buffer, 0, sizeof(buffer));
+		std::strncpy(buffer, s_folderName.c_str(), sizeof(buffer));
+		if (ImGui::InputText("##FolderName", buffer, sizeof(buffer)))
+		{
+			s_folderName = std::string(buffer);
+			output += s_folderName;
+		}
+
+		ImGui::Spacing();
+		
+		if (ImGui::Button("Create", ImVec2(125.0f, 0))) 
+		{ 
+			output += s_folderName;
+			if (!std::filesystem::is_directory(output))
+			{
+				std::filesystem::create_directory(output);
+			}
+			ImGui::CloseCurrentPopup(); 
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(125.0f, 0))) { ImGui::CloseCurrentPopup(); }
+		ImGui::EndPopup();
+	}
+}
+
+void ContentBrowserPanel::DeleteFolder()
+{
+
 }
