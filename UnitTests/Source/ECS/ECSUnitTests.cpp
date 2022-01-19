@@ -1,5 +1,5 @@
 #include "pch.h"
-
+#include "CppUnitTest.h"
 #include "Source/ECS/GameEntity.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -374,11 +374,11 @@ namespace UnitTests::ECS
 			GameEntity* testGE = new GameEntity();
 			
 			//Act
-			testGE->GetTransform()->posX = 10;
+			testGE->GetTransform()->position.x = 10.0f;
 			testGE->GetID()->name = "Rabbit";
 
 			//Assert
-			Assert::AreEqual(testGE->GetTransform()->posX, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE->GetEntityID())->posX);
+			Assert::AreEqual(testGE->GetTransform()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE->GetEntityID())->position.x);
 			Assert::AreEqual(testGE->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE->GetEntityID())->name);
 
 			delete testGE;
@@ -433,15 +433,15 @@ namespace UnitTests::ECS
 			GameEntity* testGE2 = new GameEntity();
 
 			//Act
-			testGE1->GetTransform()->posX = 10;
+			testGE1->GetTransform()->position.x = 10.0f;
 			testGE2->GetID()->name = "Velociraptor";
-			testGE2->GetTransform()->posY = -99;
+			testGE2->GetTransform()->position.y = -99.0f;
 			testGE1->GetID()->name = "Fox";
 
 			//Assert
-			Assert::AreEqual(testGE1->GetTransform()->posX, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE1->GetEntityID())->posX);
+			Assert::AreEqual(testGE1->GetTransform()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE1->GetEntityID())->position.x);
 			Assert::AreEqual(testGE1->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE1->GetEntityID())->name);
-			Assert::AreEqual(testGE2->GetTransform()->posY, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE2->GetEntityID())->posY);
+			Assert::AreEqual(testGE2->GetTransform()->position.y, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE2->GetEntityID())->position.y);
 			Assert::AreEqual(testGE2->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE2->GetEntityID())->name);
 
 			delete testGE1;
