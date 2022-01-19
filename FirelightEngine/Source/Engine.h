@@ -18,8 +18,6 @@ namespace Firelight
 
         bool Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int windowWidth, int windowHeight);
 
-        void RegisterEngineComponents();
-
         bool ProcessMessages();
         void Update();
         void RenderFrame();

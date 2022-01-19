@@ -5,6 +5,7 @@
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
+#include "Source/ECS/System.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 #include "Source/Maths/Vec3.inl"
 
@@ -31,6 +32,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
 
 		Firelight::Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
+
+
+		System* testSystem = new System();
+
+		Entity* test = new Entity();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

@@ -1,9 +1,14 @@
 #include "System.h"
 
+#include "ECSEvents.h"
+#include "../Events/EventDispatcher.h"
+
 namespace Firelight::ECS
 {
 	System::System()
 	{
+		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityCreatedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityDestroyedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
 	}
 	System::~System()
 	{

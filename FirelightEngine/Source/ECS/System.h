@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 
+#include <iostream>
+
 namespace Firelight::ECS
 {
 	class System
@@ -13,10 +15,14 @@ namespace Firelight::ECS
 		virtual void Update(double dt);
 		virtual void LateUpdate(double dt);
 		virtual void FixedUpdate(double fixeddt);
+
+		virtual void UpdateEntityList() 
+		{
+			std::cout << "Here I am" << std::endl;
+		};
 	private:
 	public:
 	private:
 		std::vector<Entity*> m_entities;
 	};
-
 }

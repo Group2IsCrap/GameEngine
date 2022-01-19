@@ -12,15 +12,8 @@ namespace UnitTests::ECS
 	{
 	public:
 		
-		/// <summary>
-		/// Register the 3 test components 
-		/// </summary>
-		/// <returns></returns>
 		TEST_CLASS_INITIALIZE(ECSInitialize)
 		{
-			EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
-			EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
-			EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
 		}
 
 		/// <summary>
