@@ -176,12 +176,13 @@ void ContentBrowserPanel::CreateFolder()
 			if (!std::filesystem::is_directory(newPath))
 			{
 				std::filesystem::create_directory(newPath);
+				s_folderName = "";
 			}
 			ImGui::CloseCurrentPopup(); 
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(125.0f, 0))) { ImGui::CloseCurrentPopup(); s_newFolder = false; }
+		if (ImGui::Button("Cancel", ImVec2(125.0f, 0))) { ImGui::CloseCurrentPopup(); s_newFolder = false; s_folderName = ""; }
 		ImGui::EndPopup();
 	}
 }
