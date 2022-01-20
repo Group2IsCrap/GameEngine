@@ -24,6 +24,8 @@ namespace Firelight::ECS
 		template<typename T>
 		ComponentTypeID GetComponentType()
 		{
+			RegisterComponent<T>();
+
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
 			ASSERT_THROW(m_componentHashTypes.find(typeName) != m_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
@@ -44,7 +46,9 @@ namespace Firelight::ECS
 		{
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
-			ASSERT_THROW(m_componentHashTypes.find(typeName) != m_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+				return nullptr;
+
 			ComponentTypeID typeID = m_componentHashTypes[typeName];
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
 			{
@@ -100,7 +104,9 @@ namespace Firelight::ECS
 		{
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
-			ASSERT_THROW(m_componentHashTypes.find(typeName) != m_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+				return;
+
 			ComponentTypeID typeID = m_componentHashTypes[typeName];
 
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
@@ -130,7 +136,9 @@ namespace Firelight::ECS
 		{
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
-			ASSERT_THROW(m_componentHashTypes.find(typeName) != m_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+				return false;
+
 			ComponentTypeID typeID = m_componentHashTypes[typeName];
 
 			return (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end());

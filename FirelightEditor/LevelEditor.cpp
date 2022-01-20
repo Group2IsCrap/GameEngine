@@ -1,6 +1,5 @@
 #include "Source/Engine.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
-#include <Source/ECS/Components.h>
 #include <Source/ECS/EntityComponentSystem.h>
 
 #include "ImGuiEditorLayer.h"

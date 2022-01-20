@@ -1,7 +1,9 @@
 #include "InspectorPanel.h"
 
 #include <Source/ECS/Entity.h>
-#include <Source/ECS/Components.h>
+#include <Source/ECS/Components/BasicComponents.h>
+#include <Source/ECS/Components/PhysicsComponents.h>
+#include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/EntityComponentSystem.h>
 
 InspectorPanel::InspectorPanel()
@@ -91,46 +93,47 @@ static void DrawVec3Control(const std::string& label, float& x, float& y, float&
 template<typename T, typename UIFunction>
 static void DrawComponent(const std::string& name, Firelight::ECS::Entity* entity, UIFunction uiFunction, bool allowDeletion = false)
 {
+	if (!entity->HasComponent<T>())
+		return;
+
 	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
-	if (entity->HasComponent<T>())
+
+	auto component = entity->GetComponent<T>();
+	ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+	float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+	ImGui::Separator();
+	bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
+	ImGui::PopStyleVar();
+
+
+	if (allowDeletion)
 	{
-		auto component = entity->GetComponent<T>();
-		ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
-		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-		ImGui::Separator();
-		bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-		ImGui::PopStyleVar();
-
-
-		if (allowDeletion)
+		ImGui::SameLine((2.0f + contentRegionAvailable.x - lineHeight * 0.5f) - 5.0f);
+		if (ImGui::Button("...", ImVec2{ lineHeight + 5.0f, lineHeight }))
 		{
-			ImGui::SameLine((2.0f + contentRegionAvailable.x - lineHeight * 0.5f) - 5.0f);
-			if (ImGui::Button("...", ImVec2{ lineHeight + 5.0f, lineHeight }))
-			{
-				ImGui::OpenPopup("ComponentSettings");
-			}
-
-			bool removeComponent = false;
-			if (ImGui::BeginPopup("ComponentSettings"))
-			{
-				if (ImGui::MenuItem("Remove Component"))
-					removeComponent = true;
-
-				ImGui::EndPopup();
-			}
-
-			if (removeComponent)
-			{
-				entity->RemoveComponent<T>();
-			}
+			ImGui::OpenPopup("ComponentSettings");
 		}
 
-		if (open)
+		bool removeComponent = false;
+		if (ImGui::BeginPopup("ComponentSettings"))
 		{
-			uiFunction(component);
-			ImGui::TreePop();
+			if (ImGui::MenuItem("Remove Component"))
+				removeComponent = true;
+
+			ImGui::EndPopup();
 		}
+
+		if (removeComponent)
+		{
+			entity->RemoveComponent<T>();
+		}
+	}
+
+	if (open)
+	{
+		uiFunction(component);
+		ImGui::TreePop();
 	}
 }
 
