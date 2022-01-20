@@ -49,8 +49,6 @@ namespace Firelight::SceneManagement
 	
 	void SceneManager::SetBuildIndex(Scene* scene, int index)
 	{
-		UNREFERENCED_PARAMETER(index);
-
 		scene->m_buildIndex = index;
 	}
 

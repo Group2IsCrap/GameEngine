@@ -10,6 +10,7 @@ namespace Firelight::ECS
 		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityCreatedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
 		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityDestroyedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
 	}
+
 	System::~System()
 	{
 	}
@@ -27,6 +28,7 @@ namespace Firelight::ECS
 	/// <param name="dt"></param>
 	void System::Update(double dt)
 	{
+		(void)dt;
 	}
 	/// <summary>
 	/// Secondary Update Loop
@@ -34,6 +36,7 @@ namespace Firelight::ECS
 	/// <param name="dt"></param>
 	void System::LateUpdate(double dt)
 	{
+		(void)dt;
 	}
 	/// <summary>
 	/// Fixed Update loop
@@ -41,6 +44,7 @@ namespace Firelight::ECS
 	/// <param name="fixeddt"></param>
 	void System::FixedUpdate(double fixeddt)
 	{
+		(void)fixeddt;
 	}
 
 

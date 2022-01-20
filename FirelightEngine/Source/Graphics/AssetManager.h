@@ -30,7 +30,7 @@ namespace Firelight::Graphics
 
 		// Standard resource getters
 		Texture*       GetTexture(const std::string& path);
-		Texture*       GetColourTexture(Colour colour);
+		Texture*       GetColourTexture(const Colour::RGBA& colour);
 		Material*      GetMaterial(const std::string& path);
 		template<typename VertexType>
 		Model*         GetModel(const std::string& path);
@@ -47,6 +47,8 @@ namespace Firelight::Graphics
 		VertexShader*  GetDefaultVertexShader();
 		PixelShader*   GetDefaultPixelShader();
 		ComputeShader* GetDefaultComputeShader();
+
+		Model*         GetScreenQuad();
 
     private:
 		AssetManager();
@@ -68,6 +70,8 @@ namespace Firelight::Graphics
 		VertexShader*  m_defaultVS;
 		PixelShader*   m_defaultPS;
 		ComputeShader* m_defaultCS;
+
+		Model* m_screenQuad;
     };
 }
 
