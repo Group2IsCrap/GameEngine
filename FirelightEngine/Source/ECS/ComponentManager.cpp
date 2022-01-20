@@ -4,6 +4,11 @@ namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 
+	int ComponentManager::GetComponentTypeCount()
+	{
+		return (int)m_componentTypeHash.size();
+	}
+
 	/// <summary>
 	/// Returns the entire map of component data
 	/// </summary>
@@ -20,7 +25,12 @@ namespace Firelight::ECS
 	/// <returns></returns>
 	const char* ComponentManager::GetComponentName(ComponentTypeID typeID)
 	{
-		return m_componentNames[typeID];
+		return m_componentHashNames[m_componentTypeHash[typeID]];
+	}	
+
+	bool ComponentManager::HasComponent(ComponentTypeID typeID, EntityID entity)
+	{
+		return (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end());
 	}
 
 	/// <summary>

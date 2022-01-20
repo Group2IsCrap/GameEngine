@@ -373,6 +373,7 @@
     <ClInclude Include="Includes\imgui\imstb_rectpack.h" />
     <ClInclude Include="Includes\imgui\imstb_textedit.h" />
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
+    <ClInclude Include="Source\ECS\ECSEvents.h" />
     <ClInclude Include="Includes\WICTextureLoader.h" />
     <ClInclude Include="Source\Graphics\RenderTextures.h" />
     <ClInclude Include="Source\ECS\Entity.h" />

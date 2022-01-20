@@ -53,8 +53,6 @@ namespace Firelight
 
         // TODO: Initalise other systems here
 
-        RegisterEngineComponents();
-
         m_initialised = true;
 
         return true;
@@ -75,7 +73,7 @@ namespace Firelight
             Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
         }
     }
-
+  
     bool Engine::ProcessMessages()
     {
         return m_windowContainer.GetWritableWindow().ProcessMessages();

@@ -1,4 +1,7 @@
 #include "EntityManager.h"
+#include "../Events/EventDispatcher.h"
+#include "ECSEvents.h"
+
 #include <assert.h> 
 
 namespace Firelight::ECS
@@ -15,11 +18,7 @@ namespace Firelight::ECS
 		{
 			sm_nextEntity++;
 		}
-		EntityID entity = sm_nextEntity++;
-		m_entities.push_back(entity);
-		// To Do: Make signature size update based on the number of components
-		m_signatures.insert({ entity, Signature(3) });
-		return entity;
+		return CreateEntityInternal(sm_nextEntity++);
 	}
 
 	EntityID EntityManager::CreateEntity(EntityID id)
@@ -28,11 +27,16 @@ namespace Firelight::ECS
 		{
 			return id;
 		}
-		
+		return CreateEntityInternal(id);
+	}
+
+	EntityID EntityManager::CreateEntityInternal(EntityID id)
+	{
 		EntityID entity = id;
 		m_entities.push_back(entity);
-		// To Do: Make signature size update based on the number of components
-		m_signatures.insert({ entity, Signature(3) });
+
+		Events::EventDispatcher::InvokeFunctions(Events::ECS::OnEntityCreatedEvent());
+
 		return entity;
 	}
 
@@ -45,6 +49,21 @@ namespace Firelight::ECS
 	void EntityManager::UpdateEntitySignature(EntityID entity, ComponentTypeID componentID, bool contains)
 	{
 		m_signatures[entity][componentID] = contains;
+	}
+
+	/// <summary>
+	/// Creates a new signature for the entity that has a set number of components
+	/// </summary>
+	/// <param name="entity"></param>
+	/// <param name="numComponents"></param>
+	void EntityManager::CreateNewEntitySignature(EntityID entity, int numComponents)
+	{
+		m_signatures[entity] = Signature(numComponents);
+	}
+
+	void EntityManager::ClearSignatures()
+	{
+		m_signatures.clear();
 	}
 
 	/// <summary>
@@ -63,6 +82,8 @@ namespace Firelight::ECS
 		// Entity was found so it can be removed
 		m_signatures.erase(entity);
 		m_entities.erase(it);
+
+		Events::EventDispatcher::InvokeFunctions(Events::ECS::OnEntityDestroyedEvent());
 	}
 
 	/// <summary>

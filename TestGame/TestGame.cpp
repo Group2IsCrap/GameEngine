@@ -6,6 +6,7 @@
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
+#include "Source/ECS/System.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "ImGuiTestLayer.h"
@@ -43,6 +44,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Pepe pepes[numPepes];
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
+
+
+		System* testSystem = new System();
+
+		Entity* test = new Entity();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
