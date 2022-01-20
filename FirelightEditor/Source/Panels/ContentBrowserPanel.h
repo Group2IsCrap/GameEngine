@@ -15,7 +15,7 @@ public:
 
 private:
 	void CreateFolder();
-	void DeleteFolder();
+	void RemoveFile(std::filesystem::path path);
 
 private:
 	std::filesystem::path m_currentDirectory;
