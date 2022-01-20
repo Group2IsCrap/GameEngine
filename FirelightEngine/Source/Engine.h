@@ -28,7 +28,7 @@ namespace Firelight
         const HWND          GetWindowHandle() const;
 
         bool ProcessMessages();
-        void Update();
+        double Update();
         void RenderFrame();
 
     private:

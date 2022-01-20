@@ -94,13 +94,6 @@ namespace Firelight
         return m_windowContainer.GetWindow().GetHWND();
     }
 
-    void Engine::RegisterEngineComponents()
-    {
-        EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
-        EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
-        EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
-    }
-
     double Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
@@ -109,7 +102,6 @@ namespace Firelight
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
 
-        (void)deltaTime;
         // Update engine systems with deltaTime here
 
         return deltaTime;
