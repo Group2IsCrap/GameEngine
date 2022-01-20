@@ -426,6 +426,7 @@
     <ClInclude Include="Source\Maths\Vec3.h" />
     <ClInclude Include="Source\ECS\System.h" />
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
+    <ClInclude Include="Source\UI\UIBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Input\GetInput.cpp" />
@@ -474,6 +475,7 @@
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
     <ClCompile Include="Source\ECS\System.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\VertexShader.cpp" />
+    <ClCompile Include="Source\UI\UIBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
