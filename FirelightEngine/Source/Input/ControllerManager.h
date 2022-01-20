@@ -1,10 +1,10 @@
 #pragma once
 #include<vector>
 #include<memory>
-#include"ControllerInput.h"
+
 
 namespace Firelight::Input {
-	//class ControllerInput;
+	class ControllerInput;
 	class ControllerManager
 	{
 	public:

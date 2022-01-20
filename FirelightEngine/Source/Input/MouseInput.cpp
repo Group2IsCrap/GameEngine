@@ -74,16 +74,16 @@ namespace Firelight::Input {
 
         //m_MouseEventBuffer.push(Events::Input::MouseEvent(Events::Input::e_MouseEventType::Move, x, y));
 
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)m_MousePosX);
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)m_MousePosY);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)&Pos);
+       
     }
 
     void MouseInput::OnMouseMoveRaw(int x, int y)
     {
+        Maths::Vec2f Pos = Maths::Vec2f(x, y);
         //m_MouseEventBuffer.push(Events::Input::MouseEvent(Events::Input::e_MouseEventType::RawMove, x, y));
-        //Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)x);
-        //Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)y);
-
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveRawEvent(), (void*)&Pos);
+        
     }
 
     bool MouseInput::IsLeftDown()

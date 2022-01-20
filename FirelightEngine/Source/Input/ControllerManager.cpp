@@ -1,4 +1,5 @@
 #include "ControllerManager.h"
+#include"ControllerInput.h"
 namespace Firelight::Input {
 	ControllerManager::ControllerManager()
 	{

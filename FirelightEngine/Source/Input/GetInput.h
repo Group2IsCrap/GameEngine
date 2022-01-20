@@ -75,7 +75,7 @@ namespace Firelight::Input {
 		void SetVibration(float leftVal, float rightVal);
 		
 	private:
-		void Initilize(std::shared_ptr<Input::MouseInput> MouseCaptuer, std::shared_ptr <Input::KeyboardInput> KeyboardCaptuer, std::shared_ptr <Input::ControllerManager> ControllerManager);
+		bool Initialize(std::shared_ptr<Input::MouseInput> MouseCaptuer, std::shared_ptr <Input::KeyboardInput> KeyboardCaptuer, std::shared_ptr <Input::ControllerManager> ControllerManager);
 		
 	public:
 	private:

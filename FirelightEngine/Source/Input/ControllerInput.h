@@ -2,7 +2,7 @@
 #include<Windows.h>
 #include<Xinput.h>
 #include"..\Maths\Vec2.h"
-#include"..\Events\Event.h"
+
 #pragma comment(lib, "Xinput.lib")
 
 namespace Firelight::Input {
@@ -67,49 +67,7 @@ namespace Firelight::Input {
 	};
 
 
-
-	struct ControllerState
-	{
-		bool A= false;
-		bool Y = false;
-		bool X = false;
-		bool B = false;
-
-		bool RightBumber = false;
-		bool LeftBumber = false;
-
-		bool StickLeftPress = false;
-		bool StickRightPress = false;
-		bool Back = false;
-		bool Start = false;
-
-		bool DPADUp = false;
-		bool DPADDown = false;
-		bool DPADLeft = false;
-		bool DPADRight = false;
-		Maths::Vec2f LeftStick = Maths::Vec2f();
-		Maths::Vec2f  RightStick= Maths::Vec2f();
-		int LeftTrigger=0;
-		int RightTrigger=0;
-
-	};
+	
 
 
-}
-namespace Firelight::Events::Input {
-	class ContollerEvent : public Events::Event
-	{
-	public:
-		ContollerEvent();
-		~ContollerEvent();
-
-		static constexpr DescriptorType sm_Des = "ControllerState";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Des;
-		}
-
-
-	};
 }

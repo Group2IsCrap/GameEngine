@@ -10,12 +10,16 @@
 	class KeyboardInput;
 	class ControllerManager;
 
+		/// <summary>
+		/// takes inputs from windows and process it to be used for events
+		/// tells the controller manger chaeck state of controllers evey frame
+		/// </summary>
 		class ProcessInput
 		{
 		public:
 			static ProcessInput* Instance();
 
-			void Initialize();
+			bool Initialize();
 			bool HandleInput(UINT message, WPARAM wParam, LPARAM lParam);
 			void ControllerInput();
 			void TestInput();

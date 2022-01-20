@@ -1,6 +1,8 @@
 #include "GetInput.h"
+
 #include"MouseInput.h"
 #include"KeyboardInput.h"
+#include"ControllerInput.h"
 #include"ControllerManager.h"
 namespace Firelight::Input {
     Firelight::Input::GetInput::GetInput()
@@ -168,10 +170,12 @@ namespace Firelight::Input {
         m_ControllerManager->GetController(0)->Vibrate(leftVal, rightVal);
     }
 
-    void GetInput::Initilize(std::shared_ptr<Input::MouseInput> MouseCaptuer, std::shared_ptr<Input::KeyboardInput> KeyboardCaptuer, std::shared_ptr<Input::ControllerManager> ControllerManager)
+    bool GetInput::Initialize(std::shared_ptr<Input::MouseInput> MouseCaptuer, std::shared_ptr<Input::KeyboardInput> KeyboardCaptuer, std::shared_ptr<Input::ControllerManager> ControllerManager)
     {
         m_MouseCaptuer= MouseCaptuer;
         m_KeyboardCaptuer = KeyboardCaptuer;
         m_ControllerManager = ControllerManager;
+
+        return true;
     }
 }

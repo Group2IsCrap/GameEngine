@@ -5,6 +5,7 @@
 #include"KeyboardInput.h"
 #include"ControllerManager.h"
 #include"GetInput.h"
+#include"..\Utils\ErrorManager.h"
 namespace Firelight::Input {
 	ProcessInput::ProcessInput()
 	{
@@ -19,15 +20,17 @@ namespace Firelight::Input {
 	ProcessInput::~ProcessInput()
 	{
 	}
-	void ProcessInput::Initialize()
+	bool ProcessInput::Initialize()
 	{
+		bool result;
 		m_KeyboardCaptuer = std::make_shared<Input::KeyboardInput>();
 		m_MouseCaptuer = std::make_shared <Input::MouseInput>();
 		m_ControllerManager = std::make_shared <Input::ControllerManager>();
 
-		Input::InputGet.Initilize(m_MouseCaptuer, m_KeyboardCaptuer, m_ControllerManager);
-
+		result = Input::InputGet.Initialize(m_MouseCaptuer, m_KeyboardCaptuer, m_ControllerManager);
+		ASSERT_RETURN(result, "GetInput failed to initialise", false);
 		
+		return true;
 	}
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
@@ -175,7 +178,7 @@ namespace Firelight::Input {
 				}
 			}
 
-
+			return false;
 
 		}
 		break;
@@ -192,31 +195,6 @@ namespace Firelight::Input {
 
 	void ProcessInput::TestInput()
 	{
-		//test controller input
-		m_ControllerManager->ProcessInput();
-
-		while (!m_KeyboardCaptuer->CharBufferIsEmpty())
-		{
-			unsigned char ch = m_KeyboardCaptuer->Raedchar();
-			m_KeyboardCaptuer->DisableAutoRepeatChars();
-
-			
-
-		}
-
-		while (!m_KeyboardCaptuer->KeyBufferIsEmpty())
-		{
-			Events::Input::KeyboardEvent Key = m_KeyboardCaptuer->ReadKey();
-			m_KeyboardCaptuer->DisableAutoRepeatKeys();
-
-			
-
-		}
-
-		while (!m_MouseCaptuer->EventBufferIsEmpty())
-		{
-			Events::Input::MouseEvent mEvent = m_MouseCaptuer->ReadEvent();
-
-		}
+		
 	}
 }

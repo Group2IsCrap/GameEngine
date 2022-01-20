@@ -36,11 +36,11 @@ namespace Firelight::Events::Input {
 		int GetMouseX();
 		int GetMouseY();
 
-		static constexpr DescriptorType sm_Des = "MouseEvent";
+		static constexpr DescriptorType sm_Description = "MouseEvent";
 
 		virtual DescriptorType Type() const override
 		{
-			return sm_Des;
+			return sm_Description;
 		}
 
 	public:
@@ -59,11 +59,11 @@ namespace Firelight::Events::Input {
 		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionReleaseEvent();
 
-		static constexpr DescriptorType sm_Des = "Mouse_Buttion_Release";
+		static constexpr DescriptorType sm_Description = "Mouse_Buttion_Release";
 
 		virtual DescriptorType Type() const override
 		{
-			return sm_Des;
+			return sm_Description;
 		}
 
 
@@ -78,11 +78,11 @@ namespace Firelight::Events::Input {
 		MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionPressEvent();
 
-		static constexpr DescriptorType sm_Des = "Mouse_Buttion_Press";
+		static constexpr DescriptorType sm_Description = "Mouse_Buttion_Press";
 
 		virtual DescriptorType Type() const override
 		{
-			return sm_Des;
+			return sm_Description;
 		}
 
 
@@ -100,16 +100,34 @@ namespace Firelight::Events::Input {
 		MouseMoveEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseMoveEvent();
 
-		static constexpr DescriptorType sm_Des = "Mouse_Move";
+		static constexpr DescriptorType sm_Description = "Mouse_Move";
 
 		virtual DescriptorType Type() const override
 		{
-			return sm_Des;
+			return sm_Description;
 		}
 
 
 	};
 
+	class MouseMoveRawEvent :public MouseEvent
+	{
+	public:
 
+
+
+		MouseMoveRawEvent();
+		MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y);
+		~MouseMoveRawEvent();
+
+		static constexpr DescriptorType sm_Description = "Mouse_Move_Raw";
+
+		virtual DescriptorType Type() const override
+		{
+			return sm_Description;
+		}
+
+
+	};
 
 }

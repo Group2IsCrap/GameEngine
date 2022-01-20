@@ -42,10 +42,10 @@ namespace Firelight::Events::Input {
 	{
 		return m_YPos;
 	}
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent()
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent() :MouseEvent()
 	{
 	}
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y)
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y):MouseEvent(type,x,y)
 	{
 	}
 	Input::MouseButtionReleaseEvent::~MouseButtionReleaseEvent()
@@ -54,19 +54,28 @@ namespace Firelight::Events::Input {
 	Input::MouseButtionPressEvent::MouseButtionPressEvent()
 	{
 	}
-	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y)
+	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
 	{
 	}
 	Input::MouseButtionPressEvent::~MouseButtionPressEvent()
 	{
 	}
-	Input::MouseMoveEvent::MouseMoveEvent()
+	Input::MouseMoveEvent::MouseMoveEvent() :MouseEvent()
 	{
 	}
-	Input::MouseMoveEvent::MouseMoveEvent(const e_MouseEventType type, const int x, const int y)
+	Input::MouseMoveEvent::MouseMoveEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
 	{
 	}
 	Input::MouseMoveEvent::~MouseMoveEvent()
+	{
+	}
+	Input::MouseMoveRawEvent::MouseMoveRawEvent() :MouseEvent()
+	{
+	}
+	Input::MouseMoveRawEvent::MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
+	{
+	}
+	Input::MouseMoveRawEvent::~MouseMoveRawEvent()
 	{
 	}
 }

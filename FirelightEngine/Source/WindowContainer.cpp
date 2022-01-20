@@ -8,23 +8,7 @@ namespace Firelight
 	WindowContainer::WindowContainer()
 	{
 		Input::ProcessInput::Instance()->Initialize();
-		/*static bool rawInputInitialized = false;
-		if (rawInputInitialized == false)
-		{
-			RAWINPUTDEVICE rawInputDevice;
-
-			rawInputDevice.usUsagePage = 0x01;
-			rawInputDevice.usUsage = 0x02;
-			rawInputDevice.dwFlags = 0;
-			rawInputDevice.hwndTarget = 0;
-
-			if (RegisterRawInputDevices(&rawInputDevice, 1, sizeof(rawInputDevice)) == FALSE)
-			{
-				COM_ERROR_FATAL(GetLastError(), "Failed to register raw input devices.");
-			}
-
-			rawInputInitialized = true;
-		}*/
+		
 	}
 
 	LRESULT WindowContainer::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -34,8 +18,11 @@ namespace Firelight
 		{
 			return true;
 		}
+		//handle messages
+		if (Input::ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam)) {
+			return true;
+		}
 
-		Input::ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam);
 		switch (uMsg)
 		{
 		// Keyboard messages
@@ -58,23 +45,7 @@ namespace Firelight
 		}
 		case WM_INPUT:
 		{
-			UINT dataSize = 0;
-
-			GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, NULL, &dataSize, sizeof(RAWINPUTHEADER));
-
-			if (dataSize > 0)
-			{
-				std::unique_ptr<BYTE[]> rawdata = std::make_unique<BYTE[]>(dataSize);
-				if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, rawdata.get(), &dataSize, sizeof(RAWINPUTHEADER)) == dataSize)
-				{
-					RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(rawdata.get());
-					if (raw->header.dwType == RIM_TYPEMOUSE)
-					{
-						// TODO: Handle raw mouse move messages
-					}
-				}
-			}
-
+			
 			return DefWindowProc(hwnd, uMsg, wParam, lParam);
 		}
 		case WM_LBUTTONDOWN:

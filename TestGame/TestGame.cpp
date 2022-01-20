@@ -14,7 +14,6 @@
 #include "Source/Graphics/Data/Model.h"
 #include "Source/Graphics/Data/VertexTypes.h"
 
-
 #include"TestInputGame.h"
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
@@ -35,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 		Firelight::Graphics::Model* model = Firelight::Graphics::AssetManager::Instance().GetModel<Firelight::Graphics::FancyLitVertex>("cube.obj");
 
-		TestInputGame* TestInput = new TestInputGame();
+		TestInputGame* inputTest = new TestInputGame();
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Firelight::Engine::Instance().Update();
