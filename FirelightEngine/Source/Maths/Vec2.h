@@ -27,6 +27,9 @@ namespace Firelight::Maths
         Vec2<T>        operator/(const T scalar) const;
         void           operator/=(const T scalar);
 
+        bool           operator==(const Vec2<T>& vector) const;
+        bool           operator==(const T scalar) const;
+
         // Member functions
         T              Length() const;
         T              LengthSquared() const;

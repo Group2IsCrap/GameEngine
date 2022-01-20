@@ -41,19 +41,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 		Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
 
+		const int numPepes = 50;
 		struct Pepe
 		{
 			Maths::Vec2f pos;
 			Maths::Vec2f vel;
-			float rot;
-			float rotSpeed;
-			int layer;
+			float rot = 0.0f;
+			float rotSpeed = 0.0f;
+			int layer = 0;
 		};
-		Pepe pepes[100];
+		Pepe pepes[numPepes];
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		for (int pepeIndex = 0; pepeIndex < 100; ++pepeIndex)
+		for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 		{
 			pepes[pepeIndex].vel = Maths::Vec2f::GetRandomVector() * 300.0f;
 			pepes[pepeIndex].layer = (int)(Maths::Random::ZeroToOne<float>() * 64.0f);
@@ -64,7 +65,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		while (Engine::Instance().ProcessMessages())
 		{
 			double deltaTime = Engine::Instance().Update();
-			for (int pepeIndex = 0; pepeIndex < 100; ++pepeIndex)
+			for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
 				Pepe& pepe = pepes[pepeIndex];
 
@@ -76,10 +77,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				if (pepe.pos.y > windowDimensions.y + 100.0f) pepe.pos.y -= windowDimensions.y + 200.0f;
 				if (pepe.pos.y < -100.0f) pepe.pos.y += windowDimensions.y + 200.0f;
 
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeIndex % 2 == 0 ? pepeTexture : glowTexture, pepes[pepeIndex].layer, (double)pepe.rot);
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeTexture, pepes[pepeIndex].layer, (double)pepe.rot);
 			}
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
+
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(200.0f, 200.0f, 400.0f, 400.0f), glowTexture, 48);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(800.0f, 0.0f, 400.0f, 400.0f), glowTexture, 32);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(400.0f, 300.0f, 400.0f, 400.0f), glowTexture, 16);
 
 			Engine::Instance().RenderFrame();
 		}

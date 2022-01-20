@@ -53,6 +53,22 @@ namespace Firelight
         return true;
     }
 
+    void Engine::SetWindowDimensions(const Maths::Vec2i& dimensions)
+    {
+        // If the dimensions are already the given size or zero, don't bother updating
+        if (dimensions == 0 || dimensions == GetWindowDimensions())
+        {
+            return;
+        }
+
+        m_windowContainer.GetWritableWindow().SetDimensions(dimensions);
+
+        if (Graphics::GraphicsHandler::Instance().IsInitialised())
+        {
+            Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
+        }
+    }
+
     bool Engine::ProcessMessages()
     {
         return m_windowContainer.GetWritableWindow().ProcessMessages();
@@ -66,6 +82,11 @@ namespace Firelight
     const Maths::Vec2f& Engine::GetWindowDimensionsFloat() const
     {
         return m_windowContainer.GetWindow().GetDimensionsFloat();
+    }
+
+    const HWND Engine::GetWindowHandle() const
+    {
+        return m_windowContainer.GetWindow().GetHWND();
     }
 
     double Engine::Update()

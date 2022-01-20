@@ -1,8 +1,11 @@
 #pragma once
-#include<queue>
+
+#include <queue>
+
 #include"KeyboardEvent.h"
-namespace Firelight::Input {
-	//class KeyboardEvent;
+
+namespace Firelight::Input
+{
 	class KeyboardInput
 	{
 	public:
@@ -12,10 +15,10 @@ namespace Firelight::Input {
 		bool CharBufferIsEmpty();
 
 		KeyboardEvent ReadKey();
-		unsigned char Raedchar();
+		unsigned char ReadChar();
 
 		void OnKeyPress(const unsigned char key);
-		void OnKeyRelace(const unsigned char key);
+		void OnKeyReplace(const unsigned char key);
 		void OnChar(const unsigned char key);
 
 
@@ -25,8 +28,8 @@ namespace Firelight::Input {
 		void EnableAutoRepeatChars();
 		void DisableAutoRepeatChars();
 
-		bool IsCharAutoRepat();
-		bool IsKeysAutoRepat();
+		bool IsCharAutoRepeat();
+		bool IsKeysAutoRepeat();
 
 	private:
 		bool m_AutoRepeatKeys = false;
@@ -34,7 +37,6 @@ namespace Firelight::Input {
 		bool m_Keystates[256];
 
 		std::queue<KeyboardEvent> m_KeyBuffer;
-		std::queue<unsigned char> m_CharBuff;
+		std::queue<unsigned char> m_CharBuffer;
 	};
-
 }

@@ -1,10 +1,13 @@
 #pragma once
-#include<Windows.h>
-#include<Xinput.h>
+
+#include <Windows.h>
+
+#include <Xinput.h>
 
 #pragma comment(lib, "Xinput.lib")
 
-namespace Firelight::Input {
+namespace Firelight::Input
+{
 	/// <summary>
 	/// XBox 360 Controller Support
 	/// </summary>
@@ -24,6 +27,7 @@ namespace Firelight::Input {
 
 		bool IsPressed(WORD buttion);
 		bool isconnected = false;
+
 	private:
 		int m_User_ID = 0;
 
@@ -43,12 +47,9 @@ namespace Firelight::Input {
 		double m_MagnitudeRightThum = 0;
 		double m_NormalizedRightThumbMagnitude = 0;
 
-
 		double m_MagnitudeLeftThum = 0;
 		double m_NormalizedLeftThumbMagnitude = 0;
 
-		XINPUT_STATE state;
-
+		XINPUT_STATE m_State;
 	};
-
 }

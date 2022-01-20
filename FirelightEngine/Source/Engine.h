@@ -20,8 +20,12 @@ namespace Firelight
 
         bool Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions);
 
+        void                SetWindowDimensions(const Maths::Vec2i& dimensions);
+
         const Maths::Vec2i& GetWindowDimensions() const;
         const Maths::Vec2f& GetWindowDimensionsFloat() const;
+
+        const HWND          GetWindowHandle() const;
 
         bool   ProcessMessages();
         double Update();

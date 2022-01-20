@@ -51,6 +51,6 @@ namespace Firelight::Maths
 	template<typename T>
 	inline Vec2<T> Rect<T>::GetCentreNDC() const
 	{
-		return Vec2<T>(x + w * 0.5, y - h * 0.5);
+		return Vec2<T>(x + w / 2, y - h / 2);
 	}
 }

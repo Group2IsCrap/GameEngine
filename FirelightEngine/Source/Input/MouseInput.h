@@ -4,8 +4,8 @@
 
 #include"MouseEvent.h"
 
-namespace Firelight::Input {
-	//class MouseEvent;
+namespace Firelight::Input
+{
 	class MouseInput
 	{
 	public:

@@ -28,6 +28,11 @@ namespace Firelight::Graphics
         return instance;
     }
 
+	bool GraphicsHandler::IsInitialised() const
+	{
+		return m_initialised;
+	}
+
     bool GraphicsHandler::Initialize(HWND hwnd, const Maths::Vec2i& dimensions)
     {
         ASSERT_RETURN(!m_initialised, "GraphicsHandler was aleady initialised", false);
@@ -35,13 +40,13 @@ namespace Firelight::Graphics
         bool result = InitialiseDirectX(hwnd, dimensions);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
 
-		m_initialised = true;
-
-		result = Firelight::ImGuiUI::ImGuiManager::Instance()->Initialise(hwnd, GetDevice(), GetDeviceContext());
+		result = Firelight::ImGuiUI::ImGuiManager::Instance()->Initialise(hwnd, m_device.Get(), m_deviceContext.Get());
 		ASSERT_RETURN(result, "ImGui initialisation failed", false);
 
 		m_spriteBatch = std::make_unique<SpriteBatch>();
 		m_spriteBatch->SetSortMode(SpriteBatch::SortMode::e_BackToFrontTexture);
+
+		m_initialised = true;
 
         return true;
     }
@@ -92,17 +97,9 @@ namespace Firelight::Graphics
 		hr = m_device->CreateRenderTargetView(m_backBuffer.Get(), NULL, m_swapChainRenderTargetView.GetAddressOf());
 		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create render target view.", false);
 
-		// Create depth stencil texture and view
+		if (!CreateDepthStencil(dimensions))
 		{
-			CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, dimensions.x, dimensions.y);
-			depthStencilTextureDesc.MipLevels = 1;
-			depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-			hr = m_device->CreateTexture2D(&depthStencilTextureDesc, NULL, m_depthStencilBuffer.GetAddressOf());
-			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil buffer.", false);
-
-			hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), NULL, m_depthStencilView.GetAddressOf());
-			COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil view.", false);
+			return false;
 		}
 
 		// Create default depth stencil state
@@ -189,6 +186,55 @@ namespace Firelight::Graphics
         return true;
     }
 
+	bool GraphicsHandler::CreateDepthStencil(const Maths::Vec2i& dimensions)
+	{
+		// Create depth stencil texture and view
+		CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, dimensions.x, dimensions.y);
+		depthStencilTextureDesc.MipLevels = 1;
+		depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+		HRESULT hr = m_device->CreateTexture2D(&depthStencilTextureDesc, NULL, m_depthStencilBuffer.GetAddressOf());
+		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil buffer.", false);
+
+		hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), NULL, m_depthStencilView.GetAddressOf());
+		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil view.", false);
+
+		return true;
+	}
+
+	void GraphicsHandler::HandleResize(const Maths::Vec2i& dimensions)
+	{
+		ASSERT_RETURN(m_initialised, "GraphicsHandler needs to be initialised before use",);
+
+		// Unbind RTV and DSV
+		m_deviceContext->OMSetRenderTargets(0, 0, 0);
+
+		// Release all outstanding references to the swap chain's buffers.
+		m_swapChainRenderTargetView->Release();
+		m_backBuffer->Release();
+
+		// Preserve the existing buffer count and format.
+		HRESULT hr = m_swapChain->ResizeBuffers(0, dimensions.x, dimensions.y, DXGI_FORMAT_UNKNOWN, 0);
+		COM_ERROR_FATAL_IF_FAILED(hr, "Window resize failed on 'IDXGISwapChain::ResizeBuffers'");
+
+		// Get buffer and create a render-target-view.
+		hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)m_backBuffer.GetAddressOf());
+		COM_ERROR_FATAL_IF_FAILED(hr, "Window resize failed on 'IDXGISwapChain::GetBuffer'");
+
+		hr = m_device->CreateRenderTargetView(m_backBuffer.Get(), NULL, m_swapChainRenderTargetView.GetAddressOf());
+		COM_ERROR_FATAL_IF_FAILED(hr, "Window resize failed on 'ID3D11Device::CreateRenderTargetView'");
+
+		// Set up the viewport.
+		m_defaultViewport.Width = (FLOAT)dimensions.x;
+		m_defaultViewport.Height = (FLOAT)dimensions.y;
+
+		// Resize depth stencil
+		m_depthStencilView->Release();
+		m_depthStencilBuffer->Release();
+
+		CreateDepthStencil(dimensions);
+	}
+
     ID3D11Device* GraphicsHandler::GetDevice() const
     {
         ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
@@ -230,7 +276,7 @@ namespace Firelight::Graphics
 
 		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
-		float clearColour[4] = { 0.8f, 0.2f, 0.2f, 1.0f };
+		float clearColour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		m_deviceContext->ClearRenderTargetView(m_swapChainRenderTargetView.Get(), clearColour);
 		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 

@@ -20,8 +20,14 @@ namespace Firelight::Graphics
 
         static GraphicsHandler& Instance();
 
+        bool IsInitialised() const;
+
         bool Initialize(HWND hwnd, const Maths::Vec2i& dimensions);
         bool InitialiseDirectX(HWND hwnd, const Maths::Vec2i& dimensions);
+
+        bool CreateDepthStencil(const Maths::Vec2i& dimensions);
+
+        void                 HandleResize(const Maths::Vec2i& dimensions);
 
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;
@@ -44,8 +50,9 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_swapChainRenderTargetView;
         Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_backBuffer;
 
-        Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
         Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencilBuffer;
+        Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
+
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_defaultDepthStencilState;
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_disabledDepthStencilState;
 

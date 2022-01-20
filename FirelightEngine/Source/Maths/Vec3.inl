@@ -112,6 +112,18 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline bool Vec3<T>::operator==(const Vec3<T>& vector) const
+    {
+        return x == vector.x && y == vector.y && z == vector.z;
+    }
+
+    template<typename T>
+    inline bool Vec3<T>::operator==(const T scalar) const
+    {
+        return x == scalar && y == scalar && z == scalar;
+    }
+
+    template<typename T>
     inline T Vec3<T>::Length() const
     {
         return sqrt(LengthSquared());

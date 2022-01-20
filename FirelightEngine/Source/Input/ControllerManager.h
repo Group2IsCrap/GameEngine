@@ -1,9 +1,11 @@
 #pragma once
-#include<vector>
-#include"ControllerInput.h"
 
-namespace Firelight::Input {
-	//class ControllerInput;
+#include<vector>
+
+#include "ControllerInput.h"
+
+namespace Firelight::Input
+{
 	class ControllerManager
 	{
 	public:
@@ -12,9 +14,8 @@ namespace Firelight::Input {
 
 		void HandleInput();
 		void ProcessInput();
+
 	private:
 		std::vector<ControllerInput*> Controller;
-
-
 	};
 }

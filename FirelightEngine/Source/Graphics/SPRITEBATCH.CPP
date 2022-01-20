@@ -42,6 +42,7 @@ namespace Firelight::Graphics
 
         quad->m_texture = texture;
         quad->m_layer = layer;
+        float depthFromLayer = fminf(1.0f, (float)layer / 64.0f);
 
         // Calculate tex coords if weve been given a source rect
         if (sourceRect.IsValid())
@@ -68,23 +69,23 @@ namespace Firelight::Graphics
             float aspect = dimensions.x / dimensions.y;
 
             Maths::Vec2f rotatedTopLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y), centre, rotation, true, aspect);
-            quad->m_topLeft.m_pos = Maths::Vec3f(rotatedTopLeft.x, rotatedTopLeft.y, 0.0f);
+            quad->m_topLeft.m_pos = Maths::Vec3f(rotatedTopLeft.x, rotatedTopLeft.y, depthFromLayer);
 
             Maths::Vec2f rotatedTopRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y), centre, rotation, true, aspect);
-            quad->m_topRight.m_pos = Maths::Vec3f(rotatedTopRight.x, rotatedTopRight.y, 0.0f);
+            quad->m_topRight.m_pos = Maths::Vec3f(rotatedTopRight.x, rotatedTopRight.y, depthFromLayer);
 
             Maths::Vec2f rotatedBottomLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y - destRectNDC.h), centre, rotation, true, aspect);
-            quad->m_bottomLeft.m_pos = Maths::Vec3f(rotatedBottomLeft.x, rotatedBottomLeft.y, 0.0f);
+            quad->m_bottomLeft.m_pos = Maths::Vec3f(rotatedBottomLeft.x, rotatedBottomLeft.y, depthFromLayer);
 
             Maths::Vec2f rotatedBottomRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h), centre, rotation, true, aspect);
-            quad->m_bottomRight.m_pos = Maths::Vec3f(rotatedBottomRight.x, rotatedBottomRight.y, 0.0f);
+            quad->m_bottomRight.m_pos = Maths::Vec3f(rotatedBottomRight.x, rotatedBottomRight.y, depthFromLayer);
         }
         else
         {
-            quad->m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, 0.0f);
-            quad->m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, 0.0f);
-            quad->m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y - destRectNDC.h, 0.0f);
-            quad->m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h, 0.0f);
+            quad->m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, depthFromLayer);
+            quad->m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, depthFromLayer);
+            quad->m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y - destRectNDC.h, depthFromLayer);
+            quad->m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h, depthFromLayer);
         }
     }
 

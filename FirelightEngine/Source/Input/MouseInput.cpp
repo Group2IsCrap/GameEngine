@@ -1,14 +1,19 @@
 #include "MouseInput.h"
-#include"MouseEvent.h"
-namespace Firelight::Input {
+
+#include "MouseEvent.h"
+
+namespace Firelight::Input
+{
     MouseInput::MouseInput()
     {
         m_RawInputInitialized = false;
         RegisterMouseDevise();
     }
+
     MouseInput::~MouseInput()
     {
     }
+
     void MouseInput::OnLeftPress(int x, int y)
     {
         m_IsLeftDown = true;
@@ -119,7 +124,8 @@ namespace Firelight::Input {
 
     MouseEvent MouseInput::ReadEvent()
     {
-        if (m_MouseEventBuffer.empty()) {
+        if (m_MouseEventBuffer.empty())
+        {
             return MouseEvent();
         }
         else

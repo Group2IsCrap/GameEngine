@@ -37,8 +37,8 @@ namespace Firelight
 		m_windowTitleWide = Utils::StringHelpers::StringToWide(windowTitle);
 		m_windowClass = windowClass;
 		m_windowClassWide = Utils::StringHelpers::StringToWide(windowClass);
-		m_dimensions = dimensions;
-		m_floatDimensions = Maths::Vec2f((float)dimensions.x, (float)dimensions.y);
+
+		SetDimensions(dimensions);
 
 		RegisterWindowClass();
 
@@ -52,7 +52,7 @@ namespace Firelight
 		windowRect.right = windowRect.left + m_dimensions.x;
 		windowRect.bottom = windowRect.top + m_dimensions.y;
 
-		DWORD windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
+		DWORD windowStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU | WS_MAXIMIZEBOX | WS_SIZEBOX;
 
 		AdjustWindowRect(&windowRect, windowStyle, FALSE);
 
@@ -115,6 +115,12 @@ namespace Firelight
 	void Window::Destroy()
 	{
 		m_isDestroyed = true;
+	}
+
+	void Window::SetDimensions(const Maths::Vec2i& dimensions)
+	{
+		m_dimensions = dimensions;
+		m_floatDimensions = Maths::Vec2f((float)dimensions.x, (float)dimensions.y);
 	}
 
 	const Maths::Vec2i& Window::GetDimensions() const

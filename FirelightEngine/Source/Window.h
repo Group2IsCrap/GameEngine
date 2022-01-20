@@ -27,6 +27,8 @@ namespace Firelight
 		HWND GetHWND() const;
 		void Destroy();
 
+		void                SetDimensions(const Maths::Vec2i& dimensions);
+
 		const Maths::Vec2i& GetDimensions() const;
 		const Maths::Vec2f& GetDimensionsFloat() const;
 
