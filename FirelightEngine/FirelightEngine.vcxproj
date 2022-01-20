@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Input\ControllerEvent.h" />
+    <ClInclude Include="Source\Input\GetInput.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -373,6 +375,7 @@
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\ECS\Entity.h" />
     <ClInclude Include="Source\ECS\GameEntity.h" />
+    <ClInclude Include="Source\Events\Listener.h" />
     <ClInclude Include="Source\Graphics\Data\Material.h" />
     <ClInclude Include="Source\Graphics\AssetManager.h" />
     <ClInclude Include="Source\Graphics\Shaders\ComputeShader.h" />
@@ -425,6 +428,7 @@
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />

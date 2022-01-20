@@ -82,7 +82,7 @@ namespace Firelight
         (void)deltaTime;
         // Update engine systems with deltaTime here
 
-        Input::ProcessInput::Instance()->TestInput();
+        
     }
 
     void Engine::RenderFrame()

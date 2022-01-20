@@ -1,12 +1,15 @@
 #include "KeyboardInput.h"
 #include"KeyboardEvent.h"
-namespace Firelight::Input {
+#include"..\Events\EventDispatcher.h"
+
+namespace Firelight::Input 
+{
     KeyboardInput::KeyboardInput()
     {
         for (int i = 0; i < 256; i++)
         {
             m_Keystates[i] = false;
-        }
+        } 
     }
 
     bool KeyboardInput::KeyIsPress(const unsigned char key)
@@ -14,59 +17,30 @@ namespace Firelight::Input {
         return m_Keystates[key];
     }
 
-    bool KeyboardInput::KeyBufferIsEmpty()
-    {
-        return m_KeyBuffer.empty();
-    }
-
-    bool KeyboardInput::CharBufferIsEmpty()
-    {
-        return m_CharBuff.empty();
-    }
-
-    KeyboardEvent KeyboardInput::ReadKey()
-    {
-        if (m_KeyBuffer.empty()) {
-            return KeyboardEvent();
-        }
-        else
-        {
-            KeyboardEvent event = m_KeyBuffer.front();
-            m_KeyBuffer.pop();
-            return event;
-        }
-    }
-
-    unsigned char KeyboardInput::Raedchar()
-    {
-        if (m_CharBuff.empty()) {
-            return 0u;
-        }
-        else
-        {
-            unsigned char event = m_CharBuff.front();
-            m_CharBuff.pop();
-            return event;
-        }
-    }
-
     void KeyboardInput::OnKeyPress(const unsigned char key)
     {
         m_Keystates[key] = true;
-        m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::press, key));
+        
+        
+        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
+        
     }
 
     void KeyboardInput::OnKeyRelace(const unsigned char key)
     {
         m_Keystates[key] = false;
-        m_KeyBuffer.push(KeyboardEvent(KeyboardEvent::KeyEvent::release, key));
+
+        
+        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyRelease(), (void*)key);
     }
 
     void KeyboardInput::OnChar(const unsigned char key)
     {
-        m_CharBuff.push(key);
+        //for a later created event if needed
+        
     }
 
+    //repeat keyinput
     void KeyboardInput::EnableAutoRepeatKeys()
     {
         m_AutoRepeatKeys = true;
