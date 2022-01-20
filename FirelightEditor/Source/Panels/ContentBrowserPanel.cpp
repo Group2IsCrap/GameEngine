@@ -18,8 +18,8 @@ static std::filesystem::path s_newFolderPath;
 
 ContentBrowserPanel::ContentBrowserPanel() : m_currentDirectory(s_assetPath)
 {
-	m_directoryIcon = Firelight::Graphics::AssetManager::Instance().GetTexture("Icons/DirectoryIcon.png");
-	m_fileIcon = Firelight::Graphics::AssetManager::Instance().GetTexture("Icons/FileIcon.png");
+	m_directoryIcon = Firelight::Graphics::AssetManager::Instance().GetTexture("$EDITOR/Icons/DirectoryIcon.png");
+	m_fileIcon = Firelight::Graphics::AssetManager::Instance().GetTexture("$EDITOR/Icons/FileIcon.png");
 }
 
 void ContentBrowserPanel::Draw()

@@ -161,21 +161,6 @@
     <ClInclude Include="Source\Panels\Panel.h" />
     <ClInclude Include="Source\Panels\ViewportPanel.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\$ENGINE\Materials\default.json" />
-    <None Include="assets\$ENGINE\Models\cube.mtls" />
-    <None Include="assets\$ENGINE\Models\screenQuad.mtls" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\$ENGINE_readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\$ENGINE\Textures\missing.png" />
-    <Image Include="assets\$ENGINE\Textures\non_binary_transparency.png" />
-    <Image Include="assets\$ENGINE\Textures\transparency_test.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
