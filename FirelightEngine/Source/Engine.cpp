@@ -7,7 +7,10 @@
 #include "Maths/Random.h"
 
 #include "ECS/EntityComponentSystem.h"
-#include "ECS/Components.h"
+
+#include "ECS/Components/BasicComponents.h"
+#include "ECS/Components/PhysicsComponents.h"
+#include "ECS/Components/RenderingComponents.h"
 
 using namespace Firelight::ECS;
 
@@ -101,6 +104,7 @@ namespace Firelight
         EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
         EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
         EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<SpriteComponent>();
     }
 
     double Engine::Update()

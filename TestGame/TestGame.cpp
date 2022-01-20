@@ -5,7 +5,7 @@
 
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
-#include "Source/ECS/Components.h"
+#include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "ImGuiTestLayer.h"

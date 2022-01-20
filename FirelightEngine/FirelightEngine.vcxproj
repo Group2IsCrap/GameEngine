@@ -363,6 +363,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
+    <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
+    <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
@@ -382,7 +385,6 @@
     <ClInclude Include="Source\Graphics\AssetManager.h" />
     <ClInclude Include="Source\Graphics\Shaders\ComputeShader.h" />
     <ClInclude Include="Source\ECS\ComponentManager.h" />
-    <ClInclude Include="Source\ECS\Components.h" />
     <ClInclude Include="Source\ECS\ECSDefines.h" />
     <ClInclude Include="Source\ECS\EntityComponentSystem.h" />
     <ClInclude Include="Source\ECS\EntityManager.h" />
