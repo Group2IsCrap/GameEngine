@@ -1,10 +1,15 @@
 #include "ProcessInput.h"
-
+#include<cstdio>
+#include<string>
 
 #include"MouseInput.h"
 #include"KeyboardInput.h"
 #include"ControllerManager.h"
-namespace Firelight::Input {
+#include"GetInput.h"
+
+#include"..\Utils\ErrorManager.h"
+namespace Firelight::Input 
+{
 	ProcessInput::ProcessInput()
 	{
 	}
@@ -18,11 +23,17 @@ namespace Firelight::Input {
 	ProcessInput::~ProcessInput()
 	{
 	}
-	void ProcessInput::Initialize()
+	bool ProcessInput::Initialize()
 	{
-		m_KeyboardCaptuer = std::make_unique<Input::KeyboardInput>();
-		m_MouseCaptuer = std::make_unique <Input::MouseInput>();
-		m_ControllerManager = std::make_unique <Input::ControllerManager>();
+		bool result;
+		m_KeyboardCapture = std::make_shared<Input::KeyboardInput>();
+		m_MouseCapture = std::make_shared <Input::MouseInput>();
+		m_ControllerManager = std::make_shared <Input::ControllerManager>();
+
+		result = Input::InputGet.Initialize(m_MouseCapture, m_KeyboardCapture, m_ControllerManager);
+		ASSERT_RETURN(result, "GetInput failed to initialise", false);
+		
+		return true;
 	}
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
@@ -34,21 +45,21 @@ namespace Firelight::Input {
 			//Keyborad Input
 		case WM_KEYUP: {
 			unsigned char ch = static_cast<unsigned char>(wParam);
-			m_KeyboardCaptuer->OnKeyRelace(ch);
+			m_KeyboardCapture->OnKeyRelace(ch);
 			return true;
 		}
 					 break;
 		case WM_KEYDOWN: {
 			unsigned char ch = static_cast<unsigned char>(wParam);
-			if (m_KeyboardCaptuer->IsKeysAutoRepat()) {
+			if (m_KeyboardCapture->IsKeysAutoRepat()) {
 
-				m_KeyboardCaptuer->OnKeyPress(ch);
+				m_KeyboardCapture->OnKeyPress(ch);
 			}
 			else
 			{
 				const bool wasPressed = lParam & WAS_PRESSED;
 				if (!wasPressed) {
-					m_KeyboardCaptuer->OnKeyPress(ch);
+					m_KeyboardCapture->OnKeyPress(ch);
 				}
 
 			}
@@ -58,14 +69,14 @@ namespace Firelight::Input {
 		case WM_CHAR:
 		{
 			unsigned char ch = static_cast<unsigned char>(wParam);
-			if (m_KeyboardCaptuer->IsCharAutoRepat()) {
-				m_KeyboardCaptuer->OnChar(ch);
+			if (m_KeyboardCapture->IsCharAutoRepat()) {
+				m_KeyboardCapture->OnChar(ch);
 			}
 			else
 			{
 				const bool wasPressed = lParam & WAS_PRESSED;
 				if (!wasPressed) {
-					m_KeyboardCaptuer->OnChar(ch);
+					m_KeyboardCapture->OnChar(ch);
 				}
 
 			}
@@ -78,7 +89,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnMouseMove(x, y);
+			m_MouseCapture->OnMouseMove(x, y);
 			return true;
 		}
 		break;
@@ -87,7 +98,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnLeftPress(x, y);
+			m_MouseCapture->OnLeftPress(x, y);
 			return true;
 		}
 		break;
@@ -96,7 +107,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnLeftReleased(x, y);
+			m_MouseCapture->OnLeftReleased(x, y);
 			return true;
 		}
 		break;
@@ -105,7 +116,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnRightPress(x, y);
+			m_MouseCapture->OnRightPress(x, y);
 			return true;
 		}
 		break;
@@ -114,7 +125,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnRightReleased(x, y);
+			m_MouseCapture->OnRightReleased(x, y);
 			return true;
 		}
 		break;
@@ -123,7 +134,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnMiddlePress(x, y);
+			m_MouseCapture->OnMiddlePress(x, y);
 			return true;
 		}
 		break;
@@ -132,7 +143,7 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 
-			m_MouseCaptuer->OnMiddleReleased(x, y);
+			m_MouseCapture->OnMiddleReleased(x, y);
 			return true;
 		}
 		break;
@@ -141,10 +152,10 @@ namespace Firelight::Input {
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
 			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0) {
-				m_MouseCaptuer->OnWheelUp(x, y);
+				m_MouseCapture->OnWheelUp(x, y);
 			}
 			else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0) {
-				m_MouseCaptuer->OnWheelDown(x, y);
+				m_MouseCapture->OnWheelDown(x, y);
 			}
 
 
@@ -165,12 +176,12 @@ namespace Firelight::Input {
 					RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(rawData.get());
 					if (raw->header.dwType == RIM_TYPEMOUSE)
 					{
-						m_MouseCaptuer->OnMouseMoveRaw(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+						m_MouseCapture->OnMouseMoveRaw(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
 					}
 				}
 			}
 
-
+			return false;
 
 		}
 		break;
@@ -187,6 +198,6 @@ namespace Firelight::Input {
 
 	void ProcessInput::TestInput()
 	{
-		m_ControllerManager->ProcessInput();
+		
 	}
 }

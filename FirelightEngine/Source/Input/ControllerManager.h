@@ -1,9 +1,11 @@
 #pragma once
 #include<vector>
-#include"ControllerInput.h"
+#include<memory>
 
-namespace Firelight::Input {
-	//class ControllerInput;
+
+namespace Firelight::Input 
+{
+	class ControllerInput;
 	class ControllerManager
 	{
 	public:
@@ -12,9 +14,16 @@ namespace Firelight::Input {
 
 		void HandleInput();
 		void ProcessInput();
+
+		ControllerInput* GetController(int contollerNo);
+		void AddContoller();
+		void AddContoller(int deadzoneLeftThumb, int deadzoneRightThumb, int triggerThreshold);
+		void RemoveController(int toRemove);
 	private:
-		std::vector<ControllerInput*> Controller;
-
-
+		bool CanConnect();
+	private:
+		std::vector<std::shared_ptr<ControllerInput>> m_Controller;
+		int m_NumberConnetedController;
+		
 	};
 }

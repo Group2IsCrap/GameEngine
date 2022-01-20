@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="ImGuiTestLayer.cpp" />
     <ClCompile Include="TestGame.cpp" />
+    <ClCompile Include="TestInputGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiTestLayer.h" />
+    <ClInclude Include="TestInputGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
