@@ -5,13 +5,18 @@
 
 #include "ImGuiEditorLayer.h"
 
+#include "Source/Maths/Vec2.h"
+
+using namespace Firelight::ECS;
+using namespace Firelight::ImGuiUI;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Firelight::Engine::Instance().Initialise(hInstance, "Firelight Editor", "windowClass", 1920-100, 1080-100))
+	if (Firelight::Engine::Instance().Initialise(hInstance, "Firelight Editor", "windowClass", Firelight::Maths::Vec2i(1280, 720)))
 	{
 		// ImGui Test code
 		ImGuiEditorLayer* testLayer = new ImGuiEditorLayer();

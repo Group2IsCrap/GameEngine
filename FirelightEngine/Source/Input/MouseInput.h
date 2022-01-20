@@ -1,10 +1,10 @@
 #pragma once
-#include<queue>
-#include<Windows.h>
+
+#include <queue>
+#include <Windows.h>
 
 namespace Firelight::Input 
 {
-	
 	class MouseInput
 	{
 	public:
@@ -37,18 +37,13 @@ namespace Firelight::Input
 
 		HRESULT RegisterMouseDevise();
 
-
 	private:
-		
-
 		bool m_IsLeftDown = false;
 		bool m_IsRightDown = false;
 		bool m_IsMiddleDown = false;
-		int m_MousePosX = 0;
-		int m_MousePosY = 0;
-
+		int  m_MousePosX = 0;
+		int  m_MousePosY = 0;
 
 		bool m_RawInputInitialized = false;
 	};
-
 }
