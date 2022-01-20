@@ -167,29 +167,14 @@
     <None Include="assets\$ENGINE\Models\screenQuad.mtls" />
     <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
     <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
-    <None Include="assets\Assets\$ENGINE\Materials\default.json" />
-    <None Include="assets\Assets\$ENGINE\Models\cube.mtls" />
-    <None Include="assets\Assets\$ENGINE\Models\screenQuad.mtls" />
-    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="assets\Assets\$ENGINE_readme.txt" />
+    <Text Include="assets\$ENGINE_readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\$ENGINE\Textures\missing.png" />
     <Image Include="assets\$ENGINE\Textures\non_binary_transparency.png" />
     <Image Include="assets\$ENGINE\Textures\transparency_test.png" />
-    <Image Include="assets\Assets\$ENGINE\Textures\missing.png" />
-    <Image Include="assets\Assets\$ENGINE\Textures\non_binary_transparency.png" />
-    <Image Include="assets\Assets\$ENGINE\Textures\transparency_test.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="assets\$ENGINE\Models\cube.obj" />
-    <Object Include="assets\$ENGINE\Models\screenQuad.obj" />
-    <Object Include="assets\Assets\$ENGINE\Models\cube.obj" />
-    <Object Include="assets\Assets\$ENGINE\Models\screenQuad.obj" />
-    <Object Include="assets\Assets\cube.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
