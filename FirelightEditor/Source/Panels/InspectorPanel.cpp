@@ -94,7 +94,9 @@ template<typename T, typename UIFunction>
 static void DrawComponent(const std::string& name, Firelight::ECS::Entity* entity, UIFunction uiFunction, bool allowDeletion = false)
 {
 	if (!entity->HasComponent<T>())
+	{
 		return;
+	}
 
 	const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap | ImGuiTreeNodeFlags_FramePadding;
 

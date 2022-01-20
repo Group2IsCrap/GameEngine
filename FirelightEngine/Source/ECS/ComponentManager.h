@@ -47,7 +47,9 @@ namespace Firelight::ECS
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
 			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
 				return nullptr;
+			}
 
 			ComponentTypeID typeID = m_componentHashTypes[typeName];
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
@@ -105,7 +107,9 @@ namespace Firelight::ECS
 			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
 			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
 				return;
+			}
 
 			ComponentTypeID typeID = m_componentHashTypes[typeName];
 
