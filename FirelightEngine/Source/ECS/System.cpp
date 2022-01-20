@@ -17,7 +17,7 @@ namespace Firelight::ECS
 	/// Returns a list of the maintained entities
 	/// </summary>
 	/// <returns></returns>
-	std::vector<Entity*> System::GetEntities()
+	std::vector<EntityID> System::GetEntities()
 	{
 		return m_entities;
 	}
@@ -41,5 +41,43 @@ namespace Firelight::ECS
 	/// <param name="fixeddt"></param>
 	void System::FixedUpdate(double fixeddt)
 	{
+	}
+
+
+	void System::UpdateEntityList()
+	{
+		std::vector<EntityID> ids = EntityComponentSystem::Instance()->GetEntities();
+
+		for (auto entity : ids)
+		{
+			Signature entitySignature = EntityComponentSystem::Instance()->GetSignature(entity);
+
+			bool validEntity = true;
+			for (int i = 0; i < entitySignature.size(); ++i)
+			{
+				if (whitelist[i] == true && entitySignature[i] == false)
+				{
+					validEntity = false;
+					break;
+				}
+			}
+			if (!validEntity)
+			{
+				continue;
+			}
+			for (int i = 0; i < entitySignature.size(); ++i)
+			{
+				if (blacklist[i] == true && entitySignature[i] == true)
+				{
+					validEntity = false;
+					break;
+				}
+			}
+			if (!validEntity)
+			{
+				continue;
+			}
+			this->m_entities.push_back(entity);
+		}
 	}
 }
