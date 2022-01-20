@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#include "Maths/Vec2.h"
-
 #include "Utils/ErrorManager.h"
 
 // Forward declare
@@ -21,32 +19,24 @@ namespace Firelight
 		Window();
 		~Window();
 
-		bool Initialise(WindowContainer* windowContainer, HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions);
+		bool Initialise(WindowContainer* windowContainer, HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int width, int height);
 		bool ProcessMessages();
-
 		HWND GetHWND() const;
 		void Destroy();
 
-		void                SetDimensions(const Maths::Vec2i& dimensions);
-
-		const Maths::Vec2i& GetDimensions() const;
-		const Maths::Vec2f& GetDimensionsFloat() const;
-
 	private:
 		void RegisterWindowClass();
-
 	private:
-		HWND         m_handle;
-		HINSTANCE    m_hInstance;
+		HWND         m_handle = NULL;
+		HINSTANCE    m_hInstance = NULL;
 
-		const char*  m_windowTitle;
-		std::wstring m_windowTitleWide;
-		std::string  m_windowClass;
-		std::wstring m_windowClassWide;
+		const char*  m_windowTitle = "";
+		std::wstring m_windowTitleWide = L"";
+		std::string  m_windowClass = "";
+		std::wstring m_windowClassWide = L"";
 
-		Maths::Vec2i m_dimensions;
-		Maths::Vec2f m_floatDimensions;
-
-		bool m_isDestroyed;
+		int          m_width = 0;
+		int          m_height = 0;
+		bool m_isDestroyed = false;
 	};
 }

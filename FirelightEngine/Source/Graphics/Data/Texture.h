@@ -8,17 +8,14 @@
 
 #include "Colour.h"
 
-#include "../../Maths/Vec2.h"
-#include "../../Maths/Vec3.h"
-
 namespace Firelight::Graphics
 {
 	class Texture
 	{
 	public:
 		Texture();
-		Texture(const Colour::RGBA& colour);
-		Texture(const Colour::RGBA* colourData, UINT width, UINT height);
+		Texture(const Colour& colour);
+		Texture(const Colour* colourData, UINT width, UINT height);
 		Texture(const std::string& filePath);
 		Texture(const uint8_t* pData, size_t size);
 
@@ -27,12 +24,13 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Resource>&           GetResource();
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
-		const Maths::Vec3i& GetDimensions() const;
-		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const;
+		int GetWidth() const;
+		int GetHeight() const;
+		int GetDepth() const;
 
 	private:
-		void InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height);
-		void Initialise1x1ColourTexture(const Colour::RGBA& colour);
+		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);
+		void Initialise1x1ColourTexture(const Colour& colour);
 
 		void UpdateDimensionsUsingResource2D();
 
@@ -40,6 +38,6 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Resource>           m_texture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textureView;
 
-		Maths::Vec3i                                     m_dimensions;
+		int                                              m_width, m_height, m_depth;
 	};
 }

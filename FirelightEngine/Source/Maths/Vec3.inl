@@ -18,17 +18,17 @@ namespace Firelight::Maths
 
     template<typename T>
     inline Vec3<T>::Vec3(const T& val) :
-        x(val),
-        y(val),
-        z(val)
+        x((T)val),
+        y((T)val),
+        z((T)val)
     {
     }
 
     template<typename T>
     inline Vec3<T>::Vec3(const T& _x, const T& _y, const T& _z) :
-        x(_x),
-        y(_y),
-        z(_z)
+        x((T)_x),
+        y((T)_y),
+        z((T)_z)
     {
     }
 
@@ -109,18 +109,6 @@ namespace Firelight::Maths
         x /= scalar;
         y /= scalar;
         z /= scalar;
-    }
-
-    template<typename T>
-    inline bool Vec3<T>::operator==(const Vec3<T>& vector) const
-    {
-        return x == vector.x && y == vector.y && z == vector.z;
-    }
-
-    template<typename T>
-    inline bool Vec3<T>::operator==(const T scalar) const
-    {
-        return x == scalar && y == scalar && z == scalar;
     }
 
     template<typename T>

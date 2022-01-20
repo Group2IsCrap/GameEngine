@@ -1,17 +1,14 @@
 #include "ProcessInput.h"
+#include<cstdio>
+#include<string>
 
-#include <cstdio>
-#include <string>
+#include"MouseInput.h"
+#include"KeyboardInput.h"
+#include"ControllerManager.h"
+#include"GetInput.h"
 
-#include "MouseInput.h"
-#include "KeyboardInput.h"
-#include "ControllerManager.h"
-#include "GetInput.h"
-
-#include "../Utils/ErrorManager.h"
-#include "../Engine.h"
-
-namespace Firelight::Input
+#include"..\Utils\ErrorManager.h"
+namespace Firelight::Input 
 {
 	ProcessInput::ProcessInput()
 	{
@@ -26,7 +23,6 @@ namespace Firelight::Input
 	ProcessInput::~ProcessInput()
 	{
 	}
-
 	bool ProcessInput::Initialize()
 	{
 		bool result;
@@ -42,82 +38,44 @@ namespace Firelight::Input
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		// Get input from windows
+
+		//get input from windows
 		switch (message)
 		{
-		// Window drag event
-		case WM_MOVE:
-		{
-			RECT rect = {0};
-			GetWindowRect(Engine::Instance().GetWindowHandle(), &rect);
-
-			int width = (int)(rect.right - rect.left);
-			int height = (int)(rect.bottom - rect.top);
-			Engine::Instance().SetWindowDimensions(Maths::Vec2i(width, height));
-		}
-		break;
-		// Window resize drag event
-		case WM_SIZING:
-		{
-			MINMAXINFO* mmiStruct = (MINMAXINFO*)lParam;
-			
-			int width = (int)mmiStruct->ptMaxSize.x;
-			int height = (int)mmiStruct->ptMaxSize.y;
-			Engine::Instance().SetWindowDimensions(Maths::Vec2i(width, height));
-		}
-		break;
-		// Window resize button event
-		case WM_SIZE:
-		{
-			int width = (int)LOWORD(lParam);
-			int height = (int)HIWORD(lParam);
-			Engine::Instance().SetWindowDimensions(Maths::Vec2i(width, height));
-		}
-		break;
-		// Keyborad Input
-		case WM_KEYUP:
-		{
+			//Keyborad Input
+		case WM_KEYUP: {
 			unsigned char ch = static_cast<unsigned char>(wParam);
-
-			m_KeyboardCapture->OnKeyReplace(ch);
-
+			m_KeyboardCapture->OnKeyRelace(ch);
 			return true;
 		}
-		break;
-		case WM_KEYDOWN:
-		{
+					 break;
+		case WM_KEYDOWN: {
 			unsigned char ch = static_cast<unsigned char>(wParam);
+			if (m_KeyboardCapture->IsKeysAutoRepat()) {
 
-			if (m_KeyboardCapture->IsKeysAutoRepeat())
-			{
 				m_KeyboardCapture->OnKeyPress(ch);
 			}
 			else
 			{
 				const bool wasPressed = lParam & WAS_PRESSED;
-
-				if (!wasPressed)
-				{
+				if (!wasPressed) {
 					m_KeyboardCapture->OnKeyPress(ch);
 				}
+
 			}
 			return true;
 		}
-		break;
+					   break;
 		case WM_CHAR:
 		{
 			unsigned char ch = static_cast<unsigned char>(wParam);
-
-			if (m_KeyboardCapture->IsCharAutoRepeat())
-			{
+			if (m_KeyboardCapture->IsCharAutoRepat()) {
 				m_KeyboardCapture->OnChar(ch);
 			}
 			else
 			{
 				const bool wasPressed = lParam & WAS_PRESSED;
-
-				if (!wasPressed)
-				{
+				if (!wasPressed) {
 					m_KeyboardCapture->OnChar(ch);
 				}
 
@@ -125,7 +83,7 @@ namespace Firelight::Input
 			return true;
 		}
 		break;
-		// Mouse input
+		//mouse input
 		case WM_MOUSEMOVE:
 		{
 			int x = LOWORD(lParam);
@@ -193,19 +151,19 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
-			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
-			{
+			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0) {
 				m_MouseCapture->OnWheelUp(x, y);
 			}
-			else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
-			{
+			else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0) {
 				m_MouseCapture->OnWheelDown(x, y);
 			}
+
+
 
 			return true;
 		}
 		break;
+
 		case WM_INPUT:
 		{
 			UINT dataSize = 0u;
@@ -228,6 +186,7 @@ namespace Firelight::Input
 		}
 		break;
 		}
+
 
 		return false;
 	}

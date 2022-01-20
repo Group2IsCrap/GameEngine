@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Stop the compiler complaining about SeedWithCurrentTime not being used when it is
-#pragma warning(disable : 4505)
-
 namespace Firelight::Maths::Random
 {
 	static void SeedWithCurrentTime()
@@ -23,11 +20,5 @@ namespace Firelight::Maths::Random
 	static T NegOneToOne()
 	{
 		return ZeroToOne<T>() * (T)2.0 - (T)1.0;
-	}
-
-	template<typename T>
-	static T InRange(T minVal, T maxVal)
-	{
-		return minVal + (T)(ZeroToOne<double>() * (double)(maxVal - minVal));
 	}
 }

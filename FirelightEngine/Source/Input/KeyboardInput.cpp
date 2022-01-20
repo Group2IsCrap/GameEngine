@@ -1,10 +1,8 @@
 #include "KeyboardInput.h"
+#include"KeyboardEvent.h"
+#include"..\Events\EventDispatcher.h"
 
-#include "KeyboardEvent.h"
-
-#include "..\Events\EventDispatcher.h"
-
-namespace Firelight::Input
+namespace Firelight::Input 
 {
     KeyboardInput::KeyboardInput()
     {
@@ -25,20 +23,21 @@ namespace Firelight::Input
         
         
         Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
+        
     }
 
-    void KeyboardInput::OnKeyReplace(const unsigned char key)
+    void KeyboardInput::OnKeyRelace(const unsigned char key)
     {
         m_Keystates[key] = false;
 
+        
         Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyRelease(), (void*)key);
     }
 
     void KeyboardInput::OnChar(const unsigned char key)
     {
-        (void)key;
-
         //for a later created event if needed
+        
     }
 
     //repeat keyinput
@@ -62,12 +61,12 @@ namespace Firelight::Input
         m_AutoRepeatChars = false;
     }
 
-    bool KeyboardInput::IsCharAutoRepeat()
+    bool KeyboardInput::IsCharAutoRepat()
     {
         return m_AutoRepeatChars;
     }
 
-    bool KeyboardInput::IsKeysAutoRepeat()
+    bool KeyboardInput::IsKeysAutoRepat()
     {
         return m_AutoRepeatKeys;
     }

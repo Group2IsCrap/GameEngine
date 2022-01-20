@@ -22,12 +22,6 @@ namespace Firelight::Graphics
 		}
 	}
 
-	UnlitColourVertex::UnlitColourVertex() :
-		UnlitVertex(),
-		m_colour(0.0f, 0.0f, 0.0f, 0.0f)
-	{
-	}
-
 	SimpleLitVertex::SimpleLitVertex() :
 		m_pos(0.0f, 0.0f, 0.0f),
 		m_normal(0.0f, 0.0f, 0.0f),

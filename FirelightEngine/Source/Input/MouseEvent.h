@@ -1,11 +1,10 @@
 #pragma once
-
 #include"..\Events\Event.h"
-
 #include"..\Maths\Vec2.h"
-
 namespace Firelight::Events::Input 
 {	
+	
+	
 	enum class e_MouseEventType
 		{
 			LPress,
@@ -24,13 +23,16 @@ namespace Firelight::Events::Input
 	class MouseEvent:public Event
 	{
 	public:
+		
+
+	
 		MouseEvent();
 		MouseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseEvent();
 
 		bool IsValid();
 		e_MouseEventType GetType();
-		const Maths::Vec2i& GetPos();
+		Maths::Vec2f GetPos();
 
 		int GetMouseX();
 		int GetMouseY();
@@ -44,12 +46,16 @@ namespace Firelight::Events::Input
 
 	public:
 		e_MouseEventType m_Type;
-		Maths::Vec2i     m_Pos;
+		int m_XPos;
+		int m_YPos;
 	};
 
 	class MouseButtionReleaseEvent :public MouseEvent
 	{
 	public:
+
+
+
 		MouseButtionReleaseEvent();
 		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionReleaseEvent();
@@ -60,11 +66,15 @@ namespace Firelight::Events::Input
 		{
 			return sm_Description;
 		}
-	};
 
+
+	};
 	class MouseButtionPressEvent :public MouseEvent
 	{
 	public:
+
+
+
 		MouseButtionPressEvent();
 		MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionPressEvent();
@@ -75,11 +85,18 @@ namespace Firelight::Events::Input
 		{
 			return sm_Description;
 		}
+
+
 	};
+
+
 
 	class MouseMoveEvent :public MouseEvent
 	{
 	public:
+
+
+
 		MouseMoveEvent();
 		MouseMoveEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseMoveEvent();
@@ -90,11 +107,16 @@ namespace Firelight::Events::Input
 		{
 			return sm_Description;
 		}
+
+
 	};
 
 	class MouseMoveRawEvent :public MouseEvent
 	{
 	public:
+
+
+
 		MouseMoveRawEvent();
 		MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseMoveRawEvent();
@@ -105,5 +127,8 @@ namespace Firelight::Events::Input
 		{
 			return sm_Description;
 		}
+
+
 	};
+
 }

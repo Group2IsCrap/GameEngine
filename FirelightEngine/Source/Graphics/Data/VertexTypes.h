@@ -5,10 +5,6 @@
 
 #include <Assimp/mesh.h>
 
-#include "../../Maths/Vec2.h"
-#include "../../Maths/Vec3.h"
-#include "../../Maths/Vec4.h"
-
 namespace Firelight::Graphics
 {
 	struct UnlitVertex
@@ -17,15 +13,8 @@ namespace Firelight::Graphics
 
 		void FillUsingAssimpMesh(aiMesh* assimpMesh, int vertexIndex);
 
-		Maths::Vec3f m_pos;
-		Maths::Vec2f m_texCoord;
-	};
-
-	struct UnlitColourVertex : public UnlitVertex
-	{
-		UnlitColourVertex();
-
-		Maths::Vec4f m_colour;
+		DirectX::XMFLOAT3 m_pos;
+		DirectX::XMFLOAT2 m_texCoord;
 	};
 
 	struct SimpleLitVertex
@@ -34,9 +23,9 @@ namespace Firelight::Graphics
 
 		void FillUsingAssimpMesh(aiMesh* assimpMesh, int vertexIndex);
 
-		Maths::Vec3f m_pos;
-		Maths::Vec3f m_normal;
-		Maths::Vec2f m_texCoord;
+		DirectX::XMFLOAT3 m_pos;
+		DirectX::XMFLOAT3 m_normal;
+		DirectX::XMFLOAT2 m_texCoord;
 	};
 
 	struct FancyLitVertex
@@ -45,10 +34,10 @@ namespace Firelight::Graphics
 
 		void FillUsingAssimpMesh(aiMesh* assimpMesh, int vertexIndex);
 
-		Maths::Vec3f m_pos;
-		Maths::Vec3f m_normal;
-		Maths::Vec3f m_tangent;
-		Maths::Vec3f m_bitangent;
-		Maths::Vec2f m_texCoord;
+		DirectX::XMFLOAT3 m_pos;
+		DirectX::XMFLOAT3 m_normal;
+		DirectX::XMFLOAT3 m_tangent;
+		DirectX::XMFLOAT3 m_bitangent;
+		DirectX::XMFLOAT2 m_texCoord;
 	};
 }

@@ -1,21 +1,17 @@
 #include "MouseInput.h"
-
-#include "MouseEvent.h"
-#include "..\Events\EventDispatcher.h"
-#include "..\Maths\Vec2.h"
-
-namespace Firelight::Input
+#include"MouseEvent.h"
+#include"..\Events\EventDispatcher.h"
+#include"..\Maths\Vec2.h"
+namespace Firelight::Input 
 {
     MouseInput::MouseInput()
     {
         m_RawInputInitialized = false;
         RegisterMouseDevise();
     }
-
     MouseInput::~MouseInput()
     {
     }
-
     void MouseInput::OnLeftPress(int x, int y)
     {
         m_IsLeftDown = true;
@@ -141,4 +137,6 @@ namespace Firelight::Input
         }
         return E_FAIL;
     }
+
+ 
 }

@@ -34,7 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestInputGame.h">
-    <ClInclude Include="Pepe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

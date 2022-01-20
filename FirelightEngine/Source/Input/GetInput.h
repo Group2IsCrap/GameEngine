@@ -61,8 +61,8 @@ namespace Firelight::Input {
 
 		//mouse inputs
 		bool MouseButtonPress(e_MouseButtonPress mouseButton);
-		Maths::Vec2i GetMousePos();
-		Maths::Vec2i GetMousePosRaw();
+		Maths::Vec2f GetMousePos();
+		Maths::Vec2f GetMousePosRaw();
 
 		//controller inputs
 		bool IsButtonPress(e_ControllerButton button);

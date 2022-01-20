@@ -2,18 +2,10 @@
 
 #include "Rect.h"
 
-#include "../Graphics/Data/VertexTypes.h"
-
-#include "../Engine.h"
-
 namespace Firelight::Maths
 {
 	template<typename T>
-	inline Rect<T>::Rect() :
-		x((T)0),
-		y((T)0),
-		w((T)0),
-		h((T)0)
+	inline Rect<T>::Rect()
 	{
 	}
 
@@ -24,37 +16,5 @@ namespace Firelight::Maths
 		w(_w),
 		h(_h)
 	{
-	}
-
-	template<typename T>
-	inline Rect<T> Rect<T>::CreateNDCRectFromPixelRect() const
-	{
-		const Maths::Vec2f& dimensions = Engine::Instance().GetWindowDimensionsFloat();
-		Rect<T> returnRect;
-
-		returnRect.x = (x / dimensions.x) * 2.0f - 1.0f;
-		returnRect.y = (1.0f - (y / dimensions.y)) * 2.0f - 1.0f;
-		returnRect.w = (w / dimensions.x) * 2.0f;
-		returnRect.h = (h / dimensions.y) * 2.0f;
-
-		return returnRect;
-	}
-
-	template<typename T>
-	inline bool Rect<T>::IsValid() const
-	{
-		return w >= (T)0 && h >= (T)0;
-	}
-
-	template<typename T>
-	inline Vec2<T> Rect<T>::GetCentre() const
-	{
-		return Vec2<T>(x + w * 0.5, y + h * 0.5);
-	}
-
-	template<typename T>
-	inline Vec2<T> Rect<T>::GetCentreNDC() const
-	{
-		return Vec2<T>(x + w / 2, y - h / 2);
 	}
 }

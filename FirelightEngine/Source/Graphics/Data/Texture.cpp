@@ -14,17 +14,19 @@ namespace Firelight::Graphics
 		m_texture(nullptr),
 		m_textureView(nullptr),
 
-		m_dimensions(0)
+		m_width(0),
+		m_height(0),
+		m_depth(0)
 	{
 	}
 
-	Texture::Texture(const Colour::RGBA& colour) :
+	Texture::Texture(const Colour& colour) :
 		Texture()
 	{
 		Initialise1x1ColourTexture(colour);
 	}
 
-	Texture::Texture(const Colour::RGBA* colourData, UINT width, UINT height) :
+	Texture::Texture(const Colour* colourData, UINT width, UINT height) :
 		Texture()
 	{
 		InitialiseColourTexture(colourData, width, height);
@@ -82,25 +84,25 @@ namespace Firelight::Graphics
 		return m_textureView;
 	}
 
-	const Maths::Vec3i& Texture::GetDimensions() const
+	int Texture::GetWidth() const
 	{
-		return m_dimensions;
+		return m_width;
 	}
 
-	Maths::Vec2f Texture::GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const
+	int Texture::GetHeight() const
 	{
-		Maths::Vec2f returnVec;
-
-		returnVec.x = sourcePixelCoord.x / m_dimensions.x;
-		returnVec.y = sourcePixelCoord.y / m_dimensions.y;
-
-		return returnVec;
+		return m_height;
 	}
 
-	void Texture::InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height)
+	int Texture::GetDepth() const
 	{
-		m_dimensions.x = width;
-		m_dimensions.y = height;
+		return m_depth;
+	}
+
+	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
+	{
+		m_width = width;
+		m_height = height;
 
 		CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
 
@@ -108,7 +110,7 @@ namespace Firelight::Graphics
 
 		D3D11_SUBRESOURCE_DATA initialData{};
 		initialData.pSysMem = colourData;
-		initialData.SysMemPitch = width * sizeof(Colour::RGBA);
+		initialData.SysMemPitch = width * sizeof(Colour);
 
 		HRESULT hr = GraphicsHandler::Instance().GetDevice()->CreateTexture2D(&textureDesc, &initialData, &p2DTexture);
 
@@ -121,7 +123,7 @@ namespace Firelight::Graphics
 		COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view for colour texture");
 	}
 
-	void Texture::Initialise1x1ColourTexture(const Colour::RGBA& colour)
+	void Texture::Initialise1x1ColourTexture(const Colour& colour)
 	{
 		InitialiseColourTexture(&colour, 1, 1);
 	}
@@ -138,8 +140,8 @@ namespace Firelight::Graphics
 				D3D11_TEXTURE2D_DESC desc;
 				pTextureInterface->GetDesc(&desc);
 
-				m_dimensions.x = desc.Width;
-				m_dimensions.y = desc.Height;
+				m_width = desc.Width;
+				m_height = desc.Height;
 			}
 		}
 	}
