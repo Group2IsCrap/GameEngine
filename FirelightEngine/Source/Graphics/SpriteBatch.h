@@ -49,7 +49,7 @@ namespace Firelight::Graphics
 
 		// Draw with a dest rect in NDC
 		void NDCDraw(const Maths::Rectf& destRectNDC,
-			Texture* texture,
+			Texture* texture = nullptr,
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,
@@ -58,7 +58,7 @@ namespace Firelight::Graphics
 		
 		// Draw with a dest rect in screen pixels
 		void PixelDraw(const Maths::Rectf& destRectPixel,
-			Texture* texture,
+			Texture* texture = nullptr,
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,
@@ -68,7 +68,7 @@ namespace Firelight::Graphics
 		// Draw with a dest rect in world units
 		void WorldDraw(
 			const Maths::Rectf& destRectWorld,
-			Texture* texture,
+			Texture* texture = nullptr,
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,

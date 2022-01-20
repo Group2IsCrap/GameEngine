@@ -1,9 +1,12 @@
 #include "SpriteBatch.h"
+
+#include "../Engine.h"
+
+#include "AssetManager.h"
+#include "Data/Texture.h"
+
 #include "../Maths/Rect.h"
 #include "../Maths/Vec2.h"
-
-#include "Data/Texture.h"
-#include "../Engine.h"
 
 namespace Firelight::Graphics
 {
@@ -39,18 +42,26 @@ namespace Firelight::Graphics
         }
         ++m_queueLength;
         
-
-        quad->m_texture = texture;
+        // Use a blank white texture if none is specified
+        if (texture != nullptr)
+        {
+            quad->m_texture = texture;
+        }
+        else
+        {
+            quad->m_texture = AssetManager::Instance().GetColourTexture(Colours::sc_white);
+        }
+        
         quad->m_layer = layer;
         float depthFromLayer = fminf(1.0f, (float)layer / 64.0f);
 
         // Calculate tex coords if weve been given a source rect
         if (sourceRect.IsValid())
         {
-            quad->m_topLeft.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y));
-            quad->m_topRight.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
-            quad->m_bottomLeft.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
-            quad->m_bottomRight.m_texCoord = texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
+            quad->m_topLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y));
+            quad->m_topRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
+            quad->m_bottomLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
+            quad->m_bottomRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
         }
         // Otherwise just use default texcoords
         else

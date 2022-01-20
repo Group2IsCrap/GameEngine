@@ -41,7 +41,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 		Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
-		//Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/hueTest.png");
 
 		const int numPepes = 50;
 		struct Pepe
@@ -90,7 +89,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				Graphics::Colour::HSLA hslValue = Graphics::Colour::HSLA((BYTE)(pepe.hue * 255.0f), 255, (BYTE)(pepe.darkness * 128.0f));
 				pepe.colour = Graphics::Colour::RGBA::MakeFromHSLA(hslValue);
 
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeTexture, pepe.layer, (double)pepe.rot, pepe.colour);
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), nullptr, pepe.layer, (double)pepe.rot, pepe.colour);
 			}
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
