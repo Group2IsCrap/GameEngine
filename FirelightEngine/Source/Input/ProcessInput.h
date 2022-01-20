@@ -1,9 +1,9 @@
 #pragma once
-#include<Windows.h>
-#include<memory>
 
+#include <Windows.h>
+#include <memory>
 
-
+#define WAS_PRESSED 0x40000000;
 
 	namespace Firelight::Input 
 	{
@@ -34,8 +34,10 @@
 			std::shared_ptr<Input::MouseInput> m_MouseCapture;
 			std::shared_ptr <Input::KeyboardInput> m_KeyboardCapture;
 			std::shared_ptr <Input::ControllerManager> m_ControllerManager;
-
-		
 		};
 
-	}
+		std::unique_ptr<Input::MouseInput> m_MouseCapture;
+		std::unique_ptr<Input::KeyboardInput> m_KeyboardCapture;
+		std::unique_ptr<Input::ControllerManager> m_ControllerManager;
+	};
+}

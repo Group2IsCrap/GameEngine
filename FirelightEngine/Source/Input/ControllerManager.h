@@ -1,11 +1,12 @@
 #pragma once
-#include<vector>
-#include<memory>
 
+#include <vector>
+#include <memory>
 
 namespace Firelight::Input 
 {
 	class ControllerInput;
+
 	class ControllerManager
 	{
 	public:
@@ -19,11 +20,12 @@ namespace Firelight::Input
 		void AddContoller();
 		void AddContoller(int deadzoneLeftThumb, int deadzoneRightThumb, int triggerThreshold);
 		void RemoveController(int toRemove);
+
 	private:
 		bool CanConnect();
+
 	private:
 		std::vector<std::shared_ptr<ControllerInput>> m_Controller;
 		int m_NumberConnetedController;
-		
 	};
 }

@@ -14,17 +14,17 @@ namespace Firelight::Events::Input
     {
     }
 
-    bool KeyboardEvent::isPressed() const
+    bool KeyboardEvent::IsPressed() const
     {
-        return m_Type == KeyEvent::press;
+        return m_Type == KeyEvent::Press;
     }
 
-    bool KeyboardEvent::isReleased() const
+    bool KeyboardEvent::IsReleased() const
     {
-        return m_Type == KeyEvent::release;
+        return m_Type == KeyEvent::Release;
     }
 
-    bool KeyboardEvent::isValid() const
+    bool KeyboardEvent::IsValid() const
     {
         return m_Type != KeyEvent::Invalid;
     }
@@ -41,15 +41,19 @@ namespace Firelight::Events::Input
     Input::OnKeyPress::OnKeyPress(const KeyEvent type, const unsigned char key):KeyboardEvent(type, key)
     {
     }
+
     Input::OnKeyPress::~OnKeyPress()
     {
     }
+
     Input::OnKeyRelease::OnKeyRelease()
     {
     }
+
     Input::OnKeyRelease::OnKeyRelease(const KeyEvent type, const unsigned char key):KeyboardEvent(type, key)
     {
     }
+
     Input::OnKeyRelease::~OnKeyRelease()
     {
     }

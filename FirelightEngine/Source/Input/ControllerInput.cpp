@@ -1,11 +1,14 @@
 #include "ControllerInput.h"
+
 #include <math.h>
-#include<cstdio>
-#include"..\Events\EventDispatcher.h"
-#include"ControllerEvent.h"
+#include <cstdio>
+
+#include "..\Events\EventDispatcher.h"
+#include "ControllerEvent.h"
+
 namespace Firelight::Input 
 {
-    ControllerInput::ControllerInput():
+    ControllerInput::ControllerInput() :
         m_User_ID(0),
         m_DeadzoneLeftThumb(7849),
         m_DeadzoneRightThumb(8689),
@@ -14,7 +17,7 @@ namespace Firelight::Input
         m_State = XINPUT_STATE();
     }
 
-    ControllerInput::ControllerInput(int controllerIndex, double deadZoneLeftThumb, double deadZoneRightThumb, double triggerThreshold):
+    ControllerInput::ControllerInput(int controllerIndex, double deadZoneLeftThumb, double deadZoneRightThumb, double triggerThreshold) :
         m_User_ID(controllerIndex),
         m_DeadzoneLeftThumb(deadZoneLeftThumb),
         m_DeadzoneRightThumb(deadZoneRightThumb),
@@ -26,6 +29,7 @@ namespace Firelight::Input
     ControllerInput::~ControllerInput()
     {
     }
+
     //check if controllor is connected and gets the state of the controller
     bool ControllerInput::IsConnected()
     {
@@ -36,8 +40,8 @@ namespace Firelight::Input
         //Simply get the state of the controller from XInput.
         dwResult = XInputGetState(m_User_ID, &collectedState);
 
-
-        if (collectedState.dwPacketNumber == m_State.dwPacketNumber) {
+        if (collectedState.dwPacketNumber == m_State.dwPacketNumber)
+        {
             return false;
         }
         else
@@ -45,6 +49,7 @@ namespace Firelight::Input
             ZeroMemory(&m_State, sizeof(XINPUT_STATE));
             m_State = collectedState;
         }
+
         if (dwResult == ERROR_SUCCESS)
         {
             m_Isconnected = true;
@@ -55,16 +60,15 @@ namespace Firelight::Input
         {
             return false;
         }
-
-
-
     }
 
-    //Translate into Non Xinput Data
+    // Translate into Non Xinput Data
     void ControllerInput::ProcessInput()
     {
-        if (IsConnected()) {  
+        if (IsConnected())
+        {  
             Events::Input::ControllerState state;
+
             state.m_RightStick = GetRightStickState();
             state.m_LeftStick = GetLeftStickState();
             state.m_LeftTrigger = GetLeftTriggerState();
@@ -83,13 +87,12 @@ namespace Firelight::Input
             state.m_Start = IsPressed(XINPUT_GAMEPAD_START);
             state.m_StickLeftPress = IsPressed(XINPUT_GAMEPAD_LEFT_THUMB);
             state.m_StickRightPress = IsPressed(XINPUT_GAMEPAD_RIGHT_THUMB);
+
             Events::EventDispatcher::InvokeListeners(Events::Input::ContollerEvent(), (void*)&state);
-            
         }
-       
     }
 
-    //Directly get State from xinput
+    // Directly get State from xinput
     XINPUT_STATE ControllerInput::GetState()
     {
         if (IsConnected()) {
@@ -106,7 +109,7 @@ namespace Firelight::Input
 
     void ControllerInput::Vibrate(float leftVal, float rightVal)
     {
-
+        (void)rightVal;
 
         WORD speedLeft = 65535 * leftVal;
         WORD speedRight = 65535 * rightVal;
@@ -254,8 +257,4 @@ namespace Firelight::Input
     {
         m_TriggerThreshold = triggerThreshold;
     }
-  
-   
-  
-
 } 

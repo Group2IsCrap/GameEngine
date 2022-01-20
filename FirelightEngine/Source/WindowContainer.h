@@ -12,8 +12,9 @@ namespace Firelight
 		WindowContainer();
 
 		LRESULT WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
-		Window& GetWindow();
+	
+		const Window& GetWindow() const;
+		Window&       GetWritableWindow();
 
 	protected:
 		Window m_window;
