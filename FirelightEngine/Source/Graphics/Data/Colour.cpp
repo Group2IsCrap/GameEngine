@@ -94,4 +94,9 @@ namespace Firelight::Graphics
 	{
 		return m_colour;
 	}
+
+	Maths::Vec4f Colour::GetAsNormalisedVec4() const
+	{
+		return Maths::Vec4f((float)m_rgba[0] / 255.0f, (float)m_rgba[1] / 255.0f, (float)m_rgba[2] / 255.0f, (float)m_rgba[3] / 255.0f);
+	}
 }

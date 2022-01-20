@@ -17,15 +17,15 @@ namespace Firelight::Maths
 
     template<typename T>
     inline Vec2<T>::Vec2(const T& val) :
-        x((T)val),
-        y((T)val)
+        x(val),
+        y(val)
     {
     }
 
     template<typename T>
     inline Vec2<T>::Vec2(const T& _x, const T& _y) :
-        x((T)_x),
-        y((T)_y)
+        x(_x),
+        y(_y)
     {
     }
 

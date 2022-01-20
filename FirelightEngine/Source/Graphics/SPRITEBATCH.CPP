@@ -23,7 +23,7 @@ namespace Firelight::Graphics
         m_sortMode = sortMode;
     }
 
-    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Maths::Rectf& sourceRect)
+    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
     {
         // If there is already an entry in the queue overwrite the existing data,
         // otherwise create push back new data
@@ -87,19 +87,27 @@ namespace Firelight::Graphics
             quad->m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y - destRectNDC.h, depthFromLayer);
             quad->m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h, depthFromLayer);
         }
+
+        // Set quad vertex colours
+        Maths::Vec4f floatColour = colour.GetAsNormalisedVec4();
+        
+        quad->m_topLeft.m_colour = floatColour;
+        quad->m_topRight.m_colour = floatColour;
+        quad->m_bottomLeft.m_colour = floatColour;
+        quad->m_bottomRight.m_colour = floatColour;
     }
 
-    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Maths::Rectf& sourceRect)
+    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
     {
         Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect();
 
-        NDCDraw(destRectNDC, texture, layer, rotation, sourceRect);
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
     }
 
-    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Maths::Rectf& sourceRect)
+    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
     {
         // To do: convert from world space when we can
-        NDCDraw(destRectWorld, texture, layer, rotation, sourceRect);
+        NDCDraw(destRectWorld, texture, layer, rotation, colour, sourceRect);
     }
 
     void SpriteBatch::SortQuads()

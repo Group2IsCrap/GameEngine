@@ -7,6 +7,7 @@
 
 #include "../../Maths/Vec2.h"
 #include "../../Maths/Vec3.h"
+#include "../../Maths/Vec4.h"
 
 namespace Firelight::Graphics
 {
@@ -18,6 +19,7 @@ namespace Firelight::Graphics
 
 		Maths::Vec3f m_pos;
 		Maths::Vec2f m_texCoord;
+		Maths::Vec4f m_colour;
 	};
 
 	struct SimpleLitVertex

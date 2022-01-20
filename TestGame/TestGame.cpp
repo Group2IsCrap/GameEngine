@@ -16,6 +16,7 @@
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/Data/Model.h"
 #include "Source/Graphics/Data/VertexTypes.h"
+#include "Source/Graphics/Data/Colour.h"
 
 #include "Source/Graphics/SpriteBatch.h"
 
@@ -41,13 +42,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 		Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
 
-		const int numPepes = 50;
+		const int numPepes = 100;
 		struct Pepe
 		{
 			Maths::Vec2f pos;
 			Maths::Vec2f vel;
 			float rot = 0.0f;
 			float rotSpeed = 0.0f;
+			Graphics::Colour colour;
 			int layer = 0;
 		};
 		Pepe pepes[numPepes];
@@ -59,7 +61,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			pepes[pepeIndex].vel = Maths::Vec2f::GetRandomVector() * 300.0f;
 			pepes[pepeIndex].layer = (int)(Maths::Random::ZeroToOne<float>() * 64.0f);
 			pepes[pepeIndex].rotSpeed = Maths::Random::NegOneToOne<float>() * 10.0f;
-			pepes[pepeIndex].rot = 0.0f;
+			BYTE darkness = (BYTE)(255.0f * ((float)pepes[pepeIndex].layer / 64.0f));
+			pepes[pepeIndex].colour = Graphics::Colour(darkness, darkness, darkness, 255);
 		}
 
 		while (Engine::Instance().ProcessMessages())
@@ -77,7 +80,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				if (pepe.pos.y > windowDimensions.y + 100.0f) pepe.pos.y -= windowDimensions.y + 200.0f;
 				if (pepe.pos.y < -100.0f) pepe.pos.y += windowDimensions.y + 200.0f;
 
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeTexture, pepes[pepeIndex].layer, (double)pepe.rot);
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), pepeTexture, pepe.layer, (double)pepe.rot, pepe.colour);
 			}
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);

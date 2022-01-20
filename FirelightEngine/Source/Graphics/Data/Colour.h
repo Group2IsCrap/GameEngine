@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Maths/Vec4.h"
+
 namespace Firelight::Graphics
 {
 	typedef unsigned char BYTE;
@@ -31,6 +33,7 @@ namespace Firelight::Graphics
 		void SetA(BYTE a);
 
 		unsigned int GetUnsignedInt() const;
+		Maths::Vec4f GetAsNormalisedVec4() const;
 
 	private:
 		union
@@ -42,6 +45,9 @@ namespace Firelight::Graphics
 
 	namespace Colours
 	{
+		static const Colour sc_white(255, 255, 255);
+		static const Colour sc_black(0, 0, 0);
+
 		static const Colour sc_unhandledTextureColour(255, 0, 255);
 
 		static const Colour sc_defaultAlbedo(170, 170, 170);

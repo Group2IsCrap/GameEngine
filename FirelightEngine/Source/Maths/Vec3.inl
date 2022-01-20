@@ -18,17 +18,17 @@ namespace Firelight::Maths
 
     template<typename T>
     inline Vec3<T>::Vec3(const T& val) :
-        x((T)val),
-        y((T)val),
-        z((T)val)
+        x(val),
+        y(val),
+        z(val)
     {
     }
 
     template<typename T>
     inline Vec3<T>::Vec3(const T& _x, const T& _y, const T& _z) :
-        x((T)_x),
-        y((T)_y),
-        z((T)_z)
+        x(_x),
+        y(_y),
+        z(_z)
     {
     }
 

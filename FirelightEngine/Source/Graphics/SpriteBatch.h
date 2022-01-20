@@ -4,6 +4,8 @@
 
 #include "../Graphics/Data/Mesh.h"
 #include "../Graphics/Data/VertexTypes.h"
+#include "../Graphics/Data/Colour.h"
+
 #include "../Maths/Rect.h"
 
 // Forward declarations
@@ -25,8 +27,8 @@ namespace Firelight::Graphics
 			UnlitVertex m_bottomLeft;
 			UnlitVertex m_bottomRight;
 
-			int         m_layer;
-			Texture*    m_texture;
+			int         m_layer = 0;
+			Texture*    m_texture = nullptr;
 		};
 
 	public:
@@ -46,11 +48,30 @@ namespace Firelight::Graphics
 		void SetSortMode(SortMode sortMode);
 
 		// Draw with a dest rect in NDC
-		void NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer = 32, double rotation = 0.0, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		void NDCDraw(const Maths::Rectf& destRectNDC,
+			Texture* texture,
+			int layer = 32,
+			double rotation = 0.0,
+			const Graphics::Colour& colour = Colours::sc_white,
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		
 		// Draw with a dest rect in screen pixels
-		void PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer = 32, double rotation = 0.0, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		void PixelDraw(const Maths::Rectf& destRectPixel,
+			Texture* texture,
+			int layer = 32,
+			double rotation = 0.0,
+			const Graphics::Colour& colour = Colours::sc_white,
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		
 		// Draw with a dest rect in world units
-		void WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer = 32, double rotation = 0.0, const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+		void WorldDraw(
+			const Maths::Rectf& destRectWorld,
+			Texture* texture,
+			int layer = 32,
+			double rotation = 0.0,
+			const Graphics::Colour& colour = Colours::sc_white,
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+		);
 
 		void SortQuads();
 		void CreateBatches();

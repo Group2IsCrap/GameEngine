@@ -9,7 +9,11 @@
 namespace Firelight::Maths
 {
 	template<typename T>
-	inline Rect<T>::Rect()
+	inline Rect<T>::Rect() :
+		x((T)0),
+		y((T)0),
+		w((T)0),
+		h((T)0)
 	{
 	}
 

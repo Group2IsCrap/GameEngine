@@ -405,6 +405,7 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\Maths\Vec4.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -497,6 +498,7 @@
     <None Include="Source\Maths\Rect.inl" />
     <None Include="Source\Maths\Vec2.inl" />
     <None Include="Source\Maths\Vec3.inl" />
+    <None Include="Source\Maths\Vec4.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\%24ENGINE_readme.txt" />
