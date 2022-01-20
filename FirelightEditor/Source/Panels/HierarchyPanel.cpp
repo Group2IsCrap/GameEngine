@@ -2,7 +2,7 @@
 
 #include <Source/ECS/EntityComponentSystem.h>
 #include <Source/ECS/Entity.h>
-#include <Source/ECS/Components.h>
+#include <Source/ECS/Components/BasicComponents.h>
 
 #include "InspectorPanel.h"
 

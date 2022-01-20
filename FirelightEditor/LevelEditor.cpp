@@ -1,6 +1,5 @@
 #include "Source/Engine.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
-#include <Source/ECS/Components.h>
 #include <Source/ECS/EntityComponentSystem.h>
 
 #include "ImGuiEditorLayer.h"
@@ -20,7 +19,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// ImGui Test code
 		ImGuiEditorLayer* testLayer = new ImGuiEditorLayer();
-		ImGuiManager::Instance()->AddRenderLayer(testLayer);
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(testLayer);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
@@ -30,8 +29,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		delete testLayer;
 	}
-
-	
 
 	return 0;
 }

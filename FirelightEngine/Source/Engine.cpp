@@ -97,14 +97,6 @@ namespace Firelight
         return m_windowContainer.GetWindow().GetHWND();
     }
 
-    void Engine::RegisterEngineComponents()
-    {
-        EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
-        EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
-        EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
-        EntityComponentSystem::Instance()->RegisterComponent<SpriteComponent>();
-    }
-
     double Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
