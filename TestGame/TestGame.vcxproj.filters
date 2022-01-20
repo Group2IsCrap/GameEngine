@@ -30,5 +30,8 @@
     <ClInclude Include="ImGuiTestLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pepe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

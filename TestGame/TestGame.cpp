@@ -2,23 +2,19 @@
 // Defines the entry point for the application.
 
 #include "Source/Engine.h"
+
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 
-#include "Source/Maths/Vec3.h"
-#include "Source/Maths/Vec2.h"
-#include "Source/Maths/Rect.h"
-
 #include "ImGuiTestLayer.h"
 
+#include "Source/Graphics/GraphicsHandler.h"
 #include "Source/Graphics/AssetManager.h"
-#include "Source/Graphics/Data/Model.h"
-#include "Source/Graphics/Data/VertexTypes.h"
-#include "Source/Graphics/Data/Colour.h"
-
 #include "Source/Graphics/SpriteBatch.h"
+
+#include "Pepe.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -37,35 +33,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
 		ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
 
-		Graphics::Model* model = Graphics::AssetManager::Instance().GetModel<Graphics::FancyLitVertex>("cube.obj");
-
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		Graphics::Texture* pepeTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
 
 		const int numPepes = 50;
-		struct Pepe
-		{
-			Maths::Vec2f pos;
-			Maths::Vec2f vel;
-			float rot = 0.0f;
-			float rotSpeed = 0.0f;
-			Graphics::Colour::RGBA colour;
-			int layer = 0;
-			float darkness = 0.0f;
-			float hue = 0.0f;
-		};
 		Pepe pepes[numPepes];
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
-
-		for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
-		{
-			pepes[pepeIndex].vel = Maths::Vec2f::GetRandomVector() * 300.0f;
-			pepes[pepeIndex].layer = (int)(Maths::Random::ZeroToOne<float>() * 64.0f);
-			pepes[pepeIndex].rotSpeed = Maths::Random::NegOneToOne<float>() * 10.0f;
-			pepes[pepeIndex].darkness = (float)pepes[pepeIndex].layer / 64.0f;
-			pepes[pepeIndex].hue = Maths::Random::ZeroToOne<float>();
-		}
 
 		while (Engine::Instance().ProcessMessages())
 		{
@@ -74,22 +47,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			{
 				Pepe& pepe = pepes[pepeIndex];
 
-				pepe.pos += pepe.vel * (float)deltaTime;
-				
-				if (pepe.pos.x > windowDimensions.x + 100.0f) pepe.pos.x -= windowDimensions.x + 200.0f;
-				if (pepe.pos.x < -100.0f) pepe.pos.x += windowDimensions.x + 200.0f;
-				if (pepe.pos.y > windowDimensions.y + 100.0f) pepe.pos.y -= windowDimensions.y + 200.0f;
-				if (pepe.pos.y < -100.0f) pepe.pos.y += windowDimensions.y + 200.0f;
-
-				pepe.rot += pepe.rotSpeed * (float)deltaTime;
-
-				pepe.hue += (float)deltaTime * 0.3f;
-				if (pepe.hue > 1.0f) pepe.hue -= 1.0f;
-
-				Graphics::Colour::HSLA hslValue = Graphics::Colour::HSLA((BYTE)(pepe.hue * 255.0f), 255, (BYTE)(pepe.darkness * 128.0f));
-				pepe.colour = Graphics::Colour::RGBA::MakeFromHSLA(hslValue);
-
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(pepe.pos.x - 100.0f, pepe.pos.y - 100.0f, 200.0f, 200.0f), nullptr, pepe.layer, (double)pepe.rot, pepe.colour);
+				pepe.Update(deltaTime, windowDimensions);
+				pepe.Draw();
 			}
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
