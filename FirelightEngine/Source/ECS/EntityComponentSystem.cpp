@@ -1,4 +1,7 @@
 #include "EntityComponentSystem.h"
+#include "../Events/EventDispatcher.h"
+#include "ECSEvents.h"
+
 #include <windows.h> 
 #include <debugapi.h> 
 #include <iostream> 
@@ -21,6 +24,8 @@ namespace Firelight::ECS
 	{
 		m_entityManager = std::make_unique<EntityManager>();
 		m_componentManager = std::make_unique<ComponentManager>();
+
+		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnComponentRegisteredEvent::sm_descriptor, std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
 	}
 
 
@@ -30,7 +35,11 @@ namespace Firelight::ECS
 	/// <returns></returns>
 	EntityID EntityComponentSystem::CreateEntity()
 	{
-		return m_entityManager->CreateEntity();
+		EntityID entity = m_entityManager->CreateEntity();
+
+		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetComponentTypeCount());
+
+		return entity;
 	}
 
 	/// <summary>
@@ -77,12 +86,33 @@ namespace Firelight::ECS
 		}
 		OutputDebugStringA("***********************************\n");
 	}
+
 	std::vector<EntityID> EntityComponentSystem::GetEntities()
 	{
 		return m_entityManager->GetEntities();
 	}
+
 	Signature EntityComponentSystem::GetSignature(EntityID entityID)
 	{
 		return m_entityManager->GetEntitySignature(entityID);
+	}
+
+	void EntityComponentSystem::UpdateAllEntitySignatures()
+	{
+		m_entityManager->ClearSignatures();
+
+		int numComponents = m_componentManager->GetComponentTypeCount();
+		auto componentData = m_componentManager->GetComponentData();
+
+		for (auto& entity : m_entityManager->GetEntities())
+		{
+			m_entityManager->CreateNewEntitySignature(entity, numComponents);
+
+			for (auto componentType : componentData)
+			{
+				bool entityHasComponent = m_componentManager->HasComponent(componentType.first,entity);
+				m_entityManager->UpdateEntitySignature(entity, componentType.first, entityHasComponent);
+			}
+		}
 	}
 }

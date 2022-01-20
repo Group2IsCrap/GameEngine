@@ -7,7 +7,10 @@
 #include "Maths/Random.h"
 
 #include "ECS/EntityComponentSystem.h"
-#include "ECS/Components.h"
+
+#include "ECS/Components/BasicComponents.h"
+#include "ECS/Components/PhysicsComponents.h"
+#include "ECS/Components/RenderingComponents.h"
 
 using namespace Firelight::ECS;
 
@@ -53,8 +56,6 @@ namespace Firelight
 
         // TODO: Initalise other systems here
 
-        RegisterEngineComponents();
-
         m_initialised = true;
 
         return true;
@@ -75,7 +76,7 @@ namespace Firelight
             Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
         }
     }
-
+  
     bool Engine::ProcessMessages()
     {
         return m_windowContainer.GetWritableWindow().ProcessMessages();
@@ -101,6 +102,7 @@ namespace Firelight
         EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
         EntityComponentSystem::Instance()->RegisterComponent<TransformComponent>();
         EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
+        EntityComponentSystem::Instance()->RegisterComponent<SpriteComponent>();
     }
 
     double Engine::Update()
@@ -111,7 +113,6 @@ namespace Firelight
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
 
-        (void)deltaTime;
         // Update engine systems with deltaTime here
 
         return deltaTime;

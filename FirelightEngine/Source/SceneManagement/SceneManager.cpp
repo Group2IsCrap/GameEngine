@@ -39,12 +39,12 @@ namespace Firelight::SceneManagement
 
 	void SceneManager::LoadScene(int index)
 	{
-		(void)index;
+		UNREFERENCED_PARAMETER(index);
 	}
 
 	void SceneManager::UnloadScene(int index)
 	{
-		(void)index;
+		UNREFERENCED_PARAMETER(index);
 	}
 	
 	void SceneManager::SetBuildIndex(Scene* scene, int index)
