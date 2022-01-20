@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "Source/ECS/GameEntity.h"
+#include "Source/ECS/Components/PhysicsComponents.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
