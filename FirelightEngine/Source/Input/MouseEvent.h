@@ -1,7 +1,8 @@
 #pragma once
 #include"..\Events\Event.h"
 #include"..\Maths\Vec2.h"
-namespace Firelight::Events::Input {	
+namespace Firelight::Events::Input 
+{	
 	
 	
 	enum class e_MouseEventType

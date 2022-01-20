@@ -1,6 +1,7 @@
 #pragma once
 #include"..\Events\Event.h"
-namespace Firelight::Events::Input {
+namespace Firelight::Events::Input 
+{
 	class KeyboardEvent: public Events::Event
 	{
 	public:

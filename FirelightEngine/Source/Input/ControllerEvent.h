@@ -1,32 +1,33 @@
 #pragma once
 #include"..\Maths\Vec2.h"
 #include"..\Events\Event.h"
-namespace Firelight::Events::Input {
+namespace Firelight::Events::Input 
+{
 
 	//More Readable format 
 	struct ControllerState
 	{
-		bool A = false;
-		bool Y = false;
-		bool X = false;
-		bool B = false;
+		bool m_A = false;
+		bool m_Y = false;
+		bool m_X = false;
+		bool m_B = false;
 
-		bool RightBumber = false;
-		bool LeftBumber = false;
+		bool m_RightBumber = false;
+		bool m_LeftBumber = false;
 
-		bool StickLeftPress = false;
-		bool StickRightPress = false;
-		bool Back = false;
-		bool Start = false;
+		bool m_StickLeftPress = false;
+		bool m_StickRightPress = false;
+		bool m_Back = false;
+		bool m_Start = false;
 
-		bool DPADUp = false;
-		bool DPADDown = false;
-		bool DPADLeft = false;
-		bool DPADRight = false;
-		Maths::Vec2f LeftStick = Maths::Vec2f();
-		Maths::Vec2f  RightStick = Maths::Vec2f();
-		double LeftTrigger = 0;
-		double RightTrigger = 0;
+		bool m_DPadUp = false;
+		bool m_DPadDown = false;
+		bool m_DPadLeft = false;
+		bool m_DPadRight = false;
+		Maths::Vec2f m_LeftStick = Maths::Vec2f();
+		Maths::Vec2f  m_RightStick = Maths::Vec2f();
+		double m_LeftTrigger = 0;
+		double m_RightTrigger = 0;
 
 	};
 

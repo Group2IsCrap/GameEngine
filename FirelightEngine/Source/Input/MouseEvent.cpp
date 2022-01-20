@@ -1,5 +1,6 @@
 #include "MouseEvent.h"
-namespace Firelight::Events::Input {
+namespace Firelight::Events::Input 
+{
 	MouseEvent::MouseEvent() :
 		m_Type(e_MouseEventType::Invalid),
 		m_XPos(0),

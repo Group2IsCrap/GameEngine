@@ -1,6 +1,7 @@
 #include "ControllerManager.h"
 #include"ControllerInput.h"
-namespace Firelight::Input {
+namespace Firelight::Input 
+{
 	ControllerManager::ControllerManager()
 	{
 		m_NumberConnetedController = 0;
@@ -13,26 +14,26 @@ namespace Firelight::Input {
 
 	void ControllerManager::HandleInput()
 	{
-		for (const auto& Con : m_Controller)
+		for (const auto& controller : m_Controller)
 		{
-			Con->ProcessInput();
+			controller->ProcessInput();
 		}
 
 	}
 
 	void ControllerManager::ProcessInput()
 	{
-		for (const auto& Con : m_Controller)
+		for (const auto& controller : m_Controller)
 		{
-			if (Con->m_Isconnected) {
-				Con->TestInput();
+			if (controller->m_Isconnected) {
+				controller->TestInput();
 			}
 		}
 		
 	}
-	ControllerInput* ControllerManager::GetController(int ContollerNo)
+	ControllerInput* ControllerManager::GetController(int contollerNo)
 	{
-		return m_Controller[ContollerNo].get();
+		return m_Controller[contollerNo].get();
 	}
 	void ControllerManager::AddContoller()
 	{
@@ -43,17 +44,17 @@ namespace Firelight::Input {
 
 		
 	}
-	void ControllerManager::AddContoller(int DeadZoneLeftThumb, int DeadZoneRightThumb, int TriggerThreshold)
+	void ControllerManager::AddContoller(int deadzoneLeftThumb, int deadzoneRightThumb, int triggerThreshold)
 	{
 		if (CanConnect()) {
 			m_NumberConnetedController++;
-			m_Controller.push_back(std::make_shared<ControllerInput>(m_NumberConnetedController, DeadZoneLeftThumb, DeadZoneRightThumb, TriggerThreshold));
+			m_Controller.push_back(std::make_shared<ControllerInput>(m_NumberConnetedController, deadzoneLeftThumb, deadzoneRightThumb, triggerThreshold));
 		}
 	}
-	void ControllerManager::RemoveController(int ToRemove)
+	void ControllerManager::RemoveController(int toRemove)
 	{
 		//TODO Add Remove function
-		m_Controller[ToRemove]->GetState();
+		m_Controller[toRemove]->GetState();
 	}
 	bool ControllerManager::CanConnect()
 	{

@@ -6,14 +6,14 @@
 namespace Firelight::Input {
 
 
-	enum class e_MouseButtionPress
+	enum class e_MouseButtonPress
 	{
-		RightButtionPress,
-		LeftButtionPress,
-		MiddleButtionPress
+		RIGHTBUTTONPRESS,
+		LEFTBUTTONPRESS,
+		MIDDLEBUTTONPRESS
 	};
 
-	enum class e_ControllerButtion
+	enum class e_ControllerButton
 	{
 		A,
 		Y,
@@ -50,37 +50,37 @@ namespace Firelight::Input {
 	public:
 
 		GetInput();
-		GetInput(std::shared_ptr<Input::MouseInput> m_MouseCaptuer, std::shared_ptr <Input::KeyboardInput> m_KeyboardCaptuer, std::shared_ptr <Input::ControllerManager> m_ControllerManager);
+		GetInput(std::shared_ptr<Input::MouseInput> mouseCapture, std::shared_ptr <Input::KeyboardInput> keyboardCapture, std::shared_ptr <Input::ControllerManager> controllerManager);
 		~GetInput();
 
 		//get key input
 		bool KeyIsPress(const unsigned char key);
 		//set auto repeat keys/char
-		void SetAutoRepeatKeys(bool isAutoRepaeat);
+		void SetAutoRepeatKeys(bool isAutoRepeat);
 #
 
 		//mouse inputs
-		bool MouseButtionPress(e_MouseButtionPress MouseEvent);
+		bool MouseButtonPress(e_MouseButtonPress mouseButton);
 		Maths::Vec2f GetMousePos();
 		Maths::Vec2f GetMousePosRaw();
 
 		//controller inputs
-		bool IsButtionPress(e_ControllerButtion Buttion);
-		Maths::Vec2f ControllerStickMovement(e_ControllerSticks Stick);
+		bool IsButtonPress(e_ControllerButton button);
+		Maths::Vec2f ControllerStickMovement(e_ControllerSticks stick);
 		float TriggerData(e_ControllerTrigger trigger);
 
 		//setControllerSettings
-		void SetDeadZone(double DeadZoneRight, double DeadZoneLeft);
-		void SetTriggerThresHold(double SetTriggerThresHold);
+		void SetDeadZone(double deadzoneRight, double deadzoneLeft);
+		void SetTriggerThresHold(double setTriggerThreshold);
 		void SetVibration(float leftVal, float rightVal);
 		
 	private:
-		bool Initialize(std::shared_ptr<Input::MouseInput> MouseCaptuer, std::shared_ptr <Input::KeyboardInput> KeyboardCaptuer, std::shared_ptr <Input::ControllerManager> ControllerManager);
+		bool Initialize(std::shared_ptr<Input::MouseInput> mouseCapture, std::shared_ptr <Input::KeyboardInput> KeyboardCapture, std::shared_ptr <Input::ControllerManager> controllerManager);
 		
 	public:
 	private:
-		std::shared_ptr<Input::MouseInput> m_MouseCaptuer;
-		std::shared_ptr <Input::KeyboardInput> m_KeyboardCaptuer;
+		std::shared_ptr<Input::MouseInput> m_MouseCapture;
+		std::shared_ptr <Input::KeyboardInput> m_KeyboardCapture;
 		std::shared_ptr <Input::ControllerManager> m_ControllerManager;
 	};
 

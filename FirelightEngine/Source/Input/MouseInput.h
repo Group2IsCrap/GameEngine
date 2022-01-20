@@ -2,10 +2,9 @@
 #include<queue>
 #include<Windows.h>
 
-#include"MouseEvent.h"
-
-namespace Firelight::Input {
-	//class MouseEvent;
+namespace Firelight::Input 
+{
+	
 	class MouseInput
 	{
 	public:
@@ -38,11 +37,9 @@ namespace Firelight::Input {
 
 		HRESULT RegisterMouseDevise();
 
-		bool EventBufferIsEmpty();
-		Events::Input::MouseEvent ReadEvent();
 
 	private:
-		std::queue<Events::Input::MouseEvent> m_MouseEventBuffer;
+		
 
 		bool m_IsLeftDown = false;
 		bool m_IsRightDown = false;

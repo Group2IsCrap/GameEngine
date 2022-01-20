@@ -3,7 +3,8 @@
 #include<memory>
 
 
-namespace Firelight::Input {
+namespace Firelight::Input 
+{
 	class ControllerInput;
 	class ControllerManager
 	{
@@ -14,10 +15,10 @@ namespace Firelight::Input {
 		void HandleInput();
 		void ProcessInput();
 
-		ControllerInput* GetController(int ContollerNo);
+		ControllerInput* GetController(int contollerNo);
 		void AddContoller();
-		void AddContoller(int DeadZoneLeftThumb, int DeadZoneRightThumb, int TriggerThreshold);
-		void RemoveController(int ToRemove);
+		void AddContoller(int deadzoneLeftThumb, int deadzoneRightThumb, int triggerThreshold);
+		void RemoveController(int toRemove);
 	private:
 		bool CanConnect();
 	private:
