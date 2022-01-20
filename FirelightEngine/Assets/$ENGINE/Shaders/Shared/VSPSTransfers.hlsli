@@ -11,7 +11,7 @@ struct UnlitColourVSPSTransfer
 {
     float4 pos : SV_POSITION;
     float2 texCoord : TEXCOORD;
-    float3 colour : COLOUR;
+    float4 colour : COLOUR;
 };
 
 struct SimpleLitVSPSTransfer

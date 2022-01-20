@@ -41,7 +41,7 @@ struct Pepe
 		m_hue += (float)deltaTime * 0.3f;
 		if (m_hue > 1.0f) m_hue -= 1.0f;
 
-		Graphics::Colour::HSLA hslValue = Graphics::Colour::HSLA((BYTE)(m_hue * 255.0f), 255, (BYTE)(m_darkness * 128.0f));
+		Graphics::Colour::HSLA hslValue = Graphics::Colour::HSLA((BYTE)(m_hue * 255.0f), 255, (BYTE)(m_darkness * 128.0f), 128);
 		m_colour = Graphics::Colour::RGBA::MakeFromHSLA(hslValue);
 	}
 
