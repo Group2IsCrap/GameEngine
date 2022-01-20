@@ -22,10 +22,10 @@ namespace Firelight::Graphics
 		struct Quad
 		{
 			// Corners of Quad
-			UnlitVertex m_topLeft;
-			UnlitVertex m_topRight;
-			UnlitVertex m_bottomLeft;
-			UnlitVertex m_bottomRight;
+			UnlitColourVertex m_topLeft;
+			UnlitColourVertex m_topRight;
+			UnlitColourVertex m_bottomLeft;
+			UnlitColourVertex m_bottomRight;
 
 			int         m_layer = 0;
 			Texture*    m_texture = nullptr;
@@ -52,16 +52,18 @@ namespace Firelight::Graphics
 			Texture* texture,
 			int layer = 32,
 			double rotation = 0.0,
-			const Graphics::Colour& colour = Colours::sc_white,
-			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+			const Colour::RGBA& colour = Colours::sc_white,
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+		);
 		
 		// Draw with a dest rect in screen pixels
 		void PixelDraw(const Maths::Rectf& destRectPixel,
 			Texture* texture,
 			int layer = 32,
 			double rotation = 0.0,
-			const Graphics::Colour& colour = Colours::sc_white,
-			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f));
+			const Colour::RGBA& colour = Colours::sc_white,
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+		);
 		
 		// Draw with a dest rect in world units
 		void WorldDraw(
@@ -69,7 +71,7 @@ namespace Firelight::Graphics
 			Texture* texture,
 			int layer = 32,
 			double rotation = 0.0,
-			const Graphics::Colour& colour = Colours::sc_white,
+			const Colour::RGBA& colour = Colours::sc_white,
 			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
 		);
 

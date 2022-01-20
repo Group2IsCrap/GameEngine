@@ -6,6 +6,8 @@
 
 #include "../Maths/Vec2.h"
 
+#include "RenderTextures.h"
+
 namespace Firelight::Graphics
 {
     class SpriteBatch;
@@ -25,14 +27,14 @@ namespace Firelight::Graphics
         bool Initialize(HWND hwnd, const Maths::Vec2i& dimensions);
         bool InitialiseDirectX(HWND hwnd, const Maths::Vec2i& dimensions);
 
-        bool CreateDepthStencil(const Maths::Vec2i& dimensions);
-
         void                 HandleResize(const Maths::Vec2i& dimensions);
 
         ID3D11Device*        GetDevice() const;
         ID3D11DeviceContext* GetDeviceContext() const;
 
         SpriteBatch*         GetSpriteBatch();
+
+        RenderTexture&       GetFinalImage();
 
         void Update(double deltaTime);
         void Render();
@@ -42,6 +44,7 @@ namespace Firelight::Graphics
 
     private:
         bool                                            m_initialised;
+        bool                                            m_deviceInitialised;
 
         Microsoft::WRL::ComPtr<ID3D11Device>            m_device;
         Microsoft::WRL::ComPtr<ID3D11DeviceContext>     m_deviceContext;
@@ -50,8 +53,8 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_swapChainRenderTargetView;
         Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_backBuffer;
 
-        Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencilBuffer;
-        Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
+        RenderTexture                                   m_finalImage;
+        DepthRenderTexture                              m_depthStencil;
 
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_defaultDepthStencilState;
         Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_disabledDepthStencilState;

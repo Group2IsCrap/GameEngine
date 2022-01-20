@@ -1,7 +1,13 @@
 #ifndef __VSPS_TRANSFERS_HLSL__
 #define __VSPS_TRANSFERS_HLSL__
 
-struct UnlitLitVSPSTransfer
+struct UnlitVSPSTransfer
+{
+    float4 pos : SV_POSITION;
+    float2 texCoord : TEXCOORD;
+};
+
+struct UnlitColourVSPSTransfer
 {
     float4 pos : SV_POSITION;
     float2 texCoord : TEXCOORD;

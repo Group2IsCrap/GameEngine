@@ -43,6 +43,8 @@ namespace Firelight::Graphics
         m_defaultPS = GetPixelShader("$ENGINE/Shaders/Pixel/Unlit");
         m_defaultCS = nullptr;
 
+        m_screenQuad = GetModel<UnlitVertex>("$ENGINE/Models/screenQuad.obj");
+
         return true;
     }
 
@@ -66,7 +68,7 @@ namespace Firelight::Graphics
         }
     }
 
-    Texture* AssetManager::GetColourTexture(Colour colour)
+    Texture* AssetManager::GetColourTexture(const Colour::RGBA& colour)
     {
         const auto& textureItr = m_colourTextures.find(colour.GetUnsignedInt());
         if (textureItr != m_colourTextures.end())
@@ -192,5 +194,10 @@ namespace Firelight::Graphics
     ComputeShader* AssetManager::GetDefaultComputeShader()
     {
         return m_defaultCS;
+    }
+
+    Model* AssetManager::GetScreenQuad()
+    {
+        return m_screenQuad;
     }
 }

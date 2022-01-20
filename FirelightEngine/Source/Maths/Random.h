@@ -28,6 +28,6 @@ namespace Firelight::Maths::Random
 	template<typename T>
 	static T InRange(T minVal, T maxVal)
 	{
-		return minVal + ZeroToOne<T>() * (maxVal - minVal);
+		return minVal + (T)(ZeroToOne<double>() * (double)(maxVal - minVal));
 	}
 }

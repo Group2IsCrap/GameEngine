@@ -5,7 +5,13 @@ struct UnlitVSInput
 {
     float3 pos : POSITION;
     float2 texCoord : TEXCOORD;
-    float3 colour : COLOUR;
+};
+
+struct UnlitColourVSInput
+{
+    float3 pos : POSITION;
+    float2 texCoord : TEXCOORD;
+    float4 colour : COLOUR;
 };
 
 struct SimpleLitVSInput

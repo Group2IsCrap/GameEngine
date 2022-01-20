@@ -19,6 +19,12 @@ namespace Firelight::Graphics
 
 		Maths::Vec3f m_pos;
 		Maths::Vec2f m_texCoord;
+	};
+
+	struct UnlitColourVertex : public UnlitVertex
+	{
+		UnlitColourVertex();
+
 		Maths::Vec4f m_colour;
 	};
 

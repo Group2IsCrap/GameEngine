@@ -18,13 +18,13 @@ namespace Firelight::Graphics
 	{
 	}
 
-	Texture::Texture(const Colour& colour) :
+	Texture::Texture(const Colour::RGBA& colour) :
 		Texture()
 	{
 		Initialise1x1ColourTexture(colour);
 	}
 
-	Texture::Texture(const Colour* colourData, UINT width, UINT height) :
+	Texture::Texture(const Colour::RGBA* colourData, UINT width, UINT height) :
 		Texture()
 	{
 		InitialiseColourTexture(colourData, width, height);
@@ -97,7 +97,7 @@ namespace Firelight::Graphics
 		return returnVec;
 	}
 
-	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
+	void Texture::InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height)
 	{
 		m_dimensions.x = width;
 		m_dimensions.y = height;
@@ -108,7 +108,7 @@ namespace Firelight::Graphics
 
 		D3D11_SUBRESOURCE_DATA initialData{};
 		initialData.pSysMem = colourData;
-		initialData.SysMemPitch = width * sizeof(Colour);
+		initialData.SysMemPitch = width * sizeof(Colour::RGBA);
 
 		HRESULT hr = GraphicsHandler::Instance().GetDevice()->CreateTexture2D(&textureDesc, &initialData, &p2DTexture);
 
@@ -121,7 +121,7 @@ namespace Firelight::Graphics
 		COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view for colour texture");
 	}
 
-	void Texture::Initialise1x1ColourTexture(const Colour& colour)
+	void Texture::Initialise1x1ColourTexture(const Colour::RGBA& colour)
 	{
 		InitialiseColourTexture(&colour, 1, 1);
 	}

@@ -23,7 +23,7 @@ namespace Firelight::Graphics
         m_sortMode = sortMode;
     }
 
-    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
     {
         // If there is already an entry in the queue overwrite the existing data,
         // otherwise create push back new data
@@ -97,14 +97,14 @@ namespace Firelight::Graphics
         quad->m_bottomRight.m_colour = floatColour;
     }
 
-    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
     {
         Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect();
 
         NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
     }
 
-    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Graphics::Colour& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
     {
         // To do: convert from world space when we can
         NDCDraw(destRectWorld, texture, layer, rotation, colour, sourceRect);
@@ -169,7 +169,7 @@ namespace Firelight::Graphics
 
         SortQuads();
 
-        std::vector<UnlitVertex> vertices;
+        std::vector<UnlitColourVertex> vertices;
         std::vector<DWORD> indices;
         Texture* batchTexture = nullptr;
 

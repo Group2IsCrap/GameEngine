@@ -13,7 +13,8 @@
 namespace Firelight::Graphics
 {
     GraphicsHandler::GraphicsHandler() :
-		m_initialised(false)
+		m_initialised(false),
+		m_deviceInitialised(false)
     {
     }
 
@@ -36,6 +37,7 @@ namespace Firelight::Graphics
     bool GraphicsHandler::Initialize(HWND hwnd, const Maths::Vec2i& dimensions)
     {
         ASSERT_RETURN(!m_initialised, "GraphicsHandler was aleady initialised", false);
+		ASSERT_RETURN(!m_deviceInitialised, "GraphicsHandler device was aleady initialised", false);
 
         bool result = InitialiseDirectX(hwnd, dimensions);
         ASSERT_RETURN(result, "DirectX initialisation failed", false);
@@ -89,15 +91,24 @@ namespace Firelight::Graphics
 			NULL, m_deviceContext.GetAddressOf());
 		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create device and swapchain.", false);
 
+		m_deviceInitialised = true;
+
 		// Get backbuffer
 		hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(m_backBuffer.GetAddressOf()));
 		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to get back buffer.", false);
 
-		// Create render target view
+		// Create swap chain render target view
 		hr = m_device->CreateRenderTargetView(m_backBuffer.Get(), NULL, m_swapChainRenderTargetView.GetAddressOf());
 		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create render target view.", false);
 
-		if (!CreateDepthStencil(dimensions))
+		// Initialise final image render texture
+		if (!m_finalImage.Initialise(DXGI_FORMAT_R8G8B8A8_UNORM, dimensions.x, dimensions.y))
+		{
+			return false;
+		}
+
+		// Initialise depth stencil
+		if (!m_depthStencil.Initialise(DXGI_FORMAT_R32_FLOAT, dimensions.x, dimensions.y))
 		{
 			return false;
 		}
@@ -186,22 +197,6 @@ namespace Firelight::Graphics
         return true;
     }
 
-	bool GraphicsHandler::CreateDepthStencil(const Maths::Vec2i& dimensions)
-	{
-		// Create depth stencil texture and view
-		CD3D11_TEXTURE2D_DESC depthStencilTextureDesc(DXGI_FORMAT_D24_UNORM_S8_UINT, dimensions.x, dimensions.y);
-		depthStencilTextureDesc.MipLevels = 1;
-		depthStencilTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-		HRESULT hr = m_device->CreateTexture2D(&depthStencilTextureDesc, NULL, m_depthStencilBuffer.GetAddressOf());
-		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil buffer.", false);
-
-		hr = m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), NULL, m_depthStencilView.GetAddressOf());
-		COM_ERROR_RETURN_IF_FAILED(hr, "Failed to create depth stencil view.", false);
-
-		return true;
-	}
-
 	void GraphicsHandler::HandleResize(const Maths::Vec2i& dimensions)
 	{
 		ASSERT_RETURN(m_initialised, "GraphicsHandler needs to be initialised before use",);
@@ -212,6 +207,10 @@ namespace Firelight::Graphics
 		// Release all outstanding references to the swap chain's buffers.
 		m_swapChainRenderTargetView->Release();
 		m_backBuffer->Release();
+
+		// Release other buffers that use the same size
+		m_finalImage.Release();
+		m_depthStencil.Release();
 
 		// Preserve the existing buffer count and format.
 		HRESULT hr = m_swapChain->ResizeBuffers(0, dimensions.x, dimensions.y, DXGI_FORMAT_UNKNOWN, 0);
@@ -228,30 +227,37 @@ namespace Firelight::Graphics
 		m_defaultViewport.Width = (FLOAT)dimensions.x;
 		m_defaultViewport.Height = (FLOAT)dimensions.y;
 
-		// Resize depth stencil
-		m_depthStencilView->Release();
-		m_depthStencilBuffer->Release();
+		// Re-create final image render texture
+		m_finalImage.Initialise(DXGI_FORMAT_R8G8B8A8_UNORM, dimensions.x, dimensions.y);
 
-		CreateDepthStencil(dimensions);
+		// Re-create depth stencil
+		m_depthStencil.Initialise(DXGI_FORMAT_R32_FLOAT, dimensions.x, dimensions.y);
 	}
 
     ID3D11Device* GraphicsHandler::GetDevice() const
     {
-        ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
+        ASSERT(m_deviceInitialised, "GraphicsHandler's device needs to be initialised before use");
 
         return m_device.Get();
     }
 
     ID3D11DeviceContext* GraphicsHandler::GetDeviceContext() const
     {
-        ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
+		ASSERT(m_deviceInitialised, "GraphicsHandler's device needs to be initialised before use");
 
         return m_deviceContext.Get();
     }
 
 	SpriteBatch* GraphicsHandler::GetSpriteBatch()
 	{
+		ASSERT(m_initialised, "GraphicsHandler needs to be initialised before use");
+
 		return m_spriteBatch.get();
+	}
+
+	RenderTexture& GraphicsHandler::GetFinalImage()
+	{
+		return m_finalImage;
 	}
 
     void GraphicsHandler::Update(double deltaTime)
@@ -274,17 +280,17 @@ namespace Firelight::Graphics
 		m_deviceContext->PSSetSamplers(0, 1, m_clampSamplerState.GetAddressOf());
 		m_deviceContext->OMSetBlendState(m_blendState.Get(), NULL, 0xFFFFFFFF);
 
-		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencilView.Get());
+		m_deviceContext->OMSetRenderTargets(1, m_finalImage.m_renderTargetView.GetAddressOf(), m_depthStencil.m_depthStencilView.Get());
 
 		float clearColour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		m_deviceContext->ClearRenderTargetView(m_swapChainRenderTargetView.Get(), clearColour);
-		m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		m_deviceContext->ClearRenderTargetView(m_finalImage.m_renderTargetView.Get(), clearColour);
+		m_deviceContext->ClearDepthStencilView(m_depthStencil.m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		m_deviceContext->IASetInputLayout(AssetManager::Instance().GetDefaultVertexShader()->GetInputLayout());
+		m_deviceContext->IASetInputLayout(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetInputLayout());
 		m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		m_deviceContext->VSSetShader(AssetManager::Instance().GetDefaultVertexShader()->GetShader(), NULL, 0);
-		m_deviceContext->PSSetShader(AssetManager::Instance().GetDefaultPixelShader()->GetShader(), NULL, 0);
+		m_deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
+		m_deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
 
 		// Render Sprite batch batches
 		m_deviceContext->OMSetDepthStencilState(m_disabledDepthStencilState.Get(), 0);
@@ -294,6 +300,12 @@ namespace Firelight::Graphics
 		{
 			batch.Draw();
 		}
+
+		// Copy final image to the back buffer
+		m_deviceContext->CopyResource(m_backBuffer.Get(), m_finalImage.m_texture2D.Get());
+
+		// Set the swap chain as the current render target for UI
+		m_deviceContext->OMSetRenderTargets(1, m_swapChainRenderTargetView.GetAddressOf(), m_depthStencil.m_depthStencilView.Get());
 
 		// ImGui Render
 		Firelight::ImGuiUI::ImGuiManager::Instance()->Render();
