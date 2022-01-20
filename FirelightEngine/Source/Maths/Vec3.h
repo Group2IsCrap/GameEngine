@@ -29,6 +29,9 @@ namespace Firelight::Maths
         Vec3<T>           operator/(const T scalar) const;
         void              operator/=(const T scalar);
 
+        bool              operator==(const Vec3<T>& vector) const;
+        bool              operator==(const T scalar) const;
+
         // Member functions
         T                 Length() const;
         T                 LengthSquared() const;
@@ -66,6 +69,7 @@ namespace Firelight::Maths
     };
 
     typedef Vec3<float> Vec3f;
+    typedef Vec3<int> Vec3i;
 }
 
 #include "Vec3.inl"

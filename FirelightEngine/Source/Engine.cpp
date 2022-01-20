@@ -28,7 +28,7 @@ namespace Firelight
         return instance;
     }
 
-    bool Engine::Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int windowWidth, int windowHeight)
+    bool Engine::Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions)
     {
         ASSERT_RETURN(!m_initialised, "Engine has already been initialsed", false);
 
@@ -37,11 +37,11 @@ namespace Firelight
         COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
 
         // Initialise window container
-        bool result = m_windowContainer.GetWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, windowWidth, windowHeight);
+        bool result = m_windowContainer.GetWritableWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, dimensions);
         ASSERT_RETURN(result, "Window container failed to initialise", false);
 
         // Initialise graphics handler
-        result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), windowWidth, windowHeight);
+        result = Graphics::GraphicsHandler::Instance().Initialize(m_windowContainer.GetWindow().GetHWND(), dimensions);
         ASSERT_RETURN(result, "GraphicsHandler failed to initialise", false);
 
         // Initialise asset manager
@@ -60,6 +60,42 @@ namespace Firelight
         return true;
     }
 
+    void Engine::SetWindowDimensions(const Maths::Vec2i& dimensions)
+    {
+        // If the dimensions are already the given size or zero, don't bother updating
+        if (dimensions == 0 || dimensions == GetWindowDimensions())
+        {
+            return;
+        }
+
+        m_windowContainer.GetWritableWindow().SetDimensions(dimensions);
+
+        if (Graphics::GraphicsHandler::Instance().IsInitialised())
+        {
+            Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
+        }
+    }
+
+    bool Engine::ProcessMessages()
+    {
+        return m_windowContainer.GetWritableWindow().ProcessMessages();
+    }
+
+    const Maths::Vec2i& Engine::GetWindowDimensions() const
+    {
+        return m_windowContainer.GetWindow().GetDimensions();
+    }
+
+    const Maths::Vec2f& Engine::GetWindowDimensionsFloat() const
+    {
+        return m_windowContainer.GetWindow().GetDimensionsFloat();
+    }
+
+    const HWND Engine::GetWindowHandle() const
+    {
+        return m_windowContainer.GetWindow().GetHWND();
+    }
+
     void Engine::RegisterEngineComponents()
     {
         EntityComponentSystem::Instance()->RegisterComponent<IdentificationComponent>();
@@ -67,14 +103,10 @@ namespace Firelight
         EntityComponentSystem::Instance()->RegisterComponent<PhysicsComponent>();
     }
 
-    bool Engine::ProcessMessages()
-    {
-        return m_windowContainer.GetWindow().ProcessMessages();
-    }
-
-    void Engine::Update()
+    double Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
+
         m_frameTimer.Stop();
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
@@ -82,7 +114,7 @@ namespace Firelight
         (void)deltaTime;
         // Update engine systems with deltaTime here
 
-        
+        return deltaTime;
     }
 
     void Engine::RenderFrame()
