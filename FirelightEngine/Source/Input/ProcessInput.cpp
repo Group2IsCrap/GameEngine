@@ -8,7 +8,8 @@
 #include "ControllerManager.h"
 #include "GetInput.h"
 
-#include"..\Utils\ErrorManager.h"
+#include "../Utils/ErrorManager.h"
+#include "../Engine.h"
 
 namespace Firelight::Input
 {

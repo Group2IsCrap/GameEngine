@@ -111,8 +111,8 @@ namespace Firelight::Input
     {
         (void)rightVal;
 
-        WORD speedLeft = 65535 * leftVal;
-        WORD speedRight = 65535 * rightVal;
+        WORD speedLeft = (WORD)(65535.0f * leftVal);
+        WORD speedRight = (WORD)(65535.0f * rightVal);
 
         // Create a Vibraton State
         XINPUT_VIBRATION vibration;

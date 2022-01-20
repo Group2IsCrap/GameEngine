@@ -36,6 +36,8 @@ namespace Firelight::Input
 
     void KeyboardInput::OnChar(const unsigned char key)
     {
+        (void)key;
+
         //for a later created event if needed
     }
 

@@ -48,14 +48,14 @@ namespace Firelight::Input
         return false;
     }
 
-    Maths::Vec2f GetInput::GetMousePos()
+    Maths::Vec2i GetInput::GetMousePos()
     {
-        return Maths::Vec2f( m_MouseCapture->GetMousePosX(),m_MouseCapture->GetMousePosY());
+        return Maths::Vec2i(m_MouseCapture->GetMousePosX(),m_MouseCapture->GetMousePosY());
     }
 
-    Maths::Vec2f GetInput::GetMousePosRaw()
+    Maths::Vec2i GetInput::GetMousePosRaw()
     {
-        return Maths::Vec2f();
+        return Maths::Vec2i();
     }
 
     bool GetInput::IsButtonPress(e_ControllerButton button)
