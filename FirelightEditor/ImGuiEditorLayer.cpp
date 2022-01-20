@@ -24,8 +24,8 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 	m_drawAnimationWindow = false;
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.Fonts->AddFontFromFileTTF("assets/$editor/fonts/opensans/OpenSans-Bold.ttf", 16.0f);
-	io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/$editor/fonts/opensans/OpenSans-Regular.ttf", 16.0f);
+	io.Fonts->AddFontFromFileTTF("Assets/$editor/fonts/opensans/OpenSans-Bold.ttf", 16.0f);
+	io.FontDefault = io.Fonts->AddFontFromFileTTF("Assets/$editor/fonts/opensans/OpenSans-Regular.ttf", 16.0f);
 
 	SetupTheme();
 }
@@ -68,8 +68,6 @@ void ImGuiEditorLayer::Render()
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
-	
-
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

@@ -1,6 +1,7 @@
 ﻿#include "ContentBrowserPanel.h"
 
 #include "Source/Graphics/AssetManager.h"
+#include "Source/Graphics/Data/Texture.h"
 #include "imgui/misc/cpp/imgui_stdlib.h"
 
 #include <filesystem>
