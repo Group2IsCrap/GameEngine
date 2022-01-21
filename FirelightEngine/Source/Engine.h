@@ -9,6 +9,8 @@
 // Always included so that error macros work
 #include "Utils/ErrorManager.h"
 
+#include "ECS/SystemManager.h"
+
 namespace Firelight
 {
     class Engine
@@ -18,14 +20,17 @@ namespace Firelight
 
         static Engine& Instance();
 
-        bool Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions);
+        bool                Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions);
 
         void                SetWindowDimensions(const Maths::Vec2i& dimensions);
+
+        ECS::SystemManager& GetSystemManager();
 
         const Maths::Vec2i& GetWindowDimensions() const;
         const Maths::Vec2f& GetWindowDimensionsFloat() const;
 
         const HWND          GetWindowHandle() const;
+
 
         bool ProcessMessages();
         double Update();
@@ -35,6 +40,8 @@ namespace Firelight
         Engine();
 
     private:
+        ECS::SystemManager m_systemManager;
+
         WindowContainer m_windowContainer;
         Utils::Timer    m_frameTimer;
 

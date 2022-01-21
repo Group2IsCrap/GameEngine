@@ -56,21 +56,4 @@ namespace Firelight::Events
 	{
 		sm_observers[descriptor].clear();
 	}
-
-	void EventDispatcher::InvokeFunctions(const Event& event)
-	{
-		auto type = event.Type();
-
-		if (sm_observers.find(type) == sm_observers.end())
-		{
-			return;
-		}
-
-		auto&& observers = sm_observers.at(type);
-
-		for (auto&& observer : observers)
-		{
-			observer(event);
-		}
-	}
 }

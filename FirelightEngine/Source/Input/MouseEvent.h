@@ -51,8 +51,9 @@ namespace Firelight::Events::Input
 	{
 	public:
 		MouseButtionReleaseEvent();
-		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionReleaseEvent();
+		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
+		
 
 		static constexpr DescriptorType sm_Description = "Mouse_Buttion_Release";
 

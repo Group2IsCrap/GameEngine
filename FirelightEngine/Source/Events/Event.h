@@ -15,7 +15,7 @@ namespace Firelight::Events
 	class eventName : public Event\
 	{\
 	public:\
-		static constexpr DescriptorType sm_descriptor = "eventName";\
-		virtual DescriptorType Type() const override { return sm_descriptor; }\
+		static constexpr DescriptorType sm_descriptor = #eventName;\
+		static DescriptorType Type() { return sm_descriptor; }\
 	};
 }
