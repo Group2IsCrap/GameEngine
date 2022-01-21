@@ -1,1 +1,0 @@
-Copy the above folder named $ENGINE into your project 'Assets' folder

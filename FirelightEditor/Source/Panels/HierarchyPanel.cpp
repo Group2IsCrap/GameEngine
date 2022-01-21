@@ -2,7 +2,9 @@
 
 #include <Source/ECS/EntityComponentSystem.h>
 #include <Source/ECS/Entity.h>
-#include <Source/ECS/Components.h>
+#include <Source/ECS/Components/BasicComponents.h>
+#include <Source/ECS/GameEntity.h>
+
 
 #include "InspectorPanel.h"
 
@@ -29,11 +31,10 @@ void HierarchyPanel::Draw()
 	// Right-click on blank space
 	if (ImGui::BeginPopupContextWindow(0, 1, false))
 	{
-		ImGui::MenuItem("New Game Entity");
-		/*
-		if (ImGui::MenuItem("Create Empty Entity"))
-			// CREATE NEW ENTITY HERE
-		*/
+		if (ImGui::MenuItem("New Game Entity"))
+		{
+			NewGameEntity();
+		}
 
 		ImGui::EndPopup();
 	}
@@ -75,10 +76,24 @@ void HierarchyPanel::DrawEntityNode(Firelight::ECS::Entity* entity)
 	if (isEntityDeleted)
 	{
 		// Destroy entity here
-		if (m_selectionContext == entity)
-		{
-			m_selectionContext = {};
-			m_inspectorPanel->m_selectionContext = {};
-		}
+		m_selectionContext = {};
+		m_inspectorPanel->m_selectionContext = {};
+		DeleteGameEntity(entity);
 	}
 }
+
+void HierarchyPanel::NewGameEntity()
+{
+	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
+	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Game Entity";
+	m_entitiesInScene.push_back(newEntity);
+}
+
+void HierarchyPanel::DeleteGameEntity(Firelight::ECS::Entity* gameEntity)
+{
+	m_entitiesInScene.erase(std::remove(m_entitiesInScene.begin(), m_entitiesInScene.end(), gameEntity), m_entitiesInScene.end());
+	
+	delete gameEntity;
+	gameEntity = nullptr;
+}
+

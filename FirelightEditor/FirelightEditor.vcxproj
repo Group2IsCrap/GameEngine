@@ -143,25 +143,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Panels\AnimationWindow.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="ImGuiEditorLayer.cpp" />
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="Source\Panels\HierarchyPanel.cpp" />
     <ClCompile Include="Source\Panels\InspectorPanel.cpp" />
     <ClCompile Include="Source\Panels\Panel.cpp" />
+    <ClCompile Include="Source\Panels\ViewportPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Panels\AnimationWindow.h" />
     <ClInclude Include="Source\Panels\ContentBrowserPanel.h" />
     <ClInclude Include="ImGuiEditorLayer.h" />
     <ClInclude Include="Source\Panels\HierarchyPanel.h" />
     <ClInclude Include="Source\Panels\InspectorPanel.h" />
     <ClInclude Include="Source\Panels\Panel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\%24ENGINE\Materials\default.json" />
-    <None Include="Assets\%24ENGINE\Models\cube.mtls" />
-    <None Include="Assets\%24ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="Assets\%24ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
+    <ClInclude Include="Source\Panels\ViewportPanel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

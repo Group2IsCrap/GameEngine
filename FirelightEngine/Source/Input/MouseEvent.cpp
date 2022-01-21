@@ -3,15 +3,13 @@ namespace Firelight::Events::Input
 {
 	MouseEvent::MouseEvent() :
 		m_Type(e_MouseEventType::Invalid),
-		m_XPos(0),
-		m_YPos(0)
+		m_Pos(0)
 	{
 	}
 
 	MouseEvent::MouseEvent(const e_MouseEventType type, const int x, const int y) :
 		m_Type(type),
-		m_XPos(x),
-		m_YPos(y)
+		m_Pos(x, y)
 	{
 	}
 
@@ -29,53 +27,72 @@ namespace Firelight::Events::Input
 		return m_Type;
 	}
 
-	Maths::Vec2f MouseEvent::GetPos()
+	const Maths::Vec2i& MouseEvent::GetPos()
 	{
-		return Maths::Vec2f( m_XPos,m_YPos );
+		return m_Pos;
 	}
 
 	int MouseEvent::GetMouseX()
 	{
-		return m_XPos;
+		return m_Pos.x;
 	}
 
 	int MouseEvent::GetMouseY()
 	{
-		return m_YPos;
+		return m_Pos.y;
 	}
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent() :MouseEvent()
+
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent() :
+		MouseEvent()
 	{
 	}
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y):MouseEvent(type,x,y)
+
+	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y) :
+		MouseEvent(type, x, y)
 	{
 	}
+
 	Input::MouseButtionReleaseEvent::~MouseButtionReleaseEvent()
 	{
 	}
+
 	Input::MouseButtionPressEvent::MouseButtionPressEvent()
 	{
 	}
-	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
+
+	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y) :
+		MouseEvent(type, x, y)
 	{
 	}
+
 	Input::MouseButtionPressEvent::~MouseButtionPressEvent()
 	{
 	}
-	Input::MouseMoveEvent::MouseMoveEvent() :MouseEvent()
+
+	Input::MouseMoveEvent::MouseMoveEvent() :
+		MouseEvent()
 	{
 	}
-	Input::MouseMoveEvent::MouseMoveEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
+
+	Input::MouseMoveEvent::MouseMoveEvent(const e_MouseEventType type, const int x, const int y) :
+		MouseEvent(type, x, y)
 	{
 	}
+
 	Input::MouseMoveEvent::~MouseMoveEvent()
 	{
 	}
-	Input::MouseMoveRawEvent::MouseMoveRawEvent() :MouseEvent()
+
+	Input::MouseMoveRawEvent::MouseMoveRawEvent() :
+		MouseEvent()
 	{
 	}
-	Input::MouseMoveRawEvent::MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y) :MouseEvent(type, x, y)
+
+	Input::MouseMoveRawEvent::MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y) :
+		MouseEvent(type, x, y)
 	{
 	}
+
 	Input::MouseMoveRawEvent::~MouseMoveRawEvent()
 	{
 	}

@@ -96,10 +96,6 @@ namespace Firelight::ECS
 			return m_componentManager->HasComponent<T>(entity);
 		}
 
-		EntityID CreateEntity();
-		EntityID CreateEntity(EntityID id);
-
-
 		/// <summary>
 		/// Removes an entity
 		/// </summary>
@@ -111,10 +107,13 @@ namespace Firelight::ECS
 			m_componentManager->RemoveEntity(entity);
 		}
 
-		void DebugEntities();
-
+		EntityID CreateEntity();
+		EntityID CreateEntity(EntityID id);
 		std::vector<EntityID> GetEntities();
 		Signature GetSignature(EntityID entityID);
+
+		void DebugEntities();
+		void UpdateAllEntitySignatures();
 
 		static EntityComponentSystem* Instance();
 	private:

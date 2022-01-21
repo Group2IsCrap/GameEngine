@@ -38,7 +38,8 @@
 /x64/Debug/*.pdb
 /x64/Debug/*.obj
 /x64/Debug/*.ilk
-x64/Debug/*.exe
+/x64/Debug/*.exe
+/x64/Debug/UnitTests.exp
 /TestGame/x64/
 /UnitTests/x64/
 /FirelightEngine/x64/

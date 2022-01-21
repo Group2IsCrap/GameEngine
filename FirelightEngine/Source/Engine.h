@@ -2,6 +2,8 @@
 
 #include "WindowContainer.h"
 
+#include "Maths/Vec2.h"
+
 #include "Utils/Timer.h"
 
 // Always included so that error macros work
@@ -16,12 +18,17 @@ namespace Firelight
 
         static Engine& Instance();
 
-        bool Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, int windowWidth, int windowHeight);
+        bool Initialise(HINSTANCE hInstance, const char* windowTitle, std::string windowClass, const Maths::Vec2i& dimensions);
 
-        void RegisterEngineComponents();
+        void                SetWindowDimensions(const Maths::Vec2i& dimensions);
+
+        const Maths::Vec2i& GetWindowDimensions() const;
+        const Maths::Vec2f& GetWindowDimensionsFloat() const;
+
+        const HWND          GetWindowHandle() const;
 
         bool ProcessMessages();
-        void Update();
+        double Update();
         void RenderFrame();
 
     private:
