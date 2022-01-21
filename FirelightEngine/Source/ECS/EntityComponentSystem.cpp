@@ -25,7 +25,7 @@ namespace Firelight::ECS
 		m_entityManager = std::make_unique<EntityManager>();
 		m_componentManager = std::make_unique<ComponentManager>();
 
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnComponentRegisteredEvent::sm_descriptor, std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
 	}
 
 
@@ -38,6 +38,8 @@ namespace Firelight::ECS
 		EntityID entity = m_entityManager->CreateEntity();
 
 		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetComponentTypeCount());
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
 
 		return entity;
 	}
@@ -56,6 +58,7 @@ namespace Firelight::ECS
 	/// <summary>
 	/// Outputs debug data on all entities
 	/// </summary>
+	/*
 	void EntityComponentSystem::DebugEntities()
 	{
 		OutputDebugStringA("-------------------------------------\n");
@@ -86,6 +89,7 @@ namespace Firelight::ECS
 		}
 		OutputDebugStringA("***********************************\n");
 	}
+	*/
 
 	std::vector<EntityID> EntityComponentSystem::GetEntities()
 	{

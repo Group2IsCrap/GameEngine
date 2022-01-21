@@ -35,8 +35,6 @@ namespace Firelight::ECS
 		EntityID entity = id;
 		m_entities.push_back(entity);
 
-		Events::EventDispatcher::InvokeFunctions(Events::ECS::OnEntityCreatedEvent());
-
 		return entity;
 	}
 
@@ -83,7 +81,7 @@ namespace Firelight::ECS
 		m_signatures.erase(entity);
 		m_entities.erase(it);
 
-		Events::EventDispatcher::InvokeFunctions(Events::ECS::OnEntityDestroyedEvent());
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityDestroyedEvent>();
 	}
 
 	/// <summary>

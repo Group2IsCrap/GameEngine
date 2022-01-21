@@ -366,6 +366,7 @@
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
@@ -412,6 +413,7 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\Physics\PhysicsEngine.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
@@ -431,8 +433,10 @@
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
     <ClInclude Include="Source\Maths\Vec2.h" />
     <ClInclude Include="Source\Maths\Vec3.h" />
-    <ClInclude Include="Source\ECS\System.h" />
+    <ClInclude Include="Source\ECS\Systems\System.h" />
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
+    <ClInclude Include="Source\ECS\Systems\SpriteRenderSystem.h" />
+    <ClInclude Include="Source\ECS\SystemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Input\GetInput.cpp" />
@@ -471,6 +475,7 @@
     <ClCompile Include="Source\Input\MouseEvent.cpp" />
     <ClCompile Include="Source\Input\MouseInput.cpp" />
     <ClCompile Include="Source\Input\ProcessInput.cpp" />
+    <ClCompile Include="Source\Physics\PhysicsEngine.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
@@ -481,8 +486,10 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
-    <ClCompile Include="Source\ECS\System.cpp" />
+    <ClCompile Include="Source\ECS\Systems\System.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\VertexShader.cpp" />
+    <ClCompile Include="Source\ECS\Systems\SpriteRenderSystem.cpp" />
+    <ClCompile Include="Source\ECS\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
@@ -506,6 +513,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Source\Events\EventDispatcher.inl" />
     <None Include="Source\Graphics\Buffers\ConstantBuffer.inl" />
     <None Include="Source\Graphics\Data\Mesh.inl" />
     <None Include="Source\Graphics\AssetManager.inl" />
