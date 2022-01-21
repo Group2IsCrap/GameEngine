@@ -35,6 +35,17 @@ void CollisionHandler::Update(double dt)
                             entity->GetComponent<PhysicsComponent>(velY) = 0;
                         }
                     }
+                   /* else if (entity->GetComponent<PhysicsComponent>(hasCircleCollision) && entity2->GetComponent<PhysicsComponent>(hasBoxCollision) || entity2->GetComponent<PhysicsComponent>(hasCircleCollision) && entity->GetComponent<PhysicsComponent>(hasBoxCollision))
+                    {
+                        if (entity->GetComponent<PhysicsComponent>(hasCircleCollision) && entity2->GetComponent<PhysicsComponent>(hasBoxCollision))
+                        {
+
+                        }
+                        else if (entity2->GetComponent<PhysicsComponent>(hasCircleCollision) && entity1->GetComponent<PhysicsComponent>(hasBoxCollision))
+                        {
+
+                        }
+                    }*/
                 }
             }
         }
@@ -72,11 +83,29 @@ bool CollisionHandler::CheckCircleOnCircleCollision(PhysicsComponent Obj1, Physi
     }
 }
 
-bool CollisionHandler::CheckBoxOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle and a box
-
-{
-    //do this
-}
+//
+//bool CollisionHandler::CheckBoxOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle and a box
+//
+//{
+//    int testX;
+//    float testY;
+//
+//    if (Obj1.posX < rx)         testX = rx;      // test left edge
+//    else if (cx > rx + rw) testX = rx + rw;   // right edge
+//    if (cy < ry)         testY = ry;      // top edge
+//    else if (cy > ry + rh) testY = ry + rh;   // bottom edge
+//
+//    // get distance from closest edges
+//    float distX = cx - testX;
+//    float distY = cy - testY;
+//    float distance = sqrt((distX * distX) + (distY * distY));
+//
+//    // if the distance is less than the radius, collision!
+//    if (distance <= radius) {
+//        return true;
+//    }
+//    return false;
+//}
 
 
 
