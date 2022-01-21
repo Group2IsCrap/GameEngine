@@ -8,20 +8,12 @@
 
 namespace Firelight::Physics
 {
-	class PhysicsEngine : public Firelight::ECS::System
+	class PhysicsSystem : public Firelight::ECS::System
 	{
 
 	public:
 
-		static PhysicsEngine* Instance()
-		{
-			if (sm_Instance == 0)
-			{
-				sm_Instance = new PhysicsEngine();
-			}
-
-			return sm_Instance;
-		}
+		PhysicsSystem();
 
 		void FixedUpdate(double fixedDeltaTime);
 
@@ -54,9 +46,5 @@ namespace Firelight::Physics
 		bool CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::BoxColliderComponent* boxCollider2);
 		bool CheckCollision(Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::CircleColliderComponent* circleCollider2);
 		bool CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::CircleColliderComponent* circleCollider);
-
-	private:
-
-		static PhysicsEngine* sm_Instance;
 	};
 }

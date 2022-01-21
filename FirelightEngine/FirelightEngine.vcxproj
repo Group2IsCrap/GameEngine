@@ -363,7 +363,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Physics\CollisionHandler.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
@@ -440,7 +439,6 @@
     <ClInclude Include="Source\ECS\SystemManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Physics\CollisionHandler.cpp" />
     <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />

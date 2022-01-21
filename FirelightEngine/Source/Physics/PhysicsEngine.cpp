@@ -2,24 +2,27 @@
 
 namespace Firelight::Physics
 {
-	PhysicsEngine* PhysicsEngine::sm_Instance = 0;
-
-	void Firelight::Physics::PhysicsEngine::FixedUpdate(double fixedDeltaTime)
+	PhysicsSystem::PhysicsSystem()
+	{
+		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
+	}
+	
+	void PhysicsSystem::FixedUpdate(double fixedDeltaTime)
 	{
 		HandleCollisions();
 	}
 
-	void Firelight::Physics::PhysicsEngine::ApplyForces(double fixedDeltaTime)
+	void PhysicsSystem::ApplyForces(double fixedDeltaTime)
 	{
 
 	}
 
-	void Firelight::Physics::PhysicsEngine::Simulate(double fixedDeltaTime)
+	void PhysicsSystem::Simulate(double fixedDeltaTime)
 	{
 
 	}
 
-	void Firelight::Physics::PhysicsEngine::HandleCollisions()
+	void PhysicsSystem::HandleCollisions()
 	{
 		for (auto entityID : GetEntities())
 		{
@@ -93,22 +96,22 @@ namespace Firelight::Physics
 		}
 	}
 
-	Firelight::Maths::Vec3f Firelight::Physics::PhysicsEngine::ComputeForce(Firelight::ECS::RigidBodyComponent* rigidbody)
+	Firelight::Maths::Vec3f PhysicsSystem::ComputeForce(Firelight::ECS::RigidBodyComponent* rigidbody)
 	{
 		return Firelight::Maths::Vec3f();
 	}
 	
-	bool PhysicsEngine::CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::BoxColliderComponent* boxCollider2)
+	bool PhysicsSystem::CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::BoxColliderComponent* boxCollider2)
 	{
 		return false;
 	}
 	
-	bool PhysicsEngine::CheckCollision(Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::CircleColliderComponent* circleCollider2)
+	bool PhysicsSystem::CheckCollision(Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::CircleColliderComponent* circleCollider2)
 	{
 		return false;
 	}
 	
-	bool PhysicsEngine::CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::CircleColliderComponent* circleCollider)
+	bool PhysicsSystem::CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::CircleColliderComponent* circleCollider)
 	{
 		return false;
 	}

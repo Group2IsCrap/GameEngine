@@ -39,6 +39,8 @@ namespace Firelight::ECS
 
 		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetComponentTypeCount());
 
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
+
 		return entity;
 	}
 
