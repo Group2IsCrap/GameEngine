@@ -35,8 +35,6 @@ namespace Firelight::ECS
 		EntityID entity = id;
 		m_entities.push_back(entity);
 
-		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
-
 		return entity;
 	}
 

@@ -10,6 +10,7 @@ namespace Firelight::ECS
     public:
         GameEntity();
         IdentificationComponent* GetID();
+        StaticComponent* IsStatic();
         TransformComponent* GetTransform();
     };
 }

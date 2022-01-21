@@ -31,9 +31,9 @@ namespace Firelight::ECS
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
-
 		DrawSpace                         drawSpace;
 
+		/*
 		std::string Output() override
 		{
 			return "layer: " + std::to_string(layer)
@@ -41,6 +41,11 @@ namespace Firelight::ECS
 				+ "), spriteDimensions: (" + std::to_string(spriteDimensions.x) + ", " + std::to_string(spriteDimensions.y)
 				+ "), colour: (r=" + std::to_string(colour.GetR()) + ", g=" + std::to_string(colour.GetG()) + ", b=" + std::to_string(colour.GetB()) + ", a=" + std::to_string(colour.GetA()) +
 				"), sourceRect: (" + std::to_string(sourceRect.x) + ", " + std::to_string(sourceRect.y) + ", " + std::to_string(sourceRect.w) + ", " + std::to_string(sourceRect.h) + ")";
+		}
+		*/
+		void Serialise() override
+		{
+			return;
 		}
 	};
 }

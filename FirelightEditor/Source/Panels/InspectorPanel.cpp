@@ -163,10 +163,32 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::Spacing();
 		});
 
-		DrawComponent<Firelight::ECS::PhysicsComponent>("Physics", entity, [](auto& component)
+		DrawComponent<Firelight::ECS::RigidBodyComponent>("RigidBody", entity, [](auto& component)
 		{
 			ImGui::Spacing();
 			DrawVec3Control("Velocity", component->velocity.x, component->velocity.y, component->velocity.z);
+			ImGui::Spacing();
+		}, true);
+
+		DrawComponent<Firelight::ECS::BoxColliderComponent>("Box Collider", entity, [](auto& component)
+		{
+			ImGui::Spacing();
+			ImGui::Unindent();
+			ImGui::Checkbox("Enabled", &component->isEnabled);
+			ImGui::Indent();
+			ImGui::Spacing();
+		}, true);
+
+		DrawComponent<Firelight::ECS::CircleColliderComponent>("Circle Collider", entity, [](auto& component)
+		{
+			ImGui::Spacing();
+			ImGui::Unindent();
+			ImGui::Checkbox("Enabled", &component->isEnabled);
+			ImGui::Text("Size");
+			ImGui::SameLine();
+			ImGui::AlignTextToFramePadding();
+			ImGui::DragFloat("##Size", &component->radius, 0.1f, 0.1f, 100.0f, "%.2f");
+			ImGui::Indent();
 			ImGui::Spacing();
 		}, true);
 
@@ -181,11 +203,19 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			if (ImGui::MenuItem("Physics"))
+			if (ImGui::MenuItem("RigidBody"))
 			{
-				if (!m_selectionContext->HasComponent<Firelight::ECS::PhysicsComponent>())
-					m_selectionContext->AddComponent<Firelight::ECS::PhysicsComponent>(new Firelight::ECS::PhysicsComponent());
-				else ERROR_SILENT("Entity already has a Physics Component!");
+				if (!m_selectionContext->HasComponent<Firelight::ECS::RigidBodyComponent>())
+					m_selectionContext->AddComponent<Firelight::ECS::RigidBodyComponent>(new Firelight::ECS::RigidBodyComponent());
+				else ERROR_SILENT("Entity already has a RigidBody Component!");
+			}
+			if (ImGui::MenuItem("Box Collider"))
+			{
+				m_selectionContext->AddComponent<Firelight::ECS::BoxColliderComponent>(new Firelight::ECS::BoxColliderComponent());
+			}
+			if (ImGui::MenuItem("Circle Collider"))
+			{
+				m_selectionContext->AddComponent<Firelight::ECS::CircleColliderComponent>(new Firelight::ECS::CircleColliderComponent());
 			}
 			ImGui::EndPopup();
 		}
