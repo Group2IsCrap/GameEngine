@@ -16,7 +16,7 @@ namespace Firelight::ECS
 	/// </summary>
 	struct Camera2DComponent : BaseComponent
 	{
-		Maths::Vec2f viewportDimensions;
+		float size = 1.0f;
 
 		void Serialise() override
 		{
@@ -40,11 +40,11 @@ namespace Firelight::ECS
 		int                               layer = 32;
 
 		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
-		Maths::Vec2f                      spriteDimensions = Maths::Vec2f(-1.0f, -1.0f);
+		float                             pixelsPerUnit = 24.0f;
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
-		DrawSpace                         drawSpace;
+		DrawSpace                         drawSpace = DrawSpace::e_World;
 
 		/*
 		std::string Output() override
