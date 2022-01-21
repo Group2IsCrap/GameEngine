@@ -21,8 +21,8 @@ namespace Firelight::Input
         m_IsLeftDown = true;
         m_MousePosX = x;
         m_MousePosY = y;
-        
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)Events::Input::e_MouseEventType::LPress);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::LPress,x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)&Event);
     }
 
     void MouseInput::OnLeftReleased(int x, int y)
@@ -30,7 +30,8 @@ namespace Firelight::Input
         m_IsLeftDown = false;
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)Events::Input::e_MouseEventType::LRelease);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::LRelease, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)&Event);
     }
 
     void MouseInput::OnRightPress(int x, int y)
@@ -38,7 +39,8 @@ namespace Firelight::Input
         m_IsRightDown = true;
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)Events::Input::e_MouseEventType::RPress);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::RPress, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)&Event);
     }
 
     void MouseInput::OnRightReleased(int x, int y)
@@ -46,7 +48,8 @@ namespace Firelight::Input
         m_IsRightDown = false;
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)Events::Input::e_MouseEventType::RRelease);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::RRelease, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)&Event);
     }
 
     void MouseInput::OnMiddlePress(int x, int y)
@@ -54,7 +57,8 @@ namespace Firelight::Input
         m_IsMiddleDown = true;
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)Events::Input::e_MouseEventType::MPress);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::MPress, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)&Event);
     }
 
     void MouseInput::OnMiddleReleased(int x, int y)
@@ -62,21 +66,24 @@ namespace Firelight::Input
         m_IsMiddleDown = false;
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)Events::Input::e_MouseEventType::MRelease);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::MRelease, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionReleaseEvent(), (void*)&Event);
     }
 
     void MouseInput::OnWheelUp(int x, int y)
     {
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)Events::Input::e_MouseEventType::WheelUp);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::WheelUp, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)&Event);
     }
 
     void MouseInput::OnWheelDown(int x, int y)
     {
         m_MousePosX = x;
         m_MousePosY = y;
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)Events::Input::e_MouseEventType::WheelDown);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::WheelDown, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseButtionPressEvent(), (void*)&Event);
     }
 
     void MouseInput::OnMouseMove(int x, int y)
@@ -86,16 +93,16 @@ namespace Firelight::Input
         Maths::Vec2f Pos = Maths::Vec2f((float)m_MousePosX, (float)m_MousePosY);
 
        
-
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)&Pos);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::Move, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveEvent(), (void*)&Event);
        
     }
 
     void MouseInput::OnMouseMoveRaw(int x, int y)
     {
         Maths::Vec2f Pos = Maths::Vec2f((float)x, (float)y);
-        
-        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveRawEvent(), (void*)&Pos);
+        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::RawMove, x, y);
+        Events::EventDispatcher::InvokeListeners(Events::Input::MouseMoveRawEvent(), (void*)&Event);
         
     }
 

@@ -4,7 +4,9 @@
 #include"Source/Input/ControllerEvent.h"
 #include"Source/Input/KeyboardEvent.h"
 #include"Source/Input/MouseEvent.h"
+#include"Source\Graphics\Data\Colour.h"
 #include"Source/Maths/Vec2.h"
+
 TestInputGame::TestInputGame()
 {
 	Firelight::Events::EventDispatcher::AddListener(Firelight::Events::Input::OnKeyPress::sm_Description, this);
@@ -22,4 +24,9 @@ void TestInputGame::HandleEvents(void* data)
 
 	//Firelight::Maths::Vec2f* d = (Firelight::Maths::Vec2f*)data;
 	//unsigned char key = (unsigned char)data;
+}
+
+void TestInputGame::Draw()
+{
+	
 }
