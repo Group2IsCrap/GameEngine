@@ -12,6 +12,19 @@
 namespace Firelight::ECS
 {
 	/// <summary>
+	/// Contains information about a camera
+	/// </summary>
+	struct Camera2DComponent : BaseComponent
+	{
+		Maths::Vec2f viewportDimensions;
+
+		void Serialise() override
+		{
+			return;
+		}
+	};
+
+	/// <summary>
 	/// Contains information required to draw a sprite
 	/// </summary>
 	struct SpriteComponent : BaseComponent

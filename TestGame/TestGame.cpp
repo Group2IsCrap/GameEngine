@@ -46,9 +46,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-
-		System* testSystem = new System();
-
 		Entity* test = new Entity();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
