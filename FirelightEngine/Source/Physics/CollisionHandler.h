@@ -1,18 +1,34 @@
-
 #pragma once
-#include "PhysicsComponents.h"
 
-class CollisionHandler
+#include "../ECS/System.h"
+#include "../ECS/Entity.h"
+#include "../ECS/Components/PhysicsComponents.h"
+
+namespace Firelight::Physics
 {
+	class CollisionHandler : public Firelight::ECS::System
+	{
 
-public:
-	virtual void Update(double dt) override;
-	
-	bool CheckBoxOnBoxCollision(PhysicsComponent Obj1, PhysicsComponent Obj2); //checks for collision between two objects using axis aligned bounding boxes
+	public:
+		void FixedUpdate(double fixedDeltaTime);
 
-	bool CheckCircleOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2); // check for collision between two objects using a circle
+		bool CheckCollisions();
+		bool HandleCollisions();
 
-	bool CheckBoxOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2); // check for collision between two objects using a circle and a box
+	private:
 
+		template<typename collider, typename collider2>
+		bool HasColliderPair(Firelight::ECS::Entity* entity, Firelight::ECS::Entity* other)
+		{
+			if (entity->HasComponent<collider>() && other->HasComponent<collider2>())
+				return true;
 
-};
+			return false;
+		}
+
+		bool CheckCollision(Firelight::ECS::BoxColliderComponent* collider1, Firelight::ECS::BoxColliderComponent* collider2);
+		bool CheckCollision(Firelight::ECS::CircleColliderComponent* collider1, Firelight::ECS::CircleColliderComponent* collider2);
+		bool CheckCollision(Firelight::ECS::BoxColliderComponent* collider1, Firelight::ECS::CircleColliderComponent* collider2);
+
+	};
+}

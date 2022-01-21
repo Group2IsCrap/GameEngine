@@ -56,6 +56,7 @@ namespace Firelight::ECS
 	/// <summary>
 	/// Outputs debug data on all entities
 	/// </summary>
+	/*
 	void EntityComponentSystem::DebugEntities()
 	{
 		OutputDebugStringA("-------------------------------------\n");
@@ -86,6 +87,7 @@ namespace Firelight::ECS
 		}
 		OutputDebugStringA("***********************************\n");
 	}
+	*/
 
 	std::vector<EntityID> EntityComponentSystem::GetEntities()
 	{

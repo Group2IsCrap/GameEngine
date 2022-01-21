@@ -13,9 +13,23 @@ namespace Firelight::ECS
 	struct IdentificationComponent : BaseComponent
 	{
 		std::string name;
-		std::string Output() override
+
+		void Serialise() override
 		{
-			return name;
+			return;
+		}
+	};
+
+	/// <summary>
+	/// Stores whether an entity is considered static or not
+	/// </summary>
+	struct StaticComponent : BaseComponent
+	{
+		bool isStatic;
+
+		void Serialise() override
+		{
+			return;
 		}
 	};
 
@@ -28,9 +42,9 @@ namespace Firelight::ECS
 		// TODO : Add some form of rotation, unsure what everyone wants.
 		Firelight::Maths::Vec3f scale;
 
-		std::string Output() override
+		void Serialise() override
 		{
-			return "X: " + std::to_string(position.x) + ", Y: " + std::to_string(position.y) + ", Z: " + std::to_string(position.z);
+			return;
 		}
 	};
 }

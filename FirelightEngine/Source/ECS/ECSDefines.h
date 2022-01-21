@@ -15,12 +15,13 @@ namespace Firelight::ECS
 	struct BaseComponent
 	{
 		/// <summary>
-		/// Outputs the contents of the component for debug purposes
+		/// Serialises the component
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string Output()
+		virtual void Serialise()
 		{
-			return "";
+			return;
+
 		}
 	};
 }

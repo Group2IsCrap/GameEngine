@@ -1,6 +1,7 @@
 #include "CollisionHandler.h"
 #include <iostream>
 
+/*
 void CollisionHandler::Update(double dt)
 {
     for (auto entity : m_entities)
@@ -45,13 +46,15 @@ void CollisionHandler::Update(double dt)
                         {
 
                         }
-                    }*/
+                    }
                 }
             }
         }
     }
 }
+*/
 
+/*
 bool CollisionHandler::CheckBoxOnBoxCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) //checks for collision between two objects using axis aligned bounding boxes
 {
     
@@ -69,7 +72,9 @@ bool CollisionHandler::CheckBoxOnBoxCollision(PhysicsComponent Obj1, PhysicsComp
         return false;
     }
 }
+*/
 
+/*
 bool CollisionHandler::CheckCircleOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle
 
 {
@@ -82,6 +87,8 @@ bool CollisionHandler::CheckCircleOnCircleCollision(PhysicsComponent Obj1, Physi
         return false;
     }
 }
+*/
+
 
 //
 //bool CollisionHandler::CheckBoxOnCircleCollision(PhysicsComponent Obj1, PhysicsComponent Obj2) // check for collision between two objects using a circle and a box
@@ -106,6 +113,3 @@ bool CollisionHandler::CheckCircleOnCircleCollision(PhysicsComponent Obj1, Physi
 //    }
 //    return false;
 //}
-
-
-
