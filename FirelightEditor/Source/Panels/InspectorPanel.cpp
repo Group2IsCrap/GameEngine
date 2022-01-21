@@ -231,8 +231,16 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 		char buffer[256];
 		memset(buffer, 0, sizeof(buffer));
 		std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+		ImGui::SetNextItemWidth(180.0f);
 		if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			tag = std::string(buffer);
+
+		ImGui::SameLine();
+		ImGui::Text("Static");
+		auto& isStatic = entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic;
+		ImGui::SameLine();
+		ImGui::Checkbox("##Static", &isStatic);
+
 		ImGui::Spacing();
 
 		DrawComponent<Firelight::ECS::TransformComponent>("Transform", entity, [](auto& component)
