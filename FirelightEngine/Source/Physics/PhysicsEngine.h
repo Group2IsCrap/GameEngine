@@ -2,7 +2,7 @@
 
 #include "../Maths/Vec3.h"
 
-#include "../ECS/System.h"
+#include "../ECS/Systems/System.h"
 #include "../ECS/Components/BasicComponents.h"
 #include "../ECS/Components/PhysicsComponents.h"
 
