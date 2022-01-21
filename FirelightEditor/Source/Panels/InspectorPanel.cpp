@@ -21,6 +21,30 @@ void InspectorPanel::Draw()
 	ImGui::End();
 }
 
+template<typename T>
+static void DrawEnum(const char* title, const char** items, size_t itemSize, T& valueToChange)
+{
+	ImGui::Text(title);
+	ImGui::SameLine();
+	int index = static_cast<int>(valueToChange);
+	if (ImGui::BeginCombo(("##ComboBox" + std::string(title)).c_str(), items[index]))
+	{
+		for (unsigned int i = 0; i < itemSize; ++i)
+		{
+			bool is_selected = index == i;
+			if (ImGui::Selectable(items[i], is_selected))
+			{
+				valueToChange = static_cast<T>(i);
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
 static void DrawVec3Control(const std::string& label, float& x, float& y, float& z, float columnWidth = 80.0f)
 {
 	ImGuiIO& io = ImGui::GetIO();
@@ -78,6 +102,62 @@ static void DrawVec3Control(const std::string& label, float& x, float& y, float&
 
 	ImGui::SameLine();
 	ImGui::DragFloat("##Z", &z, 0.1f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+
+	ImGui::PopStyleVar();
+
+	ImGui::PopID();
+
+	ImGui::Columns(1);
+
+	ImGui::Indent();
+	ImGui::Spacing();
+}
+
+static void DrawVec2Control(const std::string& label, float& x, float& y, float columnWidth = 80.0f)
+{
+	ImGuiIO& io = ImGui::GetIO();
+	auto boldFont = io.Fonts->Fonts[0];
+
+	ImGui::PushID(label.c_str());
+
+	ImGui::Unindent();
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, columnWidth);
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text(label.c_str());
+	ImGui::NextColumn();
+
+	ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+	float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushFont(boldFont);
+	ImGui::Button("X", buttonSize);
+	ImGui::AlignTextToFramePadding();
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+
+	ImGui::SameLine();
+	ImGui::DragFloat("##X", &x, 0.1f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushFont(boldFont);
+	ImGui::Button("Y", buttonSize);
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
+
+	ImGui::SameLine();
+	ImGui::DragFloat("##Y", &y, 0.1f, 0.0f, 0.0f, "%.2f");
 	ImGui::PopItemWidth();
 
 	ImGui::PopStyleVar();
@@ -163,6 +243,23 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::Spacing();
 		});
 
+		DrawComponent<Firelight::ECS::SpriteComponent>("Sprite Renderer", entity, [](auto& component)
+		{
+			ImGui::Spacing();
+			ImGui::Unindent();
+			const char* items[] = { "NDC", "Pixel", "WorldSpace" };
+			DrawEnum<Firelight::ECS::SpriteComponent::DrawSpace>("Draw Space", &items[0], 3, component->drawSpace);
+
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Layer");
+			ImGui::SameLine();
+			ImGui::SliderInt("##Layer", &component->layer, 0, 64);
+			ImGui::Indent();
+			DrawVec2Control("Offset", component->drawOffset.x, component->drawOffset.y);
+			DrawVec2Control("Dimensions", component->spriteDimensions.x, component->spriteDimensions.y);
+			ImGui::Spacing();
+		}, true);
+
 		DrawComponent<Firelight::ECS::RigidBodyComponent>("RigidBody", entity, [](auto& component)
 		{
 			ImGui::Spacing();
@@ -203,6 +300,14 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
+			if (ImGui::MenuItem("Sprite Renderer"))
+			{
+				if (!m_selectionContext->HasComponent<Firelight::ECS::SpriteComponent>())
+				{
+					m_selectionContext->AddComponent<Firelight::ECS::SpriteComponent>(new Firelight::ECS::SpriteComponent());
+				}
+			}
+
 			if (ImGui::MenuItem("RigidBody"))
 			{
 				if (!m_selectionContext->HasComponent<Firelight::ECS::RigidBodyComponent>())

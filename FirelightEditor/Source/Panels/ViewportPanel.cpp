@@ -1,5 +1,7 @@
 #include "ViewportPanel.h"
 
+#include "Source/Graphics/GraphicsHandler.h"
+
 ViewportPanel::ViewportPanel()
 {
 }
@@ -11,6 +13,9 @@ ViewportPanel::~ViewportPanel()
 void ViewportPanel::Draw()
 {
 	ImGui::Begin("Viewport");
-	// TODO : Render stuff
+
+	ImVec2 windowSize = ImGui::GetWindowSize();
+	ImGui::Image((void*)Firelight::Graphics::GraphicsHandler::Instance().GetFinalImage().m_shaderResourceView.Get(), { windowSize.x, windowSize.y });
+
 	ImGui::End();
 }

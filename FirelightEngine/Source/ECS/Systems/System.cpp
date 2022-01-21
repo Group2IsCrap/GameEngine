@@ -10,6 +10,9 @@ namespace Firelight::ECS
 		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityCreatedEvent>(std::bind(&System::UpdateEntityList, this));
 		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(std::bind(&System::UpdateEntityList, this));
 
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentAddedEvent>(std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRemovedEvent>(std::bind(&System::UpdateEntityList, this));
+
 		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
 	}
 
