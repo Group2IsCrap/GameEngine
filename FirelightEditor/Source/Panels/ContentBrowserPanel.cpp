@@ -78,10 +78,23 @@ void ContentBrowserPanel::Draw()
 		std::string numberString = std::to_string(count);
 		const char* itemNumber = numberString.c_str();
 
-		Firelight::Graphics::Texture* icon = directoryEntry.is_directory() ? m_directoryIcon : m_fileIcon;
+		Firelight::Graphics::Texture* icon;
+
+		std::string extension = path.extension().string();
+		if (extension == ".png" || extension == ".jpg")
+		{
+			std::string filePath = path.string();
+			filePath.erase(0, 7);
+			icon = Firelight::Graphics::AssetManager::Instance().GetTexture(filePath);
+		}
+		else
+		{
+			icon = directoryEntry.is_directory() ? m_directoryIcon : m_fileIcon;
+		}
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 		ImGui::PushID(itemNumber);
-		ImGui::ImageButton((ImTextureID)icon->GetShaderResourceView().Get(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+		ImGui::ImageButton((ImTextureID)icon->GetShaderResourceView().Get(), { thumbnailSize, thumbnailSize }, { 0, 0 }, { 1, 1 },
+			1, { 0, 0, 0, 0 }, { 1, 1, 1, 1 });
 
 		// Right-click on blank space
 		const char* removeFileID = "2";

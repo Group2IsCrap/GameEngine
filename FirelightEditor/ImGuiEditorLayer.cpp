@@ -15,10 +15,6 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 
 	m_selectionContextHierarchy = {};
 
-	Firelight::ECS::GameEntity* test = new Firelight::ECS::GameEntity();
-	test->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "TestObject";
-
-	m_hierarchyPanel->m_entitiesInScene.push_back(test);
 	m_hierarchyPanel->m_inspectorPanel = m_inspectorPanel;
 
 	m_drawAnimationWindow = false;
@@ -32,13 +28,13 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 
 ImGuiEditorLayer::~ImGuiEditorLayer()
 {
-	for (auto entity : m_entitiesInScene)
+	for (auto entity : m_hierarchyPanel->m_entitiesInScene)
 	{
 		delete entity;
 		entity = nullptr;
 	}
 
-	m_entitiesInScene.clear();
+	m_hierarchyPanel->m_entitiesInScene.clear();
 
 	delete m_contentBrowserPanel;
 	m_contentBrowserPanel = nullptr;
@@ -118,6 +114,9 @@ void ImGuiEditorLayer::RenderMenuBar()
 		if (ImGui::BeginMenu("Edit"))
 		{
 			if (ImGui::MenuItem("New Game Entity"))
+			{
+				m_hierarchyPanel->NewGameEntity();
+			}
 
 			ImGui::MenuItem("Reset Camera Position");
 			ImGui::EndMenu();
