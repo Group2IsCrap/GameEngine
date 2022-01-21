@@ -38,7 +38,7 @@ namespace Firelight::ECS
 	struct UI_Canvas : UIWidget
 	{
 		bool hasChild = false;
-		Maths::Rectf Size;
+		//Maths::Rectf Size;
 		std::vector<UIWidget> Child;
 		
 

@@ -30,12 +30,12 @@ namespace Firelight::UI {
 	}
 	void UISystem::Initalize()
 	{
-		Events::EventDispatcher::AddListener(Events::Input::OnKeyPress::sm_Description, this);
-		Events::EventDispatcher::AddListener(Events::Input::MouseButtionPressEvent::sm_Description, this);
-		Events::EventDispatcher::AddListener(Events::Input::MouseButtionReleaseEvent::sm_Description, this);
-		Events::EventDispatcher::AddListener(Events::Input::MouseMoveEvent::sm_Description, this);
-		Events::EventDispatcher::AddListener(Events::Input::MouseMoveRawEvent::sm_Description, this);
-		Events::EventDispatcher::AddListener(Events::Input::ContollerEvent::sm_Description, this);
+		Events::EventDispatcher::AddListener<Events::Input::OnKeyPress>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseButtionPressEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseButtionReleaseEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseMoveEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseMoveRawEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
 	}
 	void UISystem::UpdateDocking()
 	{
@@ -105,29 +105,29 @@ namespace Firelight::UI {
 
 		for (auto entitiy : Firelight::ECS::System::GetEntities()) {
 
-			//check
-			if (!entitiy->Componets->hasChild) {
-				continue;
-			}
-			for (auto ComponetsChild : entitiy->Child) {
-				switch (entitiy->DockSettings)
-				{
-				case Firelight::ECS::e_DockSettings::DockTop:
-					break;
-				case Firelight::ECS::e_DockSettings::DockBottom:
-					break;
-				case Firelight::ECS::e_DockSettings::DockCenter:
-					break;	
-				case Firelight::ECS::e_DockSettings::DockLeft:
-						break;
-				case Firelight::ECS::e_DockSettings::DockRight:
-					break;
-				case Firelight::ECS::e_DockSettings::DockNone:
-					break;
-				default:
-					break;
-				}
-			}
+			////check
+			//if (!entitiy->Componets->hasChild) {
+			//	continue;
+			//}
+			//for (auto ComponetsChild : entitiy->Child) {
+			//	switch (entitiy->DockSettings)
+			//	{
+			//	case Firelight::ECS::e_DockSettings::DockTop:
+			//		break;
+			//	case Firelight::ECS::e_DockSettings::DockBottom:
+			//		break;
+			//	case Firelight::ECS::e_DockSettings::DockCenter:
+			//		break;	
+			//	case Firelight::ECS::e_DockSettings::DockLeft:
+			//			break;
+			//	case Firelight::ECS::e_DockSettings::DockRight:
+			//		break;
+			//	case Firelight::ECS::e_DockSettings::DockNone:
+			//		break;
+			//	default:
+			//		break;
+			//	}
+			//}
 		}
 	}
 }

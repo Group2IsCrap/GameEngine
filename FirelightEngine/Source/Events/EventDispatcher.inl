@@ -4,6 +4,7 @@
 
 namespace Firelight::Events
 {
+	
 	template<typename EventType>
 	void EventDispatcher::AddListener(Listener* listener)
 	{

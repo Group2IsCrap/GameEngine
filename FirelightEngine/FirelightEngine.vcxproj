@@ -366,6 +366,7 @@
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="Source\ECS\Components\UIComponents.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />
@@ -416,6 +417,7 @@
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
+    <ClInclude Include="Source\UI\UISystem.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -476,6 +478,7 @@
     <ClCompile Include="Source\Input\ProcessInput.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="Source\UI\UISystem.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
