@@ -12,6 +12,9 @@
 #include "ECS/Components/PhysicsComponents.h"
 #include "ECS/Components/RenderingComponents.h"
 
+#include "Events/EventDispatcher.h"
+#include "Graphics/GraphicsEvents.h"
+
 using namespace Firelight::ECS;
 
 namespace Firelight
@@ -54,7 +57,7 @@ namespace Firelight
         // Seed random
         Maths::Random::SeedWithCurrentTime();
 
-        // TODO: Initalise other systems here
+        m_systemManager.RegisterEngineSystems();
 
         m_initialised = true;
 
@@ -75,6 +78,11 @@ namespace Firelight
         {
             Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
         }
+    }
+
+    ECS::SystemManager& Engine::GetSystemManager()
+    {
+        return m_systemManager;
     }
   
     bool Engine::ProcessMessages()
@@ -105,7 +113,7 @@ namespace Firelight
         double deltaTime = m_frameTimer.GetDurationSeconds();
         m_frameTimer.Start();
 
-        // Update engine systems with deltaTime here
+        m_systemManager.Update(deltaTime);
 
         return deltaTime;
     }
@@ -113,5 +121,7 @@ namespace Firelight
     void Engine::RenderFrame()
     {
         Graphics::GraphicsHandler::Instance().Render();
+
+        Events::EventDispatcher::InvokeFunctions<Events::Graphics::OnEarlyRender>();
     }
 }

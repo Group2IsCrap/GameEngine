@@ -92,7 +92,7 @@ namespace Firelight::ECS
 			}
 			m_componentMap[typeID][entity].push_back(componentIndex);
 
-			Events::EventDispatcher::InvokeFunctions(Events::ECS::OnComponentAddedEvent());
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
 		}
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace Firelight::ECS
 					m_componentMap[typeID].erase(entity);
 				}
 
-				Events::EventDispatcher::InvokeFunctions(Events::ECS::OnComponentRemovedEvent());
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
 			}
 		}
 
@@ -184,10 +184,11 @@ namespace Firelight::ECS
 			m_componentTypeHash.insert({ componentType, typeName });
 			m_componentData.insert({ componentType,std::vector<BaseComponent*>() });
 
-			Events::EventDispatcher::InvokeFunctions(Events::ECS::OnComponentRegisteredEvent());
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRegisteredEvent>();
 		}
 
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
+
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;
 		std::unordered_map<ComponentTypeID, std::unordered_map<EntityID,std::vector<int>>> m_componentMap;

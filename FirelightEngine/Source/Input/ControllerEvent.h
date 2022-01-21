@@ -37,13 +37,6 @@ namespace Firelight::Events::Input
 		ContollerEvent() {}
 		~ContollerEvent() {}
 
-		static constexpr DescriptorType sm_Description = "ControllerState";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
-
-
+		static constexpr DescriptorType sm_descriptor = "ControllerState";
 	};
 }

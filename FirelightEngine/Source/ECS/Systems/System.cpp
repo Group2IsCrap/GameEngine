@@ -1,14 +1,16 @@
 #include "System.h"
 
-#include "ECSEvents.h"
-#include "../Events/EventDispatcher.h"
+#include "../ECSEvents.h"
+#include "../../Events/EventDispatcher.h"
 
 namespace Firelight::ECS
 {
 	System::System()
 	{
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityCreatedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityDestroyedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityCreatedEvent>(std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(std::bind(&System::UpdateEntityList, this));
+
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
 	}
 
 	System::~System()
@@ -50,6 +52,8 @@ namespace Firelight::ECS
 
 	void System::UpdateEntityList()
 	{
+		m_entities.clear();
+
 		std::vector<EntityID> ids = EntityComponentSystem::Instance()->GetEntities();
 
 		for (auto entity : ids)
@@ -59,19 +63,12 @@ namespace Firelight::ECS
 			bool validEntity = true;
 			for (int i = 0; i < entitySignature.size(); ++i)
 			{
-				if (whitelist[i] == true && entitySignature[i] == false)
+				if (m_whitelist[i] == true && entitySignature[i] == false)
 				{
 					validEntity = false;
 					break;
 				}
-			}
-			if (!validEntity)
-			{
-				continue;
-			}
-			for (int i = 0; i < entitySignature.size(); ++i)
-			{
-				if (blacklist[i] == true && entitySignature[i] == true)
+				if (m_blacklist[i] == true && entitySignature[i] == true)
 				{
 					validEntity = false;
 					break;
@@ -83,5 +80,11 @@ namespace Firelight::ECS
 			}
 			this->m_entities.push_back(entity);
 		}
+	}
+
+	void System::IncrementSignatureLists()
+	{
+		m_blacklist.push_back(false);
+		m_whitelist.push_back(false);
 	}
 }

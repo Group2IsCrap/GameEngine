@@ -88,7 +88,7 @@ namespace Firelight::Input
             state.m_StickLeftPress = IsPressed(XINPUT_GAMEPAD_LEFT_THUMB);
             state.m_StickRightPress = IsPressed(XINPUT_GAMEPAD_RIGHT_THUMB);
 
-            Events::EventDispatcher::InvokeListeners(Events::Input::ContollerEvent(), (void*)&state);
+            Events::EventDispatcher::InvokeListeners<Events::Input::ContollerEvent>((void*)&state);
         }
     }
 

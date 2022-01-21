@@ -24,12 +24,7 @@ namespace Firelight::Events::Input
 
 		unsigned char GetKeyCode() const;
 		
-		static constexpr DescriptorType sm_Description = "KeyboardEvent";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "KeyboardEvent";
 		
 	protected:
 		KeyEvent m_Type;
@@ -43,12 +38,7 @@ namespace Firelight::Events::Input
 		OnKeyPress();
 		OnKeyPress(const KeyEvent type, const unsigned char key);
 		~OnKeyPress();
-		static constexpr DescriptorType sm_Description = "OnKeyPress";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "OnKeyPress";
 	};
 
 	
@@ -59,11 +49,6 @@ namespace Firelight::Events::Input
 		OnKeyRelease(const KeyEvent type, const unsigned char key);
 		~OnKeyRelease();
 
-		static constexpr DescriptorType sm_Description = "OnKeyRelease";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "OnKeyRelease";
 	};
 }
