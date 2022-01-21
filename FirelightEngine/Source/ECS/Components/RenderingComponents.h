@@ -12,6 +12,19 @@
 namespace Firelight::ECS
 {
 	/// <summary>
+	/// Contains information about a camera
+	/// </summary>
+	struct Camera2DComponent : BaseComponent
+	{
+		float size = 1.0f;
+
+		void Serialise() override
+		{
+			return;
+		}
+	};
+
+	/// <summary>
 	/// Contains information required to draw a sprite
 	/// </summary>
 	struct SpriteComponent : BaseComponent
@@ -27,7 +40,7 @@ namespace Firelight::ECS
 		int                               layer = 32;
 
 		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
-		Maths::Vec2f                      spriteDimensions = Maths::Vec2f(-1.0f, -1.0f);
+		float                             pixelsPerUnit = 24.0f;
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);

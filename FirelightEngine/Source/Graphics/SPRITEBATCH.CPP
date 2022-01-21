@@ -79,24 +79,24 @@ namespace Firelight::Graphics
             const Maths::Vec2f& dimensions = Engine::Instance().GetWindowDimensionsFloat();
             float aspect = dimensions.x / dimensions.y;
 
-            Maths::Vec2f rotatedTopLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y), centre, rotation, true, aspect);
+            Maths::Vec2f rotatedTopLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y + destRectNDC.h), centre, rotation, true, aspect);
             quad->m_topLeft.m_pos = Maths::Vec3f(rotatedTopLeft.x, rotatedTopLeft.y, depthFromLayer);
 
-            Maths::Vec2f rotatedTopRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y), centre, rotation, true, aspect);
+            Maths::Vec2f rotatedTopRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y + destRectNDC.h), centre, rotation, true, aspect);
             quad->m_topRight.m_pos = Maths::Vec3f(rotatedTopRight.x, rotatedTopRight.y, depthFromLayer);
 
-            Maths::Vec2f rotatedBottomLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y - destRectNDC.h), centre, rotation, true, aspect);
+            Maths::Vec2f rotatedBottomLeft = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x, destRectNDC.y), centre, rotation, true, aspect);
             quad->m_bottomLeft.m_pos = Maths::Vec3f(rotatedBottomLeft.x, rotatedBottomLeft.y, depthFromLayer);
 
-            Maths::Vec2f rotatedBottomRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h), centre, rotation, true, aspect);
+            Maths::Vec2f rotatedBottomRight = Maths::Vec2f::RotateAroundPoint(Maths::Vec2f(destRectNDC.x + destRectNDC.w, destRectNDC.y), centre, rotation, true, aspect);
             quad->m_bottomRight.m_pos = Maths::Vec3f(rotatedBottomRight.x, rotatedBottomRight.y, depthFromLayer);
         }
         else
         {
-            quad->m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, depthFromLayer);
-            quad->m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, depthFromLayer);
-            quad->m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y - destRectNDC.h, depthFromLayer);
-            quad->m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y - destRectNDC.h, depthFromLayer);
+            quad->m_topLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y + destRectNDC.h, depthFromLayer);
+            quad->m_topRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y + destRectNDC.h, depthFromLayer);
+            quad->m_bottomLeft.m_pos = Maths::Vec3f(destRectNDC.x, destRectNDC.y, depthFromLayer);
+            quad->m_bottomRight.m_pos = Maths::Vec3f(destRectNDC.x + destRectNDC.w, destRectNDC.y, depthFromLayer);
         }
 
         // Set quad vertex colours
@@ -110,15 +110,16 @@ namespace Firelight::Graphics
 
     void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
     {
-        Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect();
+        Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
 
         NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
     }
 
     void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
     {
-        // To do: convert from world space when we can
-        NDCDraw(destRectWorld, texture, layer, rotation, colour, sourceRect);
+        Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRectWorld, Engine::Instance().GetActiveCamera2DRect());
+ 
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
     }
 
     void SpriteBatch::SortQuads()

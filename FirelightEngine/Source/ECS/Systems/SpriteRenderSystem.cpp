@@ -6,6 +6,7 @@
 #include "../../Graphics/GraphicsHandler.h"
 #include "../../Graphics/SpriteBatch.h"
 #include "../../Graphics/GraphicsEvents.h"
+#include "../../Graphics/AssetManager.h"
 
 #include "../EntityComponentSystem.h"
 
@@ -31,27 +32,20 @@ namespace Firelight::ECS
 			auto* transformComponent = EntityComponentSystem::Instance()->GetComponent<TransformComponent>(m_entities[entityIndex]);
 			auto* spriteComponent = EntityComponentSystem::Instance()->GetComponent<SpriteComponent>(m_entities[entityIndex]);
 
-			const Maths::Vec2f topLeft = Maths::Vec2f(transformComponent->position.x, transformComponent->position.y) - spriteComponent->spriteDimensions * 0.5f;
+			Graphics::Texture* texture = spriteComponent->texture;
+			if (texture == nullptr)
+			{
+				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
+			}
 
-			Maths::Rectf destRect(topLeft.x, topLeft.y, spriteComponent->spriteDimensions.x, spriteComponent->spriteDimensions.y);
+			const Maths::Vec2f spriteDimensions = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
 
-			switch (spriteComponent->drawSpace)
-			{
-			case SpriteComponent::DrawSpace::e_NDC:
-			{
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
-			}
-			break;
-			case SpriteComponent::DrawSpace::e_Pixel:
-			{
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
-			}
-			break;
-			case SpriteComponent::DrawSpace::e_World:
-			{
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
-			}
-			}
+			Maths::Rectf destRect(
+				transformComponent->position.x - spriteDimensions.x * 0.5f,
+				transformComponent->position.y - spriteDimensions.y * 0.5f,
+				spriteDimensions.x, spriteDimensions.y);
+
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
 		}
 	}
 }
