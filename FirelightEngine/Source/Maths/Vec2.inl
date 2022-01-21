@@ -17,15 +17,15 @@ namespace Firelight::Maths
 
     template<typename T>
     inline Vec2<T>::Vec2(const T& val) :
-        x((T)val),
-        y((T)val)
+        x(val),
+        y(val)
     {
     }
 
     template<typename T>
     inline Vec2<T>::Vec2(const T& _x, const T& _y) :
-        x((T)_x),
-        y((T)_y)
+        x(_x),
+        y(_y)
     {
     }
 
@@ -102,6 +102,18 @@ namespace Firelight::Maths
     {
         x /= scalar;
         y /= scalar;
+    }
+
+    template<typename T>
+    inline bool Vec2<T>::operator==(const Vec2<T>& vector) const
+    {
+        return x == vector.x && y == vector.y;
+    }
+
+    template<typename T>
+    inline bool Vec2<T>::operator==(const T scalar) const
+    {
+        return x == scalar && y == scalar;
     }
 
     template<typename T>
@@ -207,5 +219,27 @@ namespace Firelight::Maths
     inline Vec2<T> Vec2<T>::Lerp(const Vec2<T>& vector1, const Vec2<T>& vector2, T delta)
     {
         return vector1 + (vector2 - vector1) * delta;
+    }
+
+    template<typename T>
+    inline Vec2<T> Vec2<T>::RotateAroundPoint(const Vec2<T>& toRotate, const Vec2<T>& point, double rotation, bool correctNDC, float aspect)
+    {
+        Vec2<T> offset = toRotate - point;
+        Vec2<T> rotatedOffset;
+
+        if (correctNDC)
+        {
+            offset.y /= aspect;
+        }
+
+        rotatedOffset.x = (T)(cos(rotation) * (double)offset.x - sin(rotation) * (double)offset.y);
+        rotatedOffset.y = (T)(sin(rotation) * (double)offset.x + cos(rotation) * (double)offset.y);
+
+        if (correctNDC)
+        {
+            rotatedOffset.y *= aspect;
+        }
+
+        return point + rotatedOffset;
     }
 }

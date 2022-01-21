@@ -1,6 +1,8 @@
 #pragma once
+
 #include "Entity.h"
-#include "Components.h"
+#include "Components/BasicComponents.h"
+
 namespace Firelight::ECS
 {
     class GameEntity : public Entity

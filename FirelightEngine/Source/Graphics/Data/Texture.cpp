@@ -14,19 +14,17 @@ namespace Firelight::Graphics
 		m_texture(nullptr),
 		m_textureView(nullptr),
 
-		m_width(0),
-		m_height(0),
-		m_depth(0)
+		m_dimensions(0)
 	{
 	}
 
-	Texture::Texture(const Colour& colour) :
+	Texture::Texture(const Colour::RGBA& colour) :
 		Texture()
 	{
 		Initialise1x1ColourTexture(colour);
 	}
 
-	Texture::Texture(const Colour* colourData, UINT width, UINT height) :
+	Texture::Texture(const Colour::RGBA* colourData, UINT width, UINT height) :
 		Texture()
 	{
 		InitialiseColourTexture(colourData, width, height);
@@ -58,7 +56,8 @@ namespace Firelight::Graphics
 			}
 			else
 			{
-				HRESULT hr = DirectX::CreateWICTextureFromFile(GraphicsHandler::Instance().GetDevice(), Utils::StringHelpers::StringToWide(filePath).c_str(), m_texture.GetAddressOf(), m_textureView.GetAddressOf());
+				HRESULT hr = DirectX::CreateWICTextureFromFileEx(GraphicsHandler::Instance().GetDevice(), Utils::StringHelpers::StringToWide(filePath).c_str(), 0,
+					D3D11_USAGE::D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, DirectX::WIC_LOADER_IGNORE_SRGB, m_texture.GetAddressOf(), m_textureView.GetAddressOf());
 				COM_ERROR_THROW_IF_FAILED(hr, "Failed to load texture at path: " + filePath);
 			}
 
@@ -84,25 +83,25 @@ namespace Firelight::Graphics
 		return m_textureView;
 	}
 
-	int Texture::GetWidth() const
+	const Maths::Vec3i& Texture::GetDimensions() const
 	{
-		return m_width;
+		return m_dimensions;
 	}
 
-	int Texture::GetHeight() const
+	Maths::Vec2f Texture::GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const
 	{
-		return m_height;
+		Maths::Vec2f returnVec;
+
+		returnVec.x = sourcePixelCoord.x / m_dimensions.x;
+		returnVec.y = sourcePixelCoord.y / m_dimensions.y;
+
+		return returnVec;
 	}
 
-	int Texture::GetDepth() const
+	void Texture::InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height)
 	{
-		return m_depth;
-	}
-
-	void Texture::InitialiseColourTexture(const Colour* colourData, UINT width, UINT height)
-	{
-		m_width = width;
-		m_height = height;
+		m_dimensions.x = width;
+		m_dimensions.y = height;
 
 		CD3D11_TEXTURE2D_DESC textureDesc(DXGI_FORMAT_R8G8B8A8_UNORM, width, height);
 
@@ -110,7 +109,7 @@ namespace Firelight::Graphics
 
 		D3D11_SUBRESOURCE_DATA initialData{};
 		initialData.pSysMem = colourData;
-		initialData.SysMemPitch = width * sizeof(Colour);
+		initialData.SysMemPitch = width * sizeof(Colour::RGBA);
 
 		HRESULT hr = GraphicsHandler::Instance().GetDevice()->CreateTexture2D(&textureDesc, &initialData, &p2DTexture);
 
@@ -123,7 +122,7 @@ namespace Firelight::Graphics
 		COM_ERROR_IF_FAILED(hr, "Failed to create shader resource view for colour texture");
 	}
 
-	void Texture::Initialise1x1ColourTexture(const Colour& colour)
+	void Texture::Initialise1x1ColourTexture(const Colour::RGBA& colour)
 	{
 		InitialiseColourTexture(&colour, 1, 1);
 	}
@@ -140,8 +139,8 @@ namespace Firelight::Graphics
 				D3D11_TEXTURE2D_DESC desc;
 				pTextureInterface->GetDesc(&desc);
 
-				m_width = desc.Width;
-				m_height = desc.Height;
+				m_dimensions.x = desc.Width;
+				m_dimensions.y = desc.Height;
 			}
 		}
 	}

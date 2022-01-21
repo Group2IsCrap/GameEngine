@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LevelEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiEditorLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\Panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\HierarchyPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\InspectorPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\AnimationWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panels\ViewportPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImGuiEditorLayer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\ContentBrowserPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\HierarchyPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\InspectorPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\AnimationWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panels\ViewportPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\Assets\$ENGINE\Materials\default.json" />
+    <None Include="assets\Assets\$ENGINE\Models\cube.mtls" />
+    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
+    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
+    <None Include="assets\Assets\$ENGINE\Models\screenQuad.mtls" />
+    <None Include="assets\$ENGINE\Materials\default.json" />
+    <None Include="assets\$ENGINE\Models\cube.mtls" />
+    <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
+    <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
+    <None Include="assets\$ENGINE\Models\screenQuad.mtls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\Assets\$ENGINE_readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Assets\$ENGINE\Textures\missing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Assets\$ENGINE\Textures\non_binary_transparency.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Assets\$ENGINE\Textures\transparency_test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\$ENGINE\Textures\missing.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\$ENGINE\Textures\non_binary_transparency.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\$ENGINE\Textures\transparency_test.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="assets\Assets\$ENGINE\Models\cube.obj" />
+    <Object Include="assets\Assets\$ENGINE\Models\screenQuad.obj" />
+    <Object Include="assets\Assets\cube.obj" />
+    <Object Include="assets\$ENGINE\Models\cube.obj" />
+    <Object Include="assets\$ENGINE\Models\screenQuad.obj" />
+  </ItemGroup>
+</Project>
