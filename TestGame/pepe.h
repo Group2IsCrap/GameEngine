@@ -52,11 +52,11 @@ struct Pepe
 
 	Maths::Vec2f           m_pos;
 	Maths::Vec2f           m_vel;
-	float                             m_rot;
-	float                             m_rotSpeed;
+	float                  m_rot;
+	float                  m_rotSpeed;
 	Graphics::Colour::RGBA m_colour;
-	int                               m_layer;
-	float                             m_darkness;
-	float                             m_hue;
+	int                    m_layer;
+	float                  m_darkness;
+	float                  m_hue;
 	Graphics::Texture*     m_texture;
 };

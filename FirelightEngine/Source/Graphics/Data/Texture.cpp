@@ -56,7 +56,8 @@ namespace Firelight::Graphics
 			}
 			else
 			{
-				HRESULT hr = DirectX::CreateWICTextureFromFile(GraphicsHandler::Instance().GetDevice(), Utils::StringHelpers::StringToWide(filePath).c_str(), m_texture.GetAddressOf(), m_textureView.GetAddressOf());
+				HRESULT hr = DirectX::CreateWICTextureFromFileEx(GraphicsHandler::Instance().GetDevice(), Utils::StringHelpers::StringToWide(filePath).c_str(), 0,
+					D3D11_USAGE::D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, DirectX::WIC_LOADER_IGNORE_SRGB, m_texture.GetAddressOf(), m_textureView.GetAddressOf());
 				COM_ERROR_THROW_IF_FAILED(hr, "Failed to load texture at path: " + filePath);
 			}
 
