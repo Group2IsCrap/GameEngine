@@ -22,7 +22,7 @@ namespace Firelight::Input
         m_MousePosX = x;
         m_MousePosY = y;
         Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::LPress,x, y);
-        Events::EventDispatcher::InvokeListeners<Events::Input::MouseButtionPressEvent()>((void*)&Event);
+        Events::EventDispatcher::InvokeListeners<Events::Input::MouseButtionPressEvent>((void*)&Event);
     }
 
     void MouseInput::OnLeftReleased(int x, int y)
@@ -67,7 +67,7 @@ namespace Firelight::Input
         m_MousePosX = x;
         m_MousePosY = y;
         Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::MRelease, x, y);
-        Events::EventDispatcher::InvokeListeners<Events::Input::MouseButtionReleaseEvent>( (void*)&Event);
+        Events::EventDispatcher::InvokeListeners<Events::Input::MouseButtionReleaseEvent>((void*)&Event);
     }
 
     void MouseInput::OnWheelUp(int x, int y)
