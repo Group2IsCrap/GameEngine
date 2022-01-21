@@ -511,6 +511,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Source\Events\EventDispatcher.inl" />
     <None Include="Source\Graphics\Buffers\ConstantBuffer.inl" />
     <None Include="Source\Graphics\Data\Mesh.inl" />
     <None Include="Source\Graphics\AssetManager.inl" />

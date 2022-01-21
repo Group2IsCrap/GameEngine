@@ -7,8 +7,10 @@ namespace Firelight::ECS
 {
 	System::System()
 	{
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityCreatedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnEntityDestroyedEvent::sm_descriptor, std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityCreatedEvent>(std::bind(&System::UpdateEntityList, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(std::bind(&System::UpdateEntityList, this));
+
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
 	}
 
 	System::~System()
@@ -78,5 +80,11 @@ namespace Firelight::ECS
 			}
 			this->m_entities.push_back(entity);
 		}
+	}
+
+	void System::IncrementSignatureLists()
+	{
+		m_blacklist.push_back(false);
+		m_whitelist.push_back(false);
 	}
 }

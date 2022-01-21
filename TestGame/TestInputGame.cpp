@@ -7,7 +7,7 @@
 #include"Source/Maths/Vec2.h"
 TestInputGame::TestInputGame()
 {
-	Firelight::Events::EventDispatcher::AddListener(Firelight::Events::Input::OnKeyPress::sm_Description, this);
+	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::Input::OnKeyPress>(this);
 	
 }
 

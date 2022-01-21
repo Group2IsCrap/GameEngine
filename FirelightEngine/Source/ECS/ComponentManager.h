@@ -188,6 +188,7 @@ namespace Firelight::ECS
 		}
 
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
+
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;
 		std::unordered_map<ComponentTypeID, std::unordered_map<EntityID,std::vector<int>>> m_componentMap;

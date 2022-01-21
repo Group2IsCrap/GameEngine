@@ -47,6 +47,8 @@ namespace Firelight::ECS
 
 		void UpdateEntityList();
 
+		void IncrementSignatureLists();
+
 	protected:
 		std::vector<EntityID> m_entities;
 		Signature             m_blacklist;

@@ -7,8 +7,6 @@ namespace Firelight::Events
 		virtual ~Event() {};
 
 		using DescriptorType = const char*;
-
-		virtual DescriptorType Type() const = 0;
 	};
 
 #define NEW_EVENT(eventName) \
@@ -16,6 +14,5 @@ namespace Firelight::Events
 	{\
 	public:\
 		static constexpr DescriptorType sm_descriptor = #eventName;\
-		static DescriptorType Type() { return sm_descriptor; }\
 	};
 }

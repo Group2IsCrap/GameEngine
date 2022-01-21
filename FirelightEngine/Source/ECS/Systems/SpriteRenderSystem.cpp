@@ -5,6 +5,7 @@
 
 #include "../../Graphics/GraphicsHandler.h"
 #include "../../Graphics/SpriteBatch.h"
+#include "../../Graphics/GraphicsEvents.h"
 
 #include "../EntityComponentSystem.h"
 
@@ -16,7 +17,7 @@ namespace Firelight::ECS
 	{
 		AddWhitelistComponent<SpriteComponent>();
 
-		Events::EventDispatcher::SubscribeFunction("OnEarlyRender", std::bind(&SpriteRenderSystem::Render, this));
+		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&SpriteRenderSystem::Render, this));
 	}
 
 	SpriteRenderSystem::~SpriteRenderSystem()
@@ -34,7 +35,7 @@ namespace Firelight::ECS
 
 			Maths::Rectf destRect(topLeft.x, topLeft.y, spriteComponent->spriteDimensions.x, spriteComponent->spriteDimensions.y);
 
-			switch (spriteComponent->drawMode)
+			switch (spriteComponent->drawSpace)
 			{
 			case SpriteComponent::DrawSpace::e_NDC:
 			{
