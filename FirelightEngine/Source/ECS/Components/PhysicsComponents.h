@@ -4,19 +4,35 @@
 
 #include "../ECSDefines.h"
 #include "../../Maths/Vec3.h"
+#include "../../Maths/Rect.h"
 
 namespace Firelight::ECS
 {
 	/// <summary>
 	/// Simple physics component used for testing
 	/// </summary>
-	struct PhysicsComponent : BaseComponent
+	struct RigidBodyComponent : BaseComponent
 	{
 		Firelight::Maths::Vec3f velocity;
 
-		std::string Output() override
+		void Serialise() override
 		{
-			return "X: " + std::to_string(velocity.x) + ", Y: " + std::to_string(velocity.y);
+			return;
 		}
+	};
+
+	struct ColliderComponent : BaseComponent
+	{
+		bool isEnabled = true;
+	};
+
+	struct BoxColliderComponent : ColliderComponent
+	{
+		Firelight::Maths::Rectf rect;
+	};
+
+	struct CircleColliderComponent : ColliderComponent
+	{
+		float radius;
 	};
 }
