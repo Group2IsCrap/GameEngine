@@ -34,7 +34,23 @@ namespace Firelight::ECS
 
 			Maths::Rectf destRect(topLeft.x, topLeft.y, spriteComponent->spriteDimensions.x, spriteComponent->spriteDimensions.y);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
+			switch (spriteComponent->drawMode)
+			{
+			case SpriteComponent::DrawSpace::e_NDC:
+			{
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
+			}
+			break;
+			case SpriteComponent::DrawSpace::e_Pixel:
+			{
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
+			}
+			break;
+			case SpriteComponent::DrawSpace::e_World:
+			{
+				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, spriteComponent->texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
+			}
+			}
 		}
 	}
 }

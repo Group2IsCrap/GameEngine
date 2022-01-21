@@ -16,6 +16,13 @@ namespace Firelight::ECS
 	/// </summary>
 	struct SpriteComponent : BaseComponent
 	{
+		enum class DrawSpace
+		{
+			e_NDC,
+			e_Pixel,
+			e_World
+		};
+
 		Firelight::Graphics::Texture*     texture = nullptr;
 		int                               layer = 32;
 
@@ -24,6 +31,8 @@ namespace Firelight::ECS
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+
+		DrawSpace                         drawSpace;
 
 		std::string Output() override
 		{
