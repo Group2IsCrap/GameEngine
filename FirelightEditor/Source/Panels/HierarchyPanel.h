@@ -17,6 +17,8 @@ public:
 	HierarchyPanel();
 
 	void Draw() override;
+	void NewGameEntity();
+	void DeleteGameEntity(Firelight::ECS::Entity* entity);
 
 private:
 	void DrawEntityNode(Firelight::ECS::Entity* entity);
