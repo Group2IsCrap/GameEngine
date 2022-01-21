@@ -8,6 +8,8 @@
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/Systems/System.h"
 
+#include "Source/ECS/EntityWrappers/SpriteEntity.h"
+
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "ImGuiTestLayer.h"
@@ -46,10 +48,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
+		SpriteEntity* test = new SpriteEntity();
+		test->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
+		test->GetSpriteComponent()->pixelsPerUnit = 200.0f;
 
-		System* testSystem = new System();
-
-		Entity* test = new Entity();
+		test = new SpriteEntity();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

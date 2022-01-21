@@ -2,7 +2,7 @@
 
 #include "WindowContainer.h"
 
-#include "Maths/Vec2.h"
+#include "Maths/Rect.h"
 
 #include "Utils/Timer.h"
 
@@ -10,6 +10,11 @@
 #include "Utils/ErrorManager.h"
 
 #include "ECS/SystemManager.h"
+
+namespace Firelight::ECS
+{
+    class CameraEntity;
+}
 
 namespace Firelight
 {
@@ -31,8 +36,12 @@ namespace Firelight
 
         const HWND          GetWindowHandle() const;
 
+        void                UpdateActiveCamera2DRect();
+        const Maths::Rectf& GetActiveCamera2DRect() const;
+
         bool   ProcessMessages();
         double Update();
+
         void   RenderFrame();
 
     private:
@@ -41,9 +50,12 @@ namespace Firelight
     private:
         ECS::SystemManager m_systemManager;
 
-        WindowContainer m_windowContainer;
-        Utils::Timer    m_frameTimer;
+        WindowContainer    m_windowContainer;
+        Utils::Timer       m_frameTimer;
 
-        bool            m_initialised;
+        bool               m_initialised;
+
+        ECS::CameraEntity* m_activeCamera;
+        Maths::Rectf       m_activeCameraRect;
     };
 }

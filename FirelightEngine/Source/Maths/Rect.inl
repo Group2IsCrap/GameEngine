@@ -4,8 +4,6 @@
 
 #include "../Graphics/Data/VertexTypes.h"
 
-#include "../Engine.h"
-
 namespace Firelight::Maths
 {
 	template<typename T>
@@ -27,13 +25,12 @@ namespace Firelight::Maths
 	}
 
 	template<typename T>
-	inline Rect<T> Rect<T>::CreateNDCRectFromPixelRect() const
+	inline Rect<T> Rect<T>::CreateNDCRectFromPixelRect(const Maths::Vec2f& dimensions) const
 	{
-		const Maths::Vec2f& dimensions = Engine::Instance().GetWindowDimensionsFloat();
 		Rect<T> returnRect;
 
 		returnRect.x = (x / dimensions.x) * 2.0f - 1.0f;
-		returnRect.y = (1.0f - (y / dimensions.y)) * 2.0f - 1.0f;
+		returnRect.y = (1.0f - ((y + h) / dimensions.y)) * 2.0f - 1.0f;
 		returnRect.w = (w / dimensions.x) * 2.0f;
 		returnRect.h = (h / dimensions.y) * 2.0f;
 
@@ -55,6 +52,17 @@ namespace Firelight::Maths
 	template<typename T>
 	inline Vec2<T> Rect<T>::GetCentreNDC() const
 	{
-		return Vec2<T>(x + w / 2, y - h / 2);
+		return Vec2<T>(x + w / 2, y + h / 2);
+	}
+
+	template<typename T>
+	inline Rect<T> Rect<T>::CreateNDCRectInWorldRect(const Rect<T>& smallRect, const Rect<T>& worldRect)
+	{
+		return Rect<T>(
+			((smallRect.x - worldRect.x) / worldRect.w) * 2.0f - 1.0f,
+			((smallRect.y - worldRect.y) / worldRect.h) * 2.0f - 1.0f,
+			(smallRect.w / worldRect.w) * 2.0f,
+			(smallRect.h / worldRect.h) * 2.0f
+			);
 	}
 }

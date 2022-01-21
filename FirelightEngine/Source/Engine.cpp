@@ -15,6 +15,8 @@
 #include "Events/EventDispatcher.h"
 #include "Graphics/GraphicsEvents.h"
 
+#include "ECS/EntityWrappers/CameraEntity.h"
+
 using namespace Firelight::ECS;
 
 namespace Firelight
@@ -58,6 +60,8 @@ namespace Firelight
         Maths::Random::SeedWithCurrentTime();
 
         m_systemManager.RegisterEngineSystems();
+
+        m_activeCamera = new ECS::CameraEntity();
 
         m_initialised = true;
 
@@ -105,6 +109,26 @@ namespace Firelight
         return m_windowContainer.GetWindow().GetHWND();
     }
 
+    void Engine::UpdateActiveCamera2DRect()
+    {
+        if (m_activeCamera != nullptr)
+        {
+            const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->position;
+            const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
+            const float size = m_activeCamera->GetCamera2DComponent()->size * 0.01f;
+
+            m_activeCameraRect = Maths::Rectf(
+                cameraPos.x - windowDimensions.x * 0.5f * size,
+                cameraPos.y - windowDimensions.y * 0.5f * size,
+                windowDimensions.x * size, windowDimensions.y * size);
+        }
+    }
+
+    const Maths::Rectf& Engine::GetActiveCamera2DRect() const
+    {
+        return m_activeCameraRect;
+    }
+
     double Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
@@ -114,6 +138,8 @@ namespace Firelight
         m_frameTimer.Start();
 
         m_systemManager.Update(deltaTime);
+
+        UpdateActiveCamera2DRect();
 
         return deltaTime;
     }
