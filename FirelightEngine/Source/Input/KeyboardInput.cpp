@@ -24,14 +24,14 @@ namespace Firelight::Input
         m_Keystates[key] = true;
         
         
-        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyPress(), (void*)key);
+        Events::EventDispatcher::InvokeListeners<Events::Input::OnKeyPress>((void*)key);
     }
 
     void KeyboardInput::OnKeyReplace(const unsigned char key)
     {
         m_Keystates[key] = false;
 
-        Events::EventDispatcher::InvokeListeners(Events::Input::OnKeyRelease(), (void*)key);
+        Events::EventDispatcher::InvokeListeners<Events::Input::OnKeyRelease>((void*)key);
     }
 
     void KeyboardInput::OnChar(const unsigned char key)

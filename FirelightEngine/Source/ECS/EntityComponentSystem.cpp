@@ -25,7 +25,7 @@ namespace Firelight::ECS
 		m_entityManager = std::make_unique<EntityManager>();
 		m_componentManager = std::make_unique<ComponentManager>();
 
-		Events::EventDispatcher::SubscribeFunction(Events::ECS::OnComponentRegisteredEvent::sm_descriptor, std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
 	}
 
 

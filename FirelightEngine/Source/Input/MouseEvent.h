@@ -35,12 +35,7 @@ namespace Firelight::Events::Input
 		int GetMouseX();
 		int GetMouseY();
 
-		static constexpr DescriptorType sm_Description = "MouseEvent";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "MouseEvent";
 
 	public:
 		e_MouseEventType m_Type;
@@ -51,15 +46,11 @@ namespace Firelight::Events::Input
 	{
 	public:
 		MouseButtionReleaseEvent();
-		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionReleaseEvent();
+		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
+		
 
-		static constexpr DescriptorType sm_Description = "Mouse_Buttion_Release";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "Mouse_Buttion_Release";
 	};
 
 	class MouseButtionPressEvent :public MouseEvent
@@ -69,12 +60,7 @@ namespace Firelight::Events::Input
 		MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseButtionPressEvent();
 
-		static constexpr DescriptorType sm_Description = "Mouse_Buttion_Press";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "Mouse_Buttion_Press";
 	};
 
 	class MouseMoveEvent :public MouseEvent
@@ -84,12 +70,7 @@ namespace Firelight::Events::Input
 		MouseMoveEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseMoveEvent();
 
-		static constexpr DescriptorType sm_Description = "Mouse_Move";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "Mouse_Move";
 	};
 
 	class MouseMoveRawEvent :public MouseEvent
@@ -99,11 +80,6 @@ namespace Firelight::Events::Input
 		MouseMoveRawEvent(const e_MouseEventType type, const int x, const int y);
 		~MouseMoveRawEvent();
 
-		static constexpr DescriptorType sm_Description = "Mouse_Move_Raw";
-
-		virtual DescriptorType Type() const override
-		{
-			return sm_Description;
-		}
+		static constexpr DescriptorType sm_descriptor = "Mouse_Move_Raw";
 	};
 }

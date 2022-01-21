@@ -6,7 +6,7 @@
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components/BasicComponents.h"
-#include "Source/ECS/System.h"
+#include "Source/ECS/Systems/System.h"
 
 #include "Source/ImGuiUI/ImGuiManager.h"
 

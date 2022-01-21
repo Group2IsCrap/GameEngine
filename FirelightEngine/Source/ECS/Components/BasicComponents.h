@@ -39,8 +39,8 @@ namespace Firelight::ECS
 	struct TransformComponent : BaseComponent
 	{
 		Firelight::Maths::Vec3f position;
-		// TODO : Add some form of rotation, unsure what everyone wants.
 		Firelight::Maths::Vec3f scale;
+		float                   rotation;
 
 		void Serialise() override
 		{
