@@ -31,7 +31,7 @@ namespace Firelight::ECS
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
-		DrawSpace                         drawSpace;
+		DrawSpace                         drawSpace = DrawSpace::e_World;
 
 		/*
 		std::string Output() override
