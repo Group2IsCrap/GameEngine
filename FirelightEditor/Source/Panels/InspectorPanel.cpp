@@ -247,8 +247,8 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 		{
 			ImGui::Spacing();
 			ImGui::Unindent();
-			const char* items[] = { "NDC", "Pixel", "WorldSpace" };
-			DrawEnum<Firelight::ECS::SpriteComponent::DrawSpace>("Draw Space", &items[0], 3, component->drawSpace);
+			//const char* items[] = { "NDC", "Pixel", "WorldSpace" };
+			//DrawEnum<Firelight::ECS::SpriteComponent::DrawSpace>("Draw Space", &items[0], 3, component->drawSpace);
 
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Layer");
@@ -256,7 +256,9 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::SliderInt("##Layer", &component->layer, 0, 64);
 			ImGui::Indent();
 			DrawVec2Control("Offset", component->drawOffset.x, component->drawOffset.y);
-			DrawVec2Control("Dimensions", component->spriteDimensions.x, component->spriteDimensions.y);
+			ImGui::Unindent();
+			ImGui::InputFloat("Pixels Per Unit", &component->pixelsPerUnit, 1.0f);
+			ImGui::Indent();
 			ImGui::Spacing();
 		}, true);
 
