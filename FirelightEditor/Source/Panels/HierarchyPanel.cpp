@@ -31,10 +31,21 @@ void HierarchyPanel::Draw()
 	// Right-click on blank space
 	if (ImGui::BeginPopupContextWindow(0, 1, false))
 	{
-		if (ImGui::MenuItem("New Game Entity"))
+		if (ImGui::MenuItem("Game Entity"))
 		{
 			NewGameEntity();
 		}
+
+		if (ImGui::MenuItem("Camera"))
+		{
+			NewCameraEntity();
+		}
+
+		if (ImGui::MenuItem("Sprite"))
+		{
+			NewSpriteEntity();
+		}
+		
 
 		ImGui::EndPopup();
 	}
@@ -83,6 +94,20 @@ void HierarchyPanel::DrawEntityNode(Firelight::ECS::Entity* entity)
 }
 
 void HierarchyPanel::NewGameEntity()
+{
+	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
+	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Game Entity";
+	m_entitiesInScene.push_back(newEntity);
+}
+
+void HierarchyPanel::NewCameraEntity()
+{
+	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
+	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Camera";
+	m_entitiesInScene.push_back(newEntity);
+}
+
+void HierarchyPanel::NewSpriteEntity()
 {
 	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
 	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Game Entity";

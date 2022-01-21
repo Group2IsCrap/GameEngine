@@ -18,6 +18,8 @@ public:
 
 	void Draw() override;
 	void NewGameEntity();
+	void NewCameraEntity();
+	void NewSpriteEntity();
 	void DeleteGameEntity(Firelight::ECS::Entity* entity);
 
 private:
