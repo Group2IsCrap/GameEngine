@@ -4,6 +4,8 @@
 #include "Source/ECS/Entity.h"
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/EntityWrappers/GameEntity.h"
+#include "Source/ECS/EntityWrappers/SpriteEntity.h"
+#include "Source/ECS/EntityWrappers/CameraEntity.h"
 
 
 #include "InspectorPanel.h"
@@ -102,14 +104,14 @@ void HierarchyPanel::NewGameEntity()
 
 void HierarchyPanel::NewCameraEntity()
 {
-	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
+	Firelight::ECS::CameraEntity* newEntity = new Firelight::ECS::CameraEntity();
 	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Camera";
 	m_entitiesInScene.push_back(newEntity);
 }
 
 void HierarchyPanel::NewSpriteEntity()
 {
-	Firelight::ECS::GameEntity* newEntity = new Firelight::ECS::GameEntity();
+	Firelight::ECS::SpriteEntity* newEntity = new Firelight::ECS::SpriteEntity();
 	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Game Entity";
 	m_entitiesInScene.push_back(newEntity);
 }
