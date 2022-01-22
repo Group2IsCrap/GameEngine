@@ -8,6 +8,8 @@
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/Systems/System.h"
 
+#include "Source/ECS/EntityWrappers/SpriteEntity.h"
+
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "ImGuiTestLayer.h"
@@ -18,9 +20,6 @@
 
 #include "Pepe.h"
 
-#include"Source/ECS/SystemManager.h"
-#include"Source/UI/UISystem.h"
-#include"Source\ECS\Components\UIComponents.h"
 #include"TestInputGame.h"
 
 using namespace Firelight;
@@ -49,15 +48,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		
-		
-		Entity* test = new Entity();
-		test->AddComponent<ECS::UIWidget>();
-		test->AddComponent<ECS::SpriteComponent>();
-		test->AddComponent<ECS::TransformComponent>();
+		SpriteEntity* test = new SpriteEntity();
+		test->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
+		test->GetSpriteComponent()->pixelsPerUnit = 200.0f;
 
-		test->GetComponent<ECS::UIWidget>()->Textuer = test->GetComponent<ECS::SpriteComponent>();
-		test->GetComponent<ECS::UIWidget>()->Transform = test->GetComponent<ECS::TransformComponent>();
+		test = new SpriteEntity();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
@@ -71,7 +66,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				pepe.Draw();
 			}
 
-			inputTest->Draw();
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(200.0f, 200.0f, 400.0f, 400.0f), glowTexture, 48);

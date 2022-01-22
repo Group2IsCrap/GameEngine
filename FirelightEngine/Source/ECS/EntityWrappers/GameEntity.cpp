@@ -4,15 +4,15 @@ namespace Firelight::ECS
 {
 	GameEntity::GameEntity()
 	{
-		AddComponent<IdentificationComponent>(new IdentificationComponent());
-		AddComponent<StaticComponent>(new StaticComponent());
-		AddComponent<TransformComponent>(new TransformComponent());
+		AddComponent<IdentificationComponent>();
+		AddComponent<StaticComponent>();
+		AddComponent<TransformComponent>();
 	}
 	/// <summary>
 	/// Wrapper that returns the Identification Component
 	/// </summary>
 	/// <returns></returns>
-	IdentificationComponent* GameEntity::GetID()
+	IdentificationComponent* GameEntity::GetIDComponent()
 	{
 		return GetComponent<IdentificationComponent>();
 	}
@@ -21,7 +21,7 @@ namespace Firelight::ECS
 	/// Wrapper that returns the StaticComponent Component
 	/// </summary>
 	/// <returns></returns>
-	StaticComponent* GameEntity::IsStatic()
+	StaticComponent* GameEntity::GetStaticComponent()
 	{
 		return GetComponent<StaticComponent>();
 	}
@@ -30,7 +30,7 @@ namespace Firelight::ECS
 	/// Wrapper that returns the Transform Component
 	/// </summary>
 	/// <returns></returns>
-	TransformComponent* GameEntity::GetTransform()
+	TransformComponent* GameEntity::GetTransformComponent()
 	{
 		return GetComponent<TransformComponent>();
 	}

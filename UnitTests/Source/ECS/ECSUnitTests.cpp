@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "Source/ECS/GameEntity.h"
-#include "Source/ECS/Components/PhysicsComponents.h"
+#include "Source/ECS/EntityWrappers/GameEntity.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,7 +11,12 @@ namespace UnitTests::ECS
 	TEST_CLASS(ECSUnitTests)
 	{
 	public:
-		
+
+		struct TestComponent : BaseComponent
+		{
+			int x;
+		};
+
 		TEST_CLASS_INITIALIZE(ECSInitialize)
 		{
 		}
@@ -28,6 +32,7 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -39,6 +44,7 @@ namespace UnitTests::ECS
 			//Arrange + Act
 			Entity* player = new Entity();
 
+			player->Destroy();
 			delete player;
 
 			//Assert
@@ -58,6 +64,7 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsNotNull(player->GetComponent<IdentificationComponent>());
+			player->Destroy();
 			delete player;
 		}
 
@@ -74,6 +81,7 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsNotNull(player->GetComponent<IdentificationComponent>());
+			player->Destroy();
 			delete player;
 		}
 
@@ -89,8 +97,10 @@ namespace UnitTests::ECS
 			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
 			player->AddComponent<TransformComponent>(new TransformComponent());
 
+
 			//Assert
-			Assert::IsNull(player->GetComponent<PhysicsComponent>());
+			Assert::IsNull(player->GetComponent<TestComponent>());
+			player->Destroy();
 			delete player;
 		}
 
@@ -109,6 +119,8 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsFalse(ent1 == ent2);
+			ent1.Destroy();
+			ent2.Destroy();
 		}
 
 
@@ -124,6 +136,8 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsTrue(ent1 == ent2);
+			ent1.Destroy();
+			ent2.Destroy();
 		}
 
 		TEST_METHOD(EntityNoEqualityOperatorTrueTest)
@@ -138,6 +152,8 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsTrue(ent1 != ent2);
+			ent1.Destroy();
+			ent2.Destroy();
 		}
 
 
@@ -153,6 +169,8 @@ namespace UnitTests::ECS
 
 			//Assert
 			Assert::IsFalse(ent1 != ent2);
+			ent1.Destroy();
+			ent2.Destroy();
 		}
 
 		/// <summary>
@@ -170,6 +188,7 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(0));
 			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(1));
+			player->Destroy();
 			delete player;
 		}
 
@@ -193,6 +212,7 @@ namespace UnitTests::ECS
 
 			player->RemoveComponent<IdentificationComponent>(1);
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -211,8 +231,8 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(player->GetComponent<IdentificationComponent>() != nullptr, player->HasComponent<IdentificationComponent>());
 			Assert::AreEqual(player->GetComponent<TransformComponent>() != nullptr, player->HasComponent<TransformComponent>());
-			Assert::AreEqual(player->GetComponent<PhysicsComponent>() != nullptr, player->HasComponent<PhysicsComponent>());
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -228,7 +248,7 @@ namespace UnitTests::ECS
 			//Act
 			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
 			player->AddComponent<TransformComponent>(new TransformComponent());
-			player->AddComponent<PhysicsComponent>(new PhysicsComponent());
+			player->AddComponent<TestComponent>(new TestComponent());
 
 			//Assert
 			Assert::AreEqual(3, (int)player->GetSignature().size());
@@ -236,6 +256,7 @@ namespace UnitTests::ECS
 			Assert::IsTrue(player->GetSignature()[1]);
 			Assert::IsTrue(player->GetSignature()[2]);
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -250,7 +271,7 @@ namespace UnitTests::ECS
 			//Act
 			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
 			player->AddComponent<TransformComponent>(new TransformComponent());
-			player->AddComponent<PhysicsComponent>(new PhysicsComponent());
+			player->AddComponent<TestComponent>(new TestComponent());
 			player->RemoveComponent<TransformComponent>();
 
 			Assert::AreEqual(3, (int)player->GetSignature().size());
@@ -258,9 +279,8 @@ namespace UnitTests::ECS
 			Assert::IsFalse(player->GetSignature()[1]);
 			Assert::IsTrue(player->GetSignature()[2]);
 
+			player->Destroy();
 			delete player;
-
-			EntityComponentSystem::Instance()->DebugEntities();
 		}
 
 		/// <summary>
@@ -281,6 +301,7 @@ namespace UnitTests::ECS
 			Assert::IsFalse(player->GetSignature()[1]);
 			Assert::IsFalse(player->GetSignature()[2]);
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -305,6 +326,7 @@ namespace UnitTests::ECS
 			Assert::IsFalse(player->GetSignature()[1]);
 			Assert::IsFalse(player->GetSignature()[2]);
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -324,6 +346,7 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(playerID->name, player->GetComponent<IdentificationComponent>()->name);
 
+			player->Destroy();
 			delete player;
 		}
 
@@ -340,6 +363,7 @@ namespace UnitTests::ECS
 			Assert::IsNotNull(testGE->GetComponent<TransformComponent>());
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			testGE->Destroy();
 			delete testGE;
 		}
 
@@ -354,6 +378,7 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			testGE->Destroy();
 			delete testGE;
 
 			Assert::AreEqual(0, (int)EntityComponentSystem::Instance()->GetEntities().size());
@@ -368,13 +393,14 @@ namespace UnitTests::ECS
 			GameEntity* testGE = new GameEntity();
 			
 			//Act
-			testGE->GetTransform()->position.x = 10.0f;
-			testGE->GetID()->name = "Rabbit";
+			testGE->GetTransformComponent()->position.x = 10.0f;
+			testGE->GetIDComponent()->name = "Rabbit";
 
 			//Assert
-			Assert::AreEqual(testGE->GetTransform()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE->GetEntityID())->position.x);
-			Assert::AreEqual(testGE->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE->GetEntityID())->name);
+			Assert::AreEqual(testGE->GetTransformComponent()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE->GetEntityID())->position.x);
+			Assert::AreEqual(testGE->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE->GetEntityID())->name);
 
+			testGE->Destroy();
 			delete testGE;
 		}
 
@@ -390,6 +416,8 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(2, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			testGE1->Destroy();
+			testGE2->Destroy();
 			delete testGE1;
 			delete testGE2;
 		}
@@ -406,11 +434,13 @@ namespace UnitTests::ECS
 			//Assert
 			Assert::AreEqual(2, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			testGE1->Destroy();
 			delete testGE1;
 
 			//Assert
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
+			testGE2->Destroy();
 			delete testGE2;
 
 			//Assert
@@ -427,17 +457,19 @@ namespace UnitTests::ECS
 			GameEntity* testGE2 = new GameEntity();
 
 			//Act
-			testGE1->GetTransform()->position.x = 10.0f;
-			testGE2->GetID()->name = "Velociraptor";
-			testGE2->GetTransform()->position.y = -99.0f;
-			testGE1->GetID()->name = "Fox";
+			testGE1->GetTransformComponent()->position.x = 10.0f;
+			testGE2->GetIDComponent()->name = "Velociraptor";
+			testGE2->GetTransformComponent()->position.y = -99.0f;
+			testGE1->GetIDComponent()->name = "Fox";
 
 			//Assert
-			Assert::AreEqual(testGE1->GetTransform()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE1->GetEntityID())->position.x);
-			Assert::AreEqual(testGE1->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE1->GetEntityID())->name);
-			Assert::AreEqual(testGE2->GetTransform()->position.y, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE2->GetEntityID())->position.y);
-			Assert::AreEqual(testGE2->GetID()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE2->GetEntityID())->name);
+			Assert::AreEqual(testGE1->GetTransformComponent()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE1->GetEntityID())->position.x);
+			Assert::AreEqual(testGE1->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE1->GetEntityID())->name);
+			Assert::AreEqual(testGE2->GetTransformComponent()->position.y, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE2->GetEntityID())->position.y);
+			Assert::AreEqual(testGE2->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE2->GetEntityID())->name);
 
+			testGE1->Destroy();
+			testGE2->Destroy();
 			delete testGE1;
 			delete testGE2;
 		}

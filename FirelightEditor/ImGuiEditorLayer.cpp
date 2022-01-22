@@ -3,7 +3,7 @@
 #include "Includes/imgui/imgui.h"
 #include "Includes/imgui/imgui_internal.h"
 
-#include <Source/ECS/GameEntity.h>
+#include "Source/ECS/EntityWrappers/GameEntity.h"
 
 ImGuiEditorLayer::ImGuiEditorLayer()
 {
