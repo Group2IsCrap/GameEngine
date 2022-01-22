@@ -62,7 +62,7 @@ void HierarchyPanel::DrawEntityNode(Firelight::ECS::Entity* entity)
 	// Don't show arrow if the object does not have any child objects
 	ImGuiTreeNodeFlags flags = ((m_selectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 	flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
-	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
+	bool opened = ImGui::TreeNodeEx(entity, flags, tag.c_str());
 
 	// Selected node
 	if (ImGui::IsItemClicked())
