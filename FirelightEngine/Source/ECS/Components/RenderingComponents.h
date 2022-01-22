@@ -40,7 +40,7 @@ namespace Firelight::ECS
 		int                               layer = 32;
 
 		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
-		float                             pixelsPerUnit = 24.0f;
+		float                             pixelsPerUnit = 100.0f;
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
