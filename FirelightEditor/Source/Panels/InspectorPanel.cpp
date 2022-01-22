@@ -5,6 +5,9 @@
 #include <Source/ECS/Components/PhysicsComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/EntityComponentSystem.h>
+#include <Source/Graphics/AssetManager.h>
+
+#include <filesystem>
 
 InspectorPanel::InspectorPanel()
 {
@@ -231,14 +234,34 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 		char buffer[256];
 		memset(buffer, 0, sizeof(buffer));
 		std::strncpy(buffer, tag.c_str(), sizeof(buffer));
+		ImGui::SetNextItemWidth(180.0f);
 		if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			tag = std::string(buffer);
+
+		ImGui::SameLine();
+		ImGui::Text("Static");
+		auto& isStatic = entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic;
+		ImGui::SameLine();
+		ImGui::Checkbox("##Static", &isStatic);
+
 		ImGui::Spacing();
 
 		DrawComponent<Firelight::ECS::TransformComponent>("Transform", entity, [](auto& component)
 		{
 			ImGui::Spacing();
 			DrawVec3Control("Position", component->position.x, component->position.y, component->position.z);
+			ImGui::Unindent();
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Rotation");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Rotation", &component->rotation, 0.1f, 0.0f, 0.0f, "%.2f");
+			//ImGui::InputFloat("##Rotation", &component->rotation, 0.1f, 0.0f, "%.2f");
+			if (component->rotation > 360)
+				component->rotation = 0;
+			if (component->rotation < 0)
+				component->rotation = 360;
+			ImGui::Indent();
+			ImGui::Spacing();
 			DrawVec3Control("Scale", component->scale.x, component->scale.y, component->scale.z);
 			ImGui::Spacing();
 		});
@@ -254,10 +277,42 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::Text("Layer");
 			ImGui::SameLine();
 			ImGui::SliderInt("##Layer", &component->layer, 0, 64);
-			ImGui::Indent();
-			DrawVec2Control("Offset", component->drawOffset.x, component->drawOffset.y);
-			ImGui::Unindent();
-			ImGui::InputFloat("Pixels Per Unit", &component->pixelsPerUnit, 1.0f);
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Pixels Per Unit");
+			ImGui::SameLine();
+			ImGui::InputFloat("##PixelsPerUnit", &component->pixelsPerUnit, 1.0f, 10.0f, "%0.0f");
+			if (component->pixelsPerUnit < 1)
+				component->pixelsPerUnit = 1;
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Sprite");
+			ImGui::SameLine();
+			if (component->texture == nullptr)
+				component->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/missing.png");
+			ImGui::ImageButton((ImTextureID)component->texture->GetShaderResourceView().Get(), { 50, 50 });
+
+			// Drag and drop texture
+			Firelight::Graphics::Texture* texture = component->texture;
+			if (ImGui::BeginDragDropTarget())
+			{
+				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
+				if (payload != nullptr)
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					if (path != nullptr)
+					{
+						std::string pathString = Firelight::Utils::StringHelpers::WideStringToString(path);
+						std::string pngExtention = pathString.substr(pathString.length() - 4);
+						if (pngExtention == ".png")
+						{
+							texture = Firelight::Graphics::AssetManager::Instance().GetTexture(pathString);
+						}
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			component->texture = texture;
+
 			ImGui::Indent();
 			ImGui::Spacing();
 		}, true);

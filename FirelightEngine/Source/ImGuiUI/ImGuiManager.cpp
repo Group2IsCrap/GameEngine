@@ -33,8 +33,6 @@ namespace Firelight::ImGuiUI
 
 	bool ImGuiManager::Initialise(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* contextDevice)
 	{
-		ImGui_ImplWin32_EnableDpiAwareness();
-
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
