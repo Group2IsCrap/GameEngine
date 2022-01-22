@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity.h"
+#include "../EntityWrappers/Entity.h"
 
 #include <iostream>
 
@@ -12,7 +12,7 @@ namespace Firelight::ECS
 		System();
 		virtual ~System();
 
-		std::vector<EntityID> GetEntities();
+		std::vector<Entity*> GetEntities();
 		virtual void Update(double dt);
 		virtual void LateUpdate(double dt);
 		virtual void FixedUpdate(double fixeddt);
@@ -50,8 +50,14 @@ namespace Firelight::ECS
 		void IncrementSignatureLists();
 
 	protected:
-		std::vector<EntityID> m_entities;
+		std::vector<Entity*> m_entities;
 		Signature             m_blacklist;
 		Signature             m_whitelist;
+
+		size_t m_onEntityCreatedIndex;
+		size_t m_onEntityDestroyedIndex;
+		size_t m_onComponentAddedIndex;
+		size_t m_onComponentRemovedIndex;
+		size_t m_onComponentRegisteredIndex;
 	};
 }

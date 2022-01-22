@@ -29,8 +29,8 @@ namespace Firelight::ECS
 	{
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
-			auto* transformComponent = EntityComponentSystem::Instance()->GetComponent<TransformComponent>(m_entities[entityIndex]);
-			auto* spriteComponent = EntityComponentSystem::Instance()->GetComponent<SpriteComponent>(m_entities[entityIndex]);
+			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
+			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
 
 			Graphics::Texture* texture = spriteComponent->texture;
 			if (texture == nullptr)

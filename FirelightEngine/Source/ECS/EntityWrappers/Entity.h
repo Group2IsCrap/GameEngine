@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityComponentSystem.h"
+#include "../EntityComponentSystem.h"
 
 namespace Firelight::ECS
 {

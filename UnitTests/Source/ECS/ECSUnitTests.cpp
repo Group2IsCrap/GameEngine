@@ -1,21 +1,64 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "Source/ECS/EntityWrappers/GameEntity.h"
+#include "Source/ECS/ECSDefines.h"
+#include "Source/ECS/EntityWrappers/Entity.h"
+#include "Source/ECS/EntityComponentSystem.h"
+#include "Source/ECS/Systems/System.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
 
 using namespace Firelight::ECS;
 
 namespace UnitTests::ECS
 {
+
+	struct TestComponentA : BaseComponent
+	{
+		const char* name;
+	};
+
+	struct TestComponentB : BaseComponent
+	{
+		int x;
+		int y;
+	};
+
+	struct TestComponentC : BaseComponent
+	{
+		float vel;
+	};
+
+	class TestEntity : public Entity
+	{
+	public:
+		TestEntity()
+		{
+			AddComponent<TestComponentA>(new TestComponentA());
+			AddComponent<TestComponentB>(new TestComponentB());
+		}
+
+		TestComponentA* GetTestComponentA()
+		{
+			return GetComponent<TestComponentA>();
+		}
+		TestComponentB* GetTestComponentB()
+		{
+			return GetComponent<TestComponentB>();
+		}
+	};
+
+	class TestSystem : public System
+	{
+		TestSystem()
+		{
+			AddWhitelistComponent<TestComponentA>();
+		}
+	};
+
 	TEST_CLASS(ECSUnitTests)
 	{
 	public:
-
-		struct TestComponent : BaseComponent
-		{
-			int x;
-		};
 
 		TEST_CLASS_INITIALIZE(ECSInitialize)
 		{
@@ -60,10 +103,10 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 			
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>());
+			Assert::IsNotNull(player->GetComponent<TestComponentA>());
 			player->Destroy();
 			delete player;
 		}
@@ -77,10 +120,10 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>();
+			player->AddComponent<TestComponentA>();
 
 			//Assert
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>());
+			Assert::IsNotNull(player->GetComponent<TestComponentA>());
 			player->Destroy();
 			delete player;
 		}
@@ -94,12 +137,12 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<TransformComponent>(new TransformComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentB>(new TestComponentB());
 
 
 			//Assert
-			Assert::IsNull(player->GetComponent<TestComponent>());
+			Assert::IsNull(player->GetComponent<TestComponentC>());
 			player->Destroy();
 			delete player;
 		}
@@ -114,8 +157,8 @@ namespace UnitTests::ECS
 			Entity ent2 = Entity();
 
 			//Act
-			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
-			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent1.AddComponent<TestComponentA>(new TestComponentA());
+			ent2.AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
 			Assert::IsFalse(ent1 == ent2);
@@ -131,8 +174,8 @@ namespace UnitTests::ECS
 			Entity ent2 = Entity(ent1.GetEntityID());
 
 			//Act
-			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
-			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent1.AddComponent<TestComponentA>(new TestComponentA());
+			ent2.AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
 			Assert::IsTrue(ent1 == ent2);
@@ -147,8 +190,8 @@ namespace UnitTests::ECS
 			Entity ent2 = Entity();
 
 			//Act
-			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
-			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent1.AddComponent<TestComponentA>(new TestComponentA());
+			ent2.AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
 			Assert::IsTrue(ent1 != ent2);
@@ -164,8 +207,8 @@ namespace UnitTests::ECS
 			Entity ent2 = Entity(ent1.GetEntityID());
 
 			//Act
-			ent1.AddComponent<IdentificationComponent>(new IdentificationComponent());
-			ent2.AddComponent<IdentificationComponent>(new IdentificationComponent());
+			ent1.AddComponent<TestComponentA>(new TestComponentA());
+			ent2.AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
 			Assert::IsFalse(ent1 != ent2);
@@ -182,12 +225,12 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(0));
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(1));
+			Assert::IsNotNull(player->GetComponent<TestComponentA>(0));
+			Assert::IsNotNull(player->GetComponent<TestComponentA>(1));
 			player->Destroy();
 			delete player;
 		}
@@ -201,16 +244,16 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(0));
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(1));
-			Assert::IsNotNull(player->GetComponent<IdentificationComponent>(2));
+			Assert::IsNotNull(player->GetComponent<TestComponentA>(0));
+			Assert::IsNotNull(player->GetComponent<TestComponentA>(1));
+			Assert::IsNotNull(player->GetComponent<TestComponentA>(2));
 
-			player->RemoveComponent<IdentificationComponent>(1);
+			player->RemoveComponent<TestComponentA>(1);
 
 			player->Destroy();
 			delete player;
@@ -225,12 +268,12 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<TransformComponent>(new TransformComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentB>(new TestComponentB());
 
 			//Assert
-			Assert::AreEqual(player->GetComponent<IdentificationComponent>() != nullptr, player->HasComponent<IdentificationComponent>());
-			Assert::AreEqual(player->GetComponent<TransformComponent>() != nullptr, player->HasComponent<TransformComponent>());
+			Assert::AreEqual(player->GetComponent<TestComponentA>() != nullptr, player->HasComponent<TestComponentA>());
+			Assert::AreEqual(player->GetComponent<TestComponentB>() != nullptr, player->HasComponent<TestComponentB>());
 
 			player->Destroy();
 			delete player;
@@ -246,9 +289,9 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<TransformComponent>(new TransformComponent());
-			player->AddComponent<TestComponent>(new TestComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentB>(new TestComponentB());
+			player->AddComponent<TestComponentC>(new TestComponentC());
 
 			//Assert
 			Assert::AreEqual(3, (int)player->GetSignature().size());
@@ -269,10 +312,10 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<TransformComponent>(new TransformComponent());
-			player->AddComponent<TestComponent>(new TestComponent());
-			player->RemoveComponent<TransformComponent>();
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentB>(new TestComponentB());
+			player->AddComponent<TestComponentC>(new TestComponentC());
+			player->RemoveComponent<TestComponentB>();
 
 			Assert::AreEqual(3, (int)player->GetSignature().size());
 			Assert::IsTrue(player->GetSignature()[0]);
@@ -292,8 +335,8 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentA>(new TestComponentA());
 
 			//Assert
 			Assert::AreEqual(3, (int)player->GetSignature().size());
@@ -315,10 +358,10 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			player->AddComponent<TestComponentA>(new TestComponentA());
 
-			player->RemoveComponent<IdentificationComponent>();
+			player->RemoveComponent<TestComponentA>();
 
 			//Assert
 			Assert::AreEqual(3, (int)player->GetSignature().size());
@@ -339,12 +382,12 @@ namespace UnitTests::ECS
 			Entity* player = new Entity();
 
 			//Act
-			player->AddComponent<IdentificationComponent>(new IdentificationComponent());
-			IdentificationComponent* playerID = player->GetComponent<IdentificationComponent>();
+			player->AddComponent<TestComponentA>(new TestComponentA());
+			TestComponentA* playerID = player->GetComponent<TestComponentA>();
 			playerID->name = "Test";
 
 			//Assert
-			Assert::AreEqual(playerID->name, player->GetComponent<IdentificationComponent>()->name);
+			Assert::AreEqual(playerID->name, player->GetComponent<TestComponentA>()->name);
 
 			player->Destroy();
 			delete player;
@@ -356,15 +399,15 @@ namespace UnitTests::ECS
 		TEST_METHOD(GameEntityCreationTest)
 		{
 			//Arrange + Act
-			GameEntity* testGE = new GameEntity();
+			TestEntity* testEntity = new TestEntity();
 
 			//Assert
-			Assert::IsNotNull(testGE->GetComponent<IdentificationComponent>());
-			Assert::IsNotNull(testGE->GetComponent<TransformComponent>());
+			Assert::IsNotNull(testEntity->GetTestComponentA());
+			Assert::IsNotNull(testEntity->GetTestComponentB());
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
-			testGE->Destroy();
-			delete testGE;
+			testEntity->Destroy();
+			delete testEntity;
 		}
 
 		/// <summary>
@@ -373,13 +416,13 @@ namespace UnitTests::ECS
 		TEST_METHOD(GameEntityDeletionTest)
 		{
 			//Arrange + Act
-			GameEntity* testGE = new GameEntity();
+			TestEntity* testEntity = new TestEntity();
 
 			//Assert
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
-			testGE->Destroy();
-			delete testGE;
+			testEntity->Destroy();
+			delete testEntity;
 
 			Assert::AreEqual(0, (int)EntityComponentSystem::Instance()->GetEntities().size());
 		}
@@ -390,18 +433,18 @@ namespace UnitTests::ECS
 		TEST_METHOD(GameEntityEditComponentTest)
 		{
 			//Arrange
-			GameEntity* testGE = new GameEntity();
+			TestEntity* testEntity = new TestEntity();
 			
 			//Act
-			testGE->GetTransformComponent()->position.x = 10.0f;
-			testGE->GetIDComponent()->name = "Rabbit";
+			testEntity->GetTestComponentB()->x = 10.0f;
+			testEntity->GetTestComponentA()->name = "Rabbit";
 
 			//Assert
-			Assert::AreEqual(testGE->GetTransformComponent()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE->GetEntityID())->position.x);
-			Assert::AreEqual(testGE->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE->GetEntityID())->name);
+			Assert::AreEqual(testEntity->GetTestComponentB()->x, EntityComponentSystem::Instance()->GetComponent<TestComponentB>(testEntity->GetEntityID())->x);
+			Assert::AreEqual(testEntity->GetTestComponentA()->name, EntityComponentSystem::Instance()->GetComponent<TestComponentA>(testEntity->GetEntityID())->name);
 
-			testGE->Destroy();
-			delete testGE;
+			testEntity->Destroy();
+			delete testEntity;
 		}
 
 		/// <summary>
@@ -410,8 +453,8 @@ namespace UnitTests::ECS
 		TEST_METHOD(MultipleGameEntityCreationTest)
 		{
 			//Arrange + Act
-			GameEntity* testGE1 = new GameEntity();
-			GameEntity* testGE2 = new GameEntity();
+			TestEntity* testGE1 = new TestEntity();
+			TestEntity* testGE2 = new TestEntity();
 
 			//Assert
 			Assert::AreEqual(2, (int)EntityComponentSystem::Instance()->GetEntities().size());
@@ -428,20 +471,20 @@ namespace UnitTests::ECS
 		TEST_METHOD(MultipleGameEntityDeletionTest)
 		{
 			//Arrange + Act
-			GameEntity* testGE1 = new GameEntity();
-			GameEntity* testGE2 = new GameEntity();
+			TestEntity* testEntity1 = new TestEntity();
+			TestEntity* testEntity2 = new TestEntity();
 
 			//Assert
 			Assert::AreEqual(2, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
-			testGE1->Destroy();
-			delete testGE1;
+			testEntity1->Destroy();
+			delete testEntity1;
 
 			//Assert
 			Assert::AreEqual(1, (int)EntityComponentSystem::Instance()->GetEntities().size());
 
-			testGE2->Destroy();
-			delete testGE2;
+			testEntity2->Destroy();
+			delete testEntity2;
 
 			//Assert
 			Assert::AreEqual(0, (int)EntityComponentSystem::Instance()->GetEntities().size());
@@ -453,25 +496,152 @@ namespace UnitTests::ECS
 		TEST_METHOD(MultipleGameEntityEditComponentsTest)
 		{
 			//Arrange
-			GameEntity* testGE1 = new GameEntity();
-			GameEntity* testGE2 = new GameEntity();
+			TestEntity* testEntity1 = new TestEntity();
+			TestEntity* testEntity2 = new TestEntity();
 
 			//Act
-			testGE1->GetTransformComponent()->position.x = 10.0f;
-			testGE2->GetIDComponent()->name = "Velociraptor";
-			testGE2->GetTransformComponent()->position.y = -99.0f;
-			testGE1->GetIDComponent()->name = "Fox";
+			testEntity1->GetTestComponentB()->x = 10.0f;
+			testEntity2->GetTestComponentA()->name = "Velociraptor";
+			testEntity2->GetTestComponentB()->y = -99.0f;
+			testEntity1->GetTestComponentA()->name = "Fox";
 
 			//Assert
-			Assert::AreEqual(testGE1->GetTransformComponent()->position.x, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE1->GetEntityID())->position.x);
-			Assert::AreEqual(testGE1->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE1->GetEntityID())->name);
-			Assert::AreEqual(testGE2->GetTransformComponent()->position.y, EntityComponentSystem::Instance()->GetComponent<TransformComponent>(testGE2->GetEntityID())->position.y);
-			Assert::AreEqual(testGE2->GetIDComponent()->name, EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(testGE2->GetEntityID())->name);
+			Assert::AreEqual(testEntity1->GetTestComponentB()->x, EntityComponentSystem::Instance()->GetComponent<TestComponentB>(testEntity1->GetEntityID())->x);
+			Assert::AreEqual(testEntity1->GetTestComponentA()->name, EntityComponentSystem::Instance()->GetComponent<TestComponentA>(testEntity1->GetEntityID())->name);
+			Assert::AreEqual(testEntity2->GetTestComponentB()->y, EntityComponentSystem::Instance()->GetComponent<TestComponentB>(testEntity2->GetEntityID())->y);
+			Assert::AreEqual(testEntity2->GetTestComponentA()->name, EntityComponentSystem::Instance()->GetComponent<TestComponentA>(testEntity2->GetEntityID())->name);
 
-			testGE1->Destroy();
-			testGE2->Destroy();
-			delete testGE1;
-			delete testGE2;
+			testEntity1->Destroy();
+			testEntity2->Destroy();
+			delete testEntity1;
+			delete testEntity2;
+		}
+
+		/// <summary>
+		/// Test to check that the system automically tracks the added entity
+		/// </summary>
+		TEST_METHOD(SystemAutoUpdateOnEntityCreationTest)
+		{
+			System* system = new System();
+
+			Entity* entity = new Entity();
+
+			Assert::AreEqual(1, (int)system->GetEntities().size());
+
+			entity->Destroy();
+			delete entity;
+
+			delete system;
+		}
+
+		/// <summary>
+		/// Test to make sure that the whitelist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemAutoUpdateOnEntityCreationWhitelist1Test)
+		{
+			System* system = new System();
+			system->AddWhitelistComponent<TestComponentA>();
+
+			Entity* entity = new Entity();
+
+			Assert::AreEqual(0, (int)system->GetEntities().size());
+
+			entity->Destroy();
+			delete entity;
+
+			delete system;
+		}
+
+		/// <summary>
+		/// Test to make sure that the whitelist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemAutoUpdateOnEntityCreationWhitelist2Test)
+		{
+			System* system = new System();
+			system->AddWhitelistComponent<TestComponentA>();
+
+			Entity* entity = new Entity();
+			entity->AddComponent<TestComponentA>();
+
+			Assert::AreEqual(1, (int)system->GetEntities().size());
+
+			entity->Destroy();
+			delete entity;
+
+			delete system;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemAutoUpdateOnEntityCreationBlacklist1Test)
+		{
+			System* system = new System();
+			system->AddBlacklistComponent<TestComponentA>();
+
+			Entity* entity = new Entity();
+			entity->AddComponent<TestComponentA>();
+
+			Assert::AreEqual(0, (int)system->GetEntities().size());
+
+			entity->Destroy();
+			delete entity;
+
+			delete system;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemAutoUpdateOnEntityCreationBlacklist2Test)
+		{
+			System* system = new System();
+			system->AddBlacklistComponent<TestComponentA>();
+
+			Entity* entity = new Entity();
+
+			Assert::AreEqual(1, (int)system->GetEntities().size());
+
+			entity->Destroy();
+			delete entity;
+
+			delete system;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemUnsubscribeTest)
+		{
+			System* system1 = new System();
+			System* system2 = new System();
+
+			Entity* entity = new Entity();
+
+			entity->Destroy();
+			delete entity;
+
+			delete system2;
+			delete system1;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(SystemUnsubscribe2Test)
+		{
+			System* system1 = new System();
+			System* system3 = new System();
+			System* system2 = new System();
+
+			Entity* entity = new Entity();
+
+			entity->Destroy();
+			delete entity;
+
+			delete system1;
+			delete system2;
+			delete system3;
 		}
 
 	};

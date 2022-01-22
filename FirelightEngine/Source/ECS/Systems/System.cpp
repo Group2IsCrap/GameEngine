@@ -7,26 +7,42 @@ namespace Firelight::ECS
 {
 	System::System()
 	{
-		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityCreatedEvent>(std::bind(&System::UpdateEntityList, this));
-		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(std::bind(&System::UpdateEntityList, this));
+		m_onEntityCreatedIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityCreatedEvent>(std::bind(&System::UpdateEntityList, this));
+		m_onEntityDestroyedIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(std::bind(&System::UpdateEntityList, this));
 
-		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentAddedEvent>(std::bind(&System::UpdateEntityList, this));
-		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRemovedEvent>(std::bind(&System::UpdateEntityList, this));
+		m_onComponentAddedIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentAddedEvent>(std::bind(&System::UpdateEntityList, this));
+		m_onComponentRemovedIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRemovedEvent>(std::bind(&System::UpdateEntityList, this));
 
-		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
+		m_onComponentRegisteredIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
+
+		m_whitelist = Signature(EntityComponentSystem::Instance()->GetNumberOfComponents());
+		m_blacklist = Signature(EntityComponentSystem::Instance()->GetNumberOfComponents());
+		m_entities = std::vector<Entity*>();
 	}
 
 	System::~System()
 	{
+		Events::EventDispatcher::UnsubscribeFunction<Events::ECS::OnEntityCreatedEvent>(m_onEntityCreatedIndex);
+		Events::EventDispatcher::UnsubscribeFunction<Events::ECS::OnEntityDestroyedEvent>(m_onEntityDestroyedIndex);
+		Events::EventDispatcher::UnsubscribeFunction<Events::ECS::OnComponentAddedEvent>(m_onComponentAddedIndex);
+		Events::EventDispatcher::UnsubscribeFunction<Events::ECS::OnComponentRemovedEvent>(m_onComponentRemovedIndex);
+		Events::EventDispatcher::UnsubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(m_onComponentRegisteredIndex);
+
+		for (auto entity : m_entities)
+		{
+			delete entity;
+		}
 	}
+
 	/// <summary>
 	/// Returns a list of the maintained entities
 	/// </summary>
 	/// <returns></returns>
-	std::vector<EntityID> System::GetEntities()
+	std::vector<Entity*> System::GetEntities()
 	{
 		return m_entities;
 	}
+
 	/// <summary>
 	/// Primary Update Loop
 	/// </summary>
@@ -35,6 +51,7 @@ namespace Firelight::ECS
 	{
 		(void)dt;
 	}
+
 	/// <summary>
 	/// Secondary Update Loop
 	/// </summary>
@@ -43,6 +60,7 @@ namespace Firelight::ECS
 	{
 		(void)dt;
 	}
+
 	/// <summary>
 	/// Fixed Update loop
 	/// </summary>
@@ -51,7 +69,6 @@ namespace Firelight::ECS
 	{
 		(void)fixeddt;
 	}
-
 
 	void System::UpdateEntityList()
 	{
@@ -81,7 +98,7 @@ namespace Firelight::ECS
 			{
 				continue;
 			}
-			this->m_entities.push_back(entity);
+			this->m_entities.push_back(new Entity(entity));
 		}
 	}
 

@@ -25,9 +25,9 @@ namespace Firelight::Events
 
 		//Function Events
 		template<typename EventType>
-		static void SubscribeFunction(CallbackFunctionType&& callbackFunction);
+		static size_t SubscribeFunction(CallbackFunctionType&& callbackFunction);
 		template<typename EventType>
-		static void UnsubscribeFunction(const int index);
+		static void UnsubscribeFunction(const size_t index);
 		template<typename EventType>
 		static void UnsubscribeAllFunctions();
 		template<typename EventType>
@@ -36,6 +36,7 @@ namespace Firelight::Events
 	private:
 		static std::map<Event::DescriptorType, std::vector<Listener*>> sm_listeners;
 		static std::map<Event::DescriptorType, std::vector<CallbackFunctionType>> sm_observers;
+		static std::map<Event::DescriptorType, std::unordered_map<size_t, size_t>> sm_eventMap;
 	};
 }
 
