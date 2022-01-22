@@ -1,27 +1,13 @@
 #pragma once
 #include <string>
 #include "../ECSDefines.h"
+#include"../Components/BasicComponents.h"
+#include"..\ECS\Components\RenderingComponents.h"
 #include<vector>
+#include"..\Source\Events\Event.h"
 namespace Firelight::ECS
 {
-	//Base Widget
-	struct UIWidget
-	{
-		std::string Name;
-		UINT Index;
-
-		//CanEvents 
-		bool isPressable;
-		bool isHover;
-		bool isDrag;
-
-		//Ui_Navergation
-		bool isFocus;
-		
-		Maths::Vec2f pos;
-	};
-
-
+	using CallbackFunctionType = std::function< void() >;
 	//Docking Settings
 	enum class e_DockSettings
 	{
@@ -33,6 +19,33 @@ namespace Firelight::ECS
 		DockNone
 
 	};
+
+	//Base Widget
+	struct UIWidget
+	{
+
+		SpriteComponent* Textuer;
+		TransformComponent* Transform = nullptr;
+
+		std::string Name = "UI";
+		UINT Index =0;
+
+		//Events 
+		bool isPressable = true;
+		std::vector<CallbackFunctionType> OnLeftPressFunctions;
+		std::vector<CallbackFunctionType> OnRightPressFunctions;
+		std::vector<CallbackFunctionType> OnMiddlePressFunctions;
+		bool isHover;
+		std::vector<CallbackFunctionType> OnHoverFunctions;
+		bool isDrag;
+		
+		//Ui_Navergation
+		bool isFocus = false;
+		
+		//DockSettings
+		e_DockSettings DockSettings = e_DockSettings::DockNone;
+	};
+
 
 	//hold all UI
 	struct UI_Canvas : UIWidget

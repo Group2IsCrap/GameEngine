@@ -1,7 +1,16 @@
 #include "UISystem.h"
-#include"..\ECS\Components\UIComponents.h"
-#include"..\ECS\Components\RenderingComponents.h"
+#include <typeinfo>
+
+
 namespace Firelight::UI {
+	
+	UISystem::UISystem()
+	{
+		Initalize();
+
+		//white list
+		AddWhitelistComponent<ECS::UIWidget>();
+	}
 	UISystem::~UISystem()
 	{
 	}
@@ -9,21 +18,39 @@ namespace Firelight::UI {
 	{
 		CheckChildern();
 	}
+
 	void UISystem::HandleEvents(void* data)
 	{
 		Firelight::Events::Input::MouseEvent* EventMouse = (Firelight::Events::Input::MouseEvent*)data;
-		Firelight::Events::Input::KeyboardEvent* EventKey = (Firelight::Events::Input::KeyboardEvent*)data;
+		unsigned char* EventKey = (unsigned char*)data;
 		Firelight::Events::Input::ControllerState* EventController = (Firelight::Events::Input::ControllerState*)data;
 
 		
-		if (!EventMouse->IsValid() || !EventKey->IsValid()) {
+		if (!EventMouse->IsValid()) {
 			return;
 		}
 		
-		for (auto entitiy : Firelight::ECS::System::GetEntities()) {
+		for (auto entitiy : m_entities ) {
 
 			//checks
+			auto* UICom = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIWidget>(entitiy);
+
+			if (UICom->Textuer == nullptr || UICom->Transform == nullptr) {
+				continue;
+			}
+
+
+			if (UICom->isPressable) {
+				OnPress(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
+			}
+			if (UICom->isHover) {
+				OnHover(EventMouse->GetMouseX(), EventMouse->GetMouseY());
+			}
+			if (UICom->isDrag) {
+				OnDrag(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType());
+			}
 			
+
 
 
 		}
@@ -41,24 +68,55 @@ namespace Firelight::UI {
 	{
 		DockingSettings();
 	}
-	void UISystem::OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent)
+	
+	
+	void UISystem::OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* Wig)
 	{
-		//invoke event
-		switch (mouseEvent)
-		{
-		case Firelight::Events::Input::e_MouseEventType::LPress:
-			
-			break;
-		case Firelight::Events::Input::e_MouseEventType::RPress:
-			break;
-		case Firelight::Events::Input::e_MouseEventType::MPress:
-			break;
 		
-		default:
-			break;
-		}
+		
+			const Maths::Vec2f topLeft = Maths::Vec2f(Wig->Transform->position.x, Wig->Transform->position.y) - Wig->Textuer->spriteDimensions * 0.5f;
 
+			Maths::Rectf destRect(topLeft.x, topLeft.y, Wig->Textuer->spriteDimensions.x, Wig->Textuer->spriteDimensions.y);
 
+			
+			if (x >= destRect.x &&
+				x <= (destRect.x + destRect.w) &&
+				y >= destRect.y &&
+				y <= (destRect.y + destRect.h)) 
+			{
+			
+						
+				switch (mouseEvent)
+				{
+				case Firelight::Events::Input::e_MouseEventType::LPress:
+				{
+					
+					for (auto&& Event : Wig->OnLeftPressFunctions)
+					{
+						Event();
+					}
+				}
+					break;
+				case Firelight::Events::Input::e_MouseEventType::RPress:
+					for (auto&& Event : Wig->OnRightPressFunctions)
+					{
+						Event();
+					}
+					break;
+				case Firelight::Events::Input::e_MouseEventType::MPress:
+					for (auto&& Event : Wig->OnMiddlePressFunctions)
+					{
+						Event();
+					}
+					break;
+		
+				default:
+					break;
+				}
+
+				
+			
+			}
 
 	}
 	void UISystem::OnLeave(int x, int y)
@@ -71,6 +129,7 @@ namespace Firelight::UI {
 		//check mouse pos
 
 	}
+	
 	void UISystem::OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent)
 	{
 
@@ -90,7 +149,7 @@ namespace Firelight::UI {
 	}
 	void UISystem::OnNavergate()
 	{
-
+		
 		//movethrough on focused
 	}
 	void UISystem::CheckChildern()
@@ -103,31 +162,33 @@ namespace Firelight::UI {
 	void UISystem::DockingSettings()
 	{
 
-		for (auto entitiy : Firelight::ECS::System::GetEntities()) {
+		for (auto entitiy : m_entities) {
 
-			////check
-			//if (!entitiy->Componets->hasChild) {
-			//	continue;
-			//}
-			//for (auto ComponetsChild : entitiy->Child) {
-			//	switch (entitiy->DockSettings)
-			//	{
-			//	case Firelight::ECS::e_DockSettings::DockTop:
-			//		break;
-			//	case Firelight::ECS::e_DockSettings::DockBottom:
-			//		break;
-			//	case Firelight::ECS::e_DockSettings::DockCenter:
-			//		break;	
-			//	case Firelight::ECS::e_DockSettings::DockLeft:
-			//			break;
-			//	case Firelight::ECS::e_DockSettings::DockRight:
-			//		break;
-			//	case Firelight::ECS::e_DockSettings::DockNone:
-			//		break;
-			//	default:
-			//		break;
-			//	}
-			//}
+			//checks
+			auto* UICom = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UI_Canvas>(entitiy);
+			//check
+			if (!UICom->hasChild) {
+				continue;
+			}
+			for (auto ComponetsChild : UICom->Child) {
+				switch (UICom->DockSettings)
+				{
+				case Firelight::ECS::e_DockSettings::DockTop:
+					break;
+				case Firelight::ECS::e_DockSettings::DockBottom:
+					break;
+				case Firelight::ECS::e_DockSettings::DockCenter:
+					break;	
+				case Firelight::ECS::e_DockSettings::DockLeft:
+						break;
+				case Firelight::ECS::e_DockSettings::DockRight:
+					break;
+				case Firelight::ECS::e_DockSettings::DockNone:
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 }

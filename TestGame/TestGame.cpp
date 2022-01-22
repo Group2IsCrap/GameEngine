@@ -18,6 +18,9 @@
 
 #include "Pepe.h"
 
+#include"Source/ECS/SystemManager.h"
+#include"Source/UI/UISystem.h"
+#include"Source\ECS\Components\UIComponents.h"
 #include"TestInputGame.h"
 
 using namespace Firelight;
@@ -46,10 +49,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-
-		System* testSystem = new System();
-
+		
+		
 		Entity* test = new Entity();
+		test->AddComponent<ECS::UIWidget>();
+		test->AddComponent<ECS::SpriteComponent>();
+		test->AddComponent<ECS::TransformComponent>();
+
+		test->GetComponent<ECS::UIWidget>()->Textuer = test->GetComponent<ECS::SpriteComponent>();
+		test->GetComponent<ECS::UIWidget>()->Transform = test->GetComponent<ECS::TransformComponent>();
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
