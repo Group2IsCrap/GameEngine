@@ -91,8 +91,6 @@ namespace Firelight::ECS
 				m_componentMap[typeID].insert({ entity,std::vector<int>() });
 			}
 			m_componentMap[typeID][entity].push_back(componentIndex);
-
-			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
 		}
 
 		/// <summary>
@@ -124,8 +122,6 @@ namespace Firelight::ECS
 				{
 					m_componentMap[typeID].erase(entity);
 				}
-
-				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
 			}
 		}
 

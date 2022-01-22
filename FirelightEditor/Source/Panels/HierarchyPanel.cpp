@@ -119,7 +119,7 @@ void HierarchyPanel::NewSpriteEntity()
 void HierarchyPanel::DeleteGameEntity(Firelight::ECS::Entity* gameEntity)
 {
 	m_entitiesInScene.erase(std::remove(m_entitiesInScene.begin(), m_entitiesInScene.end(), gameEntity), m_entitiesInScene.end());
-	
+	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(gameEntity->GetEntityID());
 	delete gameEntity;
 	gameEntity = nullptr;
 }

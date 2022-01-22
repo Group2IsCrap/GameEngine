@@ -5,6 +5,9 @@
 #include <Source/ECS/Components/PhysicsComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/EntityComponentSystem.h>
+#include <Source/Graphics/AssetManager.h>
+
+#include <filesystem>
 
 InspectorPanel::InspectorPanel()
 {
@@ -265,7 +268,38 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::Indent();
 			DrawVec2Control("Offset", component->drawOffset.x, component->drawOffset.y);
 			ImGui::Unindent();
-			ImGui::InputFloat("Pixels Per Unit", &component->pixelsPerUnit, 1.0f);
+			ImGui::InputFloat("Pixels Per Unit", &component->pixelsPerUnit, 1.0f, 5.0, "%0.0f");
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Sprite");
+			ImGui::SameLine();
+			if (component->texture == nullptr)
+				component->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/missing.png");
+			ImGui::ImageButton((ImTextureID)component->texture->GetShaderResourceView().Get(), { 50, 50 });
+
+			// Drag and drop texture
+			Firelight::Graphics::Texture* texture = component->texture;
+			if (ImGui::BeginDragDropTarget())
+			{
+				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
+				if (payload != nullptr)
+				{
+					//ASSERT_SILENT(payload.DataSize == sizeof(std::filesystem::path));
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					if (path != nullptr)
+					{
+						std::string pathString = Firelight::Utils::StringHelpers::WideStringToString(path);
+						std::string pngExtention = pathString.substr(pathString.length() - 4);
+						if (pngExtention == ".png")
+						{
+							texture = Firelight::Graphics::AssetManager::Instance().GetTexture(pathString);
+						}
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			component->texture = texture;
+
 			ImGui::Indent();
 			ImGui::Spacing();
 		}, true);
