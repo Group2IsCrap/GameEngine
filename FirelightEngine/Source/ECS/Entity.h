@@ -10,6 +10,8 @@ namespace Firelight::ECS
 		Entity(EntityID id);
 		~Entity();
 
+		void Destroy();
+
 		/// <summary>
 		/// Returns a ptr to a specific component type on the given entity
 		/// </summary>
