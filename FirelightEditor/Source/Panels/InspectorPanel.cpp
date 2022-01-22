@@ -250,6 +250,18 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 		{
 			ImGui::Spacing();
 			DrawVec3Control("Position", component->position.x, component->position.y, component->position.z);
+			ImGui::Unindent();
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Rotation");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Rotation", &component->rotation, 0.1f, 0.0f, 0.0f, "%.2f");
+			//ImGui::InputFloat("##Rotation", &component->rotation, 0.1f, 0.0f, "%.2f");
+			if (component->rotation > 360)
+				component->rotation = 0;
+			if (component->rotation < 0)
+				component->rotation = 360;
+			ImGui::Indent();
+			ImGui::Spacing();
 			DrawVec3Control("Scale", component->scale.x, component->scale.y, component->scale.z);
 			ImGui::Spacing();
 		});
@@ -265,10 +277,12 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 			ImGui::Text("Layer");
 			ImGui::SameLine();
 			ImGui::SliderInt("##Layer", &component->layer, 0, 64);
-			ImGui::Indent();
-			DrawVec2Control("Offset", component->drawOffset.x, component->drawOffset.y);
-			ImGui::Unindent();
-			ImGui::InputFloat("Pixels Per Unit", &component->pixelsPerUnit, 1.0f, 5.0, "%0.0f");
+			ImGui::AlignTextToFramePadding();
+			ImGui::Text("Pixels Per Unit");
+			ImGui::SameLine();
+			ImGui::InputFloat("##PixelsPerUnit", &component->pixelsPerUnit, 1.0f, 10.0f, "%0.0f");
+			if (component->pixelsPerUnit < 1)
+				component->pixelsPerUnit = 1;
 			ImGui::AlignTextToFramePadding();
 			ImGui::Text("Sprite");
 			ImGui::SameLine();
@@ -283,7 +297,6 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 				const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
 				if (payload != nullptr)
 				{
-					//ASSERT_SILENT(payload.DataSize == sizeof(std::filesystem::path));
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					if (path != nullptr)
 					{

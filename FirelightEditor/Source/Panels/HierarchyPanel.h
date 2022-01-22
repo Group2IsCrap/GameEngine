@@ -7,6 +7,7 @@
 namespace Firelight::ECS
 {
 	class Entity;
+	class SpriteEntity;
 }
 
 class InspectorPanel;
@@ -19,7 +20,7 @@ public:
 	void Draw() override;
 	void NewGameEntity();
 	void NewCameraEntity();
-	void NewSpriteEntity();
+	Firelight::ECS::SpriteEntity* NewSpriteEntity();
 	void DeleteGameEntity(Firelight::ECS::Entity* entity);
 
 private:

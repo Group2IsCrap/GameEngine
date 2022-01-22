@@ -6,6 +6,7 @@
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 #include "Source/ECS/EntityWrappers/SpriteEntity.h"
 #include "Source/ECS/EntityWrappers/CameraEntity.h"
+#include "Source/Graphics/AssetManager.h"
 
 
 #include "InspectorPanel.h"
@@ -19,19 +20,8 @@ void HierarchyPanel::Draw()
 {
 	ImGui::Begin("Scene Hierarchy");
 
-	for (auto item : m_entitiesInScene)
-	{
-		DrawEntityNode(item);
-	}
-
-	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-	{
-		m_selectionContext = {};
-		m_inspectorPanel->m_selectionContext = {};
-	}
-
 	// Right-click on blank space
-	if (ImGui::BeginPopupContextWindow(0, 1, false))
+	if (ImGui::BeginPopupContextWindow(0, 1, true))
 	{
 		if (ImGui::MenuItem("Game Entity"))
 		{
@@ -47,9 +37,53 @@ void HierarchyPanel::Draw()
 		{
 			NewSpriteEntity();
 		}
-		
+
 
 		ImGui::EndPopup();
+	}
+
+	ImVec2 windowSize = ImGui::GetContentRegionAvail();
+	ImGui::SetItemAllowOverlap();
+	ImGui::InvisibleButton("##InvisibleButton", windowSize);
+	ImGui::SetCursorPos(ImGui::GetWindowContentRegionMin());
+	ImGui::SetItemAllowOverlap();
+
+	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+	{
+		m_selectionContext = {};
+		m_inspectorPanel->m_selectionContext = {};
+	}
+
+	
+
+	// Drag and drop texture
+	Firelight::Graphics::Texture* texture = nullptr;
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
+		if (payload != nullptr)
+		{
+			const wchar_t* path = (const wchar_t*)payload->Data;
+			if (path != nullptr)
+			{
+				std::string pathString = Firelight::Utils::StringHelpers::WideStringToString(path);
+				std::string pngExtention = pathString.substr(pathString.length() - 4);
+				if (pngExtention == ".png")
+				{
+					texture = Firelight::Graphics::AssetManager::Instance().GetTexture(pathString);
+					Firelight::ECS::SpriteEntity* entity = NewSpriteEntity();
+					entity->GetComponent<Firelight::ECS::SpriteComponent>()->texture = texture;
+					m_selectionContext = entity;
+					m_inspectorPanel->m_selectionContext = entity;
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	for (auto item : m_entitiesInScene)
+	{
+		DrawEntityNode(item);
 	}
 
 	ImGui::End();
@@ -109,11 +143,12 @@ void HierarchyPanel::NewCameraEntity()
 	m_entitiesInScene.push_back(newEntity);
 }
 
-void HierarchyPanel::NewSpriteEntity()
+Firelight::ECS::SpriteEntity* HierarchyPanel::NewSpriteEntity()
 {
 	Firelight::ECS::SpriteEntity* newEntity = new Firelight::ECS::SpriteEntity();
 	newEntity->GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Game Entity";
 	m_entitiesInScene.push_back(newEntity);
+	return newEntity;
 }
 
 void HierarchyPanel::DeleteGameEntity(Firelight::ECS::Entity* gameEntity)
