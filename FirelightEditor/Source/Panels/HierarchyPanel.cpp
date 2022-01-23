@@ -1,7 +1,7 @@
 #include "HierarchyPanel.h"
 
 #include "Source/ECS/EntityComponentSystem.h"
-#include "Source/ECS/Entity.h"
+#include "Source/ECS/EntityWrappers/Entity.h"
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 #include "Source/ECS/EntityWrappers/SpriteEntity.h"
