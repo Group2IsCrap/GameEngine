@@ -36,11 +36,10 @@ namespace Firelight::ECS
 
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
-			auto* transformComponent = EntityComponentSystem::Instance()->GetComponent<TransformComponent>(m_entities[entityIndex]);
-			auto* spriteComponent = EntityComponentSystem::Instance()->GetComponent<SpriteComponent>(m_entities[entityIndex]);
-			auto* animatorComponent = EntityComponentSystem::Instance()->GetComponent<AnimationComponent>(m_entities[entityIndex]);
+			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
+			auto* animatorComponent = m_entities[entityIndex]->GetComponent<AnimationComponent>();
 
-			if (transformComponent == nullptr || spriteComponent == nullptr || animatorComponent == nullptr)
+			if (spriteComponent == nullptr || animatorComponent == nullptr)
 			{
 				continue;
 			}
@@ -56,11 +55,6 @@ namespace Firelight::ECS
 			}
 
 			Firelight::Animation::Animation* currentAnimation = animatorComponent->currentAnimation;
-			Firelight::Maths::Vec3i textureSize = currentAnimation->m_texture->GetDimensions();
-			
-			// Consider this being calculated when the component is first added? Animations won't change during runtime
-			currentAnimation->m_rows = static_cast<int>(std::floor(textureSize.x / currentAnimation->m_cellWidth));
-			currentAnimation->m_columns = static_cast<int>(std::floor(textureSize.y / currentAnimation->m_cellHeight));
 
 			if (animatorComponent->currentFrameIndex > currentAnimation->m_frameCount)
 			{
@@ -70,18 +64,23 @@ namespace Firelight::ECS
 				}
 			}
 
-			animatorComponent->currentFrameCount += deltaTime * currentAnimation->m_frameTime;
-			if (animatorComponent->currentFrameCount > 1)
+			animatorComponent->currentFrameCount += deltaTime * 1000.0f;
+			if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
 			{
 				animatorComponent->currentFrameIndex++;
+				animatorComponent->currentFrameCount = 0.0f;
 
 				if (animatorComponent->currentFrameIndex > currentAnimation->m_frameCount - 1)
 				{
 					animatorComponent->currentFrameIndex = 0;
 				}
 
-				spriteComponent->sourceRect.x = currentAnimation->m_cellWidth * (animatorComponent->currentFrameIndex % currentAnimation->m_columns);
-				spriteComponent->sourceRect.y = currentAnimation->m_cellHeight * static_cast<int>(std::floor((animatorComponent->currentFrameIndex / currentAnimation->m_columns)));
+				spriteComponent->sourceRect.w = currentAnimation->m_cellWidth;
+				spriteComponent->sourceRect.h = currentAnimation->m_cellHeight;
+				int xIndex = static_cast<int>(std::floor((animatorComponent->currentFrameIndex / currentAnimation->m_columns)));
+				int yIndex = animatorComponent->currentFrameIndex % currentAnimation->m_columns;
+				spriteComponent->sourceRect.x = currentAnimation->m_cellWidth * xIndex;
+				spriteComponent->sourceRect.y = currentAnimation->m_cellHeight * yIndex;
 			}
 		}
 	}
@@ -105,6 +104,12 @@ namespace Firelight::ECS
 			animatorComponent->currentFrameCount = 0.0f;
 			animatorComponent->currentFrameIndex = 0;
 			animatorComponent->shouldPlay = true;
+
+			auto* spriteComponent = entity->GetComponent<SpriteComponent>();
+			spriteComponent->sourceRect.w = animatorComponent->currentAnimation->m_cellWidth;
+			spriteComponent->sourceRect.h = animatorComponent->currentAnimation->m_cellHeight;
+			spriteComponent->sourceRect.x = 0;
+			spriteComponent->sourceRect.y = 0;
 		}
 	}
 }

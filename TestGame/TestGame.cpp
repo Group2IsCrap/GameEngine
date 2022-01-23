@@ -47,21 +47,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		TestInputGame* inputTest = new TestInputGame();
 
 		// Animation Test
-		Firelight::Animation::Animation animation = Firelight::Animation::Animation();
-		animation.m_animationName = "BunnyAnim";
-		animation.m_texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/bunny_anim.png");
-		animation.m_cellWidth = 22;
-		animation.m_cellHeight = 22;
-		animation.m_frameCount = 4;
+		Firelight::Animation::Animation animation = Firelight::Animation::Animation(
+			"Shrek",
+			Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/shrekWalk.png"),
+			35 * 6,
+			43 * 6,
+			6, 
+			100.0f);
 
 		SpriteEntity* animationTest = new SpriteEntity();
 		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = animation.m_texture;
-		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 22;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 35 * 6;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 64;
 		animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
 		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
 		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
 
-		/*
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
 		const int numPepes = 50;
@@ -69,18 +70,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		SpriteEntity* test = new SpriteEntity();
-		test->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
-		test->GetSpriteComponent()->pixelsPerUnit = 200.0f;
-
-		test = new SpriteEntity();
-		*/
-
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			double deltaTime = Engine::Instance().Update();
 			
-			/*
 			for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
 				Pepe& pepe = pepes[pepeIndex];
@@ -95,7 +88,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(200.0f, 200.0f, 400.0f, 400.0f), glowTexture, 48);
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(800.0f, 0.0f, 400.0f, 400.0f), glowTexture, 32);
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(400.0f, 300.0f, 400.0f, 400.0f), glowTexture, 16);
-			*/
 
 			Engine::Instance().RenderFrame();
 		}
