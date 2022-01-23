@@ -45,6 +45,29 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
+		/// Returns all components of a given type for a given entity
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetComponents(EntityID entity)
+		{
+			return m_componentManager->GetComponents<T>(entity);
+		}
+
+		/// <summary>
+		/// Get all components of a given type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetAllComponents()
+		{
+			return m_componentManager->GetAllComponents<T>();
+		}
+
+		/// <summary>
 		/// Returns a ptr to a BaseComponent on the given entity
 		/// </summary>
 		/// <param name="typeID"></param>

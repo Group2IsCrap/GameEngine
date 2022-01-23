@@ -15,18 +15,18 @@ namespace UnitTests::ECS
 
 	struct TestComponentA : BaseComponent
 	{
-		const char* name;
+		const char* name = "";
 	};
 
 	struct TestComponentB : BaseComponent
 	{
-		int x;
-		int y;
+		int x = 0;
+		int y = 0;
 	};
 
 	struct TestComponentC : BaseComponent
 	{
-		float vel;
+		float vel = 0.0f;
 	};
 
 	class TestEntity : public Entity
@@ -436,7 +436,7 @@ namespace UnitTests::ECS
 			TestEntity* testEntity = new TestEntity();
 			
 			//Act
-			testEntity->GetTestComponentB()->x = 10.0f;
+			testEntity->GetTestComponentB()->x = 10;
 			testEntity->GetTestComponentA()->name = "Rabbit";
 
 			//Assert
@@ -500,9 +500,9 @@ namespace UnitTests::ECS
 			TestEntity* testEntity2 = new TestEntity();
 
 			//Act
-			testEntity1->GetTestComponentB()->x = 10.0f;
+			testEntity1->GetTestComponentB()->x = 10;
 			testEntity2->GetTestComponentA()->name = "Velociraptor";
-			testEntity2->GetTestComponentB()->y = -99.0f;
+			testEntity2->GetTestComponentB()->y = -99;
 			testEntity1->GetTestComponentA()->name = "Fox";
 
 			//Assert
@@ -642,6 +642,71 @@ namespace UnitTests::ECS
 			delete system1;
 			delete system2;
 			delete system3;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(MultipleSameTypeComponentsTest)
+		{
+			Entity* entity = new Entity();
+
+			entity->AddComponent<TestComponentA>();
+			entity->AddComponent<TestComponentA>();
+
+			Assert::AreEqual(2, (int)entity->GetComponents<TestComponentA>().size());
+
+			entity->Destroy();
+			delete entity;
+		}
+
+		/// <summary>
+		/// Test to make sure that the blacklist concept accurately filters the set of entities
+		/// </summary>
+		TEST_METHOD(MultipleSameTypeComponentsConsistentValuesTest)
+		{
+			Entity* entity = new Entity();
+
+			TestComponentA* comp1 = new TestComponentA();
+			comp1->name = "TestA";
+			TestComponentA* comp2 = new TestComponentA();
+			comp2->name = "TestB";
+			entity->AddComponent<TestComponentA>(comp1);
+			entity->AddComponent<TestComponentA>(comp2);
+
+			std::vector<TestComponentA*> components = entity->GetComponents<TestComponentA>();
+			Assert::AreEqual("TestA", components[0]->name);
+			Assert::AreEqual("TestB", components[1]->name);
+
+			entity->Destroy();
+			delete entity;
+		}
+
+		/// <summary>
+		/// Test to ensure that the correct amount of components are retrieved by the get all command
+		/// </summary>
+		TEST_METHOD(ECSGetAllComponentsOfTypeTest)
+		{
+			Entity* entity1 = new Entity();
+			Entity* entity2 = new Entity();
+			Entity* entity3 = new Entity();
+
+			entity1->AddComponent<TestComponentA>();
+			entity2->AddComponent<TestComponentA>();
+			entity2->AddComponent<TestComponentA>();
+			entity3->AddComponent<TestComponentA>();
+			entity3->AddComponent<TestComponentA>();
+			entity3->AddComponent<TestComponentA>();
+
+			std::vector<TestComponentA*> components = EntityComponentSystem::Instance()->GetAllComponents<TestComponentA>();
+			Assert::AreEqual(6, (int)components.size());
+
+			entity1->Destroy();
+			entity2->Destroy();
+			entity3->Destroy();
+			delete entity1;
+			delete entity2;
+			delete entity3;
 		}
 
 	};

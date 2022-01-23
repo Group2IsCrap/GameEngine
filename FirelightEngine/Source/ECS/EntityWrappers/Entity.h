@@ -24,6 +24,12 @@ namespace Firelight::ECS
 		{
 			return EntityComponentSystem::Instance()->GetComponent<T>(m_entityID, index);
 		}
+		
+		template<typename T>
+		std::vector<T*> GetComponents()
+		{
+			return EntityComponentSystem::Instance()->GetComponents<T>(m_entityID);
+		}
 
 		/// <summary>
 		/// Associates a component to the given entity
