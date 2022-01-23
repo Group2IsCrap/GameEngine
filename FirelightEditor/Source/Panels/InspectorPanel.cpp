@@ -1,6 +1,6 @@
 #include "InspectorPanel.h"
 
-#include <Source/ECS/Entity.h>
+#include <Source/ECS/EntityWrappers/Entity.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>

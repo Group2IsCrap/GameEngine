@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityComponentSystem.h"
+#include "../EntityComponentSystem.h"
 
 namespace Firelight::ECS
 {
@@ -23,6 +23,12 @@ namespace Firelight::ECS
 		T* GetComponent(int index = 0)
 		{
 			return EntityComponentSystem::Instance()->GetComponent<T>(m_entityID, index);
+		}
+		
+		template<typename T>
+		std::vector<T*> GetComponents()
+		{
+			return EntityComponentSystem::Instance()->GetComponents<T>(m_entityID);
 		}
 
 		/// <summary>

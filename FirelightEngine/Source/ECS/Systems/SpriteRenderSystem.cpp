@@ -29,8 +29,8 @@ namespace Firelight::ECS
 	{
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
-			auto* transformComponent = EntityComponentSystem::Instance()->GetComponent<TransformComponent>(m_entities[entityIndex]);
-			auto* spriteComponent = EntityComponentSystem::Instance()->GetComponent<SpriteComponent>(m_entities[entityIndex]);
+			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
+			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
 
 			// If we pass nullptr to WorldDraw() it will draw a coloured quad
 			// Lets use the default texture instead

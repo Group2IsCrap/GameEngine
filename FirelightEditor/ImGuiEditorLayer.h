@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Source/ImGuiUI/ImGuiLayer.h"
-#include "Source/ECS/Entity.h"
+#include "Source/ECS/EntityWrappers/Entity.h"
 #include "Source/Graphics/Data/Texture.h"
 #include "Source/Panels/ContentBrowserPanel.h"
 #include "Source/Panels/HierarchyPanel.h"
