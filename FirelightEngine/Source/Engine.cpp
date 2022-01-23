@@ -115,12 +115,14 @@ namespace Firelight
         {
             const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->position;
             const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
-            const float size = m_activeCamera->GetCamera2DComponent()->size * 0.01f;
+            const float aspectRatio = windowDimensions.x / windowDimensions.y;
+
+            const float size = m_activeCamera->GetCamera2DComponent()->size;
 
             m_activeCameraRect = Maths::Rectf(
-                cameraPos.x - windowDimensions.x * 0.5f * size,
-                cameraPos.y - windowDimensions.y * 0.5f * size,
-                windowDimensions.x * size, windowDimensions.y * size);
+                cameraPos.x - size * 0.5f * aspectRatio,
+                cameraPos.y - size * 0.5f,
+                size * aspectRatio, size);
         }
     }
 
