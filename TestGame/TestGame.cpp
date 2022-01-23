@@ -6,6 +6,8 @@
 #include "Source/Utils/ErrorManager.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components/BasicComponents.h"
+#include "Source/ECS/Components/AnimationComponent.h"
+#include "Source/Graphics/AssetManager.h"
 #include "Source/ECS/Systems/System.h"
 
 #include "Source/ECS/EntityWrappers/SpriteEntity.h"
@@ -17,6 +19,9 @@
 #include "Source/Graphics/GraphicsHandler.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/SpriteBatch.h"
+#include "Source/Animation/Animation.h"
+
+#include "Source/ECS/Systems/AnimationSystem.h"
 
 #include "Pepe.h"
 
@@ -41,16 +46,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 		TestInputGame* inputTest = new TestInputGame();
 
+		// Animation Test
+		Firelight::Animation::Animation animation = Firelight::Animation::Animation(
+			"Shrek",
+			Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/shrekWalk.png"),
+			35 * 6,
+			43 * 6,
+			6, 
+			100.0f);
+
+		SpriteEntity* animationTest = new SpriteEntity();
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = animation.m_texture;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 35 * 6;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 64;
+		animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
+		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
+		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
+
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
 		const int numPepes = 50;
 		Pepe pepes[numPepes];
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
-
-		SpriteEntity* test = new SpriteEntity();
-		test->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
-		test->GetSpriteComponent()->pixelsPerUnit = 200.0f;
 
 		SpriteEntity* test2 = new SpriteEntity();
 		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("rickastleybackground1250.jpg");
@@ -68,6 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				pepe.Update(deltaTime, windowDimensions);
 				pepe.Draw();
 			}
+			
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
 
