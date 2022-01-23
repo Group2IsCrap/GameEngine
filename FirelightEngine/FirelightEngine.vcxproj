@@ -363,7 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ECS\Components\AnimatorComponent.h" />
+    <ClInclude Include="Source\Animation\Animation.h" />
+    <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />

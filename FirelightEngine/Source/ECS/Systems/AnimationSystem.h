@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace Firelight::ECS
 {
@@ -15,6 +16,11 @@ namespace Firelight::ECS
 
 		void Update(double deltaTime) override;
 
+		static AnimationSystem* Instance();
+
 		void Play(Entity* entity, std::string animationName);
+
+	private:
+		static AnimationSystem* sm_instance;
 	};
 }
