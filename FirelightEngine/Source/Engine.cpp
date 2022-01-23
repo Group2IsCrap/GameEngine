@@ -117,7 +117,7 @@ namespace Firelight
             const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
             const float aspectRatio = windowDimensions.x / windowDimensions.y;
 
-            const float size = m_activeCamera->GetCamera2DComponent()->size;
+            const float size = m_activeCamera->GetCamera2DComponent()->viewportWorldHeight;
 
             m_activeCameraRect = Maths::Rectf(
                 cameraPos.x - size * 0.5f * aspectRatio,
