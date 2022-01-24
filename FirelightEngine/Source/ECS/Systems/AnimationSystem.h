@@ -15,12 +15,5 @@ namespace Firelight::ECS
 		~AnimationSystem();
 
 		void Update(const Utils::Time& time) override;
-
-		static AnimationSystem* Instance();
-
-		void Play(Entity* entity, std::string animationName);
-
-	private:
-		static AnimationSystem* sm_instance;
 	};
 }

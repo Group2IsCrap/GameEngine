@@ -21,7 +21,7 @@
 #include "Source/Graphics/SpriteBatch.h"
 #include "Source/Animation/Animation.h"
 
-#include "Source/ECS/Systems/AnimationSystem.h"
+#include "Source/Animation/AnimationManager.h"
 
 #include "Pepe.h"
 
@@ -61,7 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 64;
 		animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
 		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
-		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
+		Firelight::Animation::AnimationManager::Play(animationTest, animation.m_animationName);
 
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
@@ -79,11 +79,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		{
 			Engine::Instance().Update();
 			
-			/*for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
+			for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
 				Pepe& pepe = pepes[pepeIndex];
 
-				pepe.Update(deltaTime, windowDimensions);
+				pepe.Update(Engine::Instance().GetTime().GetDeltaTime() , windowDimensions);
 				pepe.Draw();
 			}
 			
@@ -92,7 +92,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(200.0f, 200.0f, 400.0f, 400.0f), glowTexture, 48);
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(800.0f, 0.0f, 400.0f, 400.0f), glowTexture, 32);
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(400.0f, 300.0f, 400.0f, 400.0f), glowTexture, 16);*/
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(400.0f, 300.0f, 400.0f, 400.0f), glowTexture, 16);
 
 			Engine::Instance().RenderFrame();
 		}

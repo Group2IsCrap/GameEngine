@@ -6,17 +6,6 @@
 
 namespace Firelight::ECS
 {
-	AnimationSystem* AnimationSystem::sm_instance = nullptr;
-
-	AnimationSystem* AnimationSystem::Instance()
-	{
-		if (sm_instance == nullptr)
-		{
-			sm_instance = new AnimationSystem();
-		}
-		return sm_instance;
-	}
-
 	AnimationSystem::AnimationSystem()
 	{
 		AddWhitelistComponent<Firelight::ECS::AnimationComponent>();
@@ -82,34 +71,6 @@ namespace Firelight::ECS
 				spriteComponent->sourceRect.x = (float)(currentAnimation->m_cellWidth * xIndex);
 				spriteComponent->sourceRect.y = (float)(currentAnimation->m_cellHeight * yIndex);
 			}
-		}
-	}
-	
-	void AnimationSystem::Play(Entity* entity, std::string animationName)
-	{
-		Firelight::ECS::AnimationComponent* animatorComponent = entity->GetComponent<Firelight::ECS::AnimationComponent>();
-		if (animatorComponent == nullptr)
-		{
-			return;
-		}
-
-		if (animatorComponent->animations.size() <= 0)
-		{
-			return;
-		}
-
-		if (animatorComponent->animations.contains(animationName))
-		{
-			animatorComponent->currentAnimation = &animatorComponent->animations[animationName];
-			animatorComponent->currentFrameCount = 0.0f;
-			animatorComponent->currentFrameIndex = 0;
-			animatorComponent->shouldPlay = true;
-
-			auto* spriteComponent = entity->GetComponent<SpriteComponent>();
-			spriteComponent->sourceRect.w = (float)animatorComponent->currentAnimation->m_cellWidth;
-			spriteComponent->sourceRect.h = (float)animatorComponent->currentAnimation->m_cellHeight;
-			spriteComponent->sourceRect.x = 0.0f;
-			spriteComponent->sourceRect.y = 0.0f;
 		}
 	}
 }

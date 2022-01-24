@@ -364,6 +364,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />
+    <ClInclude Include="Source\Animation\AnimationManager.h" />
     <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
@@ -445,6 +446,7 @@
     <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Animation\AnimationManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimationSystem.cpp" />
     <ClCompile Include="Source\Input\GetInput.cpp" />
