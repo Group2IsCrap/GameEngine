@@ -42,6 +42,7 @@ namespace Firelight::Input
 
 	bool ProcessInput::HandleInput(UINT message, WPARAM wParam, LPARAM lParam)
 	{
+		
 		// Get input from windows
 		switch (message)
 		{
@@ -130,8 +131,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnMouseMove(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
@@ -222,7 +224,7 @@ namespace Firelight::Input
 					}
 				}
 			}
-
+			ReleaseCapture();
 			return false;
 
 		}

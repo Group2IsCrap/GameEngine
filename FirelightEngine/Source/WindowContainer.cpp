@@ -18,9 +18,12 @@ namespace Firelight
 		{
 			return true;
 		}
+
+		
 		// Handle messages for game
 		if (Input::ProcessInput::Instance()->HandleInput(uMsg, wParam, lParam))
 		{
+			
 			return true;
 		}
 

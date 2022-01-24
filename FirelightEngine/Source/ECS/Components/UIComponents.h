@@ -2,9 +2,9 @@
 #include <string>
 #include "../ECSDefines.h"
 #include"../Components/BasicComponents.h"
-#include"..\ECS\Components\RenderingComponents.h"
+#include"RenderingComponents.h"
 #include<vector>
-#include"..\Source\Events\Event.h"
+
 namespace Firelight::ECS
 {
 	using CallbackFunctionType = std::function< void() >;
@@ -21,23 +21,23 @@ namespace Firelight::ECS
 	};
 
 	//Base Widget
-	struct UIWidget
+	struct UIWidget : BaseComponent
 	{
 
 		SpriteComponent* Textuer;
 		TransformComponent* Transform = nullptr;
 
 		std::string Name = "UI";
-		UINT Index =0;
+		UINT Index =10;
 
 		//Events 
 		bool isPressable = true;
 		std::vector<CallbackFunctionType> OnLeftPressFunctions;
 		std::vector<CallbackFunctionType> OnRightPressFunctions;
 		std::vector<CallbackFunctionType> OnMiddlePressFunctions;
-		bool isHover;
+		bool isHover =true;
 		std::vector<CallbackFunctionType> OnHoverFunctions;
-		bool isDrag;
+		bool isDrag =true;
 		
 		//Ui_Navergation
 		bool isFocus = false;

@@ -12,12 +12,14 @@
 
 #include "Source/ImGuiUI/ImGuiManager.h"
 
+#include"Source/ECS/Components/UIComponents.h"
+
 #include "ImGuiTestLayer.h"
 
 #include "Source/Graphics/GraphicsHandler.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/SpriteBatch.h"
-
+#include "Source/Maths/Vec3.h"
 #include "Pepe.h"
 
 #include"TestInputGame.h"
@@ -50,9 +52,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		SpriteEntity* test = new SpriteEntity();
 		test->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/transparency_test.png");
-		test->GetSpriteComponent()->pixelsPerUnit = 200.0f;
-
-		test = new SpriteEntity();
+		test->GetSpriteComponent()->pixelsPerUnit = 300.0f;
+		test->GetSpriteComponent()->layer = 0;
+		test->GetTransformComponent()->position = Maths::Vec3f(5, 0, 0);
+		test->AddComponent<UI_Canvas>();
+		test->GetComponent<UI_Canvas>()->Textuer = test->GetSpriteComponent();
+		test->GetComponent<UI_Canvas>()->Transform= test->GetTransformComponent();
+		
+		test->AddComponent<IdentificationComponent>();
+	
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

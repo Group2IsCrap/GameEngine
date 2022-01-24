@@ -13,10 +13,8 @@
 #include"..\ECS\Components\UIComponents.h"
 #include"..\ECS\Components\RenderingComponents.h"
 
-namespace  Firelight::Events::UI {
-	NEW_EVENT(BUTTION_PRESS)
-}
-
+#include "..\ECS\Components\PhysicsComponents.h"
+#include "..\ECS\Components\RenderingComponents.h"
 
 namespace Firelight::UI {
 	class UISystem :public Firelight::ECS::System, public Firelight::Events::Listener
@@ -50,10 +48,10 @@ namespace Firelight::UI {
 	private:
 
 		//Event function Invoke
-		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* Wig);
+		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
 		void OnLeave(int x, int y);
-		void OnHover(int x, int y);
-		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent);
+		void OnHover(int x, int y, ECS::UIWidget* widget);
+		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
 		
 		//move through items
 		void OnNavergate();
@@ -61,6 +59,13 @@ namespace Firelight::UI {
 		void CheckChildern();
 		
 		void DockingSettings();
+
+
+	private:
+
+		ECS::UIWidget* DagItem= nullptr;
+		ECS::UIWidget* FocusedItem = nullptr;
+		Maths::Vec3f MousePosDrag;
 	};
 
 
