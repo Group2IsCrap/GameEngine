@@ -2,6 +2,8 @@
 
 #include "../EntityWrappers/Entity.h"
 
+#include "../../Utils/Time.h"
+
 #include <iostream>
 
 namespace Firelight::ECS
@@ -13,9 +15,10 @@ namespace Firelight::ECS
 		virtual ~System();
 
 		std::vector<Entity*> GetEntities();
-		virtual void Update(double dt);
-		virtual void LateUpdate(double dt);
-		virtual void FixedUpdate(double fixeddt);
+
+		virtual void PhysicsUpdate(const Utils::Time& time);
+		virtual void Update(const Utils::Time& time);
+		virtual void LateUpdate(const Utils::Time& time);
 
 		template<typename T>
 		void AddWhitelistComponent()

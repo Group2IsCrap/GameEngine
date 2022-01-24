@@ -4,7 +4,7 @@
 
 #include "Maths/Rect.h"
 
-#include "Utils/Timer.h"
+#include "Utils/Time.h"
 
 // Always included so that error macros work
 #include "Utils/ErrorManager.h"
@@ -36,11 +36,14 @@ namespace Firelight
 
         const HWND          GetWindowHandle() const;
 
+        const Utils::Time&  GetTime() const;
+        Utils::Time&        GetWritableTime();
+
         void                UpdateActiveCamera2DRect();
         const Maths::Rectf& GetActiveCamera2DRect() const;
 
         bool   ProcessMessages();
-        double Update();
+        void   Update();
 
         void   RenderFrame();
 
@@ -48,14 +51,20 @@ namespace Firelight
         Engine();
 
     private:
+        Utils::Time        m_time;
+
         ECS::SystemManager m_systemManager;
 
         WindowContainer    m_windowContainer;
-        Utils::Timer       m_frameTimer;
 
         bool               m_initialised;
 
         ECS::CameraEntity* m_activeCamera;
         Maths::Rectf       m_activeCameraRect;
+
+        double             m_runTime;
+
+        double             m_physicsTimeStep;
+        double             m_physicsTime;
     };
 }
