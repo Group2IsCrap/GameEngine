@@ -119,6 +119,8 @@ void ContentBrowserPanel::Draw()
 		{
 			const wchar_t* itemPath = relativePath.c_str();
 			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+			ImGui::Image((ImTextureID)icon->GetShaderResourceView().Get(), { 50, 50 });
+			ImGui::Text(filenameString.c_str());
 			ImGui::EndDragDropSource();
 		}
 

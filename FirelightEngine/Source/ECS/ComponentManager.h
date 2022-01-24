@@ -60,6 +60,60 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
+		/// Returns full vector of components of a given type for a given entity
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetComponents(EntityID entity)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
+				return std::vector<T*>();
+			}
+
+			ComponentTypeID typeID = m_componentHashTypes[typeName];
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				std::vector<T*> components = std::vector<T*>();
+				for (int i = 0; i < m_componentMap[typeID][entity].size(); ++i)
+				{
+					components.push_back(dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][i]]));
+				}
+
+				return components;
+			}
+			return std::vector<T*>();
+		}
+
+		/// <summary>
+		/// Returns all components of a given type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetAllComponents()
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
+				return std::vector<T*>();
+			}
+
+			ComponentTypeID typeID = m_componentHashTypes[typeName];
+			std::vector<T*> components = std::vector<T*>();
+			for (int i = 0; i < m_componentData[typeID].size(); ++i)
+			{
+				components.push_back(dynamic_cast<T*>(m_componentData[typeID][i]));
+			}
+			return components;
+		}
+
+		/// <summary>
 		/// Returns a ptr to a BaseComponent on the given entity
 		/// </summary>
 		/// <param name="typeID"></param>
@@ -91,8 +145,6 @@ namespace Firelight::ECS
 				m_componentMap[typeID].insert({ entity,std::vector<int>() });
 			}
 			m_componentMap[typeID][entity].push_back(componentIndex);
-
-			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
 		}
 
 		/// <summary>
@@ -124,8 +176,6 @@ namespace Firelight::ECS
 				{
 					m_componentMap[typeID].erase(entity);
 				}
-
-				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
 			}
 		}
 

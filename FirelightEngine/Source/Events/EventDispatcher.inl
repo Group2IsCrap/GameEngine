@@ -4,7 +4,7 @@
 
 namespace Firelight::Events
 {
-	
+
 	template<typename EventType>
 	void EventDispatcher::AddListener(Listener* listener)
 	{
@@ -43,19 +43,35 @@ namespace Firelight::Events
 	}
 
 	template<typename EventType>
-	void EventDispatcher::SubscribeFunction(CallbackFunctionType&& callbackFunction)
+	size_t EventDispatcher::SubscribeFunction(CallbackFunctionType&& callbackFunction)
 	{
 		sm_observers[EventType::sm_descriptor].push_back(callbackFunction);
+		size_t index = sm_observers[EventType::sm_descriptor].size() - 1;
+
+		sm_eventMap[EventType::sm_descriptor].insert({ index,index });
+
+		return index;
 	}
 
 	template<typename EventType>
-	void EventDispatcher::UnsubscribeFunction(const int index)
+	void EventDispatcher::UnsubscribeFunction(const size_t index)
 	{
-		if (index < sm_observers[EventType::sm_descriptor].size())
+		size_t trueIndex = sm_eventMap[EventType::sm_descriptor][index];
+		if (trueIndex < sm_observers[EventType::sm_descriptor].size())
 		{
-			sm_observers[EventType::sm_descriptor].erase(sm_observers[EventType::sm_descriptor].begin() + index);
+			sm_observers[EventType::sm_descriptor].erase(sm_observers[EventType::sm_descriptor].begin() + trueIndex);
+			sm_eventMap[EventType::sm_descriptor].erase(index);
+
+			for (auto& ele : sm_eventMap[EventType::sm_descriptor])
+			{
+				if (ele.second > trueIndex)
+				{
+					ele.second--;
+				}
+			}
 		}
 	}
+
 
 	template<typename EventType>
 	void EventDispatcher::UnsubscribeAllFunctions()

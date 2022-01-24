@@ -1,4 +1,4 @@
-#include "PhysicsEngine.h"
+#include "PhysicsSystem.h"
 
 namespace Firelight::Physics
 {
@@ -24,9 +24,8 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::HandleCollisions()
 	{
-		for (auto entityID : GetEntities())
+		for (auto entity : GetEntities())
 		{
-			Firelight::ECS::Entity* entity = new Firelight::ECS::Entity(entityID);
 			Firelight::ECS::ColliderComponent* collider = entity->GetComponent<Firelight::ECS::ColliderComponent>();
 
 			if (collider == nullptr)
@@ -38,9 +37,8 @@ namespace Firelight::Physics
 				continue;
 			}
 
-			for (auto entity2ID : GetEntities())
+			for (auto entity2 : GetEntities())
 			{
-				Firelight::ECS::Entity* entity2 = new Firelight::ECS::Entity(entity2ID);
 				Firelight::ECS::ColliderComponent* collider2 = entity->GetComponent<Firelight::ECS::ColliderComponent>();
 				if (entity == entity2)
 				{
