@@ -442,6 +442,7 @@
     <ClInclude Include="Source\ECS\Systems\SpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
+    <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
@@ -498,6 +499,7 @@
     <ClCompile Include="Source\ECS\Systems\SpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
+    <ClCompile Include="Source\Utils\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

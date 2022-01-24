@@ -77,7 +77,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
-			double deltaTime = Engine::Instance().Update();
+			Engine::Instance().Update();
 			
 			/*for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
