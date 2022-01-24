@@ -224,7 +224,7 @@ namespace Firelight::Input
 					}
 				}
 			}
-			ReleaseCapture();
+			//ReleaseCapture();
 			return false;
 
 		}

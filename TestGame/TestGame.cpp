@@ -11,7 +11,7 @@
 #include "Source/ECS/Systems/System.h"
 
 #include "Source/ECS/EntityWrappers/SpriteEntity.h"
-
+#include"Source/ECS/EntityWrappers/UIEntity.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "ImGuiTestLayer.h"
@@ -74,6 +74,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("rickastleybackground1250.jpg");
 		test2->GetSpriteComponent()->pixelsPerUnit = 25.0f;
 		test2->GetSpriteComponent()->layer = 16;
+
+		UIEntity* testUI = new UIEntity();
+		testUI->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUI->GetTransformComponent()->scale = Maths::Vec3f(0.5, 0.5, 0);
+		testUI->GetSpriteComponent()->layer = 0;
+		//testUI->GetSpriteComponent()->sourceRect = Maths::Rectf(100, 100, 200, 200);
+
+
+
+		testUI = new UIEntity();
+		testUI->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUI->GetTransformComponent()->scale = Maths::Vec3f(0.5, 0.5, 0);
+		testUI->GetTransformComponent()->position = Maths::Vec3f(1, 0, 0);
+		testUI->GetSpriteComponent()->layer = 0;
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

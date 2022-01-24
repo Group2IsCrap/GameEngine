@@ -24,7 +24,7 @@ namespace Firelight::ECS
 	struct UIWidget : BaseComponent
 	{
 
-		SpriteComponent* Textuer;
+		NDCSpriteComponent* Textuer = nullptr;
 		TransformComponent* Transform = nullptr;
 
 		std::string Name = "UI";

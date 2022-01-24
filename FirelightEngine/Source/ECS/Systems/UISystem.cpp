@@ -1,6 +1,6 @@
 #include "UISystem.h"
 
-#include "../Engine.h"
+#include "..\Source\Engine.h"
 
 
 namespace Firelight::UI {
@@ -8,7 +8,7 @@ namespace Firelight::UI {
 	UISystem::UISystem()
 	{
 		Initalize();
-		IncrementSignatureLists();
+		
 		AddWhitelistComponent<ECS::UIWidget>();
 		
 	}
@@ -18,7 +18,9 @@ namespace Firelight::UI {
 	void UISystem::Update(double dt)
 	{
 		if (DagItem != nullptr) {
-			DagItem->Transform->position = MousePosDrag;
+			if (mouseRawCurr != Maths::Vec2f(0,0)) {
+				DagItem->Transform->position = MousePosDrag;
+			}
 		}
 		
 	}
@@ -28,43 +30,58 @@ namespace Firelight::UI {
 		Firelight::Events::Input::MouseEvent* EventMouse = (Firelight::Events::Input::MouseEvent*)data;
 		unsigned char* EventKey = (unsigned char*)data;
 		Firelight::Events::Input::ControllerState* EventController = (Firelight::Events::Input::ControllerState*)data;
+		
+	
 
-		
 		if (EventMouse->GetType() == Events::Input::e_MouseEventType::Move) {
-				float fx = ((EventMouse->GetMouseX() / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
-				float fy = ((EventMouse->GetMouseY() / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
-				
-				MousePosDrag = Maths::Vec3f(fx, fy, 0);
+			float fx = ((EventMouse->GetMouseX() / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
+			float fy = -((EventMouse->GetMouseY() / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+			
+			MousePosDrag = Maths::Vec3f(fx, fy, 0);
 		}
-		
+		if (EventMouse->GetType() == Events::Input::e_MouseEventType::RawMove) {
+			
+			mouseRawCurr = Maths::Vec2f(EventMouse->GetMouseX(), EventMouse->GetMouseY());
+			
+		}
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
-			auto* UICom = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIWidget>(m_entities[entityIndex]);
+			ECS::UIWidget* UICom = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
 
 			if (UICom->Textuer == nullptr || UICom->Transform == nullptr) {
 				continue;
 			}
 
 			if (EventMouse->GetType() != Events::Input::e_MouseEventType::RawMove) {
-				if (DagItem != nullptr) {
+
+
+				if (DagItem == nullptr) {
 					if (EventMouse->GetType() != Events::Input::e_MouseEventType::Move) {
 						if (UICom->isPressable) {
-							OnPress(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
+							
+								OnPress(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
+							
 						}
 					}
 					if (UICom->isHover) {
 						OnHover(EventMouse->GetMouseX(), EventMouse->GetMouseY(), UICom);
 					}
-				}
-				if (UICom->isDrag) {
-					OnDrag(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(),UICom);
-				}
-			}
-		}
 
-		
+				}
+				
+					if (UICom->isDrag) {
+
+						OnDrag(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
+						
+					}
+				
+			}
 			
+		}
+		if (EventMouse->GetType() == Events::Input::e_MouseEventType::Move && FocusedItem != nullptr) {
+			OnLeave(EventMouse->GetMouseX(), EventMouse->GetMouseY());
+		}
 		
 	}
 	void UISystem::Initalize()
@@ -85,21 +102,21 @@ namespace Firelight::UI {
 	void UISystem::OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget)
 	{
 		
-		const Maths::Vec2f spriteDimensions = Maths::Vec2f((float)widget->Textuer->texture->GetDimensions().x, (float)widget->Textuer->texture->GetDimensions().y) / widget->Textuer->pixelsPerUnit;
+
 		Maths::Rectf destRect(
-			widget->Transform->position.x - spriteDimensions.x * 0.5f,
-			widget->Transform->position.y - spriteDimensions.y * 0.5f,
-			spriteDimensions.x, spriteDimensions.y);
+			widget->Transform->position.x - widget->Transform->scale.x * 0.5f,
+			widget->Transform->position.y - widget->Transform->scale.y * 0.5f,
+			widget->Transform->scale.x, widget->Transform->scale.y);
 	
 		float fx= ((x / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
-		float fy = ((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+		float fy = -((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
 
-		Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRect, Engine::Instance().GetActiveCamera2DRect());
+		
 
-			if (fx >= destRectNDC.x &&
-				fx <= (destRectNDC.x + destRectNDC.w) &&
-				fy >= destRectNDC.y &&
-				fy <= (destRectNDC.y + destRectNDC.h))
+			if (fx >= destRect.x &&
+				fx <= (destRect.x + destRect.w) &&
+				fy >= destRect.y &&
+				fy <= (destRect.y + destRect.h))
 			{
 				switch (mouseEvent)
 				{
@@ -139,26 +156,39 @@ namespace Firelight::UI {
 	void UISystem::OnLeave(int x, int y)
 	{
 		//check collison
+		Maths::Rectf destRect(
+			FocusedItem->Transform->position.x - FocusedItem->Transform->scale.x * 0.5f,
+			FocusedItem->Transform->position.y - FocusedItem->Transform->scale.y * 0.5f,
+			FocusedItem->Transform->scale.x, FocusedItem->Transform->scale.y);
+
+		float fx = ((x / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
+		float fy = -((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+
+		if (fx <= destRect.x &&
+			fx >= (destRect.x + destRect.w) &&
+			fy <= destRect.y &&
+			fy >= (destRect.y + destRect.h))
+		{
+			
+			FocusedItem = nullptr;
+		}
 
 	}
 	void UISystem::OnHover(int x, int y, ECS::UIWidget* widget)
 	{
-		//check mouse pos
-		const Maths::Vec2f spriteDimensions = Maths::Vec2f((float)widget->Textuer->texture->GetDimensions().x, (float)widget->Textuer->texture->GetDimensions().y) / widget->Textuer->pixelsPerUnit;
+
 		Maths::Rectf destRect(
-			widget->Transform->position.x - spriteDimensions.x * 0.5f,
-			widget->Transform->position.y - spriteDimensions.y * 0.5f,
-			spriteDimensions.x, spriteDimensions.y);
+			widget->Transform->position.x - widget->Transform->scale.x * 0.5f,
+			widget->Transform->position.y - widget->Transform->scale.y * 0.5f,
+			widget->Transform->scale.x, widget->Transform->scale.y);
 
 		float fx = ((x / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
-		float fy = ((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+		float fy = -((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
 
-		Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRect, Engine::Instance().GetActiveCamera2DRect());
-
-		if (fx >= destRectNDC.x &&
-			fx <= (destRectNDC.x + destRectNDC.w) &&
-			fy >= destRectNDC.y &&
-			fy <= (destRectNDC.y + destRectNDC.h))
+		if (fx >= destRect.x &&
+			fx <= (destRect.x + destRect.w) &&
+			fy >= destRect.y &&
+			fy <= (destRect.y + destRect.h))
 		{
 
 
@@ -173,42 +203,37 @@ namespace Firelight::UI {
 	
 	void UISystem::OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget)
 	{
-		//check mouse pos
-		const Maths::Vec2f spriteDimensions = Maths::Vec2f((float)widget->Textuer->texture->GetDimensions().x, (float)widget->Textuer->texture->GetDimensions().y) / widget->Textuer->pixelsPerUnit;
+
 		Maths::Rectf destRect(
-			widget->Transform->position.x - spriteDimensions.x * 0.5f,
-			widget->Transform->position.y - spriteDimensions.y * 0.5f,
-			spriteDimensions.x, spriteDimensions.y);
+			widget->Transform->position.x - widget->Transform->scale.x* 0.5f,
+			widget->Transform->position.y - widget->Transform->scale.y * 0.5f,
+			widget->Transform->scale.x, widget->Transform->scale.y);
 
 		float fx = ((x / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
-		float fy = ((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+		float fy = -((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
 
-		Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRect, Engine::Instance().GetActiveCamera2DRect());
-
-		if (fx >= destRectNDC.x &&
-			fx <= (destRectNDC.x + destRectNDC.w) &&
-			fy >= destRectNDC.y &&
-			fy <= (destRectNDC.y + destRectNDC.h))
+		if (fx >= destRect.x &&
+			fx <= (destRect.x + destRect.w) &&
+			fy >= destRect.y &&
+			fy <= (destRect.y + destRect.h))
 		{
 			
 			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LPress && DagItem == nullptr) {
 				//say item is being draged
 				DagItem = widget;
 				FocusedItem = widget;
+				
 			}
 			else if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease)
 			{
 
 				DagItem = nullptr;
 				FocusedItem = nullptr;
+				
 			}
 		
 		}
-		else
-		{
-			DagItem = nullptr;
-			FocusedItem = nullptr;
-		}
+	
 	}
 	void UISystem::OnNavergate()
 	{
@@ -220,7 +245,7 @@ namespace Firelight::UI {
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
-			auto* UICom = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UI_Canvas>(m_entities[entityIndex]);
+			ECS::UI_Canvas* UICom = m_entities[entityIndex]->GetComponent<ECS::UI_Canvas>();
 
 			for (auto ComponetsChild : UICom->Child) {
 				//if not in canvas view do not render 
@@ -233,10 +258,10 @@ namespace Firelight::UI {
 	void UISystem::DockingSettings()
 	{
 
-		for (auto entitiy : m_entities) {
-
+		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
+		{
 			//checks
-			auto* UICom = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UI_Canvas>(entitiy);
+			auto* UICom = m_entities[entityIndex]->GetComponent<ECS::UI_Canvas>();
 			//check
 			if (!UICom->hasChild) {
 				continue;

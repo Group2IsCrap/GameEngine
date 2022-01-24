@@ -2,7 +2,7 @@
 
 #include "Systems/SpriteRenderSystem.h"
 #include "Systems/AnimationSystem.h"
-
+#include"Systems/UISystem.h"
 namespace Firelight::ECS
 {
 	Firelight::ECS::SystemManager::SystemManager()
@@ -41,5 +41,6 @@ namespace Firelight::ECS
 	{
 		m_systems.push_back(std::make_unique<SpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<AnimationSystem>());
+		m_systems.push_back(std::make_unique<UI::UISystem>());
 	}
 }

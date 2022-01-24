@@ -1,20 +1,18 @@
 #pragma once
-#include"..\Events\Listener.h"
-#include"..\ECS\Systems\System.h"
 
-#include "../Events/Event.h"
+#include"System.h"
+
+#include "..\Source\Events\Listener.h"
 
 //inputs
-#include"..\Input\MouseEvent.h"
-#include"..\Input\KeyboardEvent.h"
-#include"..\Input\ControllerEvent.h"
+#include"..\Source\Input\MouseEvent.h"
+#include"..\Source\Input\KeyboardEvent.h"
+#include"..\Source\Input\ControllerEvent.h"
 
 
-#include"..\ECS\Components\UIComponents.h"
-#include"..\ECS\Components\RenderingComponents.h"
+#include"..\Components\UIComponents.h"
+#include"..\Components\RenderingComponents.h"
 
-#include "..\ECS\Components\PhysicsComponents.h"
-#include "..\ECS\Components\RenderingComponents.h"
 
 namespace Firelight::UI {
 	class UISystem :public Firelight::ECS::System, public Firelight::Events::Listener
@@ -66,6 +64,8 @@ namespace Firelight::UI {
 		ECS::UIWidget* DagItem= nullptr;
 		ECS::UIWidget* FocusedItem = nullptr;
 		Maths::Vec3f MousePosDrag;
+		Maths::Vec2f mouseRawCurr;
+		
 	};
 
 
