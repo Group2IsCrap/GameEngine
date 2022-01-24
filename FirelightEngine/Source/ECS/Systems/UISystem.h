@@ -22,7 +22,7 @@ namespace Firelight::UI {
 		~UISystem();
 
 
-		virtual void Update(double dt) override;
+		virtual void Update(const Utils::Time& time) override;
 
 
 		

@@ -15,7 +15,7 @@ namespace Firelight::UI {
 	UISystem::~UISystem()
 	{
 	}
-	void UISystem::Update(double dt)
+	void UISystem::Update(const Utils::Time& time)
 	{
 		if (DagItem != nullptr) {
 			if (mouseRawCurr != Maths::Vec2f(0,0)) {
