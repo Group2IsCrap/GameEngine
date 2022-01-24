@@ -21,9 +21,6 @@
     <ClCompile Include="ImGuiEditorLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Panels\Panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,13 +36,13 @@
     <ClCompile Include="Source\Panels\ViewportPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DrawHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiEditorLayer.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Panels\Panel.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Panels\ContentBrowserPanel.h">
       <Filter>Header Files</Filter>
@@ -62,47 +59,8 @@
     <ClInclude Include="Source\Panels\ViewportPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\Assets\$ENGINE\Materials\default.json" />
-    <None Include="assets\Assets\$ENGINE\Models\cube.mtls" />
-    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="assets\Assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
-    <None Include="assets\Assets\$ENGINE\Models\screenQuad.mtls" />
-    <None Include="assets\$ENGINE\Materials\default.json" />
-    <None Include="assets\$ENGINE\Models\cube.mtls" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSInputs.hlsli" />
-    <None Include="assets\$ENGINE\Shaders\Shared\VSPSTransfers.hlsli" />
-    <None Include="assets\$ENGINE\Models\screenQuad.mtls" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\Assets\$ENGINE_readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\Assets\$ENGINE\Textures\missing.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\Assets\$ENGINE\Textures\non_binary_transparency.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\Assets\$ENGINE\Textures\transparency_test.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\$ENGINE\Textures\missing.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\$ENGINE\Textures\non_binary_transparency.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\$ENGINE\Textures\transparency_test.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="assets\Assets\$ENGINE\Models\cube.obj" />
-    <Object Include="assets\Assets\$ENGINE\Models\screenQuad.obj" />
-    <Object Include="assets\Assets\cube.obj" />
-    <Object Include="assets\$ENGINE\Models\cube.obj" />
-    <Object Include="assets\$ENGINE\Models\screenQuad.obj" />
+    <ClInclude Include="Source\DrawHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

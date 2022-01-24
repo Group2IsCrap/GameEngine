@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Panel.h"
+#include "../Includes/imgui/imgui.h"
 
-class AnimationWindow : public Panel
+class AnimationWindow
 {
 public:
 	AnimationWindow();

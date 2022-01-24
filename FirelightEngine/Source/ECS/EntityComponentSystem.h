@@ -68,6 +68,25 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
+		/// Returns a list of all components.
+		/// </summary>
+		/// <returns>std::vector<BaseComponent*></returns>
+		std::vector<BaseComponent*> GetAllComponents()
+		{
+			std::vector<BaseComponent*> values;
+			std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> componentData = m_componentManager->GetComponentData();
+			for (std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>>::iterator it = componentData.begin(); it != componentData.end(); ++it)
+			{
+				for (auto c : it->second)
+				{
+					values.push_back(c);
+				}
+			}
+
+			return values;
+		}
+
+		/// <summary>
 		/// Returns a ptr to a BaseComponent on the given entity
 		/// </summary>
 		/// <param name="typeID"></param>
