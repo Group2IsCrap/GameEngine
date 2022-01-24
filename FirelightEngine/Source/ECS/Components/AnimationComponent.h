@@ -13,7 +13,7 @@ namespace Firelight::ECS
 	struct AnimationComponent : BaseComponent
 	{
 		Firelight::Animation::Animation* currentAnimation = nullptr;
-		float currentFrameCount = 0;
+		double currentFrameCount = 0;
 		int currentFrameIndex = 0;
 		bool playOnStart = true;
 		bool shouldPlay = false;
