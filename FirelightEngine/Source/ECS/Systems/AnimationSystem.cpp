@@ -27,7 +27,7 @@ namespace Firelight::ECS
 
 	}
 	
-	void AnimationSystem::Update(double deltaTime)
+	void AnimationSystem::Update(const Utils::Time& time)
 	{
 		if (m_entities.size() <= 0)
 		{
@@ -64,7 +64,7 @@ namespace Firelight::ECS
 				}
 			}
 
-			animatorComponent->currentFrameCount += deltaTime * 1000.0f;
+			animatorComponent->currentFrameCount += time.GetGameDeltaTime() * 1000.0f;
 			if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
 			{
 				animatorComponent->currentFrameIndex++;

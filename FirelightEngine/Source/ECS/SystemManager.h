@@ -5,6 +5,8 @@
 
 #include "Systems/System.h"
 
+#include "../Utils/Time.h"
+
 namespace Firelight::ECS
 {
 	class SystemManager
@@ -13,9 +15,9 @@ namespace Firelight::ECS
 		SystemManager();
 		~SystemManager();
 
-		void Update(double deltaTime);
-		void FixedUpdate(double deltaTime);
-		void LateUpdate(double deltaTime);
+		void PhysicsUpdate(const Utils::Time& time);
+		void Update(const Utils::Time& time);
+		void LateUpdate(const Utils::Time& time);
 
 		void RegisterEngineSystems();
 		

@@ -14,7 +14,7 @@ namespace Firelight::ECS
 		AnimationSystem();
 		~AnimationSystem();
 
-		void Update(double deltaTime) override;
+		void Update(const Utils::Time& time) override;
 
 		static AnimationSystem* Instance();
 

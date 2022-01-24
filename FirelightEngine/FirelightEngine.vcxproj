@@ -365,7 +365,6 @@
   <ItemGroup>
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
-    <ClInclude Include="Source\ECS\Components\UIComponents.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
@@ -422,7 +421,6 @@
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
-    <ClInclude Include="Source\ECS\Systems\UISystem.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -444,7 +442,7 @@
     <ClInclude Include="Source\ECS\Systems\SpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
-    <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
+    <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
@@ -488,7 +486,6 @@
     <ClCompile Include="Source\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
-    <ClCompile Include="Source\ECS\Systems\UISystem.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
@@ -502,7 +499,7 @@
     <ClCompile Include="Source\ECS\Systems\SpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
-    <ClCompile Include="Source\ECS\EntityWrappers\UIEntity.cpp" />
+    <ClCompile Include="Source\Utils\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
