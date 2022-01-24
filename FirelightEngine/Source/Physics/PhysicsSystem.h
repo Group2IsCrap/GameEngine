@@ -43,8 +43,8 @@ namespace Firelight::Physics
 
 		Firelight::Maths::Vec3f ComputeForce(Firelight::ECS::RigidBodyComponent* rigidbody);
 
-		bool CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::BoxColliderComponent* boxCollider2);
-		bool CheckCollision(Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::CircleColliderComponent* circleCollider2);
-		bool CheckCollision(Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::CircleColliderComponent* circleCollider);
+		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::BoxColliderComponent* boxCollider2);
+		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider2);
+		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider);
 	};
 }
