@@ -39,6 +39,9 @@ namespace FModAudio
 	class AudioEngine
 	{
 	public:
+		AudioEngine();
+		~AudioEngine();
+
 		static void Initialise();
 		static void Update();
 		static void Shutdown();
@@ -54,9 +57,11 @@ namespace FModAudio
 		void SetChannelPos(int channelId, const Vector3D& channelPos);
 		void SetChannelVolume(int channelId, float volumedB);
 		bool IsPlaying(int channelId) const;
+		void UnLoadAllSounds();
 
 		float dBToVolume(float dB);
 		float VolumeTodB(float volume);
 
+		
 	};
 }

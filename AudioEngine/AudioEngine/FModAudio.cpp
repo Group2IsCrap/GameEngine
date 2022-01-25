@@ -1,22 +1,41 @@
 #include "FModAudio.h"
 #include <io.h>
 
+FModAudio::AudioEngine* engine = new FModAudio::AudioEngine;
+
+FModAudio::AudioEngine::AudioEngine()
+{
+
+}
+
+FModAudio::AudioEngine::~AudioEngine()
+{
+	delete engine;
+}
+
+
+
 //Instance functions
 FModAudio::Instance::Instance()
 {
 	//Create and initialise the system
+	m_nextChannelId = 0;
 	fModStudioSystem = NULL;
 	fmodSystem = NULL;
-	FModAudio::AudioEngine::ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
-	FModAudio::AudioEngine::ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+	engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
+	engine->ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
 }
 
 FModAudio::Instance::~Instance()
 {
+
 	//Unload all assets
-	FModAudio::AudioEngine::ErrorCheck(fModStudioSystem->unloadAll());
+	engine->ErrorCheck(fModStudioSystem->unloadAll());
 	//Shutdown the FMod system
-	FModAudio::AudioEngine::ErrorCheck(fModStudioSystem->release());
+	engine->ErrorCheck(fModStudioSystem->release());
+	engine->ErrorCheck(fmodSystem->release());
+
+	engine->Shutdown();
 }
 
 void FModAudio::Instance::Update()
@@ -42,12 +61,14 @@ void FModAudio::Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
-	FModAudio::AudioEngine::ErrorCheck(fModStudioSystem->update());
+	engine->ErrorCheck(fModStudioSystem->update());
 }
 
 FModAudio::Instance* fmodInstance = nullptr;
 
 //End Of Instance Functions
+
+
 
 
 //Just conversion functions
@@ -92,7 +113,7 @@ void FModAudio::AudioEngine::LoadSound(const std::string& soundName,bool b3d, bo
 
 	//Load the sound with the params
 	FMOD::Sound* sound = nullptr;
-	FModAudio::AudioEngine::ErrorCheck(fmodInstance->fmodSystem->createSound(soundName.c_str(), fmodMode, nullptr, &sound));
+	engine->ErrorCheck(fmodInstance->fmodSystem->createSound(soundName.c_str(), fmodMode, nullptr, &sound));
 
 	//Add the sound to loaded sounds
 	if (sound)
@@ -111,12 +132,13 @@ void FModAudio::AudioEngine::UnLoadSound(const std::string& soundName)
 	}
 
 	//Release the audio file
-	FModAudio::AudioEngine::ErrorCheck(soundFound->second->release());
+	engine->ErrorCheck(soundFound->second->release());
 	fmodInstance->m_sounds.erase(soundFound);
 }
 
 int FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
 {
+
 	//Set the next channel
 	int nextChannelId = fmodInstance->m_nextChannelId++;
 
@@ -124,7 +146,7 @@ int FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector
 	auto soundFound = fmodInstance->m_sounds.find(soundName);
 	if (soundFound == fmodInstance->m_sounds.end())
 	{
-		LoadSound(soundName);
+		engine->LoadSound(soundName);
 		//Find the newly loaded sound
 		soundFound = fmodInstance->m_sounds.find(soundName);
 		//If still not loaded
@@ -137,7 +159,7 @@ int FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector
 	//Sound is loaded/found, define a new channel
 	FMOD::Channel* channel = nullptr;
 	//Define channel, sound, channel group and whether paused. Defined paused as true at first otherwise it could create sound control issues/mixing issues.
-	FModAudio::AudioEngine::ErrorCheck(fmodInstance->fmodSystem->playSound(soundFound->second, nullptr, true, &channel));
+	engine->ErrorCheck(fmodInstance->fmodSystem->playSound(soundFound->second, nullptr, true, &channel));
 	//if channel now exists (after assigning the sound to play)
 	if (channel)
 	{
@@ -154,12 +176,12 @@ int FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector
 			position.z = soundPos.z;
 
 			//set the 3d position
-			FModAudio::AudioEngine::ErrorCheck(channel->set3DAttributes(&position, nullptr));
+			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
 		}
 		//set volume
-		FModAudio::AudioEngine::ErrorCheck(channel->setVolume(dBToVolume(volumedB)));
+		engine->ErrorCheck(channel->setVolume(engine->dBToVolume(volumedB)));
 		//unpause
-		FModAudio::AudioEngine::ErrorCheck(channel->setPaused(false));
+		engine->ErrorCheck(channel->setPaused(false));
 
 		//add the previous channel
 		fmodInstance->m_channels[nextChannelId] = channel;
@@ -167,7 +189,7 @@ int FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector
 	return nextChannelId;
 }
 
-void SetChannelPos(int channelId, const Vector3D& channelPos)
+void FModAudio::AudioEngine::SetChannelPos(int channelId, const Vector3D& channelPos)
 {
 	//find the channel
 	auto channelFound = fmodInstance->m_channels.find(channelId);
@@ -185,7 +207,7 @@ void SetChannelPos(int channelId, const Vector3D& channelPos)
 
 
 	//use position
-	FModAudio::AudioEngine::ErrorCheck(channelFound->second->set3DAttributes(&position, NULL));
+	engine->ErrorCheck(channelFound->second->set3DAttributes(&position, NULL));
 }
 
 void FModAudio::AudioEngine::SetChannelVolume(int channelId, float volumedB)
@@ -199,7 +221,7 @@ void FModAudio::AudioEngine::SetChannelVolume(int channelId, float volumedB)
 	}
 
 	//Set channel volume
-	FModAudio::AudioEngine::ErrorCheck(channelFound->second->setVolume(dBToVolume(volumedB)));
+	engine->ErrorCheck(channelFound->second->setVolume(dBToVolume(volumedB)));
 }
 
 //Error checking function
@@ -218,5 +240,15 @@ int FModAudio::AudioEngine::ErrorCheck(FMOD_RESULT result)
 
 void FModAudio::AudioEngine::Shutdown()
 {
+	engine->UnLoadAllSounds();
 	delete fmodInstance;
+}
+
+void FModAudio::AudioEngine::UnLoadAllSounds()
+{
+	for (auto sound : fmodInstance->m_sounds)
+	{
+		std::string soundName = sound.first;
+		engine->UnLoadSound(soundName);
+	}
 }
