@@ -9,14 +9,18 @@ namespace Firelight::ECS
 {
 	using CallbackFunctionType = std::function< void() >;
 	//Docking Settings
-	enum class e_DockSettings
+	enum class e_AnchorSettings
 	{
-		DockRight,
-		DockLeft,
-		DockCenter,
-		DockTop,
-		DockBottom,
-		DockNone
+		Right,
+		TopRight,
+		BottomRight,
+		Left,
+		TopLeft,
+		BottomLeft,
+		Center,
+		Top,
+		Bottom,
+		None
 
 	};
 
@@ -39,11 +43,13 @@ namespace Firelight::ECS
 		std::vector<CallbackFunctionType> OnHoverFunctions;
 		bool isDrag =true;
 		
-		//Ui_Navergation
-		bool isFocus = false;
-		
 		//DockSettings
-		e_DockSettings DockSettings = e_DockSettings::DockNone;
+		e_AnchorSettings DockSettings = e_AnchorSettings::None;
+		UIWidget* Parent;
+		std::vector<UIWidget*> Child;
+
+
+		Maths::Vec3f DefaultPosition= Maths::Vec3f(0,0,0);
 	};
 
 

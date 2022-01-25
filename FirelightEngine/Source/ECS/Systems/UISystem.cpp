@@ -19,9 +19,11 @@ namespace Firelight::UI {
 	{
 		if (DagItem != nullptr) {
 			if (mouseRawCurr != Maths::Vec2f(0,0)) {
-				DagItem->Transform->position = MousePosDrag;
+				DagItem->DefaultPosition = MousePosDrag;
 			}
 		}
+
+		DockingSettings();
 		
 	}
 
@@ -55,33 +57,32 @@ namespace Firelight::UI {
 
 			if (EventMouse->GetType() != Events::Input::e_MouseEventType::RawMove) {
 
-
-				if (DagItem == nullptr) {
+				
+				
 					if (EventMouse->GetType() != Events::Input::e_MouseEventType::Move) {
 						if (UICom->isPressable) {
-							
-								OnPress(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
-							
+
+							OnPress(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
+
 						}
 					}
 					if (UICom->isHover) {
 						OnHover(EventMouse->GetMouseX(), EventMouse->GetMouseY(), UICom);
 					}
-
-				}
 				
 					if (UICom->isDrag) {
 
 						OnDrag(EventMouse->GetMouseX(), EventMouse->GetMouseY(), EventMouse->GetType(), UICom);
 						
 					}
+					
 				
 			}
-			
-		}
-		if (EventMouse->GetType() == Events::Input::e_MouseEventType::Move && FocusedItem != nullptr) {
+			if (EventMouse->GetType() == Events::Input::e_MouseEventType::Move && FocusedItem == UICom) {
 			OnLeave(EventMouse->GetMouseX(), EventMouse->GetMouseY());
 		}
+		}
+		
 		
 	}
 	void UISystem::Initalize()
@@ -219,20 +220,24 @@ namespace Firelight::UI {
 		{
 			
 			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LPress && DagItem == nullptr) {
-				//say item is being draged
-				DagItem = widget;
-				FocusedItem = widget;
+				
+					//say item is being draged
+					DagItem = widget;
+					FocusedItem = widget;
+				
+				//widget->isPressable = false;
 				
 			}
 			else if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease)
 			{
-
+				widget->isPressable = true;
 				DagItem = nullptr;
-				FocusedItem = nullptr;
+				//FocusedItem = nullptr;
 				
 			}
 		
 		}
+		
 	
 	}
 	void UISystem::OnNavergate()
@@ -245,11 +250,22 @@ namespace Firelight::UI {
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
-			ECS::UI_Canvas* UICom = m_entities[entityIndex]->GetComponent<ECS::UI_Canvas>();
+			ECS::UIWidget* UICom = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
 
 			for (auto ComponetsChild : UICom->Child) {
 				//if not in canvas view do not render 
 				//if not in pannle view do not render
+
+
+
+				
+				
+
+
+
+
+
+
 			}
 
 		}
@@ -261,25 +277,64 @@ namespace Firelight::UI {
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
-			auto* UICom = m_entities[entityIndex]->GetComponent<ECS::UI_Canvas>();
+			auto* UICom = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
 			//check
-			if (!UICom->hasChild) {
+			
+			if (UICom->Parent == nullptr) {
+				switch (UICom->DockSettings)
+				{
+				case Firelight::ECS::e_AnchorSettings::Top:
+					UICom->Transform->position.y = 1 - (UICom->Transform->scale.y * 0.5);
+					UICom->Transform->position.x = 0;
+					break;
+				case Firelight::ECS::e_AnchorSettings::Bottom:
+					UICom->Transform->position.y = -1 + (UICom->Transform->scale.y*0.5);
+					UICom->Transform->position.x = 0;
+					break;
+				case Firelight::ECS::e_AnchorSettings::Center:
+					UICom->Transform->position.y = 0;
+					UICom->Transform->position.x = 0;
+					break;
+				case Firelight::ECS::e_AnchorSettings::Left:
+					UICom->Transform->position.x = 1 - (UICom->Transform->scale.x * 0.5);
+					UICom->Transform->position.y = 0;
+					break;
+				case Firelight::ECS::e_AnchorSettings::Right:
+					UICom->Transform->position.x = -1 + (UICom->Transform->scale.x * 0.5);
+					UICom->Transform->position.y = 0;
+					break;
+				case Firelight::ECS::e_AnchorSettings::None:
+					UICom->Transform->position = UICom->DefaultPosition;
+					break;
+				default:
+					break;
+				}
+			}
+
+			if (UICom->Child.empty()) {
 				continue;
 			}
 			for (auto ComponetsChild : UICom->Child) {
 				switch (UICom->DockSettings)
 				{
-				case Firelight::ECS::e_DockSettings::DockTop:
+				case Firelight::ECS::e_AnchorSettings::Top:
+					ComponetsChild->Transform->position.y = ComponetsChild->Parent->Transform->position.y;
 					break;
-				case Firelight::ECS::e_DockSettings::DockBottom:
+				case Firelight::ECS::e_AnchorSettings::Bottom:
+					ComponetsChild->Transform->position.y = ComponetsChild->Parent->Transform->position.y + ComponetsChild->Parent->Transform->scale.y;
 					break;
-				case Firelight::ECS::e_DockSettings::DockCenter:
+				case Firelight::ECS::e_AnchorSettings::Center:
+					ComponetsChild->Transform->position.y = ComponetsChild->Parent->Transform->position.y;
+					ComponetsChild->Transform->position.x = ComponetsChild->Parent->Transform->position.x;
 					break;	
-				case Firelight::ECS::e_DockSettings::DockLeft:
+				case Firelight::ECS::e_AnchorSettings::Left:
+					ComponetsChild->Transform->position.x = ComponetsChild->Parent->Transform->position.x;
 						break;
-				case Firelight::ECS::e_DockSettings::DockRight:
+				case Firelight::ECS::e_AnchorSettings::Right:
+					ComponetsChild->Transform->position.x = ComponetsChild->Parent->Transform->position.x + ComponetsChild->Parent->Transform->scale.x;
 					break;
-				case Firelight::ECS::e_DockSettings::DockNone:
+				case Firelight::ECS::e_AnchorSettings::None:
+					UICom->Transform->position = UICom->DefaultPosition;
 					break;
 				default:
 					break;

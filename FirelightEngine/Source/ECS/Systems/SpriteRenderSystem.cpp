@@ -17,7 +17,7 @@ namespace Firelight::ECS
 	SpriteRenderSystem::SpriteRenderSystem()
 	{
 		AddWhitelistComponent<SpriteComponent>();
-		AddWhitelistComponent<NDCSpriteComponent>();
+		
 
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&SpriteRenderSystem::Render, this));
 	}
@@ -32,18 +32,6 @@ namespace Firelight::ECS
 		{
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
-
-			//Draw in NDC space
-			if (spriteComponent == nullptr) {
-				auto* NDCspriteComponent = m_entities[entityIndex]->GetComponent<NDCSpriteComponent>();
-				Maths::Rectf destRect(
-					transformComponent->position.x - transformComponent->scale.x * 0.5f,
-					transformComponent->position.y - transformComponent->scale.y * 0.5f,
-					transformComponent->scale.x, transformComponent->scale.y);
-
-				Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(destRect, NDCspriteComponent->texture, NDCspriteComponent->layer, transformComponent->rotation, NDCspriteComponent->colour, NDCspriteComponent->sourceRect);
-				continue;
-			}
 
 			// If we pass nullptr to WorldDraw() it will draw a coloured quad
 			// Lets use the default texture instead

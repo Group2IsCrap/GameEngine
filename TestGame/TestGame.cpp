@@ -31,6 +31,10 @@ using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
 
+void ChangeThing(UIWidget* thing) {
+	thing->DockSettings = ECS::e_DockSettings::DockCenter;
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -75,19 +79,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->pixelsPerUnit = 25.0f;
 		test2->GetSpriteComponent()->layer = 16;
 
+		UIEntity* testUI2 = new UIEntity();
+		testUI2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUI2->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
+		testUI2->GetTransformComponent()->position = Maths::Vec3f(1, 0, 0);
+		testUI2->GetSpriteComponent()->layer = 20;
+		testUI2->GetUIWidget()->isDrag = false;
+		testUI2->GetUIWidget()->DockSettings = ECS::e_AnchorSettings::Top;
+
 		UIEntity* testUI = new UIEntity();
 		testUI->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		testUI->GetTransformComponent()->scale = Maths::Vec3f(0.5, 0.5, 0);
-		testUI->GetSpriteComponent()->layer = 0;
+		testUI->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
+		testUI->GetSpriteComponent()->layer = 20;
+		testUI->GetUIWidget()->OnLeftPressFunctions.push_back(std::bind(ChangeThing, testUI2->GetUIWidget()));
 		//testUI->GetSpriteComponent()->sourceRect = Maths::Rectf(100, 100, 200, 200);
 
 
-
-		testUI = new UIEntity();
-		testUI->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		testUI->GetTransformComponent()->scale = Maths::Vec3f(0.5, 0.5, 0);
-		testUI->GetTransformComponent()->position = Maths::Vec3f(1, 0, 0);
-		testUI->GetSpriteComponent()->layer = 0;
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

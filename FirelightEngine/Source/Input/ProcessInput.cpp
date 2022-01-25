@@ -141,8 +141,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnLeftPress(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
@@ -150,8 +151,10 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnLeftReleased(x, y);
+			ReleaseCapture();
+
 			return true;
 		}
 		break;
@@ -159,8 +162,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnRightPress(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
@@ -168,8 +172,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnRightReleased(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
@@ -177,8 +182,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnMiddlePress(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
@@ -186,8 +192,9 @@ namespace Firelight::Input
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-
+			SetCapture(Engine::Instance().GetWindowHandle());
 			m_MouseCapture->OnMiddleReleased(x, y);
+			ReleaseCapture();
 			return true;
 		}
 		break;
