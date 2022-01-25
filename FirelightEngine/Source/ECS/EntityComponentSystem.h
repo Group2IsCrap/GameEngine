@@ -44,6 +44,12 @@ namespace Firelight::ECS
 			return m_componentManager->GetComponent<T>(entity, index);
 		}
 
+		template<typename T, typename T2>
+		T2* GetComponent(EntityID entity, int index = 0)
+		{
+			return m_componentManager->GetComponent<T,T2>(entity, index);
+		}
+
 		/// <summary>
 		/// Returns all components of a given type for a given entity
 		/// </summary>
@@ -119,6 +125,12 @@ namespace Firelight::ECS
 		bool HasComponent(EntityID entity)
 		{
 			return m_componentManager->HasComponent<T>(entity);
+		}
+
+		template<typename T, typename T2>
+		bool HasComponent(EntityID entity)
+		{
+			return m_componentManager->HasComponent<T, T2>(entity);
 		}
 
 		/// <summary>

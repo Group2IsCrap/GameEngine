@@ -14,6 +14,7 @@ namespace Firelight::ECS
 	struct RigidBodyComponent : BaseComponent
 	{
 		Firelight::Maths::Vec3f velocity;
+		int layer;
 
 		void Serialise() override
 		{

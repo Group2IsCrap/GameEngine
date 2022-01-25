@@ -9,7 +9,7 @@ namespace Firelight::Physics
 		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
 	}
 	
-	void PhysicsSystem::FixedUpdate(double fixedDeltaTime)
+	void PhysicsSystem::PhysicsUpdate(const Utils::Time& time)
 	{
 		HandleCollisions();
 	}
@@ -26,77 +26,87 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::HandleCollisions()
 	{
-		for (auto entity : GetEntities())
+		for (int i = 0; i < m_entities.size(); ++i)
 		{
+			Firelight::ECS::Entity* entity = m_entities[i];
 			Firelight::ECS::ColliderComponent* collider = entity->GetComponent<Firelight::ECS::ColliderComponent>();
 
 			if (collider == nullptr)
 				continue;
 
-			if (!collider->isEnabled) //|| collider->isStatic)
+			if (!collider->isEnabled || entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
 			{
-				delete entity;
 				continue;
 			}
 
-			for (auto entity2 : GetEntities())
+			for (int j = i+1; j < m_entities.size(); ++j)
 			{
-				Firelight::ECS::ColliderComponent* collider2 = entity->GetComponent<Firelight::ECS::ColliderComponent>();
+				Firelight::ECS::Entity* entity2 = m_entities[j];
+				Firelight::ECS::ColliderComponent* collider2 = entity2->GetComponent<Firelight::ECS::ColliderComponent>();
 				if (entity == entity2)
 				{
-					delete entity2;
 					continue;
 				}
 
 				if (!collider2->isEnabled)
 				{
-					delete entity2;
 					continue;
 				}
 
-				bool collision = false;
+
 				if (HasColliderPair<Firelight::ECS::BoxColliderComponent, Firelight::ECS::BoxColliderComponent>(entity, entity2))
 				{
-					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::BoxColliderComponent>(),
-						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::BoxColliderComponent>()))
+					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
+						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()))
 					{
-						collision = true;
+						
 					}
 				}
 				else if (HasColliderPair<Firelight::ECS::CircleColliderComponent, Firelight::ECS::CircleColliderComponent>(entity, entity2))
 				{
-					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::CircleColliderComponent>(),
-						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::CircleColliderComponent>()))
+					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>(),
+						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()))
 					{
-						collision = true;
+						bool collision = true;
+						do
+						{
+							auto& pos1 = entity->GetComponent<Firelight::ECS::TransformComponent>()->position;
+							auto& pos2 = entity2->GetComponent<Firelight::ECS::TransformComponent>()->position;
+
+							auto e1toe2 = Firelight::Maths::Vec3f::Normalise(pos2 - pos1);
+
+							if (!entity2->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos2 += e1toe2 * 0.2f;
+							}
+							if (!entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos1 -= e1toe2 * 0.2f;
+							}
+							collision = CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>(),
+								entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>());
+						} while (collision);
+
+						
 					}
 				}
 				else if (HasColliderPair<Firelight::ECS::BoxColliderComponent, Firelight::ECS::CircleColliderComponent>(entity, entity2))
 				{
-					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::BoxColliderComponent>(),
-						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::CircleColliderComponent>()))
+					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
+						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()))
 					{
-						collision = true;
+						
 					}
 				}
 				else if (HasColliderPair<Firelight::ECS::CircleColliderComponent, Firelight::ECS::BoxColliderComponent>(entity, entity2))
 				{
-					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::BoxColliderComponent>(),
-						entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::CircleColliderComponent>()))
+					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
+						entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()))
 					{
-						collision = true;
+						
 					}
 				}
-
-				if (collision)
-				{
-					// Respond to collision
-				}
-
-				delete entity2;
 			}
-
-			delete entity;
 		}
 	}
 

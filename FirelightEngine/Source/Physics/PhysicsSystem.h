@@ -15,7 +15,7 @@ namespace Firelight::Physics
 
 		PhysicsSystem();
 
-		void FixedUpdate(double fixedDeltaTime);
+		void PhysicsUpdate(const Utils::Time& time) override;
 
 		void ApplyForces(double fixedDeltaTime);
 		void Simulate(double fixedDeltaTime);
@@ -26,7 +26,7 @@ namespace Firelight::Physics
 		template<typename component>
 		bool HasCollider(Firelight::ECS::Entity* entity)
 		{
-			if (entity->HasComponent<component>())
+			if (entity->HasComponent<Firelight::ECS::ColliderComponent, component>())
 				return true;
 
 			return false;
@@ -35,7 +35,7 @@ namespace Firelight::Physics
 		template<typename collider, typename collider2>
 		bool HasColliderPair(Firelight::ECS::Entity* entity, Firelight::ECS::Entity* other)
 		{
-			if (entity->HasComponent<collider>() && other->HasComponent<collider2>())
+			if (entity->HasComponent<Firelight::ECS::ColliderComponent, collider>() && other->HasComponent<Firelight::ECS::ColliderComponent, collider2>())
 				return true;
 
 			return false;
