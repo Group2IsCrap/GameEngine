@@ -24,6 +24,12 @@ namespace Firelight::ECS
 		{
 			return EntityComponentSystem::Instance()->GetComponent<T>(m_entityID, index);
 		}
+
+		template<typename T, typename T2>
+		T2* GetComponent(int index = 0)
+		{
+			return EntityComponentSystem::Instance()->GetComponent<T,T2>(m_entityID, index);
+		}
 		
 		template<typename T>
 		std::vector<T*> GetComponents()
@@ -76,6 +82,12 @@ namespace Firelight::ECS
 		bool HasComponent()
 		{
 			return EntityComponentSystem::Instance()->HasComponent<T>(m_entityID);
+		}
+
+		template<typename T, typename T2>
+		bool HasComponent()
+		{
+			return EntityComponentSystem::Instance()->HasComponent<T, T2>(m_entityID);
 		}
 
 		bool operator==(Entity& entity)

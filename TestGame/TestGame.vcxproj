@@ -168,6 +168,11 @@
     <ClInclude Include="TestInputGame.h" />
     <ClInclude Include="Pepe.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
+      <Project>{ea744fde-6588-4aa7-94ba-318d00e409dc}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
