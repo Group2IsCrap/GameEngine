@@ -1,17 +1,16 @@
 #pragma once
-
-#include "Panel.h"
-
 #include <filesystem>
 #include <string>
 #include <Source/Graphics/Data/Texture.h>
 
-class ContentBrowserPanel : public Panel
+#include "../Includes/imgui/imgui.h"
+
+class ContentBrowserPanel
 {
 public:
 	ContentBrowserPanel();
 
-	void Draw() override;
+	void Draw();
 
 private:
 	void CreateFolder();
