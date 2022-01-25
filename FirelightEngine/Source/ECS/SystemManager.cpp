@@ -4,6 +4,8 @@
 #include"Systems/NDCSpriteRenderSystem.h"
 #include "Systems/AnimationSystem.h"
 #include"Systems/UISystem.h"
+#include "../Source/Physics/PhysicsSystem.h"
+
 namespace Firelight::ECS
 {
 	Firelight::ECS::SystemManager::SystemManager()
@@ -44,5 +46,6 @@ namespace Firelight::ECS
 		m_systems.push_back(std::make_unique<NDCSpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<AnimationSystem>());
 		m_systems.push_back(std::make_unique<UI::UISystem>());
+		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
 	}
 }
