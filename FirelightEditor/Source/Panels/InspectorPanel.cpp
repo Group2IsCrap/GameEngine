@@ -265,6 +265,8 @@ void InspectorPanel::DrawComponents(Firelight::ECS::Entity* entity)
 		Firelight::Editor::DrawHelper::DrawComponent<Firelight::ECS::RigidBodyComponent>("RigidBody", entity, true);
 		Firelight::Editor::DrawHelper::DrawComponent<Firelight::ECS::BoxColliderComponent>("Box Collider", entity, true);
 		Firelight::Editor::DrawHelper::DrawComponent<Firelight::ECS::CircleColliderComponent>("Circle Collider", entity, true);
+
+		// Base Type
 		Firelight::Editor::DrawHelper::DrawComponent<Firelight::ECS::BaseComponent>("Custom", entity, true);
 
 		ImGui::Spacing();

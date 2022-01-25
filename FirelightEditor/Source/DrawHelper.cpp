@@ -130,6 +130,45 @@ namespace Firelight::Editor
 		ImGui::Indent();
 		ImGui::Spacing();
 	}
+
+	void DrawHelper::DrawImage(const std::string& label, Firelight::ECS::BaseComponent* component, const std::string& texturePath)
+	{
+		Firelight::ECS::SpriteComponent* spriteComponent = dynamic_cast<Firelight::ECS::SpriteComponent*>(component);
+		if (component == nullptr)
+		{
+			return;
+		}
+
+		ImGui::AlignTextToFramePadding();
+		ImGui::Text(label.c_str());
+		ImGui::SameLine();
+		if (spriteComponent == nullptr)
+			spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture(texturePath);
+		ImGui::ImageButton((ImTextureID)spriteComponent->texture->GetShaderResourceView().Get(), { 50, 50 });
+
+		// Drag and drop texture
+		Firelight::Graphics::Texture* texture = spriteComponent->texture;
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
+			if (payload != nullptr)
+			{
+				const wchar_t* path = (const wchar_t*)payload->Data;
+				if (path != nullptr)
+				{
+					std::string pathString = Firelight::Utils::StringHelpers::WideStringToString(path);
+					std::string pngExtention = pathString.substr(pathString.length() - 4);
+					if (pngExtention == ".png")
+					{
+						texture = Firelight::Graphics::AssetManager::Instance().GetTexture(pathString);
+					}
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		spriteComponent->texture = texture;
+	}
 	
 	void DrawHelper::DrawComponentType(Firelight::ECS::BaseComponent* component)
 	{
@@ -169,35 +208,8 @@ namespace Firelight::Editor
 		ImGui::InputFloat(GetUniqueID("PixelsPerUnit").c_str(), &component->pixelsPerUnit, 1.0f, 10.0f, "%0.0f");
 		if (component->pixelsPerUnit < 1)
 			component->pixelsPerUnit = 1;
-		ImGui::AlignTextToFramePadding();
-		ImGui::Text("Sprite");
-		ImGui::SameLine();
-		if (component->texture == nullptr)
-			component->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/missing.png");
-		ImGui::ImageButton((ImTextureID)component->texture->GetShaderResourceView().Get(), { 50, 50 });
-
-		// Drag and drop texture
-		Firelight::Graphics::Texture* texture = component->texture;
-		if (ImGui::BeginDragDropTarget())
-		{
-			const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
-			if (payload != nullptr)
-			{
-				const wchar_t* path = (const wchar_t*)payload->Data;
-				if (path != nullptr)
-				{
-					std::string pathString = Firelight::Utils::StringHelpers::WideStringToString(path);
-					std::string pngExtention = pathString.substr(pathString.length() - 4);
-					if (pngExtention == ".png")
-					{
-						texture = Firelight::Graphics::AssetManager::Instance().GetTexture(pathString);
-					}
-				}
-			}
-			ImGui::EndDragDropTarget();
-		}
-
-		component->texture = texture;
+		
+		DrawImage("Sprite", component, "$ENGINE/Textures/missing.png");
 
 		ImGui::Indent();
 		ImGui::Spacing();

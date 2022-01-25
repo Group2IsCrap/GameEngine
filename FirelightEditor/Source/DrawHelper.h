@@ -73,6 +73,8 @@ namespace Firelight::Editor
 
 		static void DrawVec2Control(const std::string& label, float& x, float& y, float columnWidth = 80.0f);
 
+		static void DrawImage(const std::string& label, Firelight::ECS::BaseComponent* component, const std::string& texturePath);
+
 		static void DrawComponentType(Firelight::ECS::BaseComponent* component);
 		static void DrawComponentType(Firelight::ECS::TransformComponent* component);
 		static void DrawComponentType(Firelight::ECS::SpriteComponent* component);
