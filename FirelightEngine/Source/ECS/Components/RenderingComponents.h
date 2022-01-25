@@ -50,7 +50,7 @@ namespace Firelight::ECS
 	/// </summary>
 	struct NDCSpriteComponent : BaseComponent
 	{
-		Firelight::Graphics::Texture* texture = nullptr;
+		Firelight::Graphics::Texture*     texture = nullptr;
 		int                               layer = 32;
 
 		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
@@ -64,4 +64,22 @@ namespace Firelight::ECS
 		}
 	};
 
+	/// <summary>
+	/// Contains information required to draw a Pixle sprite
+	/// </summary>
+	struct PixleSpriteComponent : BaseComponent
+	{
+		Firelight::Graphics::Texture* texture = nullptr;
+		int                               layer = 32;
+
+		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
+
+		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
+		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+
+		void Serialise() override
+		{
+			return;
+		}
+	};
 }

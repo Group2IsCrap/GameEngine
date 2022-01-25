@@ -28,7 +28,7 @@ namespace Firelight::ECS
 	struct UIWidget : BaseComponent
 	{
 
-		NDCSpriteComponent* Textuer = nullptr;
+		PixleSpriteComponent* Textuer = nullptr;
 		TransformComponent* Transform = nullptr;
 
 		std::string Name = "UI";
@@ -42,13 +42,9 @@ namespace Firelight::ECS
 		bool isHover =true;
 		std::vector<CallbackFunctionType> OnHoverFunctions;
 		bool isDrag =true;
-		
-		//DockSettings
+
+		//pos data
 		e_AnchorSettings DockSettings = e_AnchorSettings::None;
-		UIWidget* Parent;
-		std::vector<UIWidget*> Child;
-
-
 		Maths::Vec3f DefaultPosition= Maths::Vec3f(0,0,0);
 	};
 
@@ -56,32 +52,32 @@ namespace Firelight::ECS
 	//hold all UI
 	struct UI_Canvas : UIWidget
 	{
-		bool hasChild = false;
-		//Maths::Rectf Size;
-		std::vector<UIWidget> Child;
-		
-
+		std::vector<UIWidget*> Child;
 	};
 	//Local Docking panel
 	struct Panel : UIWidget
 	{
-		UI_Canvas Parent;
-		std::vector <UIWidget> Child;
-		e_DockSettings DockSettings = e_DockSettings::DockNone;
-		
+		UIWidget* Parent;
+		std::vector<UIWidget*> Child;
 	};
 
 	//Visable UI
-	struct UI_Button : UIWidget
+	
+	struct UI_Child : UIWidget 
 	{
-		UIWidget parent;
-		bool isChanhgeTexRect;
-		char text;
-		e_DockSettings DockSettings = e_DockSettings::DockNone;
+		UIWidget* Parent;
 	};
-	struct UI_Immage : UIWidget
+
+	struct UI_Button : UI_Child
 	{
-		UIWidget parent;
-		e_DockSettings DockSettings = e_DockSettings::DockNone;
+		bool isChangeOfTex = true;
+		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
+		std::vector<Maths::Rectf> Rects;
+		char ButtionText;
+
+	};
+	struct UI_Immage : UI_Child
+	{
+		
 	};
 }

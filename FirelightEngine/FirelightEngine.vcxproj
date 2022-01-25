@@ -363,6 +363,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Audio\AudioClip.h" />
@@ -451,6 +452,7 @@
     <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UIEntity.cpp" />

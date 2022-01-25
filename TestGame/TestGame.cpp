@@ -35,7 +35,7 @@ using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
 
 void ChangeThing(UIWidget* thing) {
-	thing->DockSettings = ECS::e_DockSettings::DockCenter;
+	//thing->DockSettings = ECS::e_DockSettings::DockCenter;
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -63,11 +63,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			100.0f);
 
 		SpriteEntity* animationTest = new SpriteEntity();
-		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Circle.png");
-		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/shrekWalk.png");
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 200;
 		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 64;
-		//animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
-		//animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
+		animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
+		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
 		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
 
 		animationTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
@@ -87,18 +87,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		UIEntity* testUI2 = new UIEntity();
 		testUI2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		testUI2->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
-		testUI2->GetTransformComponent()->position = Maths::Vec3f(1, 0, 0);
+		testUI2->GetTransformComponent()->scale = Maths::Vec3f(0.5f, 0.5f, 0);
+		testUI2->GetTransformComponent()->position.x= Engine::Instance().GetWindowDimensionsFloat().x/2;
+		testUI2->GetTransformComponent()->position.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
 		testUI2->GetSpriteComponent()->layer = 20;
-		testUI2->GetUIWidget()->isDrag = false;
-		testUI2->GetUIWidget()->DockSettings = ECS::e_AnchorSettings::Top;
+		testUI2->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+		//testUI2->GetComponent<Firelight::ECS::UIWidget,Firelight::ECS::UI_Immage>()->DockSettings= ECS::e_AnchorSettings::Top;
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->Textuer = testUI2->GetSpriteComponent();
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->Transform = testUI2->GetTransformComponent();
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->DefaultPosition.x= Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->DefaultPosition.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
 
-		UIEntity* testUI = new UIEntity();
-		testUI->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		testUI->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
-		testUI->GetSpriteComponent()->layer = 20;
-		testUI->GetUIWidget()->OnLeftPressFunctions.push_back(std::bind(ChangeThing, testUI2->GetUIWidget()));
-		//testUI->GetSpriteComponent()->sourceRect = Maths::Rectf(100, 100, 200, 200);
+		//UIEntity* testUI = new UIEntity();
+		//testUI->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		//testUI->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
+		//testUI->GetSpriteComponent()->layer = 20;
+		//testUI->GetUIWidget()->OnLeftPressFunctions.push_back(std::bind(ChangeThing, testUI2->GetUIWidget()));
+		////testUI->GetSpriteComponent()->sourceRect = Maths::Rectf(100, 100, 200, 200);
 
 
 

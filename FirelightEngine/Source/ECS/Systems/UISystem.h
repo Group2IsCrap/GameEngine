@@ -12,7 +12,7 @@
 
 #include"..\Components\UIComponents.h"
 #include"..\Components\RenderingComponents.h"
-
+#include"..\Source\Utils\Timer.h"
 
 namespace Firelight::UI {
 	class UISystem :public Firelight::ECS::System, public Firelight::Events::Listener
@@ -65,7 +65,9 @@ namespace Firelight::UI {
 		ECS::UIWidget* FocusedItem = nullptr;
 		Maths::Vec3f MousePosDrag;
 		Maths::Vec2f mouseRawCurr;
-		
+		Utils::Timer time;
+
+		bool press = false;
 	};
 
 

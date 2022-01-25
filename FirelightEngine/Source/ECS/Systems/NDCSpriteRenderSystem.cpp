@@ -40,13 +40,9 @@ namespace Firelight::ECS
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}	
 			
-	
-
-		
-
 			Maths::Rectf destRect(
-				transformComponent->position.x - transformComponent->scale.x * 0.5f,
-				transformComponent->position.y - transformComponent->scale.y * 0.5f,
+				transformComponent->position.x - transformComponent->scale.x,
+				transformComponent->position.y - transformComponent->scale.y,
 				transformComponent->scale.x, transformComponent->scale.y);
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(destRect, texture, NDCspriteComponent->layer, transformComponent->rotation, NDCspriteComponent->colour, NDCspriteComponent->sourceRect);

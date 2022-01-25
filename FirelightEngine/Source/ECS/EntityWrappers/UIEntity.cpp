@@ -3,19 +3,13 @@ namespace Firelight::ECS
 {
 	Firelight::ECS::UIEntity::UIEntity()
 	{
-		AddComponent<NDCSpriteComponent>();
-		AddComponent<UIWidget>();
-
-		GetUIWidget()->Textuer = GetSpriteComponent();
-		GetUIWidget()->Transform = GetTransformComponent();
+		AddComponent<PixleSpriteComponent>();
+		
 
 	}
-	NDCSpriteComponent* UIEntity::GetSpriteComponent()
+	PixleSpriteComponent* UIEntity::GetSpriteComponent()
 	{
-		return GetComponent<NDCSpriteComponent>();
+		return GetComponent<PixleSpriteComponent>();
 	}
-	UIWidget* UIEntity::GetUIWidget()
-	{
-		return GetComponent<UIWidget>();
-	}
+	
 }
