@@ -28,52 +28,49 @@ namespace Firelight::ECS
 	struct UIWidget : BaseComponent
 	{
 
-		PixleSpriteComponent* Textuer = nullptr;
-		TransformComponent* Transform = nullptr;
-
-		std::string Name = "UI";
+		PixleSpriteComponent* texture = nullptr;
+		TransformComponent* transform = nullptr;
 		UINT Index =10;
-
 		//Events 
 		bool isPressable = true;
-		std::vector<CallbackFunctionType> OnLeftPressFunctions;
-		std::vector<CallbackFunctionType> OnRightPressFunctions;
-		std::vector<CallbackFunctionType> OnMiddlePressFunctions;
+		std::vector<CallbackFunctionType> onLeftPressFunctions;
+		std::vector<CallbackFunctionType> onRightPressFunctions;
+		std::vector<CallbackFunctionType> onMiddlePressFunctions;
 		bool isHover =true;
-		std::vector<CallbackFunctionType> OnHoverFunctions;
+		std::vector<CallbackFunctionType> onHoverFunctions;
 		bool isDrag =true;
 
 		//pos data
-		e_AnchorSettings DockSettings = e_AnchorSettings::None;
-		Maths::Vec3f DefaultPosition= Maths::Vec3f(0,0,0);
-	};
+		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
+		Maths::Vec2f offSet = (0, 0, 0);
 
-
-	//hold all UI
-	struct UI_Canvas : UIWidget
-	{
-		std::vector<UIWidget*> Child;
-	};
-	//Local Docking panel
-	struct Panel : UIWidget
-	{
-		UIWidget* Parent;
-		std::vector<UIWidget*> Child;
+		//free elments
+		Maths::Vec3f defaultPosition= Maths::Vec3f(0,0,0);
+		Maths::Vec3f defaultScale = Maths::Vec3f(1, 1, 0);
+		Maths::Vec3f currentScale = Maths::Vec3f(1, 1, 0);
 	};
 
 	//Visable UI
-	
 	struct UI_Child : UIWidget 
 	{
-		UIWidget* Parent;
+		UIWidget* parent;
 	};
-
+	//hold all UI
+	struct UI_Canvas : UIWidget
+	{
+		float layer = 32;
+	};
+	
+	//Local ancoring  panel
+	struct UI_Panel : UI_Child
+	{
+	};
 	struct UI_Button : UI_Child
 	{
 		bool isChangeOfTex = true;
 		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
-		std::vector<Maths::Rectf> Rects;
-		char ButtionText;
+		std::vector<Maths::Rectf> rectsOfButton;
+		char buttionText;
 
 	};
 	struct UI_Immage : UI_Child

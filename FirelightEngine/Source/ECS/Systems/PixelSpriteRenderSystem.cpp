@@ -17,7 +17,7 @@ namespace Firelight::ECS
 	PixelSpriteRenderSystem::PixelSpriteRenderSystem()
 	{
 		AddWhitelistComponent<PixleSpriteComponent>();
-		//AddWhitelistComponent<TransformComponent>();
+		AddWhitelistComponent<TransformComponent>();
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&PixelSpriteRenderSystem::Render, this));
 	}
 
@@ -31,22 +31,27 @@ namespace Firelight::ECS
 		{
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 
-			auto* PixleSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixleSpriteComponent>();
+			auto* pixleSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixleSpriteComponent>();
 
-			Graphics::Texture* texture = PixleSpriteComponentItem->texture;
+			if (!pixleSpriteComponentItem->toDraw) {
+				continue;
+			}
+
+			Graphics::Texture* texture = pixleSpriteComponentItem->texture;
 			if (texture == nullptr)
 			{
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}
-
-			float width = texture->GetDimensions().x * transformComponent->scale.x;
-			float Hight = texture->GetDimensions().y * transformComponent->scale.y;
+			
+			
+			float width = Engine::Instance().GetWindowDimensionsFloat().x * transformComponent->scale.x;
+			float Hight = Engine::Instance().GetWindowDimensionsFloat().y * transformComponent->scale.y;
 			Maths::Rectf destRect(
 				transformComponent->position.x- width * 0.5f,
 				transformComponent->position.y- Hight * 0.5f,
 				width, Hight);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, PixleSpriteComponentItem->layer, transformComponent->rotation, PixleSpriteComponentItem->colour, PixleSpriteComponentItem->sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixleSpriteComponentItem->layer, transformComponent->rotation, pixleSpriteComponentItem->colour, pixleSpriteComponentItem->sourceRect);
 
 		}
 	}

@@ -13,8 +13,10 @@
 #include"..\Components\UIComponents.h"
 #include"..\Components\RenderingComponents.h"
 #include"..\Source\Utils\Timer.h"
+#include"..\Source\Events\UIEvents.h"
 
 namespace Firelight::UI {
+
 	class UISystem :public Firelight::ECS::System, public Firelight::Events::Listener
 	{
 	public:
@@ -24,25 +26,13 @@ namespace Firelight::UI {
 
 		virtual void Update(const Utils::Time& time) override;
 
-
-		
-		void HandleEvents(void* data);
+		void HandleEvents(const char* event,void* data);
 
 		/// <summary>
 		/// subscribe to events
 		/// </summary>
 		void Initalize();
-
-
-		void UpdateDocking();
-
-
-
-
-		
-		
-
-
+		void SetSettings();
 	private:
 
 		//Event function Invoke
@@ -53,21 +43,29 @@ namespace Firelight::UI {
 		
 		//move through items
 		void OnNavergate();
+		void AnchorSettings();
 
-		void CheckChildern();
+		bool IsHit(int x, int y,ECS::UIWidget* widget);
+		void AnchorSettings(ECS::UI_Child* widget);
 		
-		void DockingSettings();
-
+		void AnchorSettings(ECS::UI_Canvas* widget);
 
 	private:
 
-		ECS::UIWidget* DagItem= nullptr;
-		ECS::UIWidget* FocusedItem = nullptr;
-		Maths::Vec3f MousePosDrag;
-		Maths::Vec2f mouseRawCurr;
-		Utils::Timer time;
+		ECS::UIWidget* m_DragItem= nullptr;
+		ECS::UIWidget* m_FocusedItem = nullptr;
+		Maths::Vec3f m_MousePosDrag;
+		Maths::Vec2f m_MouseRawCurr;
+		Utils::Timer m_ClickTimer;
 
-		bool press = false;
+		bool m_DragButtionIsPressed = false;
+		bool m_IsDragging = false;
+
+		ECS::e_AnchorSettings m_CurrDragAnchor = ECS::e_AnchorSettings::None;
+
+		Firelight::Events::Input::ControllerState m_PrevEventController;
+
+		float m_CanvasLayer;
 	};
 
 

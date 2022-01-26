@@ -377,6 +377,7 @@
     <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
     <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
     <ClInclude Include="Source\ECS\Systems\UISystem.h" />
+    <ClInclude Include="Source\Events\UIEvents.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />

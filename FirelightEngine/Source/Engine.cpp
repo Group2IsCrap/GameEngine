@@ -14,7 +14,7 @@
 
 #include "Events/EventDispatcher.h"
 #include "Graphics/GraphicsEvents.h"
-
+#include"Events/UIEvents.h"
 #include "ECS/EntityWrappers/CameraEntity.h"
 
 using namespace Firelight::ECS;
@@ -85,6 +85,8 @@ namespace Firelight
         {
             Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
         }
+        //Handle UI Resizeing
+        Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
     }
 
     ECS::SystemManager& Engine::GetSystemManager()
@@ -155,12 +157,14 @@ namespace Firelight
         // Do as many physics updates as are neccessary this frame
         for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
         {
-            m_systemManager.PhysicsUpdate(m_time);
+            m_systemManager.PhysicsUpdate(m_time); 
+            Input::ProcessInput::Instance()->TestInput();
         }
 
         m_systemManager.LateUpdate(m_time);
 
         UpdateActiveCamera2DRect();
+       
     }
 
     void Engine::RenderFrame()

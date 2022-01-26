@@ -16,21 +16,25 @@ namespace Firelight::Input
 
 	void ControllerManager::HandleInput()
 	{
-		for (const auto& controller : m_Controller)
+		/*for (const auto& controller : m_Controller)
 		{
 			controller->ProcessInput();
-		}
-
+		}*/
+		m_Controller[0]->ProcessInput();
 	}
 
 	void ControllerManager::ProcessInput()
 	{
-		for (const auto& controller : m_Controller)
+		/*for (const auto& controller : m_Controller)
 		{
 			if (controller->m_Isconnected) {
 				controller->TestInput();
 			}
+		}*/
+		if (m_Controller[0]->m_Isconnected) {
+			m_Controller[0]->TestInput();
 		}
+
 		
 	}
 

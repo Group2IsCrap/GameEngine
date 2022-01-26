@@ -5,7 +5,7 @@
 
 #include "..\Events\EventDispatcher.h"
 #include "ControllerEvent.h"
-
+#include"..\Source\Engine.h"
 namespace Firelight::Input 
 {
     ControllerInput::ControllerInput() :
@@ -15,6 +15,8 @@ namespace Firelight::Input
         m_TriggerThreshold(30)
     {
         m_State = XINPUT_STATE();
+        m_CurrentMousePos.x = 0;
+        m_CurrentMousePos.y = 0;
     }
 
     ControllerInput::ControllerInput(int controllerIndex, double deadZoneLeftThumb, double deadZoneRightThumb, double triggerThreshold) :
@@ -131,7 +133,39 @@ namespace Firelight::Input
 
     void ControllerInput::TestInput()
     {
-       
+        if (IsPressed(XINPUT_GAMEPAD_A)) {
+            m_InputThis = true;
+            POINT currMousePos;
+            GetCursorPos(&currMousePos);
+            ScreenToClient(Engine::Instance().GetWindowHandle(), &currMousePos);
+            m_CurrentMousePos = currMousePos;
+        }
+        if (m_InputThis) {
+            POINT moveMousePos;
+            moveMousePos.x = 0;
+            moveMousePos.y = 0;
+            if (GetLeftStickState().x > 0.5) {
+                m_CurrentMousePos.x += 2;
+                m_CurrentMousePos.y += 0;
+
+            }
+            if (GetLeftStickState().x < -0.5) {
+                m_CurrentMousePos.x -= 2;
+                m_CurrentMousePos.y += 0;
+            }
+            if (GetLeftStickState().y > 0.5) {
+                m_CurrentMousePos.x -= 0;
+                m_CurrentMousePos.y -= 2;
+            }
+            if (GetLeftStickState().y < -0.5) {
+                m_CurrentMousePos.x += 0;
+                m_CurrentMousePos.y += 2;
+            }
+
+            moveMousePos = m_CurrentMousePos;
+            ClientToScreen(Engine::Instance().GetWindowHandle(), &moveMousePos);
+            SetCursorPos(moveMousePos.x, moveMousePos.y);
+        }
     }
 
     bool ControllerInput::IsPressed(WORD buttion)

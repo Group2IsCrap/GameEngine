@@ -3,11 +3,9 @@
   <ItemGroup>
     <ClCompile Include="ImGuiTestLayer.cpp" />
     <ClCompile Include="TestGame.cpp" />
-    <ClCompile Include="TestInputGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiTestLayer.h" />
-    <ClInclude Include="TestInputGame.h" />
     <ClInclude Include="Pepe.h" />
   </ItemGroup>
   <ItemGroup>

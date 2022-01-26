@@ -28,14 +28,14 @@
 
 #include "Pepe.h"
 
-#include"TestInputGame.h"
 
+#include"Source\Events\UIEvents.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
 
 void ChangeThing(UIWidget* thing) {
-	//thing->DockSettings = ECS::e_DockSettings::DockCenter;
+	thing->anchorSettings = ECS::e_AnchorSettings::Top;
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -50,8 +50,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		ImGuiTestLayer* testLayer = new ImGuiTestLayer();
 		ImGuiManager::Instance()->AddRenderLayer(testLayer);
 		//ImGuiManager::Instance()->RemoveRenderLayer(testLayer);
-		
-		TestInputGame* inputTest = new TestInputGame();
 
 		// Animation Test
 		Firelight::Animation::Animation animation = Firelight::Animation::Animation(
@@ -85,27 +83,76 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->pixelsPerUnit = 25.0f;
 		test2->GetSpriteComponent()->layer = 16;
 
+		UIEntity* testUICan = new UIEntity();
+		testUICan->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png"); 
+		testUICan->GetSpriteComponent()->toDraw = false;
+		testUICan->GetTransformComponent()->scale = Maths::Vec3f(1.0f, 1.0f, 0);
+		testUICan->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Canvas());
+		testUICan->GetComponent<Firelight::ECS::UIWidget,Firelight::ECS::UI_Canvas>()->anchorSettings= ECS::e_AnchorSettings::Center;
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->texture = testUICan->GetSpriteComponent();
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->transform = testUICan->GetTransformComponent();
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isPressable = false;
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isDrag = false;
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isHover = false;
+		testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->layer = 32;
+		UIEntity* testUIP = new UIEntity();
+
+		testUIP->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUIP->GetTransformComponent()->position.x = Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUIP->GetTransformComponent()->position.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		
+		testUIP->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Panel());
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->anchorSettings = ECS::e_AnchorSettings::Top;
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->parent = testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>();
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->texture = testUIP->GetSpriteComponent();
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->transform = testUIP->GetTransformComponent();
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultPosition.x = Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultPosition.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isHover = false;
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isPressable = false;
+		testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.5f, 0.5f, 0);
+
+		UIEntity* testUIP2 = new UIEntity();
+		testUIP2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUIP2->GetTransformComponent()->position.x = Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUIP2->GetTransformComponent()->position.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		testUIP2->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Panel());
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->anchorSettings = ECS::e_AnchorSettings::Bottom;
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->parent = testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->texture = testUIP2->GetSpriteComponent();
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->transform = testUIP2->GetTransformComponent();
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultPosition.x = Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultPosition.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isHover = false;
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isPressable = false;
+		testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.5f, 0.5f, 0);
 		UIEntity* testUI2 = new UIEntity();
 		testUI2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		testUI2->GetTransformComponent()->scale = Maths::Vec3f(0.5f, 0.5f, 0);
+		
 		testUI2->GetTransformComponent()->position.x= Engine::Instance().GetWindowDimensionsFloat().x/2;
 		testUI2->GetTransformComponent()->position.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
-		testUI2->GetSpriteComponent()->layer = 20;
 		testUI2->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
-		//testUI2->GetComponent<Firelight::ECS::UIWidget,Firelight::ECS::UI_Immage>()->DockSettings= ECS::e_AnchorSettings::Top;
-		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->Textuer = testUI2->GetSpriteComponent();
-		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->Transform = testUI2->GetTransformComponent();
-		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->DefaultPosition.x= Engine::Instance().GetWindowDimensionsFloat().x / 2;
-		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->DefaultPosition.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
-
-		//UIEntity* testUI = new UIEntity();
-		//testUI->GetSpriteComponent()->texture= Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
-		//testUI->GetTransformComponent()->scale = Maths::Vec3f(1.0, 1.0, 0);
-		//testUI->GetSpriteComponent()->layer = 20;
-		//testUI->GetUIWidget()->OnLeftPressFunctions.push_back(std::bind(ChangeThing, testUI2->GetUIWidget()));
-		////testUI->GetSpriteComponent()->sourceRect = Maths::Rectf(100, 100, 200, 200);
-
-
+		testUI2->GetComponent<Firelight::ECS::UIWidget,Firelight::ECS::UI_Button>()->anchorSettings= ECS::e_AnchorSettings::Right;
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = testUI2->GetSpriteComponent();
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = testUI2->GetTransformComponent();
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultPosition.x= Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultPosition.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.2f, 0.2f, 0);
+		
+		UIEntity* testUI3 = new UIEntity();
+		testUI3->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		testUI3->GetTransformComponent()->position.x = Engine::Instance().GetWindowDimensionsFloat().x / 2;
+		testUI3->GetTransformComponent()->position.y = Engine::Instance().GetWindowDimensionsFloat().y / 2;
+		testUI3->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = testUIP->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = testUI3->GetSpriteComponent();
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = testUI3->GetTransformComponent();
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.2f, 0.2f, 0);
+		testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(ChangeThing, testUI2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()));
+		//testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->OffSet = (100, 100);
+		Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent> ();
 
 		SpriteEntity* collisionTest = new SpriteEntity();
 		collisionTest->GetComponent<Firelight::ECS::TransformComponent>()->position.x = 10.0f;
@@ -116,6 +163,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
 		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
 
+		
 		int speed = 10.0f;
 
 		while (Firelight::Engine::Instance().ProcessMessages())

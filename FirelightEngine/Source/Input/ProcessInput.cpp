@@ -6,6 +6,7 @@
 #include "MouseInput.h"
 #include "KeyboardInput.h"
 #include "ControllerManager.h"
+#include"ControllerInput.h"
 #include "GetInput.h"
 
 #include "../Utils/ErrorManager.h"
@@ -227,10 +228,12 @@ namespace Firelight::Input
 					RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(rawData.get());
 					if (raw->header.dwType == RIM_TYPEMOUSE)
 					{
+						m_ControllerManager->GetController(0)->m_InputThis=false;
 						m_MouseCapture->OnMouseMoveRaw(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
 					}
 				}
 			}
+			
 			//ReleaseCapture();
 			return false;
 
@@ -244,10 +247,11 @@ namespace Firelight::Input
 	void ProcessInput::ControllerInput()
 	{
 		m_ControllerManager->HandleInput();
+		
 	}
 
 	void ProcessInput::TestInput()
 	{
-		
+		m_ControllerManager->ProcessInput();
 	}
 }

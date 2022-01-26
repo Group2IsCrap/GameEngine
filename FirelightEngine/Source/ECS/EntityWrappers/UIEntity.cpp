@@ -1,4 +1,5 @@
 #include "UIEntity.h"
+
 namespace Firelight::ECS
 {
 	Firelight::ECS::UIEntity::UIEntity()

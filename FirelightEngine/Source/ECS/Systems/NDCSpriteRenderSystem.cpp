@@ -18,7 +18,7 @@ namespace Firelight::ECS
 	NDCSpriteRenderSystem::NDCSpriteRenderSystem()
 	{
 		AddWhitelistComponent<NDCSpriteComponent>();
-		AddWhitelistComponent<TransformComponent>();
+		
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&NDCSpriteRenderSystem::Render, this));
 	}
 
@@ -30,22 +30,16 @@ namespace Firelight::ECS
 	{
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
-			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
+			
+			auto* nDCspriteComponent = m_entities[entityIndex]->GetComponent<NDCSpriteComponent>();
 
-			auto* NDCspriteComponent = m_entities[entityIndex]->GetComponent<NDCSpriteComponent>();
-
-			Graphics::Texture* texture = NDCspriteComponent->texture;
+			Graphics::Texture* texture = nDCspriteComponent->texture;
 			if (texture == nullptr)
 			{
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}	
-			
-			Maths::Rectf destRect(
-				transformComponent->position.x - transformComponent->scale.x,
-				transformComponent->position.y - transformComponent->scale.y,
-				transformComponent->scale.x, transformComponent->scale.y);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(destRect, texture, NDCspriteComponent->layer, transformComponent->rotation, NDCspriteComponent->colour, NDCspriteComponent->sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(nDCspriteComponent->descRect, texture, nDCspriteComponent->layer,(0,0), nDCspriteComponent->colour, nDCspriteComponent->sourceRect);
 
 		}
 
