@@ -57,3 +57,11 @@
 !/Libs/x64/Release/DirectXTK.lib
 !/Libs/x86/Debug/DirectXTK.lib
 !/Libs/x86/Release/DirectXTK.lib
+!/Libs/x64/Debug/fmod_vc.lib
+!/Libs/x64/Release/fmod_vc.lib
+!/Libs/x64/Debug/fmodL_vc.lib
+!/Libs/x64/Release/fmodL_vc.lib
+!/Libs/x64/Debug/fmodstudio_vc.lib
+!/Libs/x64/Release/fmodstudio_vc.lib
+!/Libs/x64/Debug/fmodstudioL_vc.lib
+!/Libs/x64/Release/fmodstudioL_vc.lib
