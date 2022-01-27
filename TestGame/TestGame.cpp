@@ -178,6 +178,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
+			AudioEngine::engine->Update();
 
 			if (Firelight::Input::InputGet.KeyIsPress('W'))
 			{
