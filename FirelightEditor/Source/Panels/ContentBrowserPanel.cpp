@@ -8,8 +8,6 @@
 
 static const std::filesystem::path s_assetPath = "Assets";
 
-#define _CRT_SECURE_NO_WARNINGS
-
 static std::string s_folderName;
 static bool s_removeItem;
 static bool s_newFolder;

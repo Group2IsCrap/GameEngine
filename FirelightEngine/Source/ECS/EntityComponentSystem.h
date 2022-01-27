@@ -44,6 +44,12 @@ namespace Firelight::ECS
 			return m_componentManager->GetComponent<T>(entity, index);
 		}
 
+		template<typename T, typename T2>
+		T2* GetComponent(EntityID entity, int index = 0)
+		{
+			return m_componentManager->GetComponent<T,T2>(entity, index);
+		}
+
 		/// <summary>
 		/// Returns all components of a given type for a given entity
 		/// </summary>
@@ -65,6 +71,25 @@ namespace Firelight::ECS
 		std::vector<T*> GetAllComponents()
 		{
 			return m_componentManager->GetAllComponents<T>();
+		}
+
+		/// <summary>
+		/// Returns a list of all components.
+		/// </summary>
+		/// <returns>std::vector<BaseComponent*></returns>
+		std::vector<BaseComponent*> GetAllComponents()
+		{
+			std::vector<BaseComponent*> values;
+			std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> componentData = m_componentManager->GetComponentData();
+			for (std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>>::iterator it = componentData.begin(); it != componentData.end(); ++it)
+			{
+				for (auto c : it->second)
+				{
+					values.push_back(c);
+				}
+			}
+
+			return values;
 		}
 
 		/// <summary>
@@ -121,6 +146,12 @@ namespace Firelight::ECS
 			return m_componentManager->HasComponent<T>(entity);
 		}
 
+		template<typename T, typename T2>
+		bool HasComponent(EntityID entity)
+		{
+			return m_componentManager->HasComponent<T, T2>(entity);
+		}
+
 		/// <summary>
 		/// Removes an entity
 		/// </summary>
@@ -137,8 +168,10 @@ namespace Firelight::ECS
 		std::vector<EntityID> GetEntities();
 		Signature GetSignature(EntityID entityID);
 
-		int GetNumberOfComponents();
+		int GetRegisteredComponentTypeCount();
 		void UpdateAllEntitySignatures();
+
+		void Serialize();
 
 		static EntityComponentSystem* Instance();
 	private:

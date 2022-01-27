@@ -2,6 +2,7 @@
 
 #include "Systems/SpriteRenderSystem.h"
 #include "Systems/AnimationSystem.h"
+#include "../Source/Physics/PhysicsSystem.h"
 
 namespace Firelight::ECS
 {
@@ -41,5 +42,6 @@ namespace Firelight::ECS
 	{
 		m_systems.push_back(std::make_unique<SpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<AnimationSystem>());
+		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
 	}
 }

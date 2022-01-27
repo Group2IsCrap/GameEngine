@@ -7,6 +7,7 @@
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/Components/AnimationComponent.h"
+#include "Source/ECS/Components/PhysicsComponents.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/ECS/Systems/System.h"
 
@@ -20,6 +21,8 @@
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/SpriteBatch.h"
 #include "Source/Animation/Animation.h"
+
+#include "Source/Input/GetInput.h"
 
 #include "Source/ECS/Systems/AnimationSystem.h"
 
@@ -56,12 +59,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			100.0f);
 
 		SpriteEntity* animationTest = new SpriteEntity();
-		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = animation.m_texture;
-		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 35 * 6;
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Circle.png");
+		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
 		animationTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 64;
-		animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
-		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
+		//animationTest->AddComponent<Firelight::ECS::AnimationComponent>();
+		//animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
 		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
+
+		animationTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
+		animationTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
 
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
@@ -75,9 +81,41 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->pixelsPerUnit = 25.0f;
 		test2->GetSpriteComponent()->layer = 16;
 
+
+		SpriteEntity* collisionTest = new SpriteEntity();
+		collisionTest->GetComponent<Firelight::ECS::TransformComponent>()->position.x = 10.0f;
+		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Circle.png");
+		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
+		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 33;
+		collisionTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
+		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
+		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
+
+		int speed = 10.0f;
+
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
+
+			if (Firelight::Input::InputGet.KeyIsPress('W'))
+			{
+				animationTest->GetTransformComponent()->position.y += Engine::Instance().GetTime().GetDeltaTime() * speed;
+			}
+
+			if (Firelight::Input::InputGet.KeyIsPress('A'))
+			{
+				animationTest->GetTransformComponent()->position.x -= Engine::Instance().GetTime().GetDeltaTime() * speed;
+			}
+
+			if (Firelight::Input::InputGet.KeyIsPress('S'))
+			{
+				animationTest->GetTransformComponent()->position.y -= Engine::Instance().GetTime().GetDeltaTime() * speed;
+			}
+
+			if (Firelight::Input::InputGet.KeyIsPress('D'))
+			{
+				animationTest->GetTransformComponent()->position.x += Engine::Instance().GetTime().GetDeltaTime() * speed;
+			}
 			
 			/*for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
