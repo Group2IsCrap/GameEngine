@@ -31,13 +31,13 @@ namespace Firelight::ECS
 		{
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 
-			auto* pixleSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixelSpriteComponent>();
+			auto* pixelSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixelSpriteComponent>();
 
-			if (!pixleSpriteComponentItem->toDraw) {
+			if (!pixelSpriteComponentItem->toDraw) {
 				continue;
 			}
 
-			Graphics::Texture* texture = pixleSpriteComponentItem->texture;
+			Graphics::Texture* texture = pixelSpriteComponentItem->texture;
 			if (texture == nullptr)
 			{
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
@@ -51,7 +51,7 @@ namespace Firelight::ECS
 				transformComponent->position.y- Hight * 0.5f,
 				width, Hight);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixleSpriteComponentItem->layer, transformComponent->rotation, pixleSpriteComponentItem->colour, pixleSpriteComponentItem->sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixelSpriteComponentItem->layer, transformComponent->rotation, pixelSpriteComponentItem->colour, pixelSpriteComponentItem->sourceRect);
 
 		}
 	}
