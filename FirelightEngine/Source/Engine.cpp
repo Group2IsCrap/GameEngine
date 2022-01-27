@@ -176,8 +176,8 @@ namespace Firelight
 
     void Engine::RenderFrame()
     {
-        Graphics::GraphicsHandler::Instance().Render();
-
         Events::EventDispatcher::InvokeFunctions<Events::Graphics::OnEarlyRender>();
+
+        Graphics::GraphicsHandler::Instance().Render();
     }
 }
