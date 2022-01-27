@@ -28,11 +28,30 @@
 
 #include "Pepe.h"
 
+#include "FModAudio.h"
+
 
 #include"Source\Events\UIEvents.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
+using namespace snowFallAudio::FModAudio;
+
+
+
+void playSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+{
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
+}
+
+void playTestSound()
+{
+	Vector3D location = Vector3D(0, 0, 0);
+	float volume = 0.2f;
+	std::string soundName = "sound.mp3";
+	playSound(soundName, location, volume);
+}
+
 void CreatUITest() {
 	//needs new immages
 	UIEntity* testUICan = new UIEntity();
@@ -102,8 +121,10 @@ void CreatUITest() {
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = testUI3->GetSpriteComponent();
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = testUI3->GetTransformComponent();
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.2f, 0.2f, 0);
+	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(playTestSound));
 	//testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->OffSet = (100, 100);
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
+
 }
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -209,3 +230,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return 0;
 }
+
+
+
+
+
+

@@ -1,11 +1,12 @@
 #include "FModAudio.h"
 #include <io.h>
 
-snowFallAudio::FModAudio::AudioEngine* engine = new snowFallAudio::FModAudio::AudioEngine;
+snowFallAudio::FModAudio::AudioEngine* snowFallAudio::FModAudio::AudioEngine::engine = new snowFallAudio::FModAudio::AudioEngine;
 
 snowFallAudio::FModAudio::AudioEngine::AudioEngine()
 {
-
+	std::cout << "Engine Init";
+	this->Initialise();
 }
 
 snowFallAudio::FModAudio::AudioEngine::~AudioEngine()
@@ -13,29 +14,29 @@ snowFallAudio::FModAudio::AudioEngine::~AudioEngine()
 	delete engine;
 }
 
-
-
 //Instance functions
 snowFallAudio::FModAudio::Instance::Instance()
 {
 	//Create and initialise the system
 	m_nextChannelId = 0;
 	fModStudioSystem = NULL;
-	fmodSystem = NULL;
-	engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
-	engine->ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+	fmodSystem = NULL; 
+	AudioEngine::engine->ErrorCheck(FMOD::System_Create(&fmodSystem));
+	AudioEngine::engine->ErrorCheck(fmodSystem->init(4093, FMOD_INIT_3D_RIGHTHANDED, 0));
+	AudioEngine::engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
+	AudioEngine::engine->ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
 }
 
 snowFallAudio::FModAudio::Instance::~Instance()
 {
 
 	//Unload all assets
-	engine->ErrorCheck(fModStudioSystem->unloadAll());
+	AudioEngine::engine->ErrorCheck(fModStudioSystem->unloadAll());
 	//Shutdown the FMod system
-	engine->ErrorCheck(fModStudioSystem->release());
-	engine->ErrorCheck(fmodSystem->release());
+	AudioEngine::engine->ErrorCheck(fModStudioSystem->release());
+	AudioEngine::engine->ErrorCheck(fmodSystem->release());
 
-	engine->Shutdown();
+	AudioEngine::engine->Shutdown();
 }
 
 void snowFallAudio::FModAudio::Instance::Update()
@@ -61,7 +62,7 @@ void snowFallAudio::FModAudio::Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
-	engine->ErrorCheck(fModStudioSystem->update());
+	AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 }
 
 snowFallAudio::FModAudio::Instance* fmodInstance = nullptr;
@@ -125,7 +126,8 @@ void snowFallAudio::FModAudio::AudioEngine::LoadSound(const std::string& soundNa
 void snowFallAudio::FModAudio::AudioEngine::UnLoadSound(const std::string& soundName)
 {
 	//Find if the sound isn't loaded
-	auto soundFound = fmodInstance->m_sounds.find(soundName);
+	newString = audioFolder + soundName;
+	auto soundFound = fmodInstance->m_sounds.find(newString);
 	if (soundFound == fmodInstance->m_sounds.end())
 	{
 		return;
@@ -136,19 +138,19 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadSound(const std::string& sound
 	fmodInstance->m_sounds.erase(soundFound);
 }
 
-int snowFallAudio::FModAudio::AudioEngine::PlaySound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
 {
-
+	newString = audioFolder + soundName;
 	//Set the next channel
 	int nextChannelId = fmodInstance->m_nextChannelId++;
 
 	//Find if song is not loaded
-	auto soundFound = fmodInstance->m_sounds.find(soundName);
+	auto soundFound = fmodInstance->m_sounds.find(newString);
 	if (soundFound == fmodInstance->m_sounds.end())
 	{
-		engine->LoadSound(soundName);
+		engine->LoadSound(newString);
 		//Find the newly loaded sound
-		soundFound = fmodInstance->m_sounds.find(soundName);
+		soundFound = fmodInstance->m_sounds.find(newString);
 		//If still not loaded
 		if (soundFound == fmodInstance->m_sounds.end())
 		{
@@ -179,7 +181,7 @@ int snowFallAudio::FModAudio::AudioEngine::PlaySound(const std::string& soundNam
 			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
 		}
 		//set volume
-		engine->ErrorCheck(channel->setVolume(engine->dBToVolume(volumedB)));
+		engine->ErrorCheck(channel->setVolume(volumedB));
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
 

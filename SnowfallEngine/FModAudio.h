@@ -3,10 +3,10 @@
 #ifndef _FModAudio_H_
 #define _FModAudio_H_
 
-#include "Vector2D.h"
-#include "Vector3D.h"
 #include "FMod/fmod.hpp"
 #include "FMod/fmod_studio.hpp"
+#include "Vector2D.h"
+#include "Vector3D.h"
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -41,6 +41,8 @@ namespace snowFallAudio
 		class AudioEngine
 		{
 		public:
+			static AudioEngine* engine;
+
 			AudioEngine();
 			~AudioEngine();
 
@@ -52,7 +54,7 @@ namespace snowFallAudio
 			void LoadSound(const std::string& soundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 			void UnLoadSound(const std::string& soundName);
 			void SetListenerPos(const Vector2D& playerPos);
-			int PlaySound(const std::string& soundName, const Vector3D& soundPos = Vector3D(0.0f, 0.0f, 0.0f), float volumedB = 0.0f);
+			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos = Vector3D(0.0f, 0.0f, 0.0f), float volumedB = 0.0f);
 			int PlaySound2D(const std::string& soundName, const Vector2D& playerPos, float volumedB = 0.0f);
 			void StopChannel(int channelId);
 			void StopAllChannels();
@@ -64,7 +66,13 @@ namespace snowFallAudio
 			float dBToVolume(float dB);
 			float VolumeTodB(float volume);
 
+		private:
+			std::string audioFolder = "AudioFolder/";
+			std::string newString;
 
 		};
+
+		
+
 	}
 }
