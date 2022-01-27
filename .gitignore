@@ -44,6 +44,7 @@
 /UnitTests/x64/
 /FirelightEngine/x64/
 /UnitTests/x64/
+/SnowfallEngine/x64/
 
 # Allow
 !/Firelight/Resources/*.obj
