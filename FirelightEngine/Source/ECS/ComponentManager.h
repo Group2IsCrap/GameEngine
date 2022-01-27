@@ -204,7 +204,7 @@ namespace Firelight::ECS
 		~ComponentManager() = default;
 
 		bool HasComponent(ComponentTypeID typeID, EntityID entity);
-		int GetComponentTypeCount();
+		int GetRegisteredComponentTypeCount();
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentData();
 		const char* GetComponentName(ComponentTypeID typeID);
 		void RemoveEntity(EntityID entity);
@@ -238,6 +238,8 @@ namespace Firelight::ECS
 		}
 
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
+
+		void SaveAllComponents();
 
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;

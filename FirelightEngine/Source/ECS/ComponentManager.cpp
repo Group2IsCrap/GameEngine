@@ -4,7 +4,7 @@ namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 
-	int ComponentManager::GetComponentTypeCount()
+	int ComponentManager::GetRegisteredComponentTypeCount()
 	{
 		return (int)m_componentTypeHash.size();
 	}
@@ -51,6 +51,20 @@ namespace Firelight::ECS
 				}
 			}
 		}
+	}
+
+	void ComponentManager::SaveAllComponents()
+	{
+		for (auto it : m_componentData)
+		{
+			for (auto component : it.second)
+			{
+				component->Serialise();
+			}
+		}
+
+		//Write ComponentMap
+		//Write Name to ComponentIDs Map
 	}
 
 	/// <summary>
