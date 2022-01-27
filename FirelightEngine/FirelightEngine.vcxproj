@@ -363,15 +363,21 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
+    <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
     <ClInclude Include="Source\Audio\AudioClip.h" />
     <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
+    <ClInclude Include="Source\ECS\Components\UIComponents.h" />
     <ClInclude Include="Source\ECS\Components\AudioComponents.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
     <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
+    <ClInclude Include="Source\ECS\Systems\UISystem.h" />
+    <ClInclude Include="Source\Events\UIEvents.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />
@@ -447,8 +453,12 @@
     <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIEntity.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\UISystem.cpp" />
     <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />

@@ -17,6 +17,7 @@ namespace Firelight::ECS
 	SpriteRenderSystem::SpriteRenderSystem()
 	{
 		AddWhitelistComponent<SpriteComponent>();
+		
 
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&SpriteRenderSystem::Render, this));
 	}
@@ -49,5 +50,7 @@ namespace Firelight::ECS
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
 		}
+
+		
 	}
 }

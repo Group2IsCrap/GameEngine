@@ -42,30 +42,30 @@ namespace Firelight::Events::Input
 		return m_Pos.y;
 	}
 
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent() :
+	Input::MouseButtonReleaseEvent::MouseButtonReleaseEvent() :
 		MouseEvent()
 	{
 	}
 
-	Input::MouseButtionReleaseEvent::MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y) :
+	Input::MouseButtonReleaseEvent::MouseButtonReleaseEvent(const e_MouseEventType type, const int x, const int y) :
 		MouseEvent(type, x, y)
 	{
 	}
 
-	Input::MouseButtionReleaseEvent::~MouseButtionReleaseEvent()
+	Input::MouseButtonReleaseEvent::~MouseButtonReleaseEvent()
 	{
 	}
 
-	Input::MouseButtionPressEvent::MouseButtionPressEvent()
+	Input::MouseButtonPressEvent::MouseButtonPressEvent()
 	{
 	}
 
-	Input::MouseButtionPressEvent::MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y) :
+	Input::MouseButtonPressEvent::MouseButtonPressEvent(const e_MouseEventType type, const int x, const int y) :
 		MouseEvent(type, x, y)
 	{
 	}
 
-	Input::MouseButtionPressEvent::~MouseButtionPressEvent()
+	Input::MouseButtonPressEvent::~MouseButtonPressEvent()
 	{
 	}
 

@@ -1,7 +1,10 @@
 #include "SystemManager.h"
 
 #include "Systems/SpriteRenderSystem.h"
+#include"Systems/NDCSpriteRenderSystem.h"
+#include"Systems/PixelSpriteRenderSystem.h"
 #include "Systems/AnimationSystem.h"
+#include"Systems/UISystem.h"
 #include "../Source/Physics/PhysicsSystem.h"
 
 namespace Firelight::ECS
@@ -41,7 +44,10 @@ namespace Firelight::ECS
 	void SystemManager::RegisterEngineSystems()
 	{
 		m_systems.push_back(std::make_unique<SpriteRenderSystem>());
+		m_systems.push_back(std::make_unique<NDCSpriteRenderSystem>());
+		m_systems.push_back(std::make_unique<PixelSpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<AnimationSystem>());
+		m_systems.push_back(std::make_unique<UI::UISystem>());
 		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
 	}
 }
