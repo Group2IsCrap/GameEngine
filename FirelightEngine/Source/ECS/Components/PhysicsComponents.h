@@ -25,6 +25,7 @@ namespace Firelight::ECS
 	struct ColliderComponent : BaseComponent
 	{
 		bool isEnabled = true;
+		bool drawCollider = false;
 	};
 
 	struct BoxColliderComponent : ColliderComponent

@@ -14,7 +14,9 @@ namespace Firelight::Physics
 	public:
 
 		PhysicsSystem();
+		~PhysicsSystem() override;
 
+		void Render();
 		void PhysicsUpdate(const Utils::Time& time) override;
 
 		void ApplyForces(double fixedDeltaTime);
