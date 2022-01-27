@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Source/Animation/Animation.h"
 #include "../ECSDefines.h"
+#include "../Source/Animation/Animation.h"
 #include "../Source/Graphics/Data/Texture.h"
 #include "../Source/Maths/Rect.h"
 

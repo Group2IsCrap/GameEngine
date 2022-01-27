@@ -4,6 +4,7 @@
 #include "../Source/Maths/Vec2.h"
 
 #include <string>
+#include <math.h>
 
 namespace Firelight::Animation
 {

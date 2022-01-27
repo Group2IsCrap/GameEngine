@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Panel.h"
+#include "../Includes/imgui/imgui.h"
 
-class ViewportPanel : public Panel
+class ViewportPanel
 {
 public:
 	ViewportPanel();

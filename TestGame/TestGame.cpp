@@ -28,11 +28,30 @@
 
 #include "Pepe.h"
 
+#include "FModAudio.h"
+
 
 #include"Source\Events\UIEvents.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
+using namespace snowFallAudio::FModAudio;
+
+
+
+void playSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+{
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
+}
+
+void playTestSound()
+{
+	Vector3D location = Vector3D(0, 0, 0);
+	float volume = 0.2f;
+	std::string soundName = "sound.mp3";
+	playSound(soundName, location, volume);
+}
+
 void CreatUITest() {
 	//needs new immages
 	UIEntity* testUICan = new UIEntity();
@@ -47,8 +66,8 @@ void CreatUITest() {
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isHover = false;
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->layer = 100;
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->defaultScale = Maths::Vec3f(1.0f, 1.0f, 0);
-	
-	
+
+
 
 	UIEntity* testUIP = new UIEntity();
 	testUIP->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
@@ -71,7 +90,7 @@ void CreatUITest() {
 	testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isHover = false;
 	testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isPressable = false;
 	testUIP2->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.25f, 0.25f, 0);
-	
+
 	UIEntity* testUI2 = new UIEntity();
 	testUI2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	testUI2->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
@@ -92,9 +111,10 @@ void CreatUITest() {
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = testUI3->GetSpriteComponent();
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = testUI3->GetTransformComponent();
 	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.2f, 0.2f, 0);
-	//testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(//add function here))
+	testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(playTestSound));
 	//testUI3->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->OffSet = (100, 100);
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
+
 }
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -115,7 +135,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/shrekWalk.png"),
 			35 * 6,
 			43 * 6,
-			6, 
+			6,
 			100.0f);
 
 		SpriteEntity* animationTest = new SpriteEntity();
@@ -152,7 +172,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
 		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
 
-		
+
 		int speed = 10.0f;
 
 		while (Firelight::Engine::Instance().ProcessMessages())
@@ -178,7 +198,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			{
 				animationTest->GetTransformComponent()->position.x += Engine::Instance().GetTime().GetDeltaTime() * speed;
 			}
-			
+
 			/*for (int pepeIndex = 0; pepeIndex < numPepes; ++pepeIndex)
 			{
 				Pepe& pepe = pepes[pepeIndex];
@@ -186,7 +206,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 				pepe.Update(deltaTime, windowDimensions);
 				pepe.Draw();
 			}
-			
+
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(Maths::Rectf(100.0f, 100.0f, 200.0f, 200.0f), Graphics::AssetManager::Instance().GetDefaultTexture(), 64);
 
