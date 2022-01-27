@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FirelightEditor", "FirelightEditor\FirelightEditor.vcxproj", "{0D156AFD-42BF-4BF0-9787-9EBB6BF8E034}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnowfallEngine", "SnowfallEngine\SnowfallEngine.vcxproj", "{2E6E55DF-89AD-461D-8ACC-B73399320C31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -69,6 +71,18 @@ Global
 		{0D156AFD-42BF-4BF0-9787-9EBB6BF8E034}.Release|x64.Build.0 = Release|x64
 		{0D156AFD-42BF-4BF0-9787-9EBB6BF8E034}.Release|x86.ActiveCfg = Release|Win32
 		{0D156AFD-42BF-4BF0-9787-9EBB6BF8E034}.Release|x86.Build.0 = Release|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Debug|x64.ActiveCfg = Debug|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Debug|x64.Build.0 = Debug|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Debug|x86.ActiveCfg = Debug|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Debug|x86.Build.0 = Debug|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Profile|x64.ActiveCfg = Debug|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Profile|x64.Build.0 = Debug|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Profile|x86.ActiveCfg = Debug|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Profile|x86.Build.0 = Debug|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x64.ActiveCfg = Release|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x64.Build.0 = Release|x64
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x86.ActiveCfg = Release|Win32
+		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

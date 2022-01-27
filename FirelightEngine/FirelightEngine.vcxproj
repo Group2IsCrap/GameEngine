@@ -363,10 +363,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Animation\Animation.h" />
+    <ClInclude Include="Source\Audio\AudioClip.h" />
+    <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
+    <ClInclude Include="Source\ECS\Components\AudioComponents.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
     <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
     <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
     <ClInclude Include="Source\Input\GetInput.h" />
@@ -439,9 +444,11 @@
     <ClInclude Include="Source\ECS\Systems\SpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
+    <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
+    <ClCompile Include="Source\ECS\Systems\AnimationSystem.cpp" />
     <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
@@ -494,6 +501,7 @@
     <ClCompile Include="Source\ECS\Systems\SpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
+    <ClCompile Include="Source\Utils\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

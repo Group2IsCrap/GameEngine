@@ -44,30 +44,30 @@ namespace Firelight::ECS
 	}
 
 	/// <summary>
-	/// Primary Update Loop
-	/// </summary>
-	/// <param name="dt"></param>
-	void System::Update(double dt)
-	{
-		(void)dt;
-	}
-
-	/// <summary>
-	/// Secondary Update Loop
-	/// </summary>
-	/// <param name="dt"></param>
-	void System::LateUpdate(double dt)
-	{
-		(void)dt;
-	}
-
-	/// <summary>
-	/// Fixed Update loop
+	/// Physics update
 	/// </summary>
 	/// <param name="fixeddt"></param>
-	void System::FixedUpdate(double fixeddt)
+	void System::PhysicsUpdate(const Utils::Time& time)
 	{
-		(void)fixeddt;
+		(void)time;
+	}
+
+	/// <summary>
+	/// Primary update
+	/// </summary>
+	/// <param name="dt"></param>
+	void System::Update(const Utils::Time& time)
+	{
+		(void)time;
+	}
+
+	/// <summary>
+	/// Secondary later update
+	/// </summary>
+	/// <param name="dt"></param>
+	void System::LateUpdate(const Utils::Time& time)
+	{
+		(void)time;
 	}
 
 	void System::UpdateEntityList()

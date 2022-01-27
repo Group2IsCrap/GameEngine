@@ -21,9 +21,6 @@
     <ClCompile Include="ImGuiEditorLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Panels\Panel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Panels\ContentBrowserPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,13 +36,13 @@
     <ClCompile Include="Source\Panels\ViewportPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DrawHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiEditorLayer.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Panels\Panel.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Panels\ContentBrowserPanel.h">
       <Filter>Header Files</Filter>
@@ -60,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Panels\ViewportPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DrawHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

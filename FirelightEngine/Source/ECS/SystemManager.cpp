@@ -1,6 +1,8 @@
 #include "SystemManager.h"
 
 #include "Systems/SpriteRenderSystem.h"
+#include "Systems/AnimationSystem.h"
+#include "../Source/Physics/PhysicsSystem.h"
 
 namespace Firelight::ECS
 {
@@ -12,32 +14,34 @@ namespace Firelight::ECS
 	{
 	}
 
-	void SystemManager::Update(double deltaTime)
+	void SystemManager::Update(const Utils::Time& time)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->Update(deltaTime);
+			m_systems[systemIndex]->Update(time);
 		}
 	}
 
-	void SystemManager::FixedUpdate(double deltaTime)
+	void SystemManager::PhysicsUpdate(const Utils::Time& time)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->FixedUpdate(deltaTime);
+			m_systems[systemIndex]->PhysicsUpdate(time);
 		}
 	}
 
-	void SystemManager::LateUpdate(double deltaTime)
+	void SystemManager::LateUpdate(const Utils::Time& time)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->LateUpdate(deltaTime);
+			m_systems[systemIndex]->LateUpdate(time);
 		}
 	}
 
 	void SystemManager::RegisterEngineSystems()
 	{
 		m_systems.push_back(std::make_unique<SpriteRenderSystem>());
+		m_systems.push_back(std::make_unique<AnimationSystem>());
+		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
 	}
 }

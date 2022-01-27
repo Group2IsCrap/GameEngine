@@ -22,7 +22,10 @@ using namespace Firelight::ECS;
 namespace Firelight
 {
     Engine::Engine::Engine() :
-        m_initialised(false)
+        m_initialised(false),
+
+        m_activeCamera(nullptr),
+        m_activeCameraRect()
     {
     }
 
@@ -109,18 +112,30 @@ namespace Firelight
         return m_windowContainer.GetWindow().GetHWND();
     }
 
+    const Utils::Time& Engine::GetTime() const
+    {
+        return m_time;
+    }
+
+    Utils::Time& Engine::GetWritableTime()
+    {
+        return m_time;
+    }
+
     void Engine::UpdateActiveCamera2DRect()
     {
         if (m_activeCamera != nullptr)
         {
             const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->position;
             const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
-            const float size = m_activeCamera->GetCamera2DComponent()->size * 0.01f;
+            const float aspectRatio = windowDimensions.x / windowDimensions.y;
+
+            const float size = m_activeCamera->GetCamera2DComponent()->viewportWorldHeight;
 
             m_activeCameraRect = Maths::Rectf(
-                cameraPos.x - windowDimensions.x * 0.5f * size,
-                cameraPos.y - windowDimensions.y * 0.5f * size,
-                windowDimensions.x * size, windowDimensions.y * size);
+                cameraPos.x - size * 0.5f * aspectRatio,
+                cameraPos.y - size * 0.5f,
+                size * aspectRatio, size);
         }
     }
 
@@ -129,19 +144,23 @@ namespace Firelight
         return m_activeCameraRect;
     }
 
-    double Engine::Update()
+    void Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
 
-        m_frameTimer.Stop();
-        double deltaTime = m_frameTimer.GetDurationSeconds();
-        m_frameTimer.Start();
+        m_time.Update();
 
-        m_systemManager.Update(deltaTime);
+        m_systemManager.Update(m_time);
+
+        // Do as many physics updates as are neccessary this frame
+        for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
+        {
+            m_systemManager.PhysicsUpdate(m_time);
+        }
+
+        m_systemManager.LateUpdate(m_time);
 
         UpdateActiveCamera2DRect();
-
-        return deltaTime;
     }
 
     void Engine::RenderFrame()

@@ -32,18 +32,20 @@ namespace Firelight::ECS
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
 
+			// If we pass nullptr to WorldDraw() it will draw a coloured quad
+			// Lets use the default texture instead
 			Graphics::Texture* texture = spriteComponent->texture;
 			if (texture == nullptr)
 			{
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}
 
-			const Maths::Vec2f spriteDimensions = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
+			const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
 
 			Maths::Rectf destRect(
-				transformComponent->position.x - spriteDimensions.x * 0.5f,
-				transformComponent->position.y - spriteDimensions.y * 0.5f,
-				spriteDimensions.x, spriteDimensions.y);
+				transformComponent->position.x - spriteWorldSize.x * 0.5f + spriteComponent->drawOffset.x,
+				transformComponent->position.y - spriteWorldSize.y * 0.5f + spriteComponent->drawOffset.y,
+				spriteWorldSize.x, spriteWorldSize.y);
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
 		}
