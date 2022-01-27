@@ -68,7 +68,7 @@ namespace Firelight::ECS
 	/// <summary>
 	/// Contains information required to draw a Pixle sprite
 	/// </summary>
-	struct PixleSpriteComponent : BaseComponent
+	struct PixelSpriteComponent : BaseComponent
 	{
 		Firelight::Graphics::Texture* texture = nullptr;
 		int                               layer = 32;

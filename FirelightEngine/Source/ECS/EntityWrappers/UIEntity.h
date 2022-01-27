@@ -11,7 +11,7 @@ namespace Firelight::ECS
 	public:
 		UIEntity();
 
-		PixleSpriteComponent* GetSpriteComponent();
+		PixelSpriteComponent* GetSpriteComponent();
 
 	};
 }

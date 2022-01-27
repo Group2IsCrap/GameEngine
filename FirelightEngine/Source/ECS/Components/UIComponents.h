@@ -28,7 +28,7 @@ namespace Firelight::ECS
 	struct UIWidget : BaseComponent
 	{
 
-		PixleSpriteComponent* texture = nullptr;
+		PixelSpriteComponent* texture = nullptr;
 		TransformComponent* transform = nullptr;
 		UINT Index =10;
 		//Events 

@@ -27,7 +27,7 @@ namespace Firelight::UI {
 			}
 		}
 	}
-	static bool ispess = false;
+
 	void UISystem::HandleEvents(const char* event , void* data)
 	{
 
@@ -39,17 +39,21 @@ namespace Firelight::UI {
 				//checks
 				ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
 
-				if (uIComponent->texture == nullptr || uIComponent->transform == nullptr) {
+				if (uIComponent->texture == nullptr || uIComponent->transform == nullptr) 
+				{
 					continue;
 				}
-				if (uIComponent->isDrag && eventController->m_A ) {
+				if (uIComponent->isDrag && eventController->m_A ) 
+				{
 
 					OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LPress, uIComponent);
 
 				}
-				if (!eventController->m_A && m_PrevEventController.m_A) {
+				if (!eventController->m_A && m_PrevEventController.m_A) 
+				{
 					
-					if (m_DragItem == uIComponent) {
+					if (m_DragItem == uIComponent) 
+					{
 						OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, uIComponent);
 					}
 					if (uIComponent->isPressable && m_DragItem == nullptr) {
@@ -57,31 +61,35 @@ namespace Firelight::UI {
 
 					}
 				}
-				if (eventController->m_LeftStick.x > 0.5 || eventController->m_LeftStick.x < -0.5 || eventController->m_LeftStick.y > 0.5 || eventController->m_LeftStick.y < -0.5) {
+				if (eventController->m_LeftStick.x > 0.5 || eventController->m_LeftStick.x < -0.5 || eventController->m_LeftStick.y > 0.5 || eventController->m_LeftStick.y < -0.5) 
+				{
 					m_MouseRawCurr = Maths::Vec2f(1, 1);
 				}
-				if (eventController->m_A != m_PrevEventController.m_A) {
+				if (eventController->m_A != m_PrevEventController.m_A) 
+				{
 					m_MouseRawCurr = Maths::Vec2f(0, 0);	
 				}
 			}
 			m_PrevEventController = *eventController;
 			return;
 		}
-		else if (event == Events::Input::OnKeyPress::sm_descriptor) {
+		else if (event == Events::Input::OnKeyPress::sm_descriptor) 
+		{
 			unsigned char eventKey = (unsigned char)data;
-
-		
 
 			return;
 		}
-		else {
+		else 
+		{
 			Firelight::Events::Input::MouseEvent* eventMouse = static_cast<Firelight::Events::Input::MouseEvent*>(data);
 
-			if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move) {
+			if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move) 
+			{
 				m_MousePosDrag = Maths::Vec3f(eventMouse->GetMouseX(), eventMouse->GetMouseY(), 0);
 				
 			}
-			if (eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove) {
+			if (eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove) 
+			{
 
 				m_MouseRawCurr = Maths::Vec2f(eventMouse->GetMouseX(), eventMouse->GetMouseY());
 
@@ -98,18 +106,21 @@ namespace Firelight::UI {
 				if (eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove)
 				{
 					if (m_DragItem == nullptr) {
-						if (eventMouse->GetType() != Events::Input::e_MouseEventType::Move) {
+						if (eventMouse->GetType() != Events::Input::e_MouseEventType::Move) 
+						{
 							if (uIComponent->isPressable) {
 
 								OnPress(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), uIComponent);
 
 							}
 						}
-						if (uIComponent->isHover) {
+						if (uIComponent->isHover) 
+						{
 							OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), uIComponent);
 						}
 					}
-					if (uIComponent->isDrag) {
+					if (uIComponent->isDrag) 
+					{
 
 						OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), uIComponent);
 
@@ -129,8 +140,8 @@ namespace Firelight::UI {
 	void UISystem::Initalize()
 	{
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyPress>(this);
-		Events::EventDispatcher::AddListener<Events::Input::MouseButtionPressEvent>(this);
-		Events::EventDispatcher::AddListener<Events::Input::MouseButtionReleaseEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseButtonPressEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::MouseButtonReleaseEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::MouseMoveEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::MouseMoveRawEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
@@ -325,7 +336,7 @@ namespace Firelight::UI {
 
 	void UISystem::AnchorSettings(ECS::UI_Child* widget)
 	{
-		widget->texture->layer = m_CanvasLayer;
+		//widget->texture->layer = m_CanvasLayer;
 		Maths::Vec2f screen = Engine::Instance().GetWindowDimensionsFloat();
 		if (widget->parent == nullptr) {
 			float width = screen.x * widget->transform->scale.x;
@@ -474,6 +485,7 @@ namespace Firelight::UI {
 					
 					widget->currentScale= widget->defaultScale* widget->parent->transform->scale;
 					widget->transform->scale = widget->currentScale;
+					widget->texture->layer = currentParent->texture->layer+1;
 					return;
 				}
 					break;
@@ -482,6 +494,7 @@ namespace Firelight::UI {
 			}
 			widget->currentScale = widget->defaultScale* widget->parent->transform->scale;
 			widget->transform->scale = widget->currentScale;
+			widget->texture->layer = widget->parent->texture->layer + 1;
 		}
 		
 		widget->transform->position.x += widget->offSet.x;
@@ -494,7 +507,7 @@ namespace Firelight::UI {
 		float hight = Engine::Instance().GetWindowDimensionsFloat().y * widget->transform->scale.y;
 		Maths::Vec2f screen = Engine::Instance().GetWindowDimensionsFloat();
 		widget->texture->layer = widget->layer;
-		m_CanvasLayer = widget->layer;
+		m_CanvasLayer = widget->layer +1;
 		switch (widget->anchorSettings)
 		{
 		case Firelight::ECS::e_AnchorSettings::TopLeft:

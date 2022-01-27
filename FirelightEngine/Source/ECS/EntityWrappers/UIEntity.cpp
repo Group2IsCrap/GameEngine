@@ -4,13 +4,13 @@ namespace Firelight::ECS
 {
 	Firelight::ECS::UIEntity::UIEntity()
 	{
-		AddComponent<PixleSpriteComponent>();
+		AddComponent<PixelSpriteComponent>();
 		
 
 	}
-	PixleSpriteComponent* UIEntity::GetSpriteComponent()
+	PixelSpriteComponent* UIEntity::GetSpriteComponent()
 	{
-		return GetComponent<PixleSpriteComponent>();
+		return GetComponent<PixelSpriteComponent>();
 	}
 	
 }

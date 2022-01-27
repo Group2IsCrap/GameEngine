@@ -44,23 +44,23 @@ namespace Firelight::Events::Input
 		Maths::Vec2i     m_Pos;
 	};
 
-	class MouseButtionReleaseEvent :public MouseEvent
+	class MouseButtonReleaseEvent :public MouseEvent
 	{
 	public:
-		MouseButtionReleaseEvent();
-		~MouseButtionReleaseEvent();
-		MouseButtionReleaseEvent(const e_MouseEventType type, const int x, const int y);
+		MouseButtonReleaseEvent();
+		~MouseButtonReleaseEvent();
+		MouseButtonReleaseEvent(const e_MouseEventType type, const int x, const int y);
 		
 
 		static constexpr DescriptorType sm_descriptor = "Mouse_Buttion_Release";
 	};
 
-	class MouseButtionPressEvent :public MouseEvent
+	class MouseButtonPressEvent :public MouseEvent
 	{
 	public:
-		MouseButtionPressEvent();
-		MouseButtionPressEvent(const e_MouseEventType type, const int x, const int y);
-		~MouseButtionPressEvent();
+		MouseButtonPressEvent();
+		MouseButtonPressEvent(const e_MouseEventType type, const int x, const int y);
+		~MouseButtonPressEvent();
 
 		static constexpr DescriptorType sm_descriptor = "Mouse_Buttion_Press";
 	};

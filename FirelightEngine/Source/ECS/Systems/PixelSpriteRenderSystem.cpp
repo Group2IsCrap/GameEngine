@@ -16,7 +16,7 @@ namespace Firelight::ECS
 {
 	PixelSpriteRenderSystem::PixelSpriteRenderSystem()
 	{
-		AddWhitelistComponent<PixleSpriteComponent>();
+		AddWhitelistComponent<PixelSpriteComponent>();
 		AddWhitelistComponent<TransformComponent>();
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&PixelSpriteRenderSystem::Render, this));
 	}
@@ -31,7 +31,7 @@ namespace Firelight::ECS
 		{
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 
-			auto* pixleSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixleSpriteComponent>();
+			auto* pixleSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixelSpriteComponent>();
 
 			if (!pixleSpriteComponentItem->toDraw) {
 				continue;
