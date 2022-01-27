@@ -29,6 +29,8 @@ namespace UnitTests::ECS
 		float vel = 0.0f;
 	};
 
+
+
 	class TestEntity : public Entity
 	{
 	public:

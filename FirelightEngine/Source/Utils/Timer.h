@@ -24,6 +24,7 @@ namespace Firelight::Utils
             m_end = std::chrono::steady_clock::now();
         }
 
+
         std::chrono::microseconds GetDuration() const
         {
             return std::chrono::duration_cast<std::chrono::microseconds>(m_end - m_start);

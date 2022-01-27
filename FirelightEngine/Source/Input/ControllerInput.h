@@ -36,7 +36,7 @@ namespace Firelight::Input
 		void SetDeadZoneLeftThumb(double deadzone);
 		void SetDeadZoneRightThumb(double deadzone);
 		void SetTriggerThreshold(double triggerThreshold);
-
+		bool m_InputThis = false;
 	private:
 		bool IsConnected();
 
@@ -66,5 +66,7 @@ namespace Firelight::Input
 		double m_NormalizedLeftThumbMagnitude = 0;
 
 		XINPUT_STATE m_State;
+		POINT m_CurrentMousePos;
+		
 	};
 }

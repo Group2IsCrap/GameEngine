@@ -47,4 +47,5 @@ namespace Firelight::ECS
 			return;
 		}
 	};
+
 }

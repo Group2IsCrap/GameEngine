@@ -15,8 +15,8 @@ namespace Firelight::ECS
 
 		m_onComponentRegisteredIndex = Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&System::IncrementSignatureLists, this));
 
-		m_whitelist = Signature(EntityComponentSystem::Instance()->GetNumberOfComponents());
-		m_blacklist = Signature(EntityComponentSystem::Instance()->GetNumberOfComponents());
+		m_whitelist = Signature(EntityComponentSystem::Instance()->GetRegisteredComponentTypeCount());
+		m_blacklist = Signature(EntityComponentSystem::Instance()->GetRegisteredComponentTypeCount());
 		m_entities = std::vector<Entity*>();
 	}
 
