@@ -23,9 +23,16 @@ namespace Firelight::UI {
 			if (m_MouseRawCurr != Maths::Vec2f(0,0)) {
 				m_DragItem->defaultPosition = m_MousePosDrag;
 				m_IsDragging = true;
+				
+
+				ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
+				if (uIChild != nullptr) {
+					AnchorSettings(uIChild);;
+				}
 				AnchorSettings();
 			}
 		}
+		//AnchorSettings();
 	}
 
 	void UISystem::HandleEvents(const char* event , void* data)
@@ -253,9 +260,14 @@ namespace Firelight::UI {
 				if (m_DragItem != nullptr) {
 					m_DragItem->anchorSettings = m_CurrDragAnchor;
 				}
+				ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
+				if (uIChild != nullptr) {
+					AnchorSettings(uIChild);;
+				}
 				m_DragItem = nullptr;
 				m_DragButtionIsPressed = false;
 				m_IsDragging = false;
+				
 				AnchorSettings();
 			}
 			 
@@ -303,9 +315,12 @@ namespace Firelight::UI {
 			if (uICanvas != nullptr) {
 				AnchorSettings(uICanvas);
 			}
-
+			
 			ECS::UI_Child* uIChild = m_entities[entityIndex]->GetComponent<ECS::UIWidget, ECS::UI_Child>();
 			if (uIChild == nullptr) {
+				continue;
+			}
+			if (uIChild == m_DragItem) {
 				continue;
 			}
 			AnchorSettings(uIChild);
@@ -314,15 +329,25 @@ namespace Firelight::UI {
 	bool UISystem::IsHit(int x, int y, ECS::UIWidget* widget)
 	{
 
-		float width = Engine::Instance().GetWindowDimensionsFloat().x*widget->currentScale.x;
-		float hight = Engine::Instance().GetWindowDimensionsFloat().y*widget->currentScale.y;
+		float width = Engine::Instance().GetWindowDimensionsFloat().x* widget->transform->scale.x;
+		float hight = Engine::Instance().GetWindowDimensionsFloat().y* widget->transform->scale.y;
 		Maths::Rectf rectPixel(
-			widget->transform->position.x - width * 0.5f,
-			widget->transform->position.y - hight * 0.5f,
+			widget->transform->position.x - (width * 0.5f),
+			widget->transform->position.y - (hight * 0.5f),
 			width, hight);
 		Maths::Rectf rectNDC = rectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
-		float pointNDCX = ((x / Engine::Instance().GetWindowDimensionsFloat().x) - 0.5) * 2;
-		float pointNDCY = -((y / Engine::Instance().GetWindowDimensionsFloat().y) - 0.5) * 2;
+		
+		RECT rect;
+		float widthScreen;
+		float heightSCreen;
+		if (GetClientRect(Engine::Instance().GetWindowHandle(), &rect))
+		{
+			 widthScreen = rect.right - rect.left;
+			 heightSCreen = rect.bottom - rect.top;
+		}
+
+		float pointNDCX = ((x / widthScreen) - 0.5) * 2;
+		float pointNDCY = -((y / heightSCreen) - 0.5) * 2;
 
 		if (pointNDCX >= rectNDC.x &&
 			pointNDCX <= (rectNDC.x + rectNDC.w) &&
@@ -336,6 +361,7 @@ namespace Firelight::UI {
 
 	void UISystem::AnchorSettings(ECS::UI_Child* widget)
 	{
+		
 		//widget->texture->layer = m_CanvasLayer;
 		Maths::Vec2f screen = Engine::Instance().GetWindowDimensionsFloat();
 		if (widget->parent == nullptr) {
@@ -395,7 +421,7 @@ namespace Firelight::UI {
 		else
 		{
 
-			widget->currentScale = widget->defaultScale * widget->parent->transform->scale;
+			widget->currentScale = widget->defaultScale * widget->parent->currentScale;
 			widget->transform->scale = widget->currentScale;
 
 			float width = screen.x * widget->parent->transform->scale.x;
@@ -407,7 +433,7 @@ namespace Firelight::UI {
 			{
 				case Firelight::ECS::e_AnchorSettings::TopLeft:
 					widget->transform->position.y = (widget->parent->transform->position.y- (hight*0.5f)) + (childHight * 0.5f);
-					widget->transform->position.x = (widget->parent->transform->position.x - (widget->parent->transform->scale.x * 0.5f)) + (childWidth * 0.5f);
+					widget->transform->position.x = (widget->parent->transform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
 					break;
 				case Firelight::ECS::e_AnchorSettings::Top:
 					widget->transform->position.y = (widget->parent->transform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
@@ -415,12 +441,12 @@ namespace Firelight::UI {
 					break;
 				case Firelight::ECS::e_AnchorSettings::TopRight:
 					widget->transform->position.y = (widget->parent->transform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
-					widget->transform->position.x = (widget->parent->transform->position.x + (widget->parent->transform->scale.x * 0.5f)) - (childHight * 0.5f);
+					widget->transform->position.x = (widget->parent->transform->position.x + (width * 0.5f))- (childWidth * 0.5f);
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::BottomLeft:
 					widget->transform->position.y = (widget->parent->transform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					widget->transform->position.x = (widget->parent->transform->position.x - (widget->parent->transform->scale.x * 0.5f)) + (childWidth * 0.5f);
+					widget->transform->position.x = (widget->parent->transform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
 					break;
 				case Firelight::ECS::e_AnchorSettings::Bottom:
 					widget->transform->position.y = (widget->parent->transform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
@@ -466,26 +492,28 @@ namespace Firelight::UI {
 						else
 						{
 							if (uIPanel != widget) {
-								if (IsHit(widget->defaultPosition.x, widget->defaultPosition.y, uIPanel)) {
-									if (uIPanel->parent == currentCanvas) {
-										currentParent = uIPanel;
+
+									if (IsHit(widget->defaultPosition.x, widget->defaultPosition.y, uIPanel)) {
+									
+										if (currentParent->texture->layer < uIPanel->texture->layer) {
+												currentParent = uIPanel;
+												continue;
+										}	
 									}
-									else if (uIPanel->parent == currentParent) {
-										currentParent = uIPanel;
-									}
-								}
 							}
 						}
 
 					}
+
 					if (currentParent == nullptr) {
+
 						return;
 					}
 					widget->parent = currentParent;
 					
 					widget->currentScale= widget->defaultScale* widget->parent->transform->scale;
 					widget->transform->scale = widget->currentScale;
-					widget->texture->layer = currentParent->texture->layer+1;
+					widget->texture->layer = widget->parent->texture->layer+1;
 					return;
 				}
 					break;
@@ -503,10 +531,12 @@ namespace Firelight::UI {
 
 	void UISystem::AnchorSettings(ECS::UI_Canvas* widget)
 	{
+		widget->transform->scale = widget->defaultScale;
 		float width = Engine::Instance().GetWindowDimensionsFloat().x * widget->transform->scale.x;
 		float hight = Engine::Instance().GetWindowDimensionsFloat().y * widget->transform->scale.y;
 		Maths::Vec2f screen = Engine::Instance().GetWindowDimensionsFloat();
 		widget->texture->layer = widget->layer;
+
 		m_CanvasLayer = widget->layer +1;
 		switch (widget->anchorSettings)
 		{
