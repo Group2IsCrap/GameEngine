@@ -18,9 +18,10 @@ namespace Firelight::ECS
 	{
 		float viewportWorldHeight = 20.0f;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			writer.Key("ViewportWorldHeight");
+			writer.Double(viewportWorldHeight);
 		}
 	};
 
@@ -38,9 +39,18 @@ namespace Firelight::ECS
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			writer.Key("Texture");
+			texture->Serialize(writer);
+			writer.Key("Layer");
+			writer.Int(layer);
+			writer.Key("DrawOffset");
+			drawOffset.Serialize(writer);
+			writer.Key("PixelsPerUnit");
+			writer.Double(pixelsPerUnit);
+			///Serialize Color
+			///Serialize sourceRect
 		}
 	};
 
