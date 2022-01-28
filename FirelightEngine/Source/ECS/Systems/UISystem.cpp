@@ -32,7 +32,37 @@ namespace Firelight::UI {
 				AnchorSettings();
 			}
 		}
-		//AnchorSettings();
+
+		//leave check
+		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
+		{
+			//checks
+			ECS::UI_Canvas* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget,ECS::UI_Canvas>();
+			if (uIComponent == nullptr) {
+				continue;
+			}
+			
+			POINT currMousePos;
+			GetCursorPos(&currMousePos);
+			ScreenToClient(Engine::Instance().GetWindowHandle(), &currMousePos);
+			if (IsHit(currMousePos.x, currMousePos.y, uIComponent)) {
+				break;
+			}
+				if (m_DragItem != nullptr) {
+					m_DragItem->anchorSettings = m_CurrDragAnchor;
+				}
+				ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
+				if (uIChild != nullptr) {
+					AnchorSettings(uIChild);;
+				}
+				m_DragItem = nullptr;
+				m_DragButtionIsPressed = false;
+				m_IsDragging = false;
+
+				AnchorSettings();
+			
+		}
+
 	}
 
 	void UISystem::HandleEvents(const char* event , void* data)
@@ -199,6 +229,10 @@ namespace Firelight::UI {
 		
 		if (!IsHit(x,y, m_FocusedItem))
 		{
+			
+			m_DragButtionIsPressed = false;
+			
+
 			ECS::UI_Button* Button = dynamic_cast<ECS::UI_Button*>(m_FocusedItem);
 			if (Button == nullptr) {
 				return;
@@ -224,6 +258,7 @@ namespace Firelight::UI {
 					}
 				}
 			}
+
 
 			m_FocusedItem = widget;
 			//do hover
@@ -254,6 +289,7 @@ namespace Firelight::UI {
 					
 					m_ClickTimer.Start();
 					m_DragButtionIsPressed = true;
+					
 			}
 			else if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease )
 			{
@@ -271,14 +307,14 @@ namespace Firelight::UI {
 				AnchorSettings();
 			}
 			 
-			if (m_DragButtionIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) {
+			if (m_DragButtionIsPressed && m_ClickTimer.GetDurationSeconds() > 0.01f) {
 				if(m_DragItem == dynamic_cast<ECS::UI_Child*>(widget)->parent && !m_IsDragging)
 				{
 					if (m_DragItem != nullptr) {
 						m_DragItem->anchorSettings = m_CurrDragAnchor;
 					}
 					m_DragItem = widget;
-
+					m_FocusedItem = m_DragItem;
 
 					
 					m_CurrDragAnchor = m_DragItem->anchorSettings;
@@ -290,7 +326,7 @@ namespace Firelight::UI {
 						m_DragItem->anchorSettings = m_CurrDragAnchor;
 					}
 					m_DragItem = widget;
-					
+					m_FocusedItem = m_DragItem;
 					m_CurrDragAnchor = m_DragItem->anchorSettings;
 					m_DragItem->anchorSettings = ECS::e_AnchorSettings::None;
 				}
@@ -338,8 +374,8 @@ namespace Firelight::UI {
 		Maths::Rectf rectNDC = rectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
 		
 		RECT rect;
-		float widthScreen;
-		float heightSCreen;
+		float widthScreen=0;
+		float heightSCreen=0;
 		if (GetClientRect(Engine::Instance().GetWindowHandle(), &rect))
 		{
 			 widthScreen = rect.right - rect.left;
