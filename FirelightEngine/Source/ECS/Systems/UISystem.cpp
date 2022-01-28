@@ -307,7 +307,7 @@ namespace Firelight::UI {
 				AnchorSettings();
 			}
 			 
-			if (m_DragButtionIsPressed && m_ClickTimer.GetDurationSeconds() > 0.01f) {
+			if (m_DragButtionIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) {
 				if(m_DragItem == dynamic_cast<ECS::UI_Child*>(widget)->parent && !m_IsDragging)
 				{
 					if (m_DragItem != nullptr) {
