@@ -155,16 +155,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ImGuiTestLayer.cpp" />
-    <ClCompile Include="TestGame.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="Source\Player\PlayerSystem.cpp" />
+    <ClCompile Include="Source\UI\HealthUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />
     <None Include="Assets\cube.mtls" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImGuiTestLayer.h" />
-    <ClInclude Include="Pepe.h" />
+    <ClInclude Include="Source\Components\HealthComponent.h" />
+    <ClInclude Include="Source\Components\PlayerComponent.h" />
+    <ClInclude Include="Source\Events\HealthEvent.h" />
+    <ClInclude Include="Source\Pepe.h" />
+    <ClInclude Include="Source\Player\PlayerEntity.h" />
+    <ClInclude Include="Source\Player\PlayerSystem.h" />
+    <ClInclude Include="Source\UI\HealthUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
