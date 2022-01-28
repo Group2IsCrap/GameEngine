@@ -7,7 +7,6 @@
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Pepe.h" />
     <ClInclude Include="Source\UI\HealthUI.h" />
     <ClInclude Include="Source\Events\HealthEvent.h" />
     <ClInclude Include="Source\Player\PlayerSystem.h" />

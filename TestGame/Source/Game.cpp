@@ -75,14 +75,14 @@ void CreatUITest() {
 	UIEntity* panelSound = new UIEntity();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	panelSound->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Panel());
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->anchorSettings = ECS::e_AnchorSettings::TopRight;
+	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->anchorSettings = ECS::e_AnchorSettings::Right;
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->parent = s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>();
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->texture = panelSound->GetSpriteComponent();
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->transform = panelSound->GetTransformComponent();
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isHoverable = true;
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isPressable = true;
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isDraggable = true;
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.25f, 0.25f, 0);
+	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.1f, 0.5f, 0);
 
 	UIEntity* buttonSound = new UIEntity();
 	buttonSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
@@ -91,7 +91,7 @@ void CreatUITest() {
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonSound->GetSpriteComponent();
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonSound->GetTransformComponent();
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.2f, 0.2f, 0);
+	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayTestSound));
 	//buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = (100, 100);
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
@@ -109,30 +109,42 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 
+		// Player Character
+		float playerSpeed = 10.0f;
+		PlayerEntity* player = new PlayerEntity(playerSpeed);
+
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
 		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("rickastleybackground1250.jpg");
-		test2->GetSpriteComponent()->pixelsPerUnit = 25.0f;
+		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
 		test2->GetSpriteComponent()->layer = 16;
 
 		CreatUITest();
 
-		SpriteEntity* collisionTest = new SpriteEntity();
-		collisionTest->GetComponent<Firelight::ECS::TransformComponent>()->position.x = 10.0f;
-		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Circle.png");
-		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
-		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 33;
-		collisionTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
-		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f);
-		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
+		SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<Firelight::ECS::TransformComponent>()->position.x = 7.0f;
+		barn->GetComponent<Firelight::ECS::TransformComponent>()->position.y = 5.0f;
+		barn->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 33;
+		barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
+		barn->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
+		barn->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = false;
+		barn->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
 
-		// Player Character
-		// UI? s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()
-		float playerSpeed = 10.0f;
-		PlayerEntity* player = new PlayerEntity(playerSpeed);
+		SpriteEntity* circle = new SpriteEntity();
+		circle->GetComponent<Firelight::ECS::TransformComponent>()->position.x = -7.0f;
+		circle->GetComponent<Firelight::ECS::TransformComponent>()->position.y = -5.0f;
+		circle->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ball.png");
+		circle->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
+		circle->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 32;
+		circle->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
+		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
+		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = false;
+		circle->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = false;
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

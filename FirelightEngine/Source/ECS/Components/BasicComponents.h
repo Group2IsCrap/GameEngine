@@ -25,7 +25,7 @@ namespace Firelight::ECS
 	/// </summary>
 	struct StaticComponent : BaseComponent
 	{
-		bool isStatic;
+		bool isStatic = false;
 
 		void Serialise() override
 		{

@@ -41,7 +41,7 @@ namespace Firelight::ECS
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}
 
-			const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
+			const Maths::Vec2f spriteWorldSize = (spriteComponent->sourceRect.w <= 0 && spriteComponent->sourceRect.h <= 0) ? Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit : Maths::Vec2f(spriteComponent->sourceRect.w, spriteComponent->sourceRect.h) / spriteComponent->pixelsPerUnit;
 
 			Maths::Rectf destRect(
 				transformComponent->position.x - spriteWorldSize.x * 0.5f + spriteComponent->drawOffset.x,

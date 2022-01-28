@@ -49,6 +49,7 @@ namespace Firelight::Physics
 			{
 				Firelight::Graphics::Texture* texture = nullptr;
 				Maths::Rectf destRect = Maths::Rectf(0.0f, 0.0f, 0.0f, 0.0f);
+				Maths::Rectf sourceRect = Maths::Rectf(0.0f, 0.0f, 0.0f, 0.0f);
 				if (entity->HasComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>())
 				{
 					texture = Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/Colliders/Circle.png");
@@ -65,6 +66,7 @@ namespace Firelight::Physics
 						(transformComponent->position.x - (circleCollider->radius) + spriteComponent->drawOffset.x),
 						(transformComponent->position.y - (circleCollider->radius) + spriteComponent->drawOffset.y),
 						circleCollider->radius + circleCollider->radius, circleCollider->radius + circleCollider->radius);
+					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, circleCollider->radius * 2, circleCollider->radius * 2);
 				}
 				else if (entity->HasComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>())
 				{
@@ -81,12 +83,13 @@ namespace Firelight::Physics
 						transformComponent->position.x - ((boxCollider->rect.w * 0.5f)) + spriteComponent->drawOffset.x + boxCollider->rect.x,
 						transformComponent->position.y - ((boxCollider->rect.h * 0.5f)) + spriteComponent->drawOffset.y + boxCollider->rect.y,
 						boxCollider->rect.w, boxCollider->rect.h);
+					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, boxCollider->rect.w, boxCollider->rect.h);
 				}
 
 				// Layer 65 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
 				// It may be worth documenting that all colliders are rendered on layer 65.
-				int layerOverride = 65;
-				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_white, spriteComponent->sourceRect);
+				int layerOverride = 100;
+				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_white, sourceRect);
 			}
 		}
 	}
