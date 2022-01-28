@@ -20,7 +20,7 @@ namespace Firelight::Input
 		{
 			controller->ProcessInput();
 		}
-
+		
 	}
 
 	void ControllerManager::ProcessInput()
@@ -31,7 +31,6 @@ namespace Firelight::Input
 				controller->TestInput();
 			}
 		}
-		
 	}
 
 	ControllerInput* ControllerManager::GetController(int contollerNo)

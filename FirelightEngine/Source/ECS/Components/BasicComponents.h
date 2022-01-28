@@ -52,4 +52,5 @@ namespace Firelight::ECS
 			writer.Double(rotation);
 		}
 	};
+
 }

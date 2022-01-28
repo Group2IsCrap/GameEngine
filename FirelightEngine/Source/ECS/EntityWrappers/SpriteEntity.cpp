@@ -6,10 +6,12 @@ namespace Firelight::ECS
 		GameEntity()
 	{
 		AddComponent<SpriteComponent>();
+		
 	}
 
 	SpriteComponent* SpriteEntity::GetSpriteComponent()
 	{
 		return GetComponent<SpriteComponent>();
 	}
+	
 }

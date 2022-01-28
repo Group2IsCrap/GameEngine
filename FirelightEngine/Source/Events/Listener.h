@@ -5,6 +5,6 @@ namespace Firelight::Events
 	class Listener
 	{
 	public:
-		virtual void HandleEvents(void* data) = 0;
+		virtual void HandleEvents(const char* event, void* data) = 0;
 	};
 }

@@ -11,5 +11,6 @@ namespace Firelight::ECS
         SpriteEntity();
 
         SpriteComponent* GetSpriteComponent();
+       
     };
 }
