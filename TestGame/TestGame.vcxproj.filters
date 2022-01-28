@@ -1,19 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\UI\HealthUI.cpp" />
-    <ClCompile Include="Source\Player\PlayerSystem.cpp" />
-    <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="ImGuiTestLayer.cpp" />
+    <ClCompile Include="TestGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Pepe.h" />
-    <ClInclude Include="Source\UI\HealthUI.h" />
-    <ClInclude Include="Source\Events\HealthEvent.h" />
-    <ClInclude Include="Source\Player\PlayerSystem.h" />
-    <ClInclude Include="Source\Components\PlayerComponent.h" />
-    <ClInclude Include="Source\Player\PlayerEntity.h" />
-    <ClInclude Include="Source\Components\HealthComponent.h" />
+    <ClInclude Include="ImGuiTestLayer.h" />
+    <ClInclude Include="Pepe.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />

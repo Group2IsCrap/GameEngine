@@ -50,7 +50,7 @@ namespace Firelight::UI {
 				{
 					continue;
 				}
-				if (uIComponent->isDraggable && eventController->m_A ) 
+				if (uIComponent->isDrag && eventController->m_A ) 
 				{
 
 					OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LPress, uIComponent);
@@ -121,12 +121,12 @@ namespace Firelight::UI {
 
 							}
 						}
-						if (uIComponent->isHoverable) 
+						if (uIComponent->isHover) 
 						{
 							OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), uIComponent);
 						}
 					}
-					if (uIComponent->isDraggable) 
+					if (uIComponent->isDrag) 
 					{
 
 						OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), uIComponent);

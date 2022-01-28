@@ -44,7 +44,6 @@
 /UnitTests/x64/
 /FirelightEngine/x64/
 /UnitTests/x64/
-/SnowfallEngine/x64/
 
 # Allow
 !/Firelight/Resources/*.obj
@@ -52,21 +51,9 @@
 !/x64/Debug/assimp-vc140-mt.dll
 !/x64/Debug/D3DCompiler_42.dll
 !/x64/Debug/D3DX9_42.dll
-!/TestGame/fmod.dll
-!/TestGame/fmodL.dll
-!/TestGame/fmodstudio.dll
-!/TestGame/fmodstudioL.dll
 
 !/Libs/Shared/assimp-vc140-mt.lib
 !/Libs/x64/Debug/DirectXTK.lib
 !/Libs/x64/Release/DirectXTK.lib
 !/Libs/x86/Debug/DirectXTK.lib
 !/Libs/x86/Release/DirectXTK.lib
-!/Libs/x64/Debug/fmod_vc.lib
-!/Libs/x64/Release/fmod_vc.lib
-!/Libs/x64/Debug/fmodL_vc.lib
-!/Libs/x64/Release/fmodL_vc.lib
-!/Libs/x64/Debug/fmodstudio_vc.lib
-!/Libs/x64/Release/fmodstudio_vc.lib
-!/Libs/x64/Debug/fmodstudioL_vc.lib
-!/Libs/x64/Release/fmodstudioL_vc.lib

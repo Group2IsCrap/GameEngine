@@ -4,7 +4,6 @@
 #include"../Components/BasicComponents.h"
 #include"RenderingComponents.h"
 #include<vector>
-#include <functional>
 
 namespace Firelight::ECS
 {
@@ -31,15 +30,15 @@ namespace Firelight::ECS
 
 		PixelSpriteComponent* texture = nullptr;
 		TransformComponent* transform = nullptr;
-		UINT Index = 10;
+		UINT Index =10;
 		//Events 
-		bool isPressable = false;
+		bool isPressable = true;
 		std::vector<CallbackFunctionType> onLeftPressFunctions;
 		std::vector<CallbackFunctionType> onRightPressFunctions;
 		std::vector<CallbackFunctionType> onMiddlePressFunctions;
-		bool isHoverable = false;
+		bool isHover =true;
 		std::vector<CallbackFunctionType> onHoverFunctions;
-		bool isDraggable = false;
+		bool isDrag =true;
 
 		//pos data
 		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
@@ -68,13 +67,6 @@ namespace Firelight::ECS
 	};
 	struct UI_Button : UI_Child
 	{
-		UI_Button() 
-		{
-			isDraggable = true;
-			isPressable = true;
-			isHoverable = true;
-		}
-
 		bool isChangeOfTex = true;
 		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
 		std::vector<Maths::Rectf> rectsOfButton;
