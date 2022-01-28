@@ -6,6 +6,7 @@
 #include "ECSEvents.h"
 
 #include "../Utils/ErrorManager.h"
+#include "rapidjson/prettywriter.h"
 
 #include<vector>
 #include<unordered_map>
@@ -256,6 +257,8 @@ namespace Firelight::ECS
 		const char* GetComponentName(ComponentTypeID typeID);
 		void RemoveEntity(EntityID entity);
 
+		void SerializeAllComponents(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+
 	private:
 
 		/// <summary>
@@ -285,8 +288,6 @@ namespace Firelight::ECS
 		}
 
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
-
-		void SaveAllComponents();
 
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;

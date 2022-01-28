@@ -25,6 +25,7 @@
 #include "Source/Input/GetInput.h"
 
 #include "Source/ECS/Systems/AnimationSystem.h"
+#include "Source/Serialisation/Serialiser.h"
 
 #include "Pepe.h"
 
@@ -92,7 +93,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
 
 		int speed = 10.0f;
-
+		Serialisation::Serialiser::SaveSceneJSON();
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();

@@ -105,8 +105,8 @@ namespace Firelight::ECS
 		}
 	}
 
-	void EntityComponentSystem::Serialize()
+	void EntityComponentSystem::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 	{
-
+		m_componentManager->SerializeAllComponents(writer);
 	}
 }

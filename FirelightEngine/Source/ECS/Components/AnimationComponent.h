@@ -19,7 +19,7 @@ namespace Firelight::ECS
 		bool shouldPlay = false;
 		std::map<std::string, Firelight::Animation::Animation> animations;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
 		}

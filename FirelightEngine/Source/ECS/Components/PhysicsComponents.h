@@ -16,24 +16,41 @@ namespace Firelight::ECS
 		Firelight::Maths::Vec3f velocity;
 		int layer;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			///Serialize Velocity
+			writer.Key("Layer");
+			writer.Int(layer);
 		}
 	};
 
 	struct ColliderComponent : BaseComponent
 	{
 		bool isEnabled = true;
+
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		{
+			return;
+		}
 	};
 
 	struct BoxColliderComponent : ColliderComponent
 	{
 		Firelight::Maths::Rectf rect;
+
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		{
+			return;
+		}
 	};
 
 	struct CircleColliderComponent : ColliderComponent
 	{
 		float radius;
+
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		{
+			return;
+		}
 	};
 }
