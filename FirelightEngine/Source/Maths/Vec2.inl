@@ -242,4 +242,25 @@ namespace Firelight::Maths
 
         return point + rotatedOffset;
     }
+
+    template<>
+    inline void Vec2<float>::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+    {
+        writer.StartObject();
+        writer.Key("x");
+        writer.Double(x);
+        writer.Key("y");
+        writer.Double(y);
+        writer.EndObject();
+    }
+    template<>
+    inline void Vec2<int>::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+    {
+        writer.StartObject();
+        writer.Key("x");
+        writer.Int(x);
+        writer.Key("y");
+        writer.Int(y);
+        writer.EndObject();
+    }
 }

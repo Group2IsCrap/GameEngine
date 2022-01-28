@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 
+#include "rapidjson/prettywriter.h"
+
 namespace Firelight::ECS
 {
 	typedef std::uint32_t EntityID;
@@ -15,13 +17,12 @@ namespace Firelight::ECS
 	struct BaseComponent
 	{
 		/// <summary>
-		/// Serialises the component
+		/// Serialises the component. DO NOT NEED TO PUT START OBJECT
 		/// </summary>
 		/// <returns></returns>
-		virtual void Serialise()
+		virtual void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 		{
 			return;
-
 		}
 	};
 }

@@ -5,8 +5,10 @@
 
 #include <memory>
 
+#include "rapidjson/prettywriter.h"
+
 namespace Firelight::ECS
-{
+{	
 	class EntityComponentSystem
 	{
 	public:
@@ -171,7 +173,7 @@ namespace Firelight::ECS
 		int GetRegisteredComponentTypeCount();
 		void UpdateAllEntitySignatures();
 
-		void Serialize();
+		void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 		static EntityComponentSystem* Instance();
 	private:
