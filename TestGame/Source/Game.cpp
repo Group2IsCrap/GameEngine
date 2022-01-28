@@ -47,15 +47,39 @@ void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, 
 	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
 }
 
+float vol = 1.0f;
+float newVol = 100.f;
+
 void PlayBeuu()
 {
-	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), 0.5f);
+	vol = 80.0f;
+	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), vol);
 }
 
 void PlayMusic()
 {
-	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f), 0.1f);
+	vol = 50.0f;
+	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f),vol);
+}
 
+void VolUp()
+{
+	newVol += 50.0f;
+	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
+}
+
+void VolDown()
+{
+	if (newVol > 0.0f)
+	{
+		newVol -= 50.f;
+		snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
+	}
+}
+
+void StopSounds()
+{
+	snowFallAudio::FModAudio::AudioEngine::engine->StopAllChannels();
 }
 
 void CreatUITest() {
@@ -96,6 +120,7 @@ void CreatUITest() {
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonSound->GetTransformComponent();
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayBeuu));
+	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -150.0f);
 
 	UIEntity* buttonMusic = new UIEntity();
 	buttonMusic->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
@@ -106,7 +131,40 @@ void CreatUITest() {
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonMusic->GetTransformComponent();
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayMusic));
-	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 50.0f);
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -100.0f);
+
+	UIEntity* buttonVolUp = new UIEntity();
+	buttonVolUp->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
+	buttonVolUp->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonVolUp->GetSpriteComponent();
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonVolUp->GetTransformComponent();
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(VolUp));
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -50.0f);
+
+	UIEntity* buttonVolDown = new UIEntity();
+	buttonVolDown->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
+	buttonVolDown->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonVolDown->GetSpriteComponent();
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonVolDown->GetTransformComponent();
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(VolDown));
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 0.0f);
+
+	UIEntity* buttonStopPlay = new UIEntity();
+	buttonStopPlay->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
+	buttonStopPlay->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonStopPlay->GetSpriteComponent();
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonStopPlay->GetTransformComponent();
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(StopSounds));
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 50.0f);
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
