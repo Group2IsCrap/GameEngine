@@ -5,11 +5,12 @@
 #include <memory>
 #include <map>
 #include "../Maths/Rect.h"
+#include "../Events/Listener.h"
 
 namespace Firelight::TileMap
 {
 
-	class TileMap
+	class TileMap : public Firelight::Events::Listener
 	{
 	public:
 		enum class Scale
@@ -30,7 +31,11 @@ namespace Firelight::TileMap
 		void SetTileMapHeight(float tileMapHeight);
 		void SetTileMapWidth(float tileMapWidth);
 
+		Tile GetTileAtPosition(float x, float y);
+
 		std::vector<std::vector<Tile>>& GetTileMap();
+
+		virtual void HandleEvents(const char* event, void* data) override final;
 
 	private:
 		float m_tileHeight;
@@ -44,6 +49,7 @@ namespace Firelight::TileMap
 
 		std::vector<std::vector<Tile>> m_tileMap;
 		std::vector<std::vector<Tile>> m_newTileMap;
+		std::map<Maths::Vec2<int>, Tile> m_grid;
 
 		std::unique_ptr<std::map<unsigned int, Maths::Rectf>> m_tileAtlas;
 	};
