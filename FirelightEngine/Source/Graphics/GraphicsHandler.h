@@ -8,6 +8,8 @@
 
 #include "RenderTextures.h"
 
+#include "../Source/TileMap/TileMap.h"
+
 namespace Firelight::Graphics
 {
     class SpriteBatch;
@@ -68,5 +70,7 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_clampSamplerState;
 
         std::unique_ptr<SpriteBatch>                    m_spriteBatch;
+
+        std::unique_ptr<Firelight::TileMap::TileMap>    m_tileMap;
     };
 }

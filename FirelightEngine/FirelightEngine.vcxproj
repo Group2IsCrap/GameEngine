@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DemoClass.h" />
+    <ClInclude Include="DemoListenerClass.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
@@ -377,6 +379,7 @@
     <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
     <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
     <ClInclude Include="Source\ECS\Systems\UISystem.h" />
+    <ClInclude Include="Source\Events\DemoEvent.h" />
     <ClInclude Include="Source\Events\UIEvents.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
@@ -455,6 +458,8 @@
     <ClInclude Include="Source\Utils\Time.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DemoClass.cpp" />
+    <ClCompile Include="DemoListenerClass.cpp" />
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />

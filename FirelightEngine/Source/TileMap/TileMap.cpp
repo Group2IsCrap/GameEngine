@@ -89,10 +89,10 @@ namespace Firelight::TileMap
         return m_tileMap;
     }
 
-    void TileMap::HandleEvents(const char* event, void* data)
-    {
-        Firelight::Events::Input::MouseEvent mouseEvent = (Firelight::Events::Input::MouseEvent)data;
-        Tile tile = GetTileAtPosition(position.x, position.y);
-        InvokeFunction(send tile to the inspector as a reference);
-    }
+    //void TileMap::HandleEvents(const char* event, void* data)
+    //{
+    //    Firelight::Events::Input::MouseEvent mouseEvent = (Firelight::Events::Input::MouseEvent)data;
+    //    Tile tile = GetTileAtPosition(position.x, position.y);
+    //    InvokeFunction(send tile to the inspector as a reference);
+    //}
 }
