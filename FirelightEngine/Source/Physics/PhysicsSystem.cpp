@@ -4,6 +4,7 @@
 #include "../Graphics/Data/Texture.h"
 #include "../ECS/Components/RenderingComponents.h"
 #include "../ECS/Components/BasicComponents.h"
+#include "../Graphics/Data/Colour.h"
 
 #include "../Graphics/SpriteBatch.h"
 #include "../Graphics/GraphicsHandler.h"
@@ -60,7 +61,7 @@ namespace Firelight::Physics
 
 					Firelight::ECS::CircleColliderComponent* circleCollider = entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>();
 
-					const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
+					const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / 1.0f;
 
 					destRect = Firelight::Maths::Rectf(
 						(transformComponent->position.x - (circleCollider->radius) + spriteComponent->drawOffset.x),
@@ -77,19 +78,19 @@ namespace Firelight::Physics
 					}
 					Firelight::ECS::BoxColliderComponent* boxCollider = entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>();
 
-					const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
+					const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / 1.0f;
 
 					destRect = Firelight::Maths::Rectf(
 						transformComponent->position.x - ((boxCollider->rect.w * 0.5f)) + spriteComponent->drawOffset.x + boxCollider->rect.x,
 						transformComponent->position.y - ((boxCollider->rect.h * 0.5f)) + spriteComponent->drawOffset.y + boxCollider->rect.y,
 						boxCollider->rect.w, boxCollider->rect.h);
-					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, boxCollider->rect.w, boxCollider->rect.h);
+					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, 100.0f,100.0f);
 				}
 
 				// Layer 65 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
 				// It may be worth documenting that all colliders are rendered on layer 65.
-				int layerOverride = 100;
-				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_white, sourceRect);
+				int layerOverride = 65;
+				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_blue, sourceRect);
 			}
 		}
 	}
@@ -171,7 +172,7 @@ namespace Firelight::Physics
 			if (collider == nullptr)
 				continue;
 
-			if (!collider->isEnabled || entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+			if (!collider->isEnabled)
 			{
 				continue;
 			}
@@ -186,6 +187,11 @@ namespace Firelight::Physics
 				}
 
 				if (!collider2->isEnabled)
+				{
+					continue;
+				}
+
+				if (entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic && entity2->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
 				{
 					continue;
 				}

@@ -42,17 +42,20 @@ using namespace snowFallAudio::FModAudio;
 
 static UIEntity* s_uiCanvas;
 
-void PlaySound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, float volumedB)
 {
 	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
 }
 
-void PlayTestSound()
+void PlayBeuu()
 {
-	Vector3D location = Vector3D(0, 0, 0);
-	float volume = 0.5f;
-	std::string soundName = "beeuuuuu.mp3";
-	PlaySound(soundName, location, volume);
+	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), 0.5f);
+}
+
+void PlayMusic()
+{
+	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f), 0.1f);
+
 }
 
 void CreatUITest() {
@@ -92,8 +95,19 @@ void CreatUITest() {
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonSound->GetSpriteComponent();
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonSound->GetTransformComponent();
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayTestSound));
-	//buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = (100, 100);
+	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayBeuu));
+
+	UIEntity* buttonMusic = new UIEntity();
+	buttonMusic->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
+	buttonMusic->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonMusic->GetSpriteComponent();
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonMusic->GetTransformComponent();
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayMusic));
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 50.0f);
+
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
 }
@@ -132,7 +146,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		barn->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 33;
 		barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
 		barn->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		barn->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = false;
+		barn->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
 		barn->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
 
 		SpriteEntity* circle = new SpriteEntity();
@@ -143,12 +157,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		circle->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 32;
 		circle->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
 		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
-		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = false;
+		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
 		circle->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = false;
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
+			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
 	}

@@ -43,7 +43,7 @@ namespace Firelight::ECS
 
 		//pos data
 		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
-		Maths::Vec2f offSet = (0, 0, 0);
+		Maths::Vec2f offSet = (0, 0);
 
 		//free elments
 		Maths::Vec3f defaultPosition= Maths::Vec3f(0,0,0);
