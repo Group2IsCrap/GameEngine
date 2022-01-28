@@ -20,6 +20,7 @@
 #include "Source/Graphics/GraphicsHandler.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/SpriteBatch.h"
+
 #include "Source/Animation/Animation.h"
 
 #include "Source/Input/GetInput.h"
@@ -171,7 +172,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		collisionTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
 		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
 		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
-
 
 		int speed = 10.0f;
 

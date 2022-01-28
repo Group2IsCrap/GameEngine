@@ -363,6 +363,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Graphics\Text\FontGlyph.h" />
+    <ClInclude Include="Source\Graphics\Text\Font.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
@@ -453,8 +455,11 @@
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
     <ClInclude Include="Source\Utils\Time.h" />
+    <ClInclude Include="Source\Graphics\Text\Text.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Graphics\Text\FontGlyph.cpp" />
+    <ClCompile Include="Source\Graphics\Text\Font.cpp" />
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
@@ -516,6 +521,7 @@
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
     <ClCompile Include="Source\Utils\Time.cpp" />
+    <ClCompile Include="Source\Graphics\Text\Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

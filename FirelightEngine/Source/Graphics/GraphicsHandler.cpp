@@ -10,6 +10,9 @@
 #include "Shaders/VertexShader.h"
 #include "Shaders/PixelShader.h"
 
+#include "Text/Font.h"
+#include "Text/Text.h"
+
 namespace Firelight::Graphics
 {
     GraphicsHandler::GraphicsHandler() :
@@ -47,6 +50,10 @@ namespace Firelight::Graphics
 
 		m_spriteBatch = std::make_unique<SpriteBatch>();
 		m_spriteBatch->SetSortMode(SpriteBatch::SortMode::e_BackToFrontTexture);
+
+		m_testFont = new Font();
+		m_testFont->LoadFont("Fonts/default");
+		m_testText = new Text("This is a test string", Maths::Vec2f(100.0f, 100.0f), m_testFont);
 
 		m_initialised = true;
 
@@ -300,6 +307,11 @@ namespace Firelight::Graphics
 		{
 			batch.Draw();
 		}
+
+		m_deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Unlit")->GetShader(), NULL, 0);
+		m_deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Unlit")->GetShader(), NULL, 0);
+
+		m_testText->GetMesh()->Draw();
 
 		// Copy final image to the back buffer
 		m_deviceContext->CopyResource(m_backBuffer.Get(), m_finalImage.m_texture2D.Get());
