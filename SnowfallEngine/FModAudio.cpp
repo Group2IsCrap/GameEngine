@@ -1,5 +1,6 @@
 #include "FModAudio.h"
 #include <io.h>
+#include <Windows.h>
 
 snowFallAudio::FModAudio::AudioEngine* snowFallAudio::FModAudio::AudioEngine::engine = new snowFallAudio::FModAudio::AudioEngine;
 
@@ -62,7 +63,9 @@ void snowFallAudio::FModAudio::Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
+	AudioEngine::engine->ErrorCheck(fmodSystem->update());
 	AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
+	
 }
 
 snowFallAudio::FModAudio::Instance* fmodInstance = nullptr;
@@ -87,6 +90,7 @@ void snowFallAudio::FModAudio::AudioEngine::Initialise()
 {
 	//create new instance
 	fmodInstance = new Instance;
+	AudioEngine::engine->Update();
 }
 
 void snowFallAudio::FModAudio::AudioEngine::Update()
