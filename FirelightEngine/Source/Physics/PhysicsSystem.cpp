@@ -126,11 +126,11 @@ namespace Firelight::Physics
 			Firelight::Maths::Vec3f direction = entity2->GetComponent<Firelight::ECS::TransformComponent>()->position - entity->GetComponent<Firelight::ECS::TransformComponent>()->position;
 
 			float directionLength = direction.Length();
-			direction /= directionLength;
+			direction.Normalise();
 
 			float distance = directionLength - radiusDistance;
 
-			return IntersectData(distance < 0, direction * distance);
+			return IntersectData(distance < 0, direction, distance);
 		}
 		else if (HasColliderPair<Firelight::ECS::BoxColliderComponent, Firelight::ECS::BoxColliderComponent>(entity, entity2))
 		{
@@ -153,13 +153,13 @@ namespace Firelight::Physics
 
 			Firelight::Maths::Vec3f distances = dists.Length() >= dists2.Length() ? dists : dists2;
 
-			float maxDistance = distances.x;
-			if (distances.y > maxDistance) maxDistance = distances.y;
+			float length = distances.Length();
+			distances.Normalise();
 
-			return IntersectData(maxDistance < 0, distances);
+			return IntersectData(true, distances, length);
 		}
 
-		return IntersectData(false, Firelight::Maths::Vec3f(0.0f, 0.0f, 0.0f));
+		return IntersectData(false, Firelight::Maths::Vec3f(0.0f, 0.0f, 0.0f), 0.0f);
 	}
 
 	void PhysicsSystem::HandleCollisions()
