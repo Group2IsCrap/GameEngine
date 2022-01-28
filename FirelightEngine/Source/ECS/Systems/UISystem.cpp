@@ -291,7 +291,7 @@ namespace Firelight::UI {
 					m_DragButtionIsPressed = true;
 					
 			}
-			else if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease )
+			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease)
 			{
 				if (m_DragItem != nullptr) {
 					m_DragItem->anchorSettings = m_CurrDragAnchor;
@@ -300,7 +300,7 @@ namespace Firelight::UI {
 				if (uIChild != nullptr) {
 					AnchorSettings(uIChild);;
 				}
-				m_DragItem = nullptr;
+				
 				m_DragButtionIsPressed = false;
 				m_IsDragging = false;
 				
@@ -334,6 +334,9 @@ namespace Firelight::UI {
 				
 			}
 		
+		}
+		if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease && m_DragItem == widget) {
+			m_DragItem = nullptr;
 		}
 		
 	
