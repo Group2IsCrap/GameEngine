@@ -4,6 +4,7 @@
 #include"../Components/BasicComponents.h"
 #include"RenderingComponents.h"
 #include<vector>
+#include <functional>
 
 namespace Firelight::ECS
 {
@@ -30,19 +31,19 @@ namespace Firelight::ECS
 
 		PixelSpriteComponent* texture = nullptr;
 		TransformComponent* transform = nullptr;
-		UINT Index =10;
+		UINT Index = 10;
 		//Events 
-		bool isPressable = true;
+		bool isPressable = false;
 		std::vector<CallbackFunctionType> onLeftPressFunctions;
 		std::vector<CallbackFunctionType> onRightPressFunctions;
 		std::vector<CallbackFunctionType> onMiddlePressFunctions;
-		bool isHover =true;
+		bool isHoverable = false;
 		std::vector<CallbackFunctionType> onHoverFunctions;
-		bool isDrag =true;
+		bool isDraggable = false;
 
 		//pos data
 		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
-		Maths::Vec2f offSet = (0, 0, 0);
+		Maths::Vec2f offSet = (0, 0);
 
 		//free elments
 		Maths::Vec3f defaultPosition= Maths::Vec3f(0,0,0);
@@ -67,6 +68,13 @@ namespace Firelight::ECS
 	};
 	struct UI_Button : UI_Child
 	{
+		UI_Button() 
+		{
+			isDraggable = true;
+			isPressable = true;
+			isHoverable = true;
+		}
+
 		bool isChangeOfTex = true;
 		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
 		std::vector<Maths::Rectf> rectsOfButton;
