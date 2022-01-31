@@ -1,18 +1,19 @@
 #pragma once
 
-#include "Panel.h"
+#include "../Includes/imgui/imgui.h"
+#include "../Includes/imgui/imgui_internal.h"
 
 namespace Firelight::ECS
 {
 	class Entity;
 }
 
-class InspectorPanel : public Panel
+class InspectorPanel
 {
 public:
 	InspectorPanel();
 
-	void Draw() override;
+	void Draw();
 	void DrawComponents(Firelight::ECS::Entity* entity);
 
 public:

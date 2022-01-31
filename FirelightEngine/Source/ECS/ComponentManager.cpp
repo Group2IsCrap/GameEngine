@@ -4,7 +4,7 @@ namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 
-	int ComponentManager::GetComponentTypeCount()
+	int ComponentManager::GetRegisteredComponentTypeCount()
 	{
 		return (int)m_componentTypeHash.size();
 	}
@@ -51,6 +51,94 @@ namespace Firelight::ECS
 				}
 			}
 		}
+	}
+
+	void ComponentManager::SerializeAllComponents(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	{
+		//Create Component Group
+		writer.Key("Components");
+		writer.StartArray();
+		for (auto& it : m_componentData)
+		{
+			writer.StartObject();
+			//Create ComponentType group
+			writer.Key("ComponentID");
+			writer.Uint(it.first);
+			writer.Key("Components");
+			writer.StartArray();
+			for (auto component : it.second)
+			{
+				//Create component object
+				writer.StartObject();
+				component->Serialise(writer);
+				//close object
+				writer.EndObject();
+			}
+			//close group
+			writer.EndArray();
+			writer.EndObject();
+		}
+		//Close component group
+		writer.EndArray();
+
+		//Create ComponentType group
+		writer.Key("ComponentMap");
+		writer.StartArray();
+		for (auto &it : m_componentMap)
+		{
+			//Create entity group
+
+			writer.StartObject();
+			writer.Key("ComponentID");
+			writer.Uint(it.first);
+			writer.Key("EntityIDs");
+			writer.StartArray();
+			for (auto& it2 : m_componentMap[it.first])
+			{
+				//Create entityIndices
+				writer.StartObject();
+				writer.Key("EntityID");
+				writer.Uint(it2.first);
+				writer.Key("Indices");
+
+				writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
+				writer.StartArray();
+				for (auto index : m_componentMap[it.first][it2.first])
+				{
+					//write index
+					writer.Int(index);
+				}
+				//close entityIndices
+				writer.EndArray();
+
+				writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
+				writer.EndObject();
+			}
+			//close entity group
+			writer.EndArray();
+			writer.EndObject();
+		}
+		//close componenttype group
+		writer.EndArray();
+
+
+		//create type group
+		writer.Key("ComponentTypeReference");
+		writer.StartArray();
+		for(auto& it : m_componentHashTypes)
+		{
+			writer.StartObject();
+			//write name
+			writer.Key("ComponentTypeName");
+			writer.String(m_componentHashNames[it.first]);
+
+			//write id
+			writer.Key("ComponentTypeID");
+			writer.Uint(m_componentHashTypes[it.first]);
+
+			writer.EndObject();
+		}
+		writer.EndArray();
 	}
 
 	/// <summary>

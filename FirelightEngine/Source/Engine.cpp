@@ -14,7 +14,7 @@
 
 #include "Events/EventDispatcher.h"
 #include "Graphics/GraphicsEvents.h"
-
+#include"Events/UIEvents.h"
 #include "ECS/EntityWrappers/CameraEntity.h"
 
 using namespace Firelight::ECS;
@@ -45,7 +45,14 @@ namespace Firelight
 
         // Initialise COM library stuffs
         HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-        COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
+        if (FAILED(hr))
+        {
+            if (hr != RPC_E_CHANGED_MODE)
+            {
+                COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
+            }
+        }
+        
 
         // Initialise window container
         bool result = m_windowContainer.GetWritableWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, dimensions);
@@ -85,6 +92,8 @@ namespace Firelight
         {
             Graphics::GraphicsHandler::Instance().HandleResize(dimensions);
         }
+        //Handle UI Resizeing
+        Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
     }
 
     ECS::SystemManager& Engine::GetSystemManager()
@@ -155,18 +164,20 @@ namespace Firelight
         // Do as many physics updates as are neccessary this frame
         for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
         {
-            m_systemManager.PhysicsUpdate(m_time);
+            m_systemManager.PhysicsUpdate(m_time); 
+            Input::ProcessInput::Instance()->TestInput();
         }
 
         m_systemManager.LateUpdate(m_time);
 
         UpdateActiveCamera2DRect();
+       
     }
 
     void Engine::RenderFrame()
     {
-        Graphics::GraphicsHandler::Instance().Render();
-
         Events::EventDispatcher::InvokeFunctions<Events::Graphics::OnEarlyRender>();
+
+        Graphics::GraphicsHandler::Instance().Render();
     }
 }

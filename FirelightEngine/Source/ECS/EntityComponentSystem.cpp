@@ -37,7 +37,7 @@ namespace Firelight::ECS
 	{
 		EntityID entity = m_entityManager->CreateEntity();
 
-		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetComponentTypeCount());
+		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetRegisteredComponentTypeCount());
 
 		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
 
@@ -54,26 +54,43 @@ namespace Firelight::ECS
 		return m_entityManager->CreateEntity(id);
 	}
 
+	/// <summary>
+	/// Get all entities
+	/// </summary>
+	/// <returns></returns>
 	std::vector<EntityID> EntityComponentSystem::GetEntities()
 	{
 		return m_entityManager->GetEntities();
 	}
 
+	/// <summary>
+	/// Get signature of specific entity
+	/// </summary>
+	/// <param name="entityID"></param>
+	/// <returns></returns>
 	Signature EntityComponentSystem::GetSignature(EntityID entityID)
 	{
 		return m_entityManager->GetEntitySignature(entityID);
 	}
 
-	int EntityComponentSystem::GetNumberOfComponents()
+
+	/// <summary>
+	/// Get total number of registered components
+	/// </summary>
+	/// <returns></returns>
+	int EntityComponentSystem::GetRegisteredComponentTypeCount()
 	{
-		return m_componentManager->GetComponentTypeCount();
+		return m_componentManager->GetRegisteredComponentTypeCount();
 	}
 
+	/// <summary>
+	/// Updates the signatures of all entities
+	/// </summary>
 	void EntityComponentSystem::UpdateAllEntitySignatures()
 	{
 		m_entityManager->ClearSignatures();
 
-		int numComponents = m_componentManager->GetComponentTypeCount();
+		int numComponents = m_componentManager->GetRegisteredComponentTypeCount();
 		auto componentData = m_componentManager->GetComponentData();
 
 		for (auto& entity : m_entityManager->GetEntities())
@@ -86,5 +103,10 @@ namespace Firelight::ECS
 				m_entityManager->UpdateEntitySignature(entity, componentType.first, entityHasComponent);
 			}
 		}
+	}
+
+	void EntityComponentSystem::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	{
+		m_componentManager->SerializeAllComponents(writer);
 	}
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Panel.h"
-
 #include <vector>
+
+#include "../Includes/imgui/imgui.h"
 
 namespace Firelight::ECS
 {
@@ -12,12 +12,12 @@ namespace Firelight::ECS
 
 class InspectorPanel;
 
-class HierarchyPanel : public Panel
+class HierarchyPanel
 {
 public:
 	HierarchyPanel();
 
-	void Draw() override;
+	void Draw();
 	void NewGameEntity();
 	void NewCameraEntity();
 	Firelight::ECS::SpriteEntity* NewSpriteEntity();

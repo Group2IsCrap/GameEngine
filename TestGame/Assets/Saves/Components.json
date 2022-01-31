@@ -1,0 +1,448 @@
+{
+    "Scene": {
+        "Components": [
+            {
+                "ComponentID": 0,
+                "Components": [
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 64,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 200.0
+                    },
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 16,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 25.0
+                    },
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 33,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0
+                    }
+                ]
+            },
+            {
+                "ComponentID": 1,
+                "Components": []
+            },
+            {
+                "ComponentID": 2,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "Components": [
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    }
+                ]
+            },
+            {
+                "ComponentID": 4,
+                "Components": [
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "Components": [
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 7,
+                "Components": [
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
+                "Components": [
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": true
+                    }
+                ]
+            },
+            {
+                "ComponentID": 9,
+                "Components": [
+                    {
+                        "ViewportWorldHeight": 20.0
+                    }
+                ]
+            }
+        ],
+        "ComponentMap": [
+            {
+                "ComponentID": 0,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [2]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 1,
+                "EntityIDs": []
+            },
+            {
+                "ComponentID": 2,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 4,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 7,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 9,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    }
+                ]
+            }
+        ],
+        "ComponentTypeReference": [
+            {
+                "ComponentTypeName": "struct Firelight::ECS::SpriteComponent",
+                "ComponentTypeID": 0
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::NDCSpriteComponent",
+                "ComponentTypeID": 1
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::IdentificationComponent",
+                "ComponentTypeID": 7
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::AnimationComponent",
+                "ComponentTypeID": 4
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::PixelSpriteComponent",
+                "ComponentTypeID": 2
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::TransformComponent",
+                "ComponentTypeID": 3
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIWidget",
+                "ComponentTypeID": 5
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::ColliderComponent",
+                "ComponentTypeID": 6
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::StaticComponent",
+                "ComponentTypeID": 8
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
+                "ComponentTypeID": 9
+            }
+        ]
+    }
+}

@@ -14,9 +14,10 @@ namespace Firelight::ECS
 	{
 		std::string name;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			writer.Key("Name");
+			writer.String(name.c_str());
 		}
 	};
 
@@ -25,11 +26,12 @@ namespace Firelight::ECS
 	/// </summary>
 	struct StaticComponent : BaseComponent
 	{
-		bool isStatic;
+		bool isStatic = false;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			writer.Key("IsStatic");
+			writer.Bool(isStatic);
 		}
 	};
 
@@ -42,9 +44,13 @@ namespace Firelight::ECS
 		Firelight::Maths::Vec3f scale;
 		float                   rotation;
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
-			return;
+			/// Serialize Position
+			/// Serialize Scale
+			writer.Key("Rotation");
+			writer.Double(rotation);
 		}
 	};
+
 }

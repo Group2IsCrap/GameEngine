@@ -6,6 +6,7 @@
 #include "ECSEvents.h"
 
 #include "../Utils/ErrorManager.h"
+#include "rapidjson/prettywriter.h"
 
 #include<vector>
 #include<unordered_map>
@@ -58,6 +59,25 @@ namespace Firelight::ECS
 			}
 			return nullptr;
 		}
+
+		template<typename T, typename T2>
+		T2* GetComponent(EntityID entity, int index = 0)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
+				return nullptr;
+			}
+
+			ComponentTypeID typeID = m_componentHashTypes[typeName];
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				return dynamic_cast<T2*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
+			}
+			return nullptr;
+		}
+
 
 		/// <summary>
 		/// Returns full vector of components of a given type for a given entity
@@ -200,14 +220,44 @@ namespace Firelight::ECS
 			return (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end());
 		}
 
+		template<typename T, typename T2>
+		bool HasComponent(EntityID entity)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (m_componentHashTypes.find(typeName) == m_componentHashTypes.end())
+			{
+				return false;
+			}
+
+			ComponentTypeID typeID = m_componentHashTypes[typeName];
+			auto it = m_componentMap[typeID].find(entity);
+			if (it == m_componentMap[typeID].end())
+			{
+				return false;
+			}
+
+			for (int componentIndex : m_componentMap[typeID][entity])
+			{
+				T2* castComponent = dynamic_cast<T2*>(m_componentData[typeID][componentIndex]);
+				if (castComponent != nullptr)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		ComponentManager() = default;
 		~ComponentManager() = default;
 
 		bool HasComponent(ComponentTypeID typeID, EntityID entity);
-		int GetComponentTypeCount();
+		int GetRegisteredComponentTypeCount();
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentData();
 		const char* GetComponentName(ComponentTypeID typeID);
 		void RemoveEntity(EntityID entity);
+
+		void SerializeAllComponents(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 	private:
 

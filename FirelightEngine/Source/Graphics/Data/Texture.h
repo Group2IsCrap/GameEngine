@@ -11,6 +11,9 @@
 #include "../../Maths/Vec2.h"
 #include "../../Maths/Vec3.h"
 
+
+#include "rapidjson/prettywriter.h"
+
 namespace Firelight::Graphics
 {
 	class Texture
@@ -30,6 +33,8 @@ namespace Firelight::Graphics
 		const Maths::Vec3i& GetDimensions() const;
 		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const;
 
+		void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+
 	private:
 		void InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height);
 		void Initialise1x1ColourTexture(const Colour::RGBA& colour);
@@ -37,6 +42,7 @@ namespace Firelight::Graphics
 		void UpdateDimensionsUsingResource2D();
 
 	private:
+
 		Microsoft::WRL::ComPtr<ID3D11Resource>           m_texture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textureView;
 

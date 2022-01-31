@@ -8,8 +8,8 @@
 #include "Source/ECS/EntityWrappers/CameraEntity.h"
 #include "Source/Graphics/AssetManager.h"
 
-
 #include "InspectorPanel.h"
+
 
 HierarchyPanel::HierarchyPanel()
 {
