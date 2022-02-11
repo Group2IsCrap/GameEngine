@@ -45,7 +45,14 @@ namespace Firelight
 
         // Initialise COM library stuffs
         HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-        COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
+        if (FAILED(hr))
+        {
+            if (hr != RPC_E_CHANGED_MODE)
+            {
+                COM_ERROR_FATAL_IF_FAILED(hr, "Failed to co-initialize.");
+            }
+        }
+        
 
         // Initialise window container
         bool result = m_windowContainer.GetWritableWindow().Initialise(&m_windowContainer, hInstance, windowTitle, windowClass, dimensions);
@@ -169,8 +176,8 @@ namespace Firelight
 
     void Engine::RenderFrame()
     {
-        Graphics::GraphicsHandler::Instance().Render();
-
         Events::EventDispatcher::InvokeFunctions<Events::Graphics::OnEarlyRender>();
+
+        Graphics::GraphicsHandler::Instance().Render();
     }
 }

@@ -428,10 +428,12 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\Physics\IntersectData.h" />
     <ClInclude Include="Source\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
+    <ClInclude Include="Source\Serialisation\Serialiser.h" />
     <ClInclude Include="Source\TileMap\Tile.h" />
     <ClInclude Include="Source\TileMap\TileMap.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
@@ -505,6 +507,7 @@
     <ClCompile Include="Source\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="Source\Serialisation\Serialiser.cpp" />
     <ClCompile Include="Source\TileMap\Tile.cpp" />
     <ClCompile Include="Source\TileMap\TileMap.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />

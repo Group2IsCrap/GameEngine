@@ -88,6 +88,7 @@ namespace Firelight::ECS
 	void AnimationSystem::Play(Entity* entity, std::string animationName)
 	{
 		Firelight::ECS::AnimationComponent* animatorComponent = entity->GetComponent<Firelight::ECS::AnimationComponent>();
+		Firelight::ECS::SpriteComponent* spriteComponent = entity->GetComponent<Firelight::ECS::SpriteComponent>();
 		if (animatorComponent == nullptr)
 		{
 			return;
@@ -101,6 +102,7 @@ namespace Firelight::ECS
 		if (animatorComponent->animations.contains(animationName))
 		{
 			animatorComponent->currentAnimation = &animatorComponent->animations[animationName];
+			spriteComponent->texture = animatorComponent->currentAnimation->m_texture;
 			animatorComponent->currentFrameCount = 0.0f;
 			animatorComponent->currentFrameIndex = 0;
 			animatorComponent->shouldPlay = true;

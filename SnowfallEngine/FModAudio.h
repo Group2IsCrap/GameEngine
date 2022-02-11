@@ -3,10 +3,10 @@
 #ifndef _FModAudio_H_
 #define _FModAudio_H_
 
-#include "Vector2D.h"
-#include "Vector3D.h"
 #include "FMod/fmod.hpp"
 #include "FMod/fmod_studio.hpp"
+#include "Vector2D.h"
+#include "Vector3D.h"
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -32,15 +32,19 @@ namespace snowFallAudio
 
 			typedef std::map<std::string, FMOD::Sound*> soundMap;
 			typedef std::map<int, FMOD::Channel*> channelMap;
+			typedef std::map<float, FMOD::Channel*> volumeMap;
 
 			soundMap m_sounds;
 			channelMap m_channels;
+			volumeMap m_volumes;
 
 		};
 
 		class AudioEngine
 		{
 		public:
+			static AudioEngine* engine;
+
 			AudioEngine();
 			~AudioEngine();
 
@@ -51,20 +55,27 @@ namespace snowFallAudio
 
 			void LoadSound(const std::string& soundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 			void UnLoadSound(const std::string& soundName);
-			void SetListenerPos(const Vector2D& playerPos);
-			int PlaySound(const std::string& soundName, const Vector3D& soundPos = Vector3D(0.0f, 0.0f, 0.0f), float volumedB = 0.0f);
-			int PlaySound2D(const std::string& soundName, const Vector2D& playerPos, float volumedB = 0.0f);
+			//void SetListenerPos(const Vector2D& playerPos);
+			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos = Vector3D(0.0f, 0.0f, 0.0f), float volumedB = 0.0f);
+			//int PlaySound2D(const std::string& soundName, const Vector2D& playerPos, float volumedB = 0.0f);
 			void StopChannel(int channelId);
 			void StopAllChannels();
 			void SetChannelPos(int channelId, const Vector3D& channelPos);
 			void SetChannelVolume(int channelId, float volumedB);
 			bool IsPlaying(int channelId) const;
 			void UnLoadAllSounds();
+			void VolumeChange(float volume);
 
 			float dBToVolume(float dB);
 			float VolumeTodB(float volume);
 
+		private:
+			std::string audioFolder = "AudioFolder/";
+			std::string newString;
 
 		};
+
+		
+
 	}
 }
