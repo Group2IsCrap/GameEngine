@@ -7,6 +7,7 @@
 
 namespace Firelight::TileMap
 {
+	/*
 	Tile::Tile()
 		: m_texture(Graphics::AssetManager::Instance().GetDefaultTexture())
 		, m_sourceRect(0.0f, 0.0f, -1.0f, -1.0f)
@@ -44,4 +45,5 @@ namespace Firelight::TileMap
 	{
 		m_rotation = rotation;
 	}
+	*/
 }

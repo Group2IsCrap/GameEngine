@@ -10,6 +10,7 @@
 namespace Firelight::TileMap
 {
 
+	/*
 	class TileMap : public Firelight::Events::Listener
 	{
 	public:
@@ -21,6 +22,7 @@ namespace Firelight::TileMap
 		};
 
 		TileMap();
+		
 		void Render();
 
 		void UpdateTileMapSize();
@@ -52,5 +54,7 @@ namespace Firelight::TileMap
 		std::map<Maths::Vec2<int>, Tile*> m_grid;
 
 		std::unique_ptr<std::map<unsigned int, Maths::Rectf>> m_tileAtlas;
+		
 	};
+	*/
 }

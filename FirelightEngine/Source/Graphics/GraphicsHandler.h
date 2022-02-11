@@ -71,6 +71,6 @@ namespace Firelight::Graphics
 
         std::unique_ptr<SpriteBatch>                    m_spriteBatch;
 
-        std::unique_ptr<Firelight::TileMap::TileMap>    m_tileMap;
+        //std::unique_ptr<Firelight::TileMap::TileMap>    m_tileMap;
     };
 }

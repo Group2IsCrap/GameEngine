@@ -8,6 +8,7 @@
 
 namespace Firelight::TileMap
 {
+    /*
     TileMap::TileMap()
         : m_tileHeight(1.0f)
         , m_tileWidth(1.0f)
@@ -95,4 +96,5 @@ namespace Firelight::TileMap
         Tile* tile = GetTileAtPosition(mouseEvent->GetMouseX(), mouseEvent->GetMouseY());
         //InvokeFunction(send tile to the inspector as a reference);
     }
+    */
 }

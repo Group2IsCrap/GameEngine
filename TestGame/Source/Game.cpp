@@ -35,6 +35,9 @@
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 
+#include "Source/ECS/Components/TilemapComponent.h"
+#include "Source/TileMap/Tile.h"
+
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::ImGuiUI;
@@ -217,6 +220,32 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
 		circle->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
 		circle->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = false;
+
+		// Tilemap Test
+		TilemapComponent* tilemapComponent = new TilemapComponent();
+		tilemapComponent->cellSize = 1;
+		tilemapComponent->width = 10;
+		tilemapComponent->height = 10;
+		tilemapComponent->Texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/TilemapTest.png");
+		for (int y = 0; y < 10; y++)
+		{
+			for (int x = 0; x < 10; x++)
+			{
+				std::pair<int, int> position(x, y);
+				Firelight::TileMap::Tile* tile;
+				if (x % 2 == 1)
+				{
+					tile = new Firelight::TileMap::Tile(0, 0, 25);
+				}
+				else
+				{
+					tile = new Firelight::TileMap::Tile(1, 0, 25);
+				}
+				tilemapComponent->map[position] = tile;
+			}
+		}
+		GameEntity* tileMapEntity = new GameEntity();
+		tileMapEntity->AddComponent<Firelight::ECS::TilemapComponent>(tilemapComponent);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
