@@ -11,7 +11,7 @@
 
 #include <Source/Events/EventDispatcher.h>
 #include <Source/Animation/Animation.h>
-#include <Source/ECS/Systems/AnimationSystem.h>
+#include <Source/Animation/AnimationManager.h>
 
 static int s_takeDamage = false;
 
@@ -73,14 +73,14 @@ void PlayerSystem::SetState(int state)
 	switch (state)
 	{
 	case 0:
-		Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerIdle");
+		Firelight::Animation::AnimationManager::Play(m_entities[0], "PlayerIdle");
 		m_right = false;
 		m_left = false;
 		break;
 	case 1:
 		if (!m_right)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkRight");
+			Firelight::Animation::AnimationManager::Play(m_entities[0], "PlayerWalkRight");
 			m_right = true;
 			m_left = false;
 		}
@@ -88,7 +88,7 @@ void PlayerSystem::SetState(int state)
 	case 2:
 		if (!m_left)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkLeft");
+			Firelight::Animation::AnimationManager::Play(m_entities[0], "PlayerWalkLeft");
 			m_left = true;
 			m_right = false;
 		}
