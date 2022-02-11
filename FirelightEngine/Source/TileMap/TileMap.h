@@ -31,7 +31,7 @@ namespace Firelight::TileMap
 		void SetTileMapHeight(float tileMapHeight);
 		void SetTileMapWidth(float tileMapWidth);
 
-		Tile GetTileAtPosition(float x, float y);
+		Tile* GetTileAtPosition(float x, float y);
 
 		std::vector<std::vector<Tile>>& GetTileMap();
 
@@ -49,7 +49,7 @@ namespace Firelight::TileMap
 
 		std::vector<std::vector<Tile>> m_tileMap;
 		std::vector<std::vector<Tile>> m_newTileMap;
-		std::map<Maths::Vec2<int>, Tile> m_grid;
+		std::map<Maths::Vec2<int>, Tile*> m_grid;
 
 		std::unique_ptr<std::map<unsigned int, Maths::Rectf>> m_tileAtlas;
 	};

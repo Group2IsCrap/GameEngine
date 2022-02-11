@@ -36,7 +36,7 @@ namespace Firelight::TileMap
                   Tile newTile;
                   newTile.SetTileTexture(Graphics::AssetManager::Instance().GetDefaultTexture());
                   vec.emplace_back(newTile);
-                  m_grid.emplace(Maths::Vec2<int>(x, y));
+                  //m_grid.emplace(Maths::Vec2<int>(x, y));
             }
             m_tileMap.emplace_back(vec);
         }
@@ -78,10 +78,10 @@ namespace Firelight::TileMap
         m_tileMapWidth = tileMapWidth;
     }
 
-    Tile TileMap::GetTileAtPosition(float x, float y)
-    {
-        auto itr = m_grid.find(Maths::Vec2<int>(x, y));
-        return itr->second;
+    Tile* TileMap::GetTileAtPosition(float x, float y)
+    { 
+        Tile* tile = m_grid.at(Maths::Vec2<int>(x, y));
+        return tile;
     }
 
     std::vector<std::vector<Tile>>& TileMap::GetTileMap()
@@ -89,10 +89,10 @@ namespace Firelight::TileMap
         return m_tileMap;
     }
 
-    //void TileMap::HandleEvents(const char* event, void* data)
-    //{
-    //    Firelight::Events::Input::MouseEvent mouseEvent = (Firelight::Events::Input::MouseEvent)data;
-    //    Tile tile = GetTileAtPosition(position.x, position.y);
-    //    InvokeFunction(send tile to the inspector as a reference);
-    //}
+    void TileMap::HandleEvents(const char* event, void* data)
+    {
+        Firelight::Events::Input::MouseEvent* mouseEvent = (Firelight::Events::Input::MouseEvent*)data;
+        Tile* tile = GetTileAtPosition(mouseEvent->GetMouseX(), mouseEvent->GetMouseY());
+        //InvokeFunction(send tile to the inspector as a reference);
+    }
 }

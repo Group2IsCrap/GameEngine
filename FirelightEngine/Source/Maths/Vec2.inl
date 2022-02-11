@@ -117,6 +117,30 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline bool Vec2<T>::operator<(const T scalar) const
+    {
+        return x < scalar && y < scalar;
+    }
+
+    template<typename T>
+    inline bool Vec2<T>::operator<(const Vec2<T>& vector) const
+    {
+        return x < vector.x && y < vector.y;
+    }
+
+    template<typename T>
+    inline bool Vec2<T>::operator>(const T scalar) const
+    {
+        return x > scalar&& y > scalar;
+    }
+
+    template<typename T>
+    inline bool Vec2<T>::operator>(const Vec2<T>& vector) const
+    {
+        return x > vector.x&& y > vector.y;
+    }
+
+    template<typename T>
     inline T Vec2<T>::Length() const
     {
         return sqrt(LengthSquared());

@@ -30,6 +30,12 @@ namespace Firelight::Maths
         bool           operator==(const Vec2<T>& vector) const;
         bool           operator==(const T scalar) const;
 
+        bool           operator<(const T scalar) const;
+        bool           operator<(const Vec2<T>& vector) const;
+
+        bool           operator>(const Vec2<T>& vector) const;
+        bool           operator>(const T scalar) const;
+
         // Member functions
         T              Length() const;
         T              LengthSquared() const;
