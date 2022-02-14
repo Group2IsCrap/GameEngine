@@ -19,6 +19,14 @@ namespace Firelight::ECS
 			writer.Key("Name");
 			writer.String(name.c_str());
 		}
+
+		IdentificationComponent* Clone() override
+		{
+			IdentificationComponent* clone = new IdentificationComponent();
+			clone->name = name;
+
+			return clone;
+		}
 	};
 
 	/// <summary>
@@ -32,6 +40,14 @@ namespace Firelight::ECS
 		{
 			writer.Key("IsStatic");
 			writer.Bool(isStatic);
+		}
+
+		StaticComponent* Clone() override
+		{
+			StaticComponent* clone = new StaticComponent();
+			clone->isStatic = isStatic;
+
+			return clone;
 		}
 	};
 
@@ -50,6 +66,16 @@ namespace Firelight::ECS
 			/// Serialize Scale
 			writer.Key("Rotation");
 			writer.Double(rotation);
+		}
+
+		TransformComponent* Clone() override
+		{
+			TransformComponent* clone = new TransformComponent();
+			clone->position = position;
+			clone->scale = scale;
+			clone->rotation = rotation;
+
+			return clone;
 		}
 	};
 

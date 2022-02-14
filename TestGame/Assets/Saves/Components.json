@@ -2,107 +2,6 @@
     "Scene": {
         "Components": [
             {
-                "ComponentID": 0,
-                "Components": [
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 64,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 200.0
-                    },
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 16,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 25.0
-                    },
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 33,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 50.0
-                    }
-                ]
-            },
-            {
-                "ComponentID": 1,
-                "Components": []
-            },
-            {
-                "ComponentID": 2,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 3,
-                "Components": [
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    }
-                ]
-            },
-            {
-                "ComponentID": 4,
-                "Components": [
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 5,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 6,
-                "Components": [
-                    {},
-                    {}
-                ]
-            },
-            {
                 "ComponentID": 7,
                 "Components": [
                     {
@@ -131,6 +30,38 @@
                     },
                     {
                         "Name": ""
+                    }
+                ]
+            },
+            {
+                "ComponentID": 0,
+                "Components": [
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 64,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 200.0
+                    },
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 16,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 25.0
+                    },
+                    {
+                        "Texture": "INSERT TEXTURE HERE",
+                        "Layer": 33,
+                        "DrawOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0
                     }
                 ]
             },
@@ -167,149 +98,80 @@
                 ]
             },
             {
+                "ComponentID": 3,
+                "Components": [
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    },
+                    {
+                        "Rotation": 0.0
+                    }
+                ]
+            },
+            {
                 "ComponentID": 9,
                 "Components": [
                     {
                         "ViewportWorldHeight": 20.0
                     }
                 ]
-            }
-        ],
-        "ComponentMap": [
-            {
-                "ComponentID": 0,
-                "EntityIDs": [
-                    {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [2]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 1,
-                "EntityIDs": []
-            },
-            {
-                "ComponentID": 2,
-                "EntityIDs": [
-                    {
-                        "EntityID": 3,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [4]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 3,
-                "EntityIDs": [
-                    {
-                        "EntityID": 0,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 1,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 3,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [5]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [6]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [7]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [8]
-                    }
-                ]
             },
             {
                 "ComponentID": 4,
-                "EntityIDs": [
-                    {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 5,
-                "EntityIDs": [
-                    {
-                        "EntityID": 3,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [4]
-                    }
+                "Components": [
+                    {}
                 ]
             },
             {
                 "ComponentID": 6,
-                "EntityIDs": [
-                    {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [1]
-                    }
+                "Components": [
+                    {},
+                    {}
                 ]
             },
+            {
+                "ComponentID": 2,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            }
+        ],
+        "ComponentMap": [
             {
                 "ComponentID": 7,
                 "EntityIDs": [
@@ -348,6 +210,23 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 0,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [2]
                     }
                 ]
             },
@@ -393,11 +272,124 @@
                 ]
             },
             {
+                "ComponentID": 3,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    }
+                ]
+            },
+            {
                 "ComponentID": 9,
                 "EntityIDs": [
                     {
                         "EntityID": 0,
                         "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 4,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 2,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
                     }
                 ]
             }

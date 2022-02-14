@@ -24,5 +24,10 @@ namespace Firelight::ECS
 		{
 			return;
 		}
+
+		virtual BaseComponent* Clone()
+		{
+			return nullptr;
+		}
 	};
 }

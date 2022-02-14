@@ -23,6 +23,19 @@ namespace Firelight::ECS
 		{
 			return;
 		}
+
+		AnimationComponent* Clone() override
+		{
+			AnimationComponent* clone = new AnimationComponent();
+			clone->currentAnimation = currentAnimation;
+			clone->currentFrameCount = currentFrameCount;
+			clone->currentFrameIndex = currentFrameIndex;
+			clone->playOnStart = playOnStart;
+			clone->shouldPlay = shouldPlay;
+			clone->animations = animations;
+
+			return clone;
+		}
 	};
 }
 

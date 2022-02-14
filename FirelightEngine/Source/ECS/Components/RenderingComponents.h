@@ -23,6 +23,14 @@ namespace Firelight::ECS
 			writer.Key("ViewportWorldHeight");
 			writer.Double(viewportWorldHeight);
 		}
+
+		Camera2DComponent* Clone() override
+		{
+			Camera2DComponent* clone = new Camera2DComponent();
+			clone->viewportWorldHeight = viewportWorldHeight;
+
+			return clone;
+		}
 	};
 
 	/// <summary>
@@ -52,6 +60,19 @@ namespace Firelight::ECS
 			///Serialize Color
 			///Serialize sourceRect
 		}
+
+		SpriteComponent* Clone() override
+		{
+			SpriteComponent* clone = new SpriteComponent();
+			clone->texture = texture;
+			clone->layer = layer;
+			clone->drawOffset = drawOffset;
+			clone->pixelsPerUnit = pixelsPerUnit;
+			clone->colour = colour;
+			clone->sourceRect = sourceRect;
+
+			return clone;
+		}
 	};
 
 
@@ -73,6 +94,19 @@ namespace Firelight::ECS
 		{
 			return;
 		}
+
+		NDCSpriteComponent* Clone() override
+		{
+			NDCSpriteComponent* clone = new NDCSpriteComponent();
+			clone->texture = texture;
+			clone->layer = layer;
+			clone->drawOffset = drawOffset;
+			clone->descRect = descRect;
+			clone->colour = colour;
+			clone->sourceRect = sourceRect;
+
+			return clone;
+		}
 	};
 
 	/// <summary>
@@ -91,6 +125,19 @@ namespace Firelight::ECS
 		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
+		}
+
+		PixelSpriteComponent* Clone() override
+		{
+			PixelSpriteComponent* clone = new PixelSpriteComponent();
+			clone->texture = texture;
+			clone->layer = layer;
+			clone->drawOffset = drawOffset;
+			clone->colour = colour;
+			clone->sourceRect = sourceRect;
+			clone->toDraw = toDraw;
+
+			return clone;
 		}
 	};
 }

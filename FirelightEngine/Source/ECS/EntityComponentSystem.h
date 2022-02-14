@@ -12,15 +12,6 @@ namespace Firelight::ECS
 	class EntityComponentSystem
 	{
 	public:
-		/// <summary>
-		/// Registers the given component so that it's existance is guaranteed
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		template<typename T>
-		void RegisterComponent()
-		{
-			m_componentManager->RegisterComponent<T>();
-		}
 
 		/// <summary>
 		/// Returns the component type id of the given typename
@@ -52,6 +43,18 @@ namespace Firelight::ECS
 			return m_componentManager->GetComponent<T,T2>(entity, index);
 		}
 
+		template<typename T>
+		T* GetTemplateComponent(EntityID templateID, int index = 0)
+		{
+			return m_templateComponentManager->GetComponent<T>(templateID, index);
+		}
+
+		template<typename T, typename T2>
+		T2* GetTemplateComponent(EntityID templateID, int index = 0)
+		{
+			return m_templateComponentManager->GetComponent<T,T2>(templateID, index);
+		}
+
 		/// <summary>
 		/// Returns all components of a given type for a given entity
 		/// </summary>
@@ -62,6 +65,12 @@ namespace Firelight::ECS
 		std::vector<T*> GetComponents(EntityID entity)
 		{
 			return m_componentManager->GetComponents<T>(entity);
+		}
+
+		template<typename T>
+		std::vector<T*> GetTemplateComponents(EntityID templateID)
+		{
+			return m_templateComponentManager->GetComponents<T>(templateID);
 		}
 
 		/// <summary>
@@ -120,6 +129,19 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
+		/// Associates a component to the given template
+		/// </summary>
+		/// <typeparam name="T">Component Type</typeparam>
+		/// <param name="templateID"></param>
+		/// <param name="component"></param>
+		template<typename T>
+		void AddComponentToTemplate(EntityID templateID, T* component)
+		{
+			m_templateComponentManager->AddComponent<T>(templateID, component);
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnTemplateComponentAddedEvent>();
+		}
+
+		/// <summary>
 		/// Disassociates a component of type T with the given entity
 		/// </summary>
 		/// <typeparam name="T">Component Type</typeparam>
@@ -133,6 +155,21 @@ namespace Firelight::ECS
 			{
 				m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), false);
 				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
+			}
+		}
+		/// <summary>
+		/// Disassociates a component of type T with the given entity
+		/// </summary>
+		/// <typeparam name="T">Component Type</typeparam>
+		/// <param name="templateID"></param>
+		/// <param name="component"></param>
+		template<typename T>
+		void RemoveComponentFromTemplate(EntityID templateID, int index = 0)
+		{
+			m_templateComponentManager->RemoveComponent<T>(templateID, index);
+			if (!TemplateHasComponent<T>(templateID))
+			{
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnTemplateComponentRemovedEvent>();
 			}
 		}
 
@@ -154,6 +191,18 @@ namespace Firelight::ECS
 			return m_componentManager->HasComponent<T, T2>(entity);
 		}
 
+		template<typename T>
+		bool TemplateHasComponent(EntityID templateID)
+		{
+			return m_templateComponentManager->HasComponent<T>(templateID);
+		}
+
+		template<typename T, typename T2>
+		bool TemplateHasComponent(EntityID templateID)
+		{
+			return m_templateComponentManager->HasComponent<T, T2>(templateID);
+		}
+
 		/// <summary>
 		/// Removes an entity
 		/// </summary>
@@ -166,7 +215,9 @@ namespace Firelight::ECS
 		}
 
 		EntityID CreateEntity();
+		EntityID CreateTemplate();
 		EntityID CreateEntity(EntityID id);
+		EntityID CreateEntityFromTemplate(EntityID id);
 		std::vector<EntityID> GetEntities();
 		Signature GetSignature(EntityID entityID);
 
@@ -184,5 +235,6 @@ namespace Firelight::ECS
 
 		std::unique_ptr<EntityManager> m_entityManager;
 		std::unique_ptr<ComponentManager> m_componentManager;
+		std::unique_ptr<ComponentManager> m_templateComponentManager;
 	};
 }

@@ -22,6 +22,15 @@ namespace Firelight::ECS
 			writer.Key("Layer");
 			writer.Int(layer);
 		}
+
+		RigidBodyComponent* Clone() override
+		{
+			RigidBodyComponent* clone = new RigidBodyComponent();
+			clone->velocity = velocity;
+			clone->layer = layer;
+
+			return clone;
+		}
 	};
 
 	struct ColliderComponent : BaseComponent
@@ -31,6 +40,14 @@ namespace Firelight::ECS
 		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
+		}
+
+		ColliderComponent* Clone() override
+		{
+			ColliderComponent* clone = new ColliderComponent();
+			clone->isEnabled = isEnabled;
+
+			return clone;
 		}
 	};
 
@@ -42,6 +59,14 @@ namespace Firelight::ECS
 		{
 			return;
 		}
+
+		BoxColliderComponent* Clone() override
+		{
+			BoxColliderComponent* clone = new BoxColliderComponent();
+			clone->rect = rect;
+
+			return clone;
+		}
 	};
 
 	struct CircleColliderComponent : ColliderComponent
@@ -51,6 +76,14 @@ namespace Firelight::ECS
 		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
+		}
+
+		CircleColliderComponent* Clone() override
+		{
+			CircleColliderComponent* clone = new CircleColliderComponent();
+			clone->radius = radius;
+
+			return clone;
 		}
 	};
 }

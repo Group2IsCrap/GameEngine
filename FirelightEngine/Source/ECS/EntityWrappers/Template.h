@@ -3,13 +3,11 @@
 
 namespace Firelight::ECS
 {
-	class Entity
+	class Template
 	{
 	public:
-		Entity();
-		Entity(EntityID entityID);
-		Entity(bool isTemplate, EntityID templateID);
-		~Entity();
+		Template();
+		~Template();
 
 		void Destroy();
 
@@ -23,19 +21,19 @@ namespace Firelight::ECS
 		template<typename T>
 		T* GetComponent(int index = 0)
 		{
-			return EntityComponentSystem::Instance()->GetComponent<T>(m_entityID, index);
+			return EntityComponentSystem::Instance()->GetTemplateComponent<T>(m_templateID, index);
 		}
 
 		template<typename T, typename T2>
 		T2* GetComponent(int index = 0)
 		{
-			return EntityComponentSystem::Instance()->GetComponent<T,T2>(m_entityID, index);
+			return EntityComponentSystem::Instance()->GetTemplateComponent<T, T2>(m_templateID, index);
 		}
-		
+
 		template<typename T>
 		std::vector<T*> GetComponents()
 		{
-			return EntityComponentSystem::Instance()->GetComponents<T>(m_entityID);
+			return EntityComponentSystem::Instance()->GetTemplateComponents<T>(m_templateID);
 		}
 
 		/// <summary>
@@ -47,7 +45,7 @@ namespace Firelight::ECS
 		template<typename T>
 		void AddComponent(T* component)
 		{
-			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, component);
+			EntityComponentSystem::Instance()->AddComponentToTemplate<T>(m_templateID, component);
 		}
 
 		/// <summary>
@@ -59,7 +57,7 @@ namespace Firelight::ECS
 		template<typename T>
 		void AddComponent()
 		{
-			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, new T());
+			EntityComponentSystem::Instance()->AddComponentToTemplate<T>(m_templateID, new T());
 		}
 
 		/// <summary>
@@ -71,7 +69,7 @@ namespace Firelight::ECS
 		template<typename T>
 		void RemoveComponent(int index = 0)
 		{
-			EntityComponentSystem::Instance()->RemoveComponent<T>(m_entityID, index);
+			EntityComponentSystem::Instance()->RemoveComponentFromTemplate<T>(m_templateID, index);
 		}
 
 		/// <summary>
@@ -82,30 +80,29 @@ namespace Firelight::ECS
 		template<typename T>
 		bool HasComponent()
 		{
-			return EntityComponentSystem::Instance()->HasComponent<T>(m_entityID);
+			return EntityComponentSystem::Instance()->TemplateHasComponent<T>(m_templateID);
 		}
 
 		template<typename T, typename T2>
 		bool HasComponent()
 		{
-			return EntityComponentSystem::Instance()->HasComponent<T, T2>(m_entityID);
+			return EntityComponentSystem::Instance()->TemplateHasComponent<T, T2>(m_templateID);
 		}
 
-		bool operator==(Entity& entity)
+		bool operator==(Template& entity)
 		{
-			return m_entityID == entity.m_entityID;
+			return m_templateID == entity.m_templateID;
 		}
-		bool operator!=(Entity& entity)
+		bool operator!=(Template& entity)
 		{
-			return m_entityID != entity.m_entityID;
+			return m_templateID != entity.m_templateID;
 		}
 
-		EntityID GetEntityID();
-		Signature GetSignature();
+		EntityID GetTemplateID();
 	private:
-		Entity(const Entity&) = delete;
-		Entity& operator=(const Entity&) = delete;
+		Template(const Template&) = delete;
+		Template& operator=(const Template&) = delete;
 	protected:
-		EntityID m_entityID;
+		EntityID m_templateID;
 	};
 }

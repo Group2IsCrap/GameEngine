@@ -4,9 +4,14 @@ namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 
+	std::unordered_map<TypeHash, ComponentTypeID> ComponentManager::sm_componentHashTypes;
+	std::unordered_map<ComponentTypeID, TypeHash> ComponentManager::sm_componentTypeHash;
+	std::unordered_map<TypeHash, const char*> ComponentManager::sm_componentHashNames;
+
+
 	int ComponentManager::GetRegisteredComponentTypeCount()
 	{
-		return (int)m_componentTypeHash.size();
+		return (int)sm_componentTypeHash.size();
 	}
 
 	/// <summary>
@@ -19,13 +24,33 @@ namespace Firelight::ECS
 	}
 
 	/// <summary>
+	/// Returns the entire map of component data
+	/// </summary>
+	/// <returns></returns>
+	std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> ComponentManager::GetComponentDataCopy(EntityID id)
+	{
+		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> associatedComponents = std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>>();
+		for (auto typeComponentListPair : m_componentMap)
+		{
+			associatedComponents.insert(std::make_pair(typeComponentListPair.first, std::vector<BaseComponent*>()));
+
+			for (auto element : m_componentMap[typeComponentListPair.first][id])
+			{
+				associatedComponents[typeComponentListPair.first].push_back(m_componentData[typeComponentListPair.first][element]->Clone());
+			}
+		}
+
+		return associatedComponents;
+	}
+
+	/// <summary>
 	/// Returns the name of the given component ID
 	/// </summary>
 	/// <param name="typeID"></param>
 	/// <returns></returns>
 	const char* ComponentManager::GetComponentName(ComponentTypeID typeID)
 	{
-		return m_componentHashNames[m_componentTypeHash[typeID]];
+		return sm_componentHashNames[sm_componentTypeHash[typeID]];
 	}	
 
 	bool ComponentManager::HasComponent(ComponentTypeID typeID, EntityID entity)
@@ -125,16 +150,16 @@ namespace Firelight::ECS
 		//create type group
 		writer.Key("ComponentTypeReference");
 		writer.StartArray();
-		for(auto& it : m_componentHashTypes)
+		for(auto& it : sm_componentHashTypes)
 		{
 			writer.StartObject();
 			//write name
 			writer.Key("ComponentTypeName");
-			writer.String(m_componentHashNames[it.first]);
+			writer.String(sm_componentHashNames[it.first]);
 
 			//write id
 			writer.Key("ComponentTypeID");
-			writer.Uint(m_componentHashTypes[it.first]);
+			writer.Uint(sm_componentHashTypes[it.first]);
 
 			writer.EndObject();
 		}
