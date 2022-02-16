@@ -142,7 +142,7 @@ namespace Firelight::Editor
 		ImGui::AlignTextToFramePadding();
 		ImGui::Text(label.c_str());
 		ImGui::SameLine();
-		if (spriteComponent == nullptr)
+		if (spriteComponent->texture == nullptr)
 			spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture(texturePath);
 		ImGui::ImageButton((ImTextureID)spriteComponent->texture->GetShaderResourceView().Get(), { 50, 50 });
 
