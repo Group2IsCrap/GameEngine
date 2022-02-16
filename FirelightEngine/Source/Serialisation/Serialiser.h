@@ -30,23 +30,15 @@ namespace Firelight::Serialisation
 		}
 
 		static void Serialise(std::string name, int value);
-
 		static void Serialise(std::string name, bool value);
-
 		static void Serialise(std::string name, float value);
-
 		static void Serialise(std::string name, ECS::ComponentTypeID value);
-
 		static void Serialise(std::string name, ECS::EntityID value);
-
 		static void Serialise(std::string name, std::string value);
 		static void Serialise(std::string name, const char* value);
-		
 		static void Serialise(std::string name, Firelight::Maths::Vec3f value);
-
 		static void Serialise(std::string name, Firelight::Maths::Vec2f value);
 		static void Serialise(std::string name, Firelight::Maths::Rectf value);
-
 		static void Serialise(std::string name, Firelight::Graphics::Texture* value);
 		static void Serialise(std::string name, Firelight::Animation::Animation* value);
 		static void Serialise(std::string name, Firelight::Graphics::Colour::RGBA value);

@@ -19,6 +19,8 @@ namespace Firelight::UI {
 	}
 	void UISystem::Update(const Utils::Time& time)
 	{
+		UNREFERENCED_PARAMETER(time);
+
 		if (m_DragItem != nullptr) {
 			if (m_MouseRawCurr != Maths::Vec2f(0,0)) {
 				m_DragItem->defaultPosition = m_MousePosDrag;
@@ -112,7 +114,7 @@ namespace Firelight::UI {
 		}
 		else if (event == Events::Input::OnKeyPress::sm_descriptor) 
 		{
-			unsigned char eventKey = (unsigned char)data;
+			unsigned char eventKey = reinterpret_cast<unsigned char>(data);
 
 			return;
 		}
@@ -122,13 +124,13 @@ namespace Firelight::UI {
 
 			if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move) 
 			{
-				m_MousePosDrag = Maths::Vec3f(eventMouse->GetMouseX(), eventMouse->GetMouseY(), 0);
+				m_MousePosDrag = Maths::Vec3f((float)eventMouse->GetMouseX(), (float)eventMouse->GetMouseY(), 0.0f);
 				
 			}
 			if (eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove) 
 			{
 
-				m_MouseRawCurr = Maths::Vec2f(eventMouse->GetMouseX(), eventMouse->GetMouseY());
+				m_MouseRawCurr = Maths::Vec2f((float)eventMouse->GetMouseX(), (float)eventMouse->GetMouseY());
 
 			}
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)

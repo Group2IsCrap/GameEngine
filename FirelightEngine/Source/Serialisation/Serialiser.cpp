@@ -176,8 +176,12 @@ namespace Firelight::Serialisation
 			return;
 		}
 
-		WriteKey(name);
-		Writer->String(value);
+		if (value != nullptr)
+		{
+			WriteKey(name);
+			Writer->String(value);
+		}
+
 	}
 
 	void Serialiser::Serialise(std::string name, Firelight::Maths::Vec3f value)

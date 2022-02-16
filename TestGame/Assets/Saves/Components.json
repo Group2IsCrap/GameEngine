@@ -8,6 +8,27 @@
                         "Name": ""
                     },
                     {
+                        "Name": "Player"
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
                         "Name": ""
                     },
                     {
@@ -37,13 +58,13 @@
                 "ComponentID": 0,
                 "Components": [
                     {
-                        "Layer": 64,
+                        "Layer": 60,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
                             "X": 0.0,
                             "Y": 0.0
                         },
-                        "PixelsPerUnit": 200.0,
+                        "PixelsPerUnit": 40.0,
                         "Colour": {
                             "R": 255.0,
                             "G": 255.0,
@@ -53,8 +74,8 @@
                         "SourceRect": {
                             "X": 0.0,
                             "Y": 0.0,
-                            "Width": 210.0,
-                            "Height": 258.0
+                            "Width": -1.0,
+                            "Height": -1.0
                         }
                     },
                     {
@@ -64,7 +85,7 @@
                             "X": 0.0,
                             "Y": 0.0
                         },
-                        "PixelsPerUnit": 25.0,
+                        "PixelsPerUnit": 20.0,
                         "Colour": {
                             "R": 255.0,
                             "G": 255.0,
@@ -80,6 +101,27 @@
                     },
                     {
                         "Layer": 33,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
+                    },
+                    {
+                        "Layer": 32,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
                             "X": 0.0,
@@ -129,8 +171,35 @@
                         "IsStatic": false
                     },
                     {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
                         "IsStatic": true
+                    },
+                    {
+                        "IsStatic": false
                     }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "Components": [
+                    {}
                 ]
             },
             {
@@ -191,47 +260,73 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1134.0,
-                            "Y": 87.28500366210938,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.25,
-                            "Y": 0.23000000417232513,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 162.0,
-                            "Y": 94.875,
+                            "X": 48.60000228881836,
+                            "Y": 47.95000076293945,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.25,
-                            "Y": 0.25,
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1263.5999755859375,
-                            "Y": 157.11300659179688,
+                            "X": 123.60000610351563,
+                            "Y": 47.95000076293945,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.04600000008940697,
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 162.0,
-                            "Y": 94.875,
+                            "X": 198.60000610351563,
+                            "Y": 47.95000076293945,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1231.199951171875,
+                            "Y": 379.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10000000149011612,
+                            "Y": 0.5,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1231.199951171875,
+                            "Y": 229.5,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -243,8 +338,73 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 10.0,
+                            "X": 1231.199951171875,
+                            "Y": 279.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1231.199951171875,
+                            "Y": 329.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1231.199951171875,
+                            "Y": 379.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1231.199951171875,
+                            "Y": 429.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 7.0,
+                            "Y": 5.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
                             "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -7.0,
+                            "Y": -5.0,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -271,7 +431,7 @@
                         "CurrentFrameCount": 0.0,
                         "CurrentFrameIndex": 0,
                         "PlayOnStart": true,
-                        "ShouldPlay": true
+                        "ShouldPlay": false
                     }
                 ]
             },
@@ -279,11 +439,35 @@
                 "ComponentID": 6,
                 "Components": [
                     {
-                        "Radius": 1.0
+                        "Rect": {
+                            "X": 0.0,
+                            "Y": -0.5,
+                            "Width": 2.0,
+                            "Height": 2.200000047683716
+                        }
                     },
                     {
-                        "Radius": 1.0
+                        "Rect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": 8.0,
+                            "Height": 7.0
+                        }
+                    },
+                    {
+                        "Rect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": 2.0,
+                            "Height": 2.0
+                        }
                     }
+                ]
+            },
+            {
+                "ComponentID": 10,
+                "Components": [
+                    {}
                 ]
             },
             {
@@ -308,6 +492,27 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
+                        "ToDraw": false
+                    },
+                    {
+                        "Layer": 32,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
                         "ToDraw": true
                     },
                     {
@@ -333,6 +538,111 @@
                     },
                     {
                         "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
                             "X": 0.0,
@@ -399,11 +709,392 @@
             {
                 "ComponentID": 5,
                 "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
+                    {
+                        "Index": 10,
+                        "IsPressable": false,
+                        "IsHoverable": false,
+                        "IsDraggable": false,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        },
+                        "Layer": 100.0
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": false,
+                        "IsHoverable": false,
+                        "IsDraggable": false,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": false,
+                        "IsHoverable": false,
+                        "IsDraggable": false,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 75.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": false,
+                        "IsHoverable": false,
+                        "IsDraggable": false,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 150.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07500000298023224,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.10000000149011612,
+                            "Y": 0.5,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10000000149011612,
+                            "Y": 0.5,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -150.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.5,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        },
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -100.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.5,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        },
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -50.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.5,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        },
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.5,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        },
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "Index": 10,
+                        "IsPressable": true,
+                        "IsHoverable": true,
+                        "IsDraggable": true,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 50.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.5,
+                            "Y": 0.10000000149011612,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.05000000074505806,
+                            "Y": 0.05000000074505806,
+                            "Z": 0.0
+                        },
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    }
                 ]
             }
         ],
@@ -446,6 +1137,34 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
                     }
                 ]
             },
@@ -461,8 +1180,12 @@
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 14,
                         "Indices": [2]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [3]
                     }
                 ]
             },
@@ -504,6 +1227,43 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
                     }
                 ]
             },
@@ -545,6 +1305,34 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
                     }
                 ]
             },
@@ -574,8 +1362,21 @@
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 14,
                         "Indices": [1]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [2]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 10,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
                     }
                 ]
             },
@@ -601,6 +1402,30 @@
                     {
                         "EntityID": 7,
                         "Indices": [4]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [10]
                     }
                 ]
             },
@@ -608,24 +1433,44 @@
                 "ComponentID": 5,
                 "EntityIDs": [
                     {
+                        "EntityID": 11,
+                        "Indices": [7]
+                    },
+                    {
                         "EntityID": 3,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 4,
+                        "EntityID": 5,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 6,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 7,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [4]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [9]
                     }
                 ]
             }
@@ -670,6 +1515,14 @@
             {
                 "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
                 "ComponentTypeID": 9
+            },
+            {
+                "ComponentTypeName": "class PlayerComponent",
+                "ComponentTypeID": 10
+            },
+            {
+                "ComponentTypeName": "class HealthComponent",
+                "ComponentTypeID": 11
             }
         ]
     }
