@@ -280,7 +280,7 @@ namespace Firelight::ECS
 		const char* GetComponentName(ComponentTypeID typeID);
 		void RemoveEntity(EntityID entity);
 
-		void SerializeAllComponents(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void SerialiseAllComponents();
 
 	private:
 

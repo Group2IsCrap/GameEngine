@@ -8,6 +8,9 @@
 #include "../../Graphics/Data/Colour.h"
 
 #include "../../Maths/Rect.h"
+#include "../../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
 
 namespace Firelight::ECS
 {
@@ -18,10 +21,9 @@ namespace Firelight::ECS
 	{
 		float viewportWorldHeight = 20.0f;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			writer.Key("ViewportWorldHeight");
-			writer.Double(viewportWorldHeight);
+			Serialiser::Serialise("ViewportWorldHeight", viewportWorldHeight);
 		}
 
 		Camera2DComponent* Clone() override
@@ -47,18 +49,14 @@ namespace Firelight::ECS
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			writer.Key("Texture");
-			texture->Serialize(writer);
-			writer.Key("Layer");
-			writer.Int(layer);
-			writer.Key("DrawOffset");
-			drawOffset.Serialize(writer);
-			writer.Key("PixelsPerUnit");
-			writer.Double(pixelsPerUnit);
-			///Serialize Color
-			///Serialize sourceRect
+			Serialiser::Serialise("Layer", layer);
+			Serialiser::Serialise("Texture", texture);
+			Serialiser::Serialise("DrawOffset", drawOffset);
+			Serialiser::Serialise("PixelsPerUnit", pixelsPerUnit);
+			Serialiser::Serialise("Colour", colour);
+			Serialiser::Serialise("SourceRect", sourceRect);
 		}
 
 		SpriteComponent* Clone() override
@@ -90,9 +88,14 @@ namespace Firelight::ECS
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		Maths::Rectf                      descRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Layer", layer);
+			Serialiser::Serialise("Texture", texture);
+			Serialiser::Serialise("DrawOffset", drawOffset);
+			Serialiser::Serialise("Colour", colour);
+			Serialiser::Serialise("SourceRect", sourceRect);
+			Serialiser::Serialise("DestRect", descRect);
 		}
 
 		NDCSpriteComponent* Clone() override
@@ -114,17 +117,23 @@ namespace Firelight::ECS
 	/// </summary>
 	struct PixelSpriteComponent : BaseComponent
 	{
-		Firelight::Graphics::Texture* texture = nullptr;
-		int                               layer = 32;
+		Firelight::Graphics::Texture*		texture = nullptr;
+		int									layer = 32;
 
-		Maths::Vec2f                      drawOffset = Maths::Vec2f(0.0f, 0.0f);
+		Maths::Vec2f						drawOffset = Maths::Vec2f(0.0f, 0.0f);
 
-		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
-		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
-		bool    toDraw = true;
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		Firelight::Graphics::Colour::RGBA	colour = Firelight::Graphics::Colours::sc_white;
+		Maths::Rectf						sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+		bool								toDraw = true;
+
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Layer", layer);
+			Serialiser::Serialise("Texture", texture);
+			Serialiser::Serialise("DrawOffset", drawOffset);
+			Serialiser::Serialise("Colour", colour);
+			Serialiser::Serialise("SourceRect", sourceRect);
+			Serialiser::Serialise("ToDraw", toDraw);
 		}
 
 		PixelSpriteComponent* Clone() override

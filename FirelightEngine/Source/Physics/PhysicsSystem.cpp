@@ -11,17 +11,18 @@ namespace Firelight::Physics
 	
 	void PhysicsSystem::PhysicsUpdate(const Utils::Time& time)
 	{
+		UNREFERENCED_PARAMETER(time);
 		HandleCollisions();
 	}
 
 	void PhysicsSystem::ApplyForces(double fixedDeltaTime)
 	{
-
+		UNREFERENCED_PARAMETER(fixedDeltaTime);
 	}
 
 	void PhysicsSystem::Simulate(double fixedDeltaTime)
 	{
-
+		UNREFERENCED_PARAMETER(fixedDeltaTime);
 	}
 
 	void PhysicsSystem::HandleCollisions()
@@ -112,6 +113,7 @@ namespace Firelight::Physics
 
 	Firelight::Maths::Vec3f PhysicsSystem::ComputeForce(Firelight::ECS::RigidBodyComponent* rigidbody)
 	{
+		UNREFERENCED_PARAMETER(rigidbody);
 		return Firelight::Maths::Vec3f();
 	}
 	
@@ -149,7 +151,7 @@ namespace Firelight::Physics
 	
 	bool PhysicsSystem::CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider2)
 	{
-		int radiusSquared = circleCollider->radius + circleCollider2->radius;
+		float radiusSquared = circleCollider->radius + circleCollider2->radius;
 		radiusSquared *= radiusSquared;
 		float distSquared = Firelight::Maths::Vec3f::DistSquared(transform->position, transform2->position);
 
@@ -158,6 +160,10 @@ namespace Firelight::Physics
 	
 	bool PhysicsSystem::CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider)
 	{
+		UNREFERENCED_PARAMETER(transform);
+		UNREFERENCED_PARAMETER(boxCollider);
+		UNREFERENCED_PARAMETER(transform2);
+		UNREFERENCED_PARAMETER(circleCollider);
 		return false;
 	}
 }

@@ -20,7 +20,7 @@ namespace Firelight::Animation
 		}
 
 		std::string m_animationName;
-		Firelight::Graphics::Texture* m_texture;
+		Firelight::Graphics::Texture* m_texture = nullptr;
 		float m_frameTime = 100;
 		int m_cellWidth = 24;
 		int m_cellHeight = 24;

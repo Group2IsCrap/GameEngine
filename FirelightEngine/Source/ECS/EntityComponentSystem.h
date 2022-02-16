@@ -224,7 +224,7 @@ namespace Firelight::ECS
 		int GetRegisteredComponentTypeCount();
 		void UpdateAllEntitySignatures();
 
-		void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		void Serialise();
 
 		static EntityComponentSystem* Instance();
 	private:

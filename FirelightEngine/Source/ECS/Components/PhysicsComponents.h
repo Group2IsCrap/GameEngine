@@ -6,6 +6,10 @@
 #include "../../Maths/Vec3.h"
 #include "../../Maths/Rect.h"
 
+#include "../../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
+
 namespace Firelight::ECS
 {
 	/// <summary>
@@ -16,11 +20,10 @@ namespace Firelight::ECS
 		Firelight::Maths::Vec3f velocity;
 		int layer;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			///Serialize Velocity
-			writer.Key("Layer");
-			writer.Int(layer);
+			Serialiser::Serialise("Velocity", velocity);
+			Serialiser::Serialise("Layer", layer);
 		}
 
 		RigidBodyComponent* Clone() override
@@ -37,9 +40,9 @@ namespace Firelight::ECS
 	{
 		bool isEnabled = true;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("IsEnabled", isEnabled);
 		}
 
 		ColliderComponent* Clone() override
@@ -55,9 +58,9 @@ namespace Firelight::ECS
 	{
 		Firelight::Maths::Rectf rect;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Rect", rect);
 		}
 
 		BoxColliderComponent* Clone() override
@@ -73,9 +76,9 @@ namespace Firelight::ECS
 	{
 		float radius;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Radius", radius);
 		}
 
 		CircleColliderComponent* Clone() override
