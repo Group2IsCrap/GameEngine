@@ -29,6 +29,7 @@
 
 #include "UI/HealthUI.h"
 
+#include "Source/Serialisation/Serialiser.h"
 
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
@@ -37,6 +38,7 @@
 
 using namespace Firelight;
 using namespace Firelight::ECS;
+using namespace Firelight::Serialisation;
 using namespace Firelight::ImGuiUI;
 using namespace snowFallAudio::FModAudio;
 
@@ -212,6 +214,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
+
+		Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

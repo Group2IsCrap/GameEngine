@@ -98,12 +98,6 @@ namespace Firelight::Graphics
 		return returnVec;
 	}
 
-	void Texture::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
-	{
-		/// Serialise either ColorData or File Path
-		writer.String("INSERT TEXTURE HERE");
-	}
-
 	void Texture::InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height)
 	{
 		m_dimensions.x = width;

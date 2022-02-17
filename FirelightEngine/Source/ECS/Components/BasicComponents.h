@@ -4,6 +4,9 @@
 
 #include "../ECSDefines.h"
 #include "../../Maths/Vec3.h"
+#include "../../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
 
 namespace Firelight::ECS
 {
@@ -14,10 +17,17 @@ namespace Firelight::ECS
 	{
 		std::string name;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			writer.Key("Name");
-			writer.String(name.c_str());
+			Serialiser::Serialise("Name", name.c_str());
+		}
+
+		IdentificationComponent* Clone() override
+		{
+			IdentificationComponent* clone = new IdentificationComponent();
+			clone->name = name;
+
+			return clone;
 		}
 	};
 
@@ -28,10 +38,17 @@ namespace Firelight::ECS
 	{
 		bool isStatic = false;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			writer.Key("IsStatic");
-			writer.Bool(isStatic);
+			Serialiser::Serialise("IsStatic", isStatic);
+		}
+
+		StaticComponent* Clone() override
+		{
+			StaticComponent* clone = new StaticComponent();
+			clone->isStatic = isStatic;
+
+			return clone;
 		}
 	};
 
@@ -42,14 +59,23 @@ namespace Firelight::ECS
 	{
 		Firelight::Maths::Vec3f position;
 		Firelight::Maths::Vec3f scale;
-		float                   rotation;
+		float                   rotation = 0.0f;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			/// Serialize Position
-			/// Serialize Scale
-			writer.Key("Rotation");
-			writer.Double(rotation);
+			Serialiser::Serialise("Rotation", rotation);
+			Serialiser::Serialise("Position", position);
+			Serialiser::Serialise("Scale", scale);
+		}
+
+		TransformComponent* Clone() override
+		{
+			TransformComponent* clone = new TransformComponent();
+			clone->position = position;
+			clone->scale = scale;
+			clone->rotation = rotation;
+
+			return clone;
 		}
 	};
 

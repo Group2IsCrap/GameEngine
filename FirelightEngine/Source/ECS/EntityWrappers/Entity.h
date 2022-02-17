@@ -7,7 +7,8 @@ namespace Firelight::ECS
 	{
 	public:
 		Entity();
-		Entity(EntityID id);
+		Entity(EntityID entityID);
+		Entity(bool isTemplate, EntityID templateID);
 		~Entity();
 
 		void Destroy();

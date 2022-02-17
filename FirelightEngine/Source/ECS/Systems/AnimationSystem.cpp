@@ -64,7 +64,7 @@ namespace Firelight::ECS
 				}
 			}
 
-			animatorComponent->currentFrameCount += time.GetGameDeltaTime() * 1000.0f;
+			animatorComponent->currentFrameCount += (float)time.GetGameDeltaTime() * 1000.0f;
 			if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
 			{
 				animatorComponent->currentFrameIndex++;
@@ -75,12 +75,12 @@ namespace Firelight::ECS
 					animatorComponent->currentFrameIndex = 0;
 				}
 
-				spriteComponent->sourceRect.w = currentAnimation->m_cellWidth;
-				spriteComponent->sourceRect.h = currentAnimation->m_cellHeight;
+				spriteComponent->sourceRect.w = (float)currentAnimation->m_cellWidth;
+				spriteComponent->sourceRect.h = (float)currentAnimation->m_cellHeight;
 				int xIndex = static_cast<int>(std::floor((animatorComponent->currentFrameIndex / currentAnimation->m_columns)));
 				int yIndex = animatorComponent->currentFrameIndex % currentAnimation->m_columns;
-				spriteComponent->sourceRect.x = currentAnimation->m_cellWidth * xIndex;
-				spriteComponent->sourceRect.y = currentAnimation->m_cellHeight * yIndex;
+				spriteComponent->sourceRect.x = (float)(currentAnimation->m_cellWidth * xIndex);
+				spriteComponent->sourceRect.y = (float)(currentAnimation->m_cellHeight * yIndex);
 			}
 		}
 	}
@@ -108,10 +108,10 @@ namespace Firelight::ECS
 			animatorComponent->shouldPlay = true;
 
 			auto* spriteComponent = entity->GetComponent<SpriteComponent>();
-			spriteComponent->sourceRect.w = animatorComponent->currentAnimation->m_cellWidth;
-			spriteComponent->sourceRect.h = animatorComponent->currentAnimation->m_cellHeight;
-			spriteComponent->sourceRect.x = 0;
-			spriteComponent->sourceRect.y = 0;
+			spriteComponent->sourceRect.w = (float)animatorComponent->currentAnimation->m_cellWidth;
+			spriteComponent->sourceRect.h = (float)animatorComponent->currentAnimation->m_cellHeight;
+			spriteComponent->sourceRect.x = 0.0f;
+			spriteComponent->sourceRect.y = 0.0f;
 		}
 	}
 }

@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "Source/ECS/ECSDefines.h"
 #include "Source/ECS/EntityWrappers/Entity.h"
+#include "Source/ECS/EntityWrappers/Template.h"
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Systems/System.h"
 
@@ -16,17 +17,42 @@ namespace UnitTests::ECS
 	struct TestComponentA : BaseComponent
 	{
 		const char* name = "";
+
+		TestComponentA* Clone() override
+		{
+			TestComponentA* clone = new TestComponentA();
+			clone->name = name;
+
+			return clone;
+		}
 	};
 
 	struct TestComponentB : BaseComponent
 	{
 		int x = 0;
 		int y = 0;
+
+		TestComponentB* Clone() override
+		{
+			TestComponentB* clone = new TestComponentB();
+			clone->x = x;
+			clone->y = y;
+
+			return clone;
+		}
 	};
 
 	struct TestComponentC : BaseComponent
 	{
 		float vel = 0.0f;
+
+		TestComponentC* Clone() override
+		{
+			TestComponentC* clone = new TestComponentC();
+			clone->vel = vel;
+
+			return clone;
+		}
 	};
 
 
@@ -711,5 +737,24 @@ namespace UnitTests::ECS
 			delete entity3;
 		}
 
+		/// <summary>
+		/// Test to ensure that the correct amount of components are retrieved by the get all command
+		/// </summary>
+		TEST_METHOD(CreateEntityFromTemplateTest)
+		{
+			Template* testTemplate = new Template();
+
+			TestComponentA* testComp = new TestComponentA();
+			testComp->name = "TemplateTest";
+			testTemplate->AddComponent<TestComponentA>(testComp);
+
+			Entity* testEntity = new Entity(true, testTemplate->GetTemplateID());
+
+			Assert::AreEqual(testEntity->GetComponent<TestComponentA>()->name, testComp->name);
+
+			testEntity->Destroy();
+			delete testEntity;
+			delete testTemplate;
+		}
 	};
 }
