@@ -158,12 +158,12 @@ namespace Firelight::UI {
 
 							}
 						}
-						if (uIComponent->isHover) 
+						if (uIComponent->isHoverable) 
 						{
 							OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 						}
 					}
-					if (uIComponent->isDrag) 
+					if (uIComponent->isDraggable) 
 					{
 
 						OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);

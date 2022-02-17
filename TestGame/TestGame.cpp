@@ -40,24 +40,24 @@ using namespace snowFallAudio::FModAudio;
 
 
 
-void playSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+void PlaySound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
 {
 	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
 }
 
-void playTestSound()
+void PlayTestSound()
 {
 	Vector3D location = Vector3D(0, 0, 0);
-	float volume = 0.2f;
-	std::string soundName = "sound.mp3";
-	playSound(soundName, location, volume);
+	float volume = 0.5f;
+	std::string soundName = "beeuuuuu.mp3";
+	PlaySound(soundName, location, volume);
 }
 
 void CreatUITest() {
 	//needs new immages
 	UIEntity* testUICan = new UIEntity();
-	testUICan->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/CanvasTest.png");
-	//testUICan->GetSpriteComponent()->toDraw = false;
+	//testUICan->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/CanvasTest.png");
+	testUICan->GetSpriteComponent()->toDraw = false;
 	testUICan->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Canvas());
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->anchorSettings = ECS::e_AnchorSettings::Center;
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isPressable = false;
@@ -65,7 +65,6 @@ void CreatUITest() {
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isHover = false;
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->layer = 100;
 	testUICan->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->defaultScale = Maths::Vec3f(1.0f, 1.0f, 0);
-
 
 
 	UIEntity* testUIP = new UIEntity();
@@ -140,8 +139,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		animationTest->GetComponent<Firelight::ECS::AnimationComponent>()->animations.insert(std::pair<std::string, Firelight::Animation::Animation>(animation.m_animationName, animation));
 		Firelight::ECS::AnimationSystem::Instance()->Play(animationTest, animation.m_animationName);
 
-		animationTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
-		animationTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
+		animationTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
+		animationTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
+		animationTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
+		//animationTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
 
 		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
@@ -162,9 +163,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Circle.png");
 		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->pixelsPerUnit = 50;
 		collisionTest->GetComponent<Firelight::ECS::SpriteComponent>()->layer = 33;
-		collisionTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
-		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
-		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = true;
+		collisionTest->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
+		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 3.0f, 3.0f);
+		//collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 2.0f;
+		collisionTest->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
+		collisionTest->GetComponent<Firelight::ECS::StaticComponent>()->isStatic = false;
 
 
 		int speed = 10.0f;
