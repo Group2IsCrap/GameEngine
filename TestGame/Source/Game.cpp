@@ -89,36 +89,32 @@ void CreatUITest() {
 	s_uiCanvas->GetSpriteComponent()->toDraw = false;
 	s_uiCanvas->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Canvas());
 	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->texture = s_uiCanvas->GetSpriteComponent();
-	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->transform = s_uiCanvas->GetTransformComponent();
+	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->XScreenSize = Engine::Instance().GetWindowDimensionsFloat().x;
+	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->YScreenSize = Engine::Instance().GetWindowDimensionsFloat().y;
 	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->layer = 100;
 	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isDraggable = false;
 	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isPressable = false;
 	s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>()->isHoverable = false;
 
 	// Health UI
-	HealthUI* healthUI = new HealthUI(s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>());
-
+	HealthUI* healthUI = new HealthUI(s_uiCanvas);
+	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 	UIEntity* panelSound = new UIEntity();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	panelSound->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Panel());
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->anchorSettings = ECS::e_AnchorSettings::Right;
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->parent = s_uiCanvas->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Canvas>();
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->texture = panelSound->GetSpriteComponent();
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->transform = panelSound->GetTransformComponent();
+	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->parent = s_uiCanvas->GetEntityID();
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isHoverable = true;
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isPressable = true;
 	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->isDraggable = true;
-	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultScale = Maths::Vec3f(0.1f, 0.5f, 0);
+	panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>()->defaultSize = Maths::Vec3f(128,360, 0);
 
 	UIEntity* buttonSound = new UIEntity();
 	buttonSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	buttonSound->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonSound->GetSpriteComponent();
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonSound->GetTransformComponent();
-	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetEntityID();
+	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultSize = Maths::Vec3f(640, 72, 0);
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayBeuu));
 	buttonSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -150.0f);
 
@@ -126,10 +122,8 @@ void CreatUITest() {
 	buttonMusic->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	buttonMusic->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
-	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonMusic->GetSpriteComponent();
-	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonMusic->GetTransformComponent();
-	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetEntityID();
+	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultSize = Maths::Vec3f(640, 72, 0);
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(PlayMusic));
 	buttonMusic->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -100.0f);
 
@@ -137,10 +131,8 @@ void CreatUITest() {
 	buttonVolUp->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	buttonVolUp->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
 	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
-	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonVolUp->GetSpriteComponent();
-	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonVolUp->GetTransformComponent();
-	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetEntityID();
+	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultSize = Maths::Vec3f(640, 72, 0);
 	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(VolUp));
 	buttonVolUp->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, -50.0f);
 
@@ -148,10 +140,8 @@ void CreatUITest() {
 	buttonVolDown->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	buttonVolDown->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
 	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
-	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonVolDown->GetSpriteComponent();
-	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonVolDown->GetTransformComponent();
-	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetEntityID();
+	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultSize = Maths::Vec3f(640, 72, 0);
 	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(VolDown));
 	buttonVolDown->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 0.0f);
 
@@ -159,10 +149,8 @@ void CreatUITest() {
 	buttonStopPlay->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ButtionTest.png");
 	buttonStopPlay->AddComponent<Firelight::ECS::UIWidget>(new Firelight::ECS::UI_Button());
 	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->anchorSettings = ECS::e_AnchorSettings::Center;
-	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
-	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->texture = buttonStopPlay->GetSpriteComponent();
-	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->transform = buttonStopPlay->GetTransformComponent();
-	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultScale = Maths::Vec3f(0.5f, 0.1f, 0);
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->parent = panelSound->GetEntityID();
+	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->defaultSize = Maths::Vec3f(640, 72, 0);
 	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->onLeftPressFunctions.push_back(std::bind(StopSounds));
 	buttonStopPlay->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Button>()->offSet = Firelight::Maths::Vec2f(0.0f, 50.0f);
 

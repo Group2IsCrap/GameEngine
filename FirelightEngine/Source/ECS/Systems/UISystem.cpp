@@ -76,40 +76,40 @@ namespace Firelight::UI {
 			Firelight::Events::Input::ControllerState* eventController = (Firelight::Events::Input::ControllerState*)data;
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 			{
-				////checks
-				//ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
-				//ECS::TransformComponent* uITansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-				//ECS::PixelSpriteComponent* uISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-				//if (uITansformComponent == nullptr || uISpriteComponent == nullptr)
-				//{
-				//	continue;
-				//}
-				//if (uIComponent->isDrag && eventController->m_A ) 
-				//{
+				//checks
+				ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
+				ECS::TransformComponent* uITansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
+				ECS::PixelSpriteComponent* uISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
+				if (uITansformComponent == nullptr || uISpriteComponent == nullptr)
+				{
+					continue;
+				}
+				if (uIComponent->isDraggable && eventController->m_A ) 
+				{
 
-				//	OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LPress, uIComponent);
+					OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LPress, m_entities[entityIndex]);
 
-				//}
-				//if (!eventController->m_A && m_PrevEventController.m_A) 
-				//{
-				//	
-				//	if (m_DragItem == uIComponent) 
-				//	{
-				//		OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, uIComponent);
-				//	}
-				//	if (uIComponent->isPressable && m_DragItem == nullptr) {
-				//		OnPress(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, uIComponent);
+				}
+				if (!eventController->m_A && m_PrevEventController.m_A) 
+				{
+					
+					if (m_DragItem == uIComponent) 
+					{
+						OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, m_entities[entityIndex]);
+					}
+					if (uIComponent->isPressable && m_DragItem == nullptr) {
+						OnPress(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, m_entities[entityIndex]);
 
-				//	}
-				//}
-				//if (eventController->m_LeftStick.x > 0.5 || eventController->m_LeftStick.x < -0.5 || eventController->m_LeftStick.y > 0.5 || eventController->m_LeftStick.y < -0.5) 
-				//{
-				//	m_MouseRawCurr = Maths::Vec2f(1, 1);
-				//}
-				//if (eventController->m_A != m_PrevEventController.m_A) 
-				//{
-				//	m_MouseRawCurr = Maths::Vec2f(0, 0);	
-				//}
+					}
+				}
+				if (eventController->m_LeftStick.x > 0.5 || eventController->m_LeftStick.x < -0.5 || eventController->m_LeftStick.y > 0.5 || eventController->m_LeftStick.y < -0.5) 
+				{
+					m_MouseRawCurr = Maths::Vec2f(1, 1);
+				}
+				if (eventController->m_A != m_PrevEventController.m_A) 
+				{
+					m_MouseRawCurr = Maths::Vec2f(0, 0);	
+				}
 			}
 			m_PrevEventController = *eventController;
 			return;
@@ -423,13 +423,16 @@ namespace Firelight::UI {
 
 	void UISystem::AnchorSettings(ECS::Entity* entity)
 	{
+		ECS::UI_Canvas* currCanvas = nullptr;
 		ECS::UIWidget* uIComponent = entity->GetComponent<ECS::UIWidget>();
 		ECS::TransformComponent* uITansformComponent = entity->GetComponent<ECS::TransformComponent>();
 		ECS::PixelSpriteComponent* uISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
+		if (m_Canvas != nullptr) {
+			currCanvas = m_Canvas->GetComponent<ECS::UIWidget, ECS::UI_Canvas>();
+		}
+
 
 		ECS::UI_Canvas* uICanvas = entity->GetComponent<ECS::UIWidget, ECS::UI_Canvas>();
-		
-
 		ECS::UI_Child* uIChild = entity->GetComponent<ECS::UIWidget, ECS::UI_Child>();
 		
 		
@@ -438,6 +441,7 @@ namespace Firelight::UI {
 
 			if (uICanvas != nullptr) {
 				uISpriteComponent->layer = uICanvas->layer;
+				m_Canvas = entity;
 				m_CanvasLayer = uICanvas->layer + 1;
 			}
 			else {
@@ -503,6 +507,10 @@ namespace Firelight::UI {
 			std::vector< ECS::TransformComponent*>currTransform = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
 			std::vector< ECS::PixelSpriteComponent*>currSprite = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
 
+			if (currCanvas != nullptr) {
+				uIComponent->defaultScale.x = uIComponent->defaultSize.x / currCanvas->XScreenSize;
+				uIComponent->defaultScale.y = uIComponent->defaultSize.y / currCanvas->YScreenSize;
+			}
 			uIChild->currentScale = uIComponent->defaultScale * currWidgetParent[0]->currentScale;
 			uITansformComponent->scale = uIComponent->currentScale;
 
@@ -556,7 +564,7 @@ namespace Firelight::UI {
 					uITansformComponent->position = uIComponent->defaultPosition;
 
 					ECS::Entity* currentParent = nullptr;
-					//ECS::UI_Canvas* currentCanvas = nullptr;
+					
 					for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 					{
 						//checks
@@ -572,11 +580,8 @@ namespace Firelight::UI {
 						else if (uIPanel == nullptr) {
 							ECS::TransformComponent* uICanvasTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
 							ECS::PixelSpriteComponent* uICanvasSpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-							if (IsHit(uIChild->defaultPosition.x, uIChild->defaultPosition.y, uICanvas, uICanvasTansformComponent, uICanvasSpriteComponent)) {
-								
+							if (IsHit(uIChild->defaultPosition.x, uIChild->defaultPosition.y, uICanvas, uICanvasTansformComponent, uICanvasSpriteComponent)) {								
 									currentParent = m_entities[entityIndex];
-								
-								//currentCanvas = m_entities[entityIndex];
 							}
 						}
 						else
@@ -603,29 +608,32 @@ namespace Firelight::UI {
 						return;
 					}
 					uIChild->parent = currentParent->GetEntityID();
-					std::vector< ECS::TransformComponent*>t= ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
-					std::vector< ECS::PixelSpriteComponent*>Ks = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
+					std::vector< ECS::TransformComponent*>newParentTransform= ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
+					std::vector< ECS::PixelSpriteComponent*>newParentSprite = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
 
-					uIComponent->currentScale= uIComponent->defaultScale* t[0]->scale;
+					uIComponent->currentScale= uIComponent->defaultScale* newParentTransform[0]->scale;
 					uITansformComponent->scale = uIChild->currentScale;
-					uISpriteComponent->layer = Ks[0]->layer+1;
+					uISpriteComponent->layer = newParentSprite[0]->layer+1;
 					return;
 				}
 					break;
 			default:
 				break;
 			}
-			std::vector< ECS::TransformComponent*>t = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
-			std::vector< ECS::PixelSpriteComponent*>Ks = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
-
-			uIComponent->currentScale = uIComponent->defaultScale * t[0]->scale;
-			uITansformComponent->scale = uIChild->currentScale;
-			uISpriteComponent->layer = Ks[0]->layer + 1;
-		}
 		
 
-	/*	widget->transform->position.x += widget->offSet.x;
-		widget->transform->position.y += widget->offSet.y;*/
+			uIComponent->currentScale = uIComponent->defaultScale * currTransform[0]->scale;
+			uITansformComponent->scale = uIChild->currentScale;
+			uISpriteComponent->layer = currSprite[0]->layer + 1;
+		}
+		
+		if (currCanvas != nullptr) {
+			//offset(pix) = size(pix) * scale factor(%)
+			float offX = Engine::Instance().GetWindowDimensionsFloat().x * (uIComponent->offSet.x / currCanvas->XScreenSize);
+			float offY = Engine::Instance().GetWindowDimensionsFloat().y * (uIComponent->offSet.y / currCanvas->YScreenSize);
+			uITansformComponent->position.x += offX;
+			uITansformComponent->position.y += offY;
+		}
 	}
 
 	void UISystem::SetSettings()

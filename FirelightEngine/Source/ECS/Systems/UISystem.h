@@ -70,7 +70,7 @@ namespace Firelight::UI {
 		ECS::e_AnchorSettings m_CurrDragAnchor = ECS::e_AnchorSettings::None;
 
 		Firelight::Events::Input::ControllerState m_PrevEventController;
-
+		ECS::Entity* m_Canvas = nullptr;
 		float m_CanvasLayer;
 	};
 
