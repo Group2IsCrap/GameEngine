@@ -30,7 +30,6 @@ namespace Firelight::ECS
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
-
 			auto* pixelSpriteComponentItem = m_entities[entityIndex]->GetComponent<PixelSpriteComponent>();
 
 			if (!pixelSpriteComponentItem->toDraw) {

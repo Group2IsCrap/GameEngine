@@ -69,7 +69,7 @@ namespace Firelight::ECS
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		Maths::Rectf                      descRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
 		}
@@ -88,7 +88,7 @@ namespace Firelight::ECS
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		bool    toDraw = true;
-		void Serialise() override
+		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
 		{
 			return;
 		}

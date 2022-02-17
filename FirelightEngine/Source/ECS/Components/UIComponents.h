@@ -28,8 +28,9 @@ namespace Firelight::ECS
 	struct UIWidget : BaseComponent
 	{
 
-		PixelSpriteComponent* texture = nullptr;
-		TransformComponent* transform = nullptr;
+		/*PixelSpriteComponent* texture = nullptr;
+		TransformComponent* transform = nullptr;*/
+
 		UINT Index =10;
 		//Events 
 		bool isPressable = true;
@@ -53,7 +54,7 @@ namespace Firelight::ECS
 	//Visable UI
 	struct UI_Child : UIWidget 
 	{
-		UIWidget* parent;
+		EntityID parent;
 	};
 	//hold all UI
 	struct UI_Canvas : UIWidget
