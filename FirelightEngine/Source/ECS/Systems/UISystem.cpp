@@ -9,7 +9,7 @@ namespace Firelight::UI {
 	{
 		Initalize();
 		
-		AddWhitelistComponent<ECS::UIWidget>();
+		AddWhitelistComponent<ECS::UIBaseWidgetComponent>();
 		AddWhitelistComponent<ECS::PixelSpriteComponent>();
 		AddWhitelistComponent<ECS::TransformComponent>();
 		Events::EventDispatcher::SubscribeFunction<Events::UI::UpdateUIEvent>(std::bind(&UI::UISystem::SetSettings, this));
@@ -22,15 +22,16 @@ namespace Firelight::UI {
 	{
 		UNREFERENCED_PARAMETER(time);
 
-		if (m_DragItem != nullptr) {
-			if (m_MouseRawCurr != Maths::Vec2f(0,0)) {
-				m_DragItem->defaultPosition = m_MousePosDrag;
-				m_IsDragging = true;
+		if (m_dragWidget != nullptr) 
+		{
+			if (m_MouseRawCurr != Maths::Vec2f(0,0)) 
+			{
+				m_dragWidget->defaultPosition = m_MousePosDrag;
+				m_isDragging = true;
 
-
-				ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
-				if (uIChild != nullptr) {
-					AnchorSettings(m_DragID);;
+				if (m_dragWidget->hasParent)
+				{
+					AnchorSettings(m_dragEntity);
 				}
 				AnchorSettings();
 			}
@@ -40,29 +41,29 @@ namespace Firelight::UI {
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
-			ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
-			ECS::TransformComponent* uITansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-			ECS::PixelSpriteComponent* uISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-			if (uIComponent == nullptr) {
-				continue;
-			}
+			ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+			ECS::TransformComponent* UITransformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
+			ECS::PixelSpriteComponent* UISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
 
 			POINT currMousePos;
 			GetCursorPos(&currMousePos);
 			ScreenToClient(Engine::Instance().GetWindowHandle(), &currMousePos);
-			if (IsHit(currMousePos.x, currMousePos.y, uIComponent, uITansformComponent, uISpriteComponent)) {
+			if (IsHit(currMousePos.x, currMousePos.y, UIComponent, UITransformComponent)) 
+			{
 				break;
 			}
-			if (m_DragItem != nullptr) {
-				m_DragItem->anchorSettings = m_CurrDragAnchor;
+			if (m_dragWidget != nullptr)
+			{
+				m_dragWidget->anchorSettings = m_CurrDragAnchor;
+				if (m_dragWidget->hasParent)
+				{
+					AnchorSettings(m_dragEntity);
+				}
 			}
-			ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
-			if (uIChild != nullptr) {
-				AnchorSettings(m_DragID);;
-			}
-			m_DragItem = nullptr;
-			m_DragButtionIsPressed = false;
-			m_IsDragging = false;
+			m_dragEntity = nullptr;
+			m_dragWidget = nullptr;
+			m_dragButtonIsPressed = false;
+			m_isDragging = false;
 
 			AnchorSettings();
 
@@ -72,21 +73,13 @@ namespace Firelight::UI {
 
 	void UISystem::HandleEvents(const char* event , void* data)
 	{
-
-
-		if (event == Events::Input::ContollerEvent::sm_descriptor) {
+		if (event == Events::Input::ContollerEvent::sm_descriptor) 
+		{
 			Firelight::Events::Input::ControllerState* eventController = (Firelight::Events::Input::ControllerState*)data;
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 			{
-				//checks
-				ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
-				ECS::TransformComponent* uITansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-				ECS::PixelSpriteComponent* uISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-				if (uITansformComponent == nullptr || uISpriteComponent == nullptr)
-				{
-					continue;
-				}
-				if (uIComponent->isDraggable && eventController->m_A ) 
+				ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+				if (m_entities[entityIndex]->HasComponent<ECS::UIDraggableComponent>() && eventController->m_A)
 				{
 
 					OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LPress, m_entities[entityIndex]);
@@ -94,14 +87,13 @@ namespace Firelight::UI {
 				}
 				if (!eventController->m_A && m_PrevEventController.m_A) 
 				{
-					
-					if (m_DragItem == uIComponent) 
+					if (m_dragWidget == UIComponent) 
 					{
 						OnDrag(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, m_entities[entityIndex]);
 					}
-					if (uIComponent->isPressable && m_DragItem == nullptr) {
+					if (m_entities[entityIndex]->HasComponent<ECS::UIPressableComponent>() && m_dragWidget == nullptr) 
+					{
 						OnPress(m_MousePosDrag.x, m_MousePosDrag.y, Events::Input::e_MouseEventType::LRelease, m_entities[entityIndex]);
-
 					}
 				}
 				if (eventController->m_LeftStick.x > 0.5 || eventController->m_LeftStick.x < -0.5 || eventController->m_LeftStick.y > 0.5 || eventController->m_LeftStick.y < -0.5) 
@@ -140,41 +132,30 @@ namespace Firelight::UI {
 
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 			{
-				//checks
-				ECS::UIWidget* uIComponent = m_entities[entityIndex]->GetComponent<ECS::UIWidget>();
-				ECS::TransformComponent* uITansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-				ECS::PixelSpriteComponent* uISpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-				if (uITansformComponent == nullptr || uISpriteComponent == nullptr)
-				{
-					continue;
-				}
+				ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
 
 				if (eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove)
 				{
-					if (m_DragItem == nullptr) {
+					if (m_dragWidget == nullptr) {
 						if (eventMouse->GetType() != Events::Input::e_MouseEventType::Move) 
 						{
-							if (uIComponent->isPressable) {
-
+							if (m_entities[entityIndex]->HasComponent<ECS::UIPressableComponent>()) 
+							{
 								OnPress(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
-
 							}
 						}
-						if (uIComponent->isHoverable) 
+						if (m_entities[entityIndex]->HasComponent<ECS::UIHoverableComponent>())
 						{
 							OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 						}
 					}
-					if (uIComponent->isDraggable) 
+					if (m_entities[entityIndex]->HasComponent<ECS::UIDraggableComponent>())
 					{
-
 						OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
-
 					}
-
-
 				}
-				if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move && m_FocusedItem == uIComponent) {
+				if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move && m_focusedWidget == UIComponent)
+				{
 					OnLeave(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 				}
 			}
@@ -195,18 +176,18 @@ namespace Firelight::UI {
 	
 	void UISystem::OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity)
 	{
-			ECS::UIWidget* uIComponent = entity->GetComponent<ECS::UIWidget>();
-			ECS::TransformComponent* uITansformComponent = entity->GetComponent<ECS::TransformComponent>();
-			ECS::PixelSpriteComponent* uISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
+			ECS::UIBaseWidgetComponent* UIComponent = entity->GetComponent<ECS::UIBaseWidgetComponent>();
+			ECS::TransformComponent* UITransformComponent = entity->GetComponent<ECS::TransformComponent>();
+			ECS::UIPressableComponent* UIPressableComponet = entity->GetComponent<ECS::UIPressableComponent>();
 
-			if (IsHit(x, y, uIComponent, uITansformComponent, uISpriteComponent))
+			if (IsHit(x, y, UIComponent, UITransformComponent))
 			{
 				switch (mouseEvent)
 				{
 				case Firelight::Events::Input::e_MouseEventType::LRelease:
 				{
 					
-					for (auto&& Event : uIComponent->onLeftPressFunctions)
+					for (auto&& Event : UIPressableComponet->onLeftPressFunctions)
 					{
 						Event();
 					}
@@ -215,7 +196,7 @@ namespace Firelight::UI {
 				break;
 				case Firelight::Events::Input::e_MouseEventType::RRelease:
 					
-					for (auto&& Event : uIComponent->onRightPressFunctions)
+					for (auto&& Event : UIPressableComponet->onRightPressFunctions)
 					{
 						Event();
 					}
@@ -223,7 +204,7 @@ namespace Firelight::UI {
 					break;
 				case Firelight::Events::Input::e_MouseEventType::MRelease:
 					
-					for (auto&& Event : uIComponent->onMiddlePressFunctions)
+					for (auto&& Event : UIPressableComponet->onMiddlePressFunctions)
 					{
 						Event();
 					}
@@ -238,147 +219,163 @@ namespace Firelight::UI {
 	}
 	void UISystem::OnLeave(int x, int y, ECS::Entity* entity)
 	{
-
-		if (!IsHit(x, y, m_FocusedItem, m_FocusedTransform,m_FocusedSprite))
+		if (!IsHit(x, y, m_focusedWidget, m_focusedTransform))
 		{
-
-			m_DragButtionIsPressed = false;
+			m_dragButtonIsPressed = false;
 			
-
-			ECS::UI_Button* Button = dynamic_cast<ECS::UI_Button*>(m_FocusedItem);
-			if (Button != nullptr) {
-				if (Button->isChangeOfTex) {
-					m_FocusedSprite->colour = Button->colour[0];
+			ECS::UIButtonComponent* button = m_focusedEntity->GetComponent<ECS::UIButtonComponent>();
+			if (button != nullptr)
+			{
+				if (button->isChangeOfTex)
+				{
+					m_focusedSprite->colour = button->colour[0];
 				}
 			}
-			m_FocusedItem = nullptr;
-			m_FocusedTransform = nullptr;
-			m_FocusedSprite = nullptr;
+			m_focusedEntity = nullptr;
+			m_focusedWidget = nullptr;
+			m_focusedTransform = nullptr;
+			m_focusedSprite = nullptr;
 
 		}
 
 	}
 	void UISystem::OnHover(int x, int y, ECS::Entity* entity)
 	{
-		ECS::UIWidget* uIComponent = entity->GetComponent<ECS::UIWidget>();
-		ECS::TransformComponent* uITansformComponent = entity->GetComponent<ECS::TransformComponent>();
-		ECS::PixelSpriteComponent* uISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
-		if (IsHit(x, y, uIComponent, uITansformComponent, uISpriteComponent))
+		ECS::UIBaseWidgetComponent* UIComponent = entity->GetComponent<ECS::UIBaseWidgetComponent>();
+		ECS::TransformComponent* UITransformComponent = entity->GetComponent<ECS::TransformComponent>();
+		ECS::PixelSpriteComponent* UISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
+		ECS::UIHoverableComponent* UIHoverComponent = entity->GetComponent<ECS::UIHoverableComponent>();
+
+		if (IsHit(x, y, UIComponent, UITransformComponent))
 		{
-			if (m_FocusedItem != uIComponent) {
-				ECS::UI_Button* uIButton = dynamic_cast<ECS::UI_Button*>(m_FocusedItem);
-				if (uIButton != nullptr) {
-					if (uIButton->isChangeOfTex) {
-						m_FocusedSprite->colour = uIButton->colour[0];
+			if (m_focusedWidget != UIComponent && m_focusedSprite != nullptr)
+			{
+				ECS::UIButtonComponent* button = entity->GetComponent<ECS::UIButtonComponent>();
+				if (button != nullptr)
+				{
+					if (button->isChangeOfTex)
+					{
+						m_focusedSprite->colour = button->colour[0];
 					}
 				}
 			}
 
+			m_focusedEntity = entity;
+			m_focusedWidget = UIComponent;
+			m_focusedTransform = UITransformComponent;
+			m_focusedSprite = UISpriteComponent;
 
-			m_FocusedItem = uIComponent;
-			m_FocusedTransform = uITansformComponent;
-			m_FocusedSprite = uISpriteComponent;
 			//do hover
-			for (auto&& Event : m_FocusedItem->onHoverFunctions)
+			for (auto&& Event : UIHoverComponent->onHoverFunctions)
 			{
 				Event();
 			}
 
-			ECS::UI_Button* Button = dynamic_cast<ECS::UI_Button*>(m_FocusedItem);
-			if (Button == nullptr) {
-				return;
-			}
-			if (Button->isChangeOfTex) {
-				m_FocusedSprite->colour = Button->colour[1];
+			ECS::UIButtonComponent* button = m_focusedEntity->GetComponent<ECS::UIButtonComponent>();
+			if (button != nullptr) 
+			{
+				if (button->isChangeOfTex)
+				{
+					m_focusedSprite->colour = button->colour[1];
+				}
 			}
 		}
 	}
 	
 	void UISystem::OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity)
 	{
-		ECS::UIWidget* uIComponent = entity->GetComponent<ECS::UIWidget>();
-		ECS::TransformComponent* uITansformComponent = entity->GetComponent<ECS::TransformComponent>();
-		ECS::PixelSpriteComponent* uISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
+		ECS::UIBaseWidgetComponent* UIComponent = entity->GetComponent<ECS::UIBaseWidgetComponent>();
+		ECS::TransformComponent* UITransformComponent = entity->GetComponent<ECS::TransformComponent>();
+		ECS::PixelSpriteComponent* UISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
 
 		m_ClickTimer.Stop();
-		if (IsHit(x, y, uIComponent, uITansformComponent, uISpriteComponent))
+		if (IsHit(x, y, UIComponent, UITransformComponent))
 		{
 
-			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LPress && m_DragItem == nullptr) {
+			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LPress && m_dragWidget == nullptr) {
 
 				//say item is being draged
 
 				m_ClickTimer.Start();
-				m_DragButtionIsPressed = true;
+				m_dragButtonIsPressed = true;
 
 			}
 			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease)
 			{
-				if (m_DragItem != nullptr) {
-					m_DragItem->anchorSettings = m_CurrDragAnchor;
-				}
-				ECS::UI_Child* uIChild = dynamic_cast<ECS::UI_Child*>(m_DragItem);
-				if (uIChild != nullptr) {
-					AnchorSettings(entity);;
+				if (m_dragWidget != nullptr)
+				{
+					m_dragWidget->anchorSettings = m_CurrDragAnchor;
+
+					if (m_dragWidget->hasParent)
+					{
+						AnchorSettings(entity);
+					}
 				}
 
-				m_DragButtionIsPressed = false;
-				m_IsDragging = false;
+				m_dragButtonIsPressed = false;
+				m_isDragging = false;
 
 				AnchorSettings();
 			}
 
-			if (m_DragButtionIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) {
-				if (m_DragItem == ECS::EntityComponentSystem::Instance()->GetComponents<ECS::UIWidget>(dynamic_cast<ECS::UI_Child*>(uIComponent)->parent)[0] && !m_IsDragging)
+			if (m_dragButtonIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) 
+			{
+				auto parentComponent = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(UIComponent->parentID);
+				if (UIComponent->hasParent && parentComponent != nullptr && m_dragWidget == parentComponent && !m_isDragging)
 				{
-					if (m_DragItem != nullptr) {
-						m_DragItem->anchorSettings = m_CurrDragAnchor;
+					if (m_dragWidget != nullptr) 
+					{
+						m_dragWidget->anchorSettings = m_CurrDragAnchor;
 					}
-					m_DragID= entity;
-					m_DragItem = uIComponent;
-					m_DragSprite = uISpriteComponent;
-					m_DragTransform = uITansformComponent;
+					m_dragEntity = entity;
+					m_dragWidget = UIComponent;
+					m_dragSprite = UISpriteComponent;
+					m_dragTransform = UITransformComponent;
 
-					m_FocusedItem = m_DragItem;
-					m_FocusedTransform = uITansformComponent;
-					m_FocusedSprite = uISpriteComponent;
+					m_focusedEntity = entity;
+					m_focusedWidget = m_dragWidget;
+					m_focusedTransform = UITransformComponent;
+					m_focusedSprite = UISpriteComponent;
 
-					m_CurrDragAnchor = m_DragItem->anchorSettings;
-					m_DragItem->anchorSettings = ECS::e_AnchorSettings::None;
+					m_CurrDragAnchor = m_dragWidget->anchorSettings;
+					m_dragWidget->anchorSettings = ECS::e_AnchorSettings::None;
 				}
-				else if (m_DragItem == nullptr)
+				else if (m_dragWidget == nullptr)
 				{
-					if (m_DragItem != nullptr) {
-						m_DragItem->anchorSettings = m_CurrDragAnchor;
+					if (m_dragWidget != nullptr) 
+					{
+						m_dragWidget->anchorSettings = m_CurrDragAnchor;
 					}
-					m_DragID = entity;
-					m_DragItem = uIComponent;
-					m_DragSprite = uISpriteComponent;
-					m_DragTransform = uITansformComponent;
+					m_dragEntity = entity;
+					m_dragWidget = UIComponent;
+					m_dragSprite = UISpriteComponent;
+					m_dragTransform = UITransformComponent;
 
-					m_FocusedItem = m_DragItem;
-					m_FocusedTransform = uITansformComponent;
-					m_FocusedSprite = uISpriteComponent;
+					m_focusedEntity = entity;
+					m_focusedWidget = m_dragWidget;
+					m_focusedTransform = UITransformComponent;
+					m_focusedSprite = UISpriteComponent;
 
-					m_CurrDragAnchor = m_DragItem->anchorSettings;
-					m_DragItem->anchorSettings = ECS::e_AnchorSettings::None;
+					m_CurrDragAnchor = m_dragWidget->anchorSettings;
+					m_dragWidget->anchorSettings = ECS::e_AnchorSettings::None;
 				}
-
 
 			}
 
 		}
-		if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease && m_DragItem == uIComponent) {
-			m_DragID = nullptr;
-			m_DragItem = nullptr;
-			m_DragSprite = nullptr;
-			m_DragTransform = nullptr;
-			m_IsDragging = false;
+		if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease && m_dragWidget == UIComponent) 
+		{
+			m_dragEntity = nullptr;
+			m_dragWidget = nullptr;
+			m_dragSprite = nullptr;
+			m_dragTransform = nullptr;
+			m_isDragging = false;
 		}
 		
 	
 	}
-	void UISystem::OnNavergate()
+
+	void UISystem::OnNavigate()
 	{
 		//movethrough on focused
 	}
@@ -390,9 +387,9 @@ namespace Firelight::UI {
 			AnchorSettings(m_entities[entityIndex]);
 		}
 	}
-	bool UISystem::IsHit(int x, int y, ECS::UIWidget* widget,ECS::TransformComponent* transform,ECS::PixelSpriteComponent* sprite)
-	{
 
+	bool UISystem::IsHit(int x, int y, ECS::UIBaseWidgetComponent* widget, ECS::TransformComponent* transform)
+	{
 		float width = Engine::Instance().GetWindowDimensionsFloat().x* transform->scale.x;
 		float hight = Engine::Instance().GetWindowDimensionsFloat().y* transform->scale.y;
 		Maths::Rectf rectPixel(
@@ -425,197 +422,198 @@ namespace Firelight::UI {
 
 	void UISystem::AnchorSettings(ECS::Entity* entity)
 	{
-		ECS::UI_Canvas* currCanvas = nullptr;
-		ECS::UIWidget* uIComponent = entity->GetComponent<ECS::UIWidget>();
-		ECS::TransformComponent* uITansformComponent = entity->GetComponent<ECS::TransformComponent>();
-		ECS::PixelSpriteComponent* uISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
-		if (m_Canvas != nullptr) {
-			currCanvas = m_Canvas->GetComponent<ECS::UIWidget, ECS::UI_Canvas>();
+		ECS::UICanvasComponent* currCanvas = nullptr;
+		ECS::UIBaseWidgetComponent* UIComponent = entity->GetComponent<ECS::UIBaseWidgetComponent>();
+		ECS::TransformComponent* UITransformComponent = entity->GetComponent<ECS::TransformComponent>();
+		ECS::PixelSpriteComponent* UISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
+		if (m_Canvas != nullptr) 
+		{
+			currCanvas = m_Canvas->GetComponent<ECS::UICanvasComponent>();
 		}
 
-
-		ECS::UI_Canvas* uICanvas = entity->GetComponent<ECS::UIWidget, ECS::UI_Canvas>();
-		ECS::UI_Child* uIChild = entity->GetComponent<ECS::UIWidget, ECS::UI_Child>();
+		ECS::UICanvasComponent* UICanvas = entity->GetComponent<ECS::UICanvasComponent>();
 		
 		
 		Maths::Vec2f screen = Engine::Instance().GetWindowDimensionsFloat();
-		if (uIChild == nullptr) {
+		if (!UIComponent->hasParent)
+		{
 
-			if (uICanvas != nullptr) {
-				uISpriteComponent->layer = uICanvas->layer;
+			if (UICanvas != nullptr) 
+			{
+				UISpriteComponent->layer = UICanvas->layer;
 				m_Canvas = entity;
-				m_CanvasLayer = uICanvas->layer + 1;
+				m_CanvasLayer = UICanvas->layer + 1;
 			}
-			else {
-				uISpriteComponent->layer = m_CanvasLayer;
+			else 
+			{
+				UISpriteComponent->layer = m_CanvasLayer;
 			}
-			uITansformComponent->scale = uIComponent->defaultScale;
-			float width = Engine::Instance().GetWindowDimensionsFloat().x * uITansformComponent->scale.x;
-			float hight = Engine::Instance().GetWindowDimensionsFloat().y * uITansformComponent->scale.y;
+			UITransformComponent->scale = UIComponent->defaultScale;
+			float width = Engine::Instance().GetWindowDimensionsFloat().x * UITransformComponent->scale.x;
+			float hight = Engine::Instance().GetWindowDimensionsFloat().y * UITransformComponent->scale.y;
 
-			switch (uIComponent->anchorSettings)
+			switch (UIComponent->anchorSettings)
 			{
 			case Firelight::ECS::e_AnchorSettings::TopLeft:
-				uITansformComponent->position.y = 0 + (hight * 0.5f);
-				uITansformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->position.y = 0 + (hight * 0.5f);
+				UITransformComponent->position.x = 0 + (width * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::Top:
-				uITansformComponent->position.y = 0 + (hight * 0.5f);
-				uITansformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->position.y = 0 + (hight * 0.5f);
+				UITransformComponent->position.x = (screen.x * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::TopRight:
-				uITansformComponent->position.y = 0 + (hight * 0.5f);
-				uITansformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->position.y = 0 + (hight * 0.5f);
+				UITransformComponent->position.x = screen.x - (width * 0.5f);
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::BottomLeft:
-				uITansformComponent->position.y = screen.y - (hight * 0.5f);
-				uITansformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->position.y = screen.y - (hight * 0.5f);
+				UITransformComponent->position.x = 0 + (width * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::Bottom:
-				uITansformComponent->position.y = screen.y - (hight * 0.5f);
-				uITansformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->position.y = screen.y - (hight * 0.5f);
+				UITransformComponent->position.x = (screen.x * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::BottomRight:
-				uITansformComponent->position.y = screen.y - (hight * 0.5f);
-				uITansformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->position.y = screen.y - (hight * 0.5f);
+				UITransformComponent->position.x = screen.x - (width * 0.5f);
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::Left:
-				uITansformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
-				uITansformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
+				UITransformComponent->position.x = 0 + (width * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::Center:
-				uITansformComponent->position.y = (screen.y * 0.5f);
-				uITansformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->position.y = (screen.y * 0.5f);
+				UITransformComponent->position.x = (screen.x * 0.5f);
 				break;
 			case Firelight::ECS::e_AnchorSettings::Right:
-				uITansformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
-				uITansformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
+				UITransformComponent->position.x = screen.x - (width * 0.5f);
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::None:
-				uITansformComponent->position = uIComponent->defaultPosition;
+				UITransformComponent->position = UIComponent->defaultPosition;
 				return;
 				break;
 			default:
-				uITansformComponent->position = uIComponent->defaultPosition;
+				UITransformComponent->position = UIComponent->defaultPosition;
 				break;
 			}
 		}
 		else
 		{
-			std::vector< ECS::UIWidget*>currWidgetParent = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::UIWidget>(uIChild->parent);
-			std::vector< ECS::TransformComponent*>currTransform = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
-			std::vector< ECS::PixelSpriteComponent*>currSprite = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
+			ECS::UIBaseWidgetComponent* currWidgetParent = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(UIComponent->parentID);
+			ECS::TransformComponent* currTransform = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(UIComponent->parentID);
+			ECS::PixelSpriteComponent* currSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
 
-			if (currCanvas != nullptr) {
-				uIComponent->defaultScale.x = uIComponent->defaultSize.x / currCanvas->XScreenSize;
-				uIComponent->defaultScale.y = uIComponent->defaultSize.y / currCanvas->YScreenSize;
+			if (currCanvas != nullptr) 
+			{
+				UIComponent->defaultScale.x = UIComponent->defaultDimensions.x / currCanvas->XScreenSize;
+				UIComponent->defaultScale.y = UIComponent->defaultDimensions.y / currCanvas->YScreenSize;
 			}
-			uIChild->currentScale = uIComponent->defaultScale * currWidgetParent[0]->currentScale;
-			uITansformComponent->scale = uIComponent->currentScale;
+			UIComponent->currentScale = UIComponent->defaultScale * currWidgetParent->currentScale;
+			UITransformComponent->scale = UIComponent->currentScale;
 
-			float width = screen.x * currTransform[0]->scale.x;
-			float hight = screen.y * currTransform[0]->scale.y;
-			float childWidth = screen.x * uIComponent->currentScale.x;
-			float childHight = screen.y * uIComponent->currentScale.y;
+			float width = screen.x * currTransform->scale.x;
+			float hight = screen.y * currTransform->scale.y;
+			float childWidth = screen.x * UIComponent->currentScale.x;
+			float childHight = screen.y * UIComponent->currentScale.y;
 
-			switch (uIComponent->anchorSettings)
+			switch (UIComponent->anchorSettings)
 			{
 				case Firelight::ECS::e_AnchorSettings::TopLeft:
-					uITansformComponent->position.y = (currTransform[0]->position.y- (hight*0.5f)) + (childHight * 0.5f);
-					uITansformComponent->position.x = (currTransform[0]->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y- (hight*0.5f)) + (childHight * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
 					break;
 				case Firelight::ECS::e_AnchorSettings::Top:
-					uITansformComponent->position.y = (currTransform[0]->position.y - (hight * 0.5f)) + (childHight * 0.5f);
-					uITansformComponent->position.x = currTransform[0]->position.x;
+					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
+					UITransformComponent->position.x = currTransform->position.x;
 					break;
 				case Firelight::ECS::e_AnchorSettings::TopRight:
-					uITansformComponent->position.y = (currTransform[0]->position.y - (hight * 0.5f)) + (childHight * 0.5f);
-					uITansformComponent->position.x = (currTransform[0]->position.x + (width * 0.5f))- (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f))- (childWidth * 0.5f);
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::BottomLeft:
-					uITansformComponent->position.y = (currTransform[0]->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					uITansformComponent->position.x = (currTransform[0]->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
 					break;
 				case Firelight::ECS::e_AnchorSettings::Bottom:
-					uITansformComponent->position.y = (currTransform[0]->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					uITansformComponent->position.x = currTransform[0]->position.x;
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
+					UITransformComponent->position.x = currTransform->position.x;
 					break;
 				case Firelight::ECS::e_AnchorSettings::BottomRight:
-					uITansformComponent->position.y = (currTransform[0]->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					uITansformComponent->position.x = (currTransform[0]->position.x + (width * 0.5f)) - (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f);
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::Left:
-					uITansformComponent->position.y = currTransform[0]->position.y;
-					uITansformComponent->position.x = (currTransform[0]->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.y = currTransform->position.y;
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
 					break;
 				case Firelight::ECS::e_AnchorSettings::Center:
-					uITansformComponent->position.y = currTransform[0]->position.y;
-					uITansformComponent->position.x = currTransform[0]->position.x ;
+					UITransformComponent->position.y = currTransform->position.y;
+					UITransformComponent->position.x = currTransform->position.x ;
 					break;
 				case Firelight::ECS::e_AnchorSettings::Right:
-					uITansformComponent->position.y = currTransform[0]->position.y;
-					uITansformComponent->position.x = (currTransform[0]->position.x + (width * 0.5f)) - (childWidth * 0.5f);
+					UITransformComponent->position.y = currTransform->position.y;
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f);
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::None: {
-					uITansformComponent->position = uIComponent->defaultPosition;
+					UITransformComponent->position = UIComponent->defaultPosition;
 
 					ECS::Entity* currentParent = nullptr;
 					
 					for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 					{
 						//checks
-						ECS::UI_Canvas* uICanvas = m_entities[entityIndex]->GetComponent<ECS::UIWidget,ECS::UI_Canvas>();
-						
+						ECS::UICanvasComponent* UICanvas = m_entities[entityIndex]->GetComponent<ECS::UICanvasComponent>();
+						ECS::UIPanelComponent* UIPanel = m_entities[entityIndex]->GetComponent<ECS::UIPanelComponent>();
 
-						ECS::UI_Panel* uIPanel = m_entities[entityIndex]->GetComponent<ECS::UIWidget, ECS::UI_Panel>();
-
-
-						if (uICanvas == nullptr && uIPanel==nullptr) {
+						if (UICanvas == nullptr && UIPanel==nullptr) 
+						{
 							continue;
 						}
-						else if (uIPanel == nullptr) {
-							ECS::TransformComponent* uICanvasTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-							ECS::PixelSpriteComponent* uICanvasSpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-							if (IsHit(uIChild->defaultPosition.x, uIChild->defaultPosition.y, uICanvas, uICanvasTansformComponent, uICanvasSpriteComponent)) {								
-									currentParent = m_entities[entityIndex];
+						else if (UIPanel == nullptr) 
+						{
+							if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIComponent, UITransformComponent))
+							{								
+								currentParent = m_entities[entityIndex];
 							}
 						}
 						else
 						{
-							
-							ECS::TransformComponent* uIPanelTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
-							ECS::PixelSpriteComponent* uIPanelSpriteComponent = m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>();
-							if (uIPanel != uIChild) {
-
-									if (IsHit(uIChild->defaultPosition.x, uIChild->defaultPosition.y, uIPanel, uIPanelTansformComponent, uIPanelSpriteComponent)) {
-									
-										if (currentParent->GetComponent<ECS::PixelSpriteComponent>()->layer < m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->layer) {
-												currentParent = m_entities[entityIndex];
-												continue;
-										}	
+							ECS::UIBaseWidgetComponent* UIPanelComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+							ECS::TransformComponent* UIPanelTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
+							if (m_entities[entityIndex] != entity) 
+							{
+								if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIPanelComponent, UIPanelTansformComponent)) 
+								{
+									if (currentParent->GetComponent<ECS::PixelSpriteComponent>()->layer < m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->layer) {
+										currentParent = m_entities[entityIndex];
+										continue;
 									}
+								}
 							}
 						}
 
 					}
 
-					if (currentParent == nullptr) {
-
+					if (currentParent == nullptr) 
+					{
 						return;
 					}
-					uIChild->parent = currentParent->GetEntityID();
-					std::vector< ECS::TransformComponent*>newParentTransform= ECS::EntityComponentSystem::Instance()->GetComponents<ECS::TransformComponent>(uIChild->parent);
-					std::vector< ECS::PixelSpriteComponent*>newParentSprite = ECS::EntityComponentSystem::Instance()->GetComponents<ECS::PixelSpriteComponent>(uIChild->parent);
 
-					uIComponent->currentScale= uIComponent->defaultScale* newParentTransform[0]->scale;
-					uITansformComponent->scale = uIChild->currentScale;
-					uISpriteComponent->layer = newParentSprite[0]->layer+1;
+					UIComponent->parentID = currentParent->GetEntityID();
+					ECS::TransformComponent* newParentTransform = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(UIComponent->parentID);
+					ECS::PixelSpriteComponent* newParentSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
+
+					UIComponent->currentScale= UIComponent->defaultScale * newParentTransform->scale;
+					UITransformComponent->scale = UIComponent->currentScale;
+					UISpriteComponent->layer = newParentSprite->layer+1;
 					return;
 				}
 					break;
@@ -624,24 +622,23 @@ namespace Firelight::UI {
 			}
 		
 
-			uIComponent->currentScale = uIComponent->defaultScale * currTransform[0]->scale;
-			uITansformComponent->scale = uIChild->currentScale;
-			uISpriteComponent->layer = currSprite[0]->layer + 1;
+			UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
+			UITransformComponent->scale = UIComponent->currentScale;
+			UISpriteComponent->layer = currSprite->layer + 1;
 		}
 		
 		if (currCanvas != nullptr) {
 			//offset(pix) = size(pix) * scale factor(%)
-			float offX = Engine::Instance().GetWindowDimensionsFloat().x * (uIComponent->offSet.x / currCanvas->XScreenSize);
-			float offY = Engine::Instance().GetWindowDimensionsFloat().y * (uIComponent->offSet.y / currCanvas->YScreenSize);
-			uITansformComponent->position.x += offX;
-			uITansformComponent->position.y += offY;
+			float offX = Engine::Instance().GetWindowDimensionsFloat().x * (UIComponent->offSet.x / currCanvas->XScreenSize);
+			float offY = Engine::Instance().GetWindowDimensionsFloat().y * (UIComponent->offSet.y / currCanvas->YScreenSize);
+			UITransformComponent->position.x += offX;
+			UITransformComponent->position.y += offY;
 		}
 	}
 
 	void UISystem::SetSettings()
 	{
 		AnchorSettings();
-
 	}
 	
 

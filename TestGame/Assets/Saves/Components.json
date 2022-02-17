@@ -48,9 +48,6 @@
                     },
                     {
                         "Name": ""
-                    },
-                    {
-                        "Name": ""
                     }
                 ]
             },
@@ -186,9 +183,6 @@
                         "IsStatic": false
                     },
                     {
-                        "IsStatic": false
-                    },
-                    {
                         "IsStatic": true
                     },
                     {
@@ -260,130 +254,117 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 48.0,
+                            "Y": 46.0,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 48.60000228881836,
-                            "Y": 47.95000076293945,
+                            "X": 123.0,
+                            "Y": 46.0,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 123.60000610351563,
-                            "Y": 47.95000076293945,
+                            "X": 198.0,
+                            "Y": 46.0,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 198.60000610351563,
-                            "Y": 47.95000076293945,
-                            "Z": 0.0
-                        },
-                        "Scale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Rotation": 0.0,
-                        "Position": {
-                            "X": 1231.199951171875,
+                            "X": 1232.0,
                             "Y": 379.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.10000000149011612,
-                            "Y": 0.5,
+                            "X": 0.09876543283462524,
+                            "Y": 0.4743083119392395,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1231.199951171875,
+                            "X": 648.0,
                             "Y": 229.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1231.199951171875,
+                            "X": 1232.0,
                             "Y": 279.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1231.199951171875,
+                            "X": 1232.0,
                             "Y": 329.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1231.199951171875,
+                            "X": 1232.0,
                             "Y": 379.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1231.199951171875,
+                            "X": 1232.0,
                             "Y": 429.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
@@ -471,6 +452,311 @@
                 ]
             },
             {
+                "ComponentID": 5,
+                "Components": [
+                    {
+                        "ParentID": 0,
+                        "HasParent": false,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 100.0,
+                            "Y": 100.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 75.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 150.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 128.0,
+                            "Y": 360.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.09876543283462524,
+                            "Y": 0.4743083119392395,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.09876543283462524,
+                            "Y": 0.4743083119392395,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -150.0
+                        },
+                        "DefaultPosition": {
+                            "X": 105.0,
+                            "Y": 34.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 640.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -100.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 640.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": -50.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 640.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 640.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 50.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 640.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.4938271641731262,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
+                            "Z": 0.0
+                        }
+                    }
+                ]
+            },
+            {
                 "ComponentID": 2,
                 "Components": [
                     {
@@ -495,27 +781,6 @@
                         "ToDraw": false
                     },
                     {
-                        "Layer": 32,
-                        "Texture": "INSERT TEXTURE HERE",
-                        "DrawOffset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "Colour": {
-                            "R": 255.0,
-                            "G": 255.0,
-                            "B": 255.0,
-                            "A": 255.0
-                        },
-                        "SourceRect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
-                        },
-                        "ToDraw": true
-                    },
-                    {
                         "Layer": 101,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
@@ -600,7 +865,7 @@
                         "ToDraw": true
                     },
                     {
-                        "Layer": 102,
+                        "Layer": 101,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
                             "X": 0.0,
@@ -707,164 +972,52 @@
                 ]
             },
             {
-                "ComponentID": 5,
+                "ComponentID": 12,
                 "Components": [
                     {
-                        "Index": 10,
-                        "IsPressable": false,
-                        "IsHoverable": false,
-                        "IsDraggable": false,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 1.0,
-                            "Y": 1.0,
-                            "Z": 0.0
-                        },
-                        "Layer": 100.0
-                    },
+                        "Layer": 100.0,
+                        "XScreenSize": 1296.0,
+                        "YScreenSize": 759.0
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 15,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "Components": [
                     {
-                        "Index": 10,
-                        "IsPressable": false,
-                        "IsHoverable": false,
-                        "IsDraggable": false,
-                        "AnchorSettings": 4,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 10.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Index": 10,
-                        "IsPressable": false,
-                        "IsHoverable": false,
-                        "IsDraggable": false,
-                        "AnchorSettings": 4,
-                        "Offset": {
-                            "X": 75.0,
-                            "Y": 10.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Index": 10,
-                        "IsPressable": false,
-                        "IsHoverable": false,
-                        "IsDraggable": false,
-                        "AnchorSettings": 4,
-                        "Offset": {
-                            "X": 150.0,
-                            "Y": 10.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.07500000298023224,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 0,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.10000000149011612,
-                            "Y": 0.5,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.10000000149011612,
-                            "Y": 0.5,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": -150.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.5,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
-                            "Z": 0.0
-                        },
                         "IsChangeOfTex": true,
                         "Colours": [
                             "Colour",
@@ -892,30 +1045,6 @@
                         "RectsOfButton": []
                     },
                     {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": -100.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.5,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
-                            "Z": 0.0
-                        },
                         "IsChangeOfTex": true,
                         "Colours": [
                             "Colour",
@@ -943,30 +1072,6 @@
                         "RectsOfButton": []
                     },
                     {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": -50.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.5,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
-                            "Z": 0.0
-                        },
                         "IsChangeOfTex": true,
                         "Colours": [
                             "Colour",
@@ -994,30 +1099,6 @@
                         "RectsOfButton": []
                     },
                     {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.5,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
-                            "Z": 0.0
-                        },
                         "IsChangeOfTex": true,
                         "Colours": [
                             "Colour",
@@ -1045,30 +1126,6 @@
                         "RectsOfButton": []
                     },
                     {
-                        "Index": 10,
-                        "IsPressable": true,
-                        "IsHoverable": true,
-                        "IsDraggable": true,
-                        "AnchorSettings": 6,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 50.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.5,
-                            "Y": 0.10000000149011612,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.05000000074505806,
-                            "Y": 0.05000000074505806,
-                            "Z": 0.0
-                        },
                         "IsChangeOfTex": true,
                         "Colours": [
                             "Colour",
@@ -1161,10 +1218,6 @@
                     {
                         "EntityID": 14,
                         "Indices": [14]
-                    },
-                    {
-                        "EntityID": 15,
-                        "Indices": [15]
                     }
                 ]
             },
@@ -1180,11 +1233,11 @@
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 14,
+                        "EntityID": 13,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 15,
+                        "EntityID": 14,
                         "Indices": [3]
                     }
                 ]
@@ -1251,10 +1304,6 @@
                     {
                         "EntityID": 14,
                         "Indices": [14]
-                    },
-                    {
-                        "EntityID": 15,
-                        "Indices": [15]
                     }
                 ]
             },
@@ -1329,10 +1378,6 @@
                     {
                         "EntityID": 14,
                         "Indices": [14]
-                    },
-                    {
-                        "EntityID": 15,
-                        "Indices": [15]
                     }
                 ]
             },
@@ -1362,11 +1407,11 @@
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 14,
+                        "EntityID": 13,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 15,
+                        "EntityID": 14,
                         "Indices": [2]
                     }
                 ]
@@ -1377,6 +1422,51 @@
                     {
                         "EntityID": 1,
                         "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [9]
                     }
                 ]
             },
@@ -1422,55 +1512,127 @@
                     {
                         "EntityID": 12,
                         "Indices": [9]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [10]
                     }
                 ]
             },
             {
-                "ComponentID": 5,
+                "ComponentID": 12,
                 "EntityIDs": [
-                    {
-                        "EntityID": 11,
-                        "Indices": [7]
-                    },
                     {
                         "EntityID": 3,
                         "Indices": [0]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [2]
-                    },
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "EntityIDs": [
                     {
                         "EntityID": 7,
-                        "Indices": [3]
+                        "Indices": [0]
                     },
                     {
                         "EntityID": 8,
-                        "Indices": [4]
+                        "Indices": [1]
                     },
                     {
                         "EntityID": 9,
-                        "Indices": [5]
+                        "Indices": [2]
                     },
                     {
                         "EntityID": 10,
-                        "Indices": [6]
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [4]
                     },
                     {
                         "EntityID": 12,
-                        "Indices": [8]
+                        "Indices": [5]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "EntityIDs": [
+                    {
+                        "EntityID": 7,
+                        "Indices": [0]
                     },
                     {
-                        "EntityID": 13,
-                        "Indices": [9]
+                        "EntityID": 8,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [5]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 15,
+                "EntityIDs": [
+                    {
+                        "EntityID": 7,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [5]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
                     }
                 ]
             }
@@ -1501,12 +1663,12 @@
                 "ComponentTypeID": 3
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIWidget",
-                "ComponentTypeID": 5
-            },
-            {
                 "ComponentTypeName": "struct Firelight::ECS::ColliderComponent",
                 "ComponentTypeID": 6
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIBaseWidgetComponent",
+                "ComponentTypeID": 5
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::StaticComponent",
@@ -1523,6 +1685,26 @@
             {
                 "ComponentTypeName": "class HealthComponent",
                 "ComponentTypeID": 11
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
+                "ComponentTypeID": 12
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
+                "ComponentTypeID": 13
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
+                "ComponentTypeID": 14
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
+                "ComponentTypeID": 15
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeID": 16
             }
         ]
     }
