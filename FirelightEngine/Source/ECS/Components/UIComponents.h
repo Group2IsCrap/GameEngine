@@ -31,9 +31,11 @@ namespace Firelight::ECS
 	//Base Widget
 	struct UIWidget : BaseComponent
 	{
-		PixelSpriteComponent* texture = nullptr;
-		TransformComponent* transform = nullptr;
-		UINT index = 10;
+		/*PixelSpriteComponent* texture = nullptr;
+		TransformComponent* transform = nullptr;*/
+
+		UINT Index =10;
+    
 		//Events 
 		bool isPressable = false;
 		std::vector<CallbackFunctionType> onLeftPressFunctions;
@@ -47,8 +49,9 @@ namespace Firelight::ECS
 		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
 		Maths::Vec2f offSet = (0, 0);
 
-		//free elments
+		//size elments
 		Maths::Vec3f defaultPosition= Maths::Vec3f(0,0,0);
+		Maths::Vec3f defaultSize = Maths::Vec3f(100, 100, 0);
 		Maths::Vec3f defaultScale = Maths::Vec3f(1, 1, 0);
 		Maths::Vec3f currentScale = Maths::Vec3f(1, 1, 0);
 
@@ -75,7 +78,7 @@ namespace Firelight::ECS
 	//Visable UI
 	struct UI_Child : UIWidget 
 	{
-		UIWidget* parent;
+		EntityID parent;
 
 		void Serialise() override
 		{
@@ -88,6 +91,8 @@ namespace Firelight::ECS
 	//hold all UI
 	struct UI_Canvas : UIWidget
 	{
+		float XScreenSize;
+		float YScreenSize;
 		float layer = 32;
 
 		void Serialise() override

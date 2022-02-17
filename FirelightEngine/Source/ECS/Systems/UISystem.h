@@ -36,24 +36,30 @@ namespace Firelight::UI {
 	private:
 
 		//Event function Invoke
-		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
-		void OnLeave(int x, int y);
-		void OnHover(int x, int y, ECS::UIWidget* widget);
-		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
+		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity);
+		void OnLeave(int x, int y, ECS::Entity* entity);
+		void OnHover(int x, int y, ECS::Entity* entity);
+		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity);
 		
 		//move through items
 		void OnNavergate();
 		void AnchorSettings();
 
-		bool IsHit(int x, int y,ECS::UIWidget* widget);
-		void AnchorSettings(ECS::UI_Child* widget);
+		bool IsHit(int x, int y,ECS::UIWidget* widget, ECS::TransformComponent* transform, ECS::PixelSpriteComponent* sprite);
+		void AnchorSettings(ECS::Entity* entity);
 		
 		void AnchorSettings(ECS::UI_Canvas* widget);
 
 	private:
-
+		ECS::Entity* m_DragID;
 		ECS::UIWidget* m_DragItem= nullptr;
+		ECS::PixelSpriteComponent* m_DragSprite = nullptr;
+		ECS::TransformComponent* m_DragTransform = nullptr;
+
 		ECS::UIWidget* m_FocusedItem = nullptr;
+		ECS::PixelSpriteComponent* m_FocusedSprite = nullptr;
+		ECS::TransformComponent* m_FocusedTransform = nullptr;
+
 		Maths::Vec3f m_MousePosDrag;
 		Maths::Vec2f m_MouseRawCurr;
 		Utils::Timer m_ClickTimer;
@@ -64,7 +70,7 @@ namespace Firelight::UI {
 		ECS::e_AnchorSettings m_CurrDragAnchor = ECS::e_AnchorSettings::None;
 
 		Firelight::Events::Input::ControllerState m_PrevEventController;
-
+		ECS::Entity* m_Canvas = nullptr;
 		float m_CanvasLayer;
 	};
 

@@ -4,7 +4,7 @@
 
 #include "../Events/HealthEvent.h"
 
-HealthUI::HealthUI(Firelight::ECS::UIWidget* parent)
+HealthUI::HealthUI(Firelight::ECS::Entity* parent)
 {
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::HealthEvent>(this);
 
@@ -20,10 +20,8 @@ HealthUI::HealthUI(Firelight::ECS::UIWidget* parent)
 		Firelight::ECS::UI_Panel* panel = heartUIEntity->GetComponent<Firelight::ECS::UIWidget, Firelight::ECS::UI_Panel>();
 		panel->anchorSettings = Firelight::ECS::e_AnchorSettings::TopLeft;
 		panel->offSet = Firelight::Maths::Vec2f((i * 75.0f), 10.0f);
-		panel->parent = m_parentUI;
-		panel->texture = heartUIEntity->GetSpriteComponent();
-		panel->transform = heartUIEntity->GetTransformComponent();
-		panel->defaultScale = Firelight::Maths::Vec3f(0.075f, 0.1f, 0);
+		panel->parent = m_parentUI->GetEntityID();
+		panel->defaultSize = Firelight::Maths::Vec3f(96, 72, 0);
 		heartUIEntity->GetSpriteComponent()->toDraw = true;
 		m_healthUIEntities.push_back(heartUIEntity);
 	}
