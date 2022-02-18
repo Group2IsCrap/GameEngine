@@ -575,7 +575,7 @@ namespace Firelight::UI {
 					{
 						//checks
 						ECS::UICanvasComponent* UICanvas = m_entities[entityIndex]->GetComponent<ECS::UICanvasComponent>();
-						ECS::UIPanelComponent* UIPanel = m_entities[entityIndex]->GetComponent<ECS::UIPanelComponent>();
+						ECS::UIContainerComponent* UIPanel = m_entities[entityIndex]->GetComponent<ECS::UIContainerComponent>();
 
 						if (UICanvas == nullptr && UIPanel==nullptr) 
 						{
@@ -588,15 +588,16 @@ namespace Firelight::UI {
 								currentParent = m_entities[entityIndex];
 							}
 						}
-						else
+						else if(currentParent!= nullptr)
 						{
-							ECS::UIBaseWidgetComponent* UIPanelComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+							ECS::UIBaseWidgetComponent* UIContainerComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
 							ECS::TransformComponent* UIPanelTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
 							if (m_entities[entityIndex] != entity) 
 							{
-								if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIPanelComponent, UIPanelTansformComponent)) 
+								if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIContainerComponent, UIPanelTansformComponent)) 
 								{
-									if (currentParent->GetComponent<ECS::PixelSpriteComponent>()->layer < m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->layer) {
+									if (currentParent->GetComponent<ECS::PixelSpriteComponent>()->layer < m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->layer) 
+									{
 										currentParent = m_entities[entityIndex];
 										continue;
 									}

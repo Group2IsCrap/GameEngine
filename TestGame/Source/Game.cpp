@@ -16,6 +16,7 @@
 #include"Source/ECS/EntityWrappers/UIEntity.h"
 #include"Source/ECS/EntityWrappers/UIButton.h"
 #include"Source/ECS/EntityWrappers/UICanvas.h"
+#include"Source/ECS/EntityWrappers/UIPanel.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
 
 #include "Source/Graphics/GraphicsHandler.h"
@@ -102,16 +103,9 @@ void CreatUITest() {
 	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 
 	UIPanel* panelSound = new UIPanel();
-	panelSound->AddComponent<UIPanelComponent>();
-	panelSound->AddComponent<UIHoverableComponent>();
-	panelSound->AddComponent<UIPressableComponent>();
-	panelSound->AddComponent<UIDraggableComponent>();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
-	//panelComponent->isHoverable = true;
-	//panelComponent->isPressable = true;
-	//panelComponent->isDraggable = true;
 	panelSound->SetDefaultDimensions(Maths::Vec3f(128, 360,0 ));
 
 	UIButton* buttonSound = new UIDraggableButton();

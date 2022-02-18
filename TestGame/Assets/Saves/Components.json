@@ -584,8 +584,8 @@
                             "Y": 0.0
                         },
                         "DefaultPosition": {
-                            "X": 628.0,
-                            "Y": 366.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -614,8 +614,8 @@
                             "Y": -150.0
                         },
                         "DefaultPosition": {
-                            "X": 1181.0,
-                            "Y": 508.0,
+                            "X": 1234.0,
+                            "Y": 235.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -644,8 +644,8 @@
                             "Y": -100.0
                         },
                         "DefaultPosition": {
-                            "X": 1218.0,
-                            "Y": 268.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -674,8 +674,8 @@
                             "Y": -50.0
                         },
                         "DefaultPosition": {
-                            "X": 1225.0,
-                            "Y": 333.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -704,8 +704,8 @@
                             "Y": 0.0
                         },
                         "DefaultPosition": {
-                            "X": 1214.0,
-                            "Y": 425.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -734,8 +734,8 @@
                             "Y": 50.0
                         },
                         "DefaultPosition": {
-                            "X": 1219.0,
-                            "Y": 433.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -984,13 +984,15 @@
             {
                 "ComponentID": 13,
                 "Components": [
+                    {},
+                    {},
+                    {},
                     {}
                 ]
             },
             {
                 "ComponentID": 14,
                 "Components": [
-                    {},
                     {},
                     {},
                     {},
@@ -1005,23 +1007,11 @@
                     {},
                     {},
                     {},
-                    {},
                     {}
                 ]
             },
             {
                 "ComponentID": 16,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 17,
                 "Components": [
                     {
                         "IsChangeOfTex": true,
@@ -1158,6 +1148,16 @@
                         ],
                         "RectsOfButton": []
                     }
+                ]
+            },
+            {
+                "ComponentID": 17,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
                 ]
             }
         ],
@@ -1534,8 +1534,20 @@
                 "ComponentID": 13,
                 "EntityIDs": [
                     {
-                        "EntityID": 7,
+                        "EntityID": 4,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [3]
                     }
                 ]
             },
@@ -1543,28 +1555,24 @@
                 "ComponentID": 14,
                 "EntityIDs": [
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 11,
-                        "Indices": [4]
-                    },
-                    {
                         "EntityID": 12,
-                        "Indices": [5]
+                        "Indices": [4]
                     }
                 ]
             },
@@ -1572,28 +1580,24 @@
                 "ComponentID": 15,
                 "EntityIDs": [
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 11,
-                        "Indices": [4]
-                    },
-                    {
                         "EntityID": 12,
-                        "Indices": [5]
+                        "Indices": [4]
                     }
                 ]
             },
@@ -1601,28 +1605,24 @@
                 "ComponentID": 16,
                 "EntityIDs": [
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 11,
-                        "Indices": [4]
-                    },
-                    {
                         "EntityID": 12,
-                        "Indices": [5]
+                        "Indices": [4]
                     }
                 ]
             },
@@ -1706,7 +1706,7 @@
                 "ComponentTypeID": 12
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIPanelComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
                 "ComponentTypeID": 13
             },
             {
@@ -1718,11 +1718,11 @@
                 "ComponentTypeID": 15
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
                 "ComponentTypeID": 16
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
                 "ComponentTypeID": 17
             }
         ]

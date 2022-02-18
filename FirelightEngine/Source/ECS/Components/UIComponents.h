@@ -78,7 +78,7 @@ namespace Firelight::ECS
 
 	};
 
-	struct UIPanelComponent : BaseComponent
+	struct UIContainerComponent : BaseComponent
 	{
 
 	};

@@ -22,6 +22,4 @@ namespace Firelight::ECS
 		void SetOffset(Maths::Vec2f offset);
 		void SetParent(EntityID parentID);
 	};
-
-	typedef UIEntity UIPanel;
 }

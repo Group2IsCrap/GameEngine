@@ -2,6 +2,7 @@
 
 #include <Source/ECS/Components/UIComponents.h>
 #include <Source/ECS/EntityWrappers/UIEntity.h>
+#include <Source/ECS/EntityWrappers/UIPanel.h>
 
 #include <Source/Events/Listener.h>
 
