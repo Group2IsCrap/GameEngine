@@ -231,6 +231,7 @@ namespace Firelight::UI {
 					m_focusedSprite->colour = button->colour[0];
 				}
 			}
+
 			m_focusedEntity = nullptr;
 			m_focusedWidget = nullptr;
 			m_focusedTransform = nullptr;
@@ -250,14 +251,16 @@ namespace Firelight::UI {
 		{
 			if (m_focusedWidget != UIComponent && m_focusedSprite != nullptr)
 			{
-				ECS::UIButtonComponent* button = entity->GetComponent<ECS::UIButtonComponent>();
+				ECS::UIButtonComponent* button = m_focusedEntity->GetComponent<ECS::UIButtonComponent>();
 				if (button != nullptr)
 				{
 					if (button->isChangeOfTex)
 					{
 						m_focusedSprite->colour = button->colour[0];
+						
 					}
 				}
+				OnLeave(x, y, m_focusedEntity);
 			}
 
 			m_focusedEntity = entity;
@@ -346,6 +349,7 @@ namespace Firelight::UI {
 					{
 						m_dragWidget->anchorSettings = m_CurrDragAnchor;
 					}
+
 					m_dragEntity = entity;
 					m_dragWidget = UIComponent;
 					m_dragSprite = UISpriteComponent;
@@ -565,7 +569,7 @@ namespace Firelight::UI {
 				case Firelight::ECS::e_AnchorSettings::None: {
 					UITransformComponent->position = UIComponent->defaultPosition;
 
-					ECS::Entity* currentParent = nullptr;
+					ECS::Entity* currentParent = m_Canvas;
 					
 					for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 					{
@@ -596,6 +600,7 @@ namespace Firelight::UI {
 										currentParent = m_entities[entityIndex];
 										continue;
 									}
+									
 								}
 							}
 						}

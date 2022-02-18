@@ -306,13 +306,13 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 648.0,
+                            "X": 1232.0,
                             "Y": 229.5,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.4938271641731262,
-                            "Y": 0.09486165642738342,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
@@ -584,8 +584,8 @@
                             "Y": 0.0
                         },
                         "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 628.0,
+                            "Y": 366.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -605,7 +605,7 @@
                         }
                     },
                     {
-                        "ParentID": 3,
+                        "ParentID": 7,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 6,
@@ -614,8 +614,8 @@
                             "Y": -150.0
                         },
                         "DefaultPosition": {
-                            "X": 105.0,
-                            "Y": 34.0,
+                            "X": 1181.0,
+                            "Y": 508.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -629,8 +629,8 @@
                             "Z": 0.0
                         },
                         "CurrentScale": {
-                            "X": 0.4938271641731262,
-                            "Y": 0.09486165642738342,
+                            "X": 0.04877305403351784,
+                            "Y": 0.044993672519922256,
                             "Z": 0.0
                         }
                     },
@@ -644,8 +644,8 @@
                             "Y": -100.0
                         },
                         "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 1218.0,
+                            "Y": 268.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -674,8 +674,8 @@
                             "Y": -50.0
                         },
                         "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 1225.0,
+                            "Y": 333.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -704,8 +704,8 @@
                             "Y": 0.0
                         },
                         "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 1214.0,
+                            "Y": 425.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -734,8 +734,8 @@
                             "Y": 50.0
                         },
                         "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
+                            "X": 1219.0,
+                            "Y": 433.0,
                             "Z": 0.0
                         },
                         "DefaultDimensions": {
@@ -865,7 +865,7 @@
                         "ToDraw": true
                     },
                     {
-                        "Layer": 101,
+                        "Layer": 102,
                         "Texture": "INSERT TEXTURE HERE",
                         "DrawOffset": {
                             "X": 0.0,
@@ -984,11 +984,6 @@
             {
                 "ComponentID": 13,
                 "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
                     {}
                 ]
             },
@@ -1016,6 +1011,17 @@
             },
             {
                 "ComponentID": 16,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 17,
                 "Components": [
                     {
                         "IsChangeOfTex": true,
@@ -1530,26 +1536,6 @@
                     {
                         "EntityID": 7,
                         "Indices": [0]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 9,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 10,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 11,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 12,
-                        "Indices": [5]
                     }
                 ]
             },
@@ -1613,6 +1599,35 @@
             },
             {
                 "ComponentID": 16,
+                "EntityIDs": [
+                    {
+                        "EntityID": 7,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [5]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 17,
                 "EntityIDs": [
                     {
                         "EntityID": 8,
@@ -1691,20 +1706,24 @@
                 "ComponentTypeID": 12
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIPanelComponent",
                 "ComponentTypeID": 13
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
                 "ComponentTypeID": 14
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
                 "ComponentTypeID": 15
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
                 "ComponentTypeID": 16
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeID": 17
             }
         ]
     }

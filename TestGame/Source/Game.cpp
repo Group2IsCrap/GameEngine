@@ -102,6 +102,7 @@ void CreatUITest() {
 	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 
 	UIPanel* panelSound = new UIPanel();
+	panelSound->AddComponent<UIPanelComponent>();
 	panelSound->AddComponent<UIHoverableComponent>();
 	panelSound->AddComponent<UIPressableComponent>();
 	panelSound->AddComponent<UIDraggableComponent>();
