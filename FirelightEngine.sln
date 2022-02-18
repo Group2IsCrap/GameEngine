@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FirelightEditor", "Fireligh
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SnowfallEngine", "SnowfallEngine\SnowfallEngine.vcxproj", "{2E6E55DF-89AD-461D-8ACC-B73399320C31}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -83,6 +85,18 @@ Global
 		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x64.Build.0 = Release|x64
 		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x86.ActiveCfg = Release|Win32
 		{2E6E55DF-89AD-461D-8ACC-B73399320C31}.Release|x86.Build.0 = Release|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Debug|x64.ActiveCfg = Debug|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Debug|x64.Build.0 = Debug|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Debug|x86.ActiveCfg = Debug|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Debug|x86.Build.0 = Debug|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Profile|x64.ActiveCfg = Debug|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Profile|x64.Build.0 = Debug|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Profile|x86.ActiveCfg = Debug|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Profile|x86.Build.0 = Debug|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Release|x64.ActiveCfg = Release|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Release|x64.Build.0 = Release|x64
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Release|x86.ActiveCfg = Release|Win32
+		{B3F2C4DC-A85E-4D48-8FC2-007F20C1BB47}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
