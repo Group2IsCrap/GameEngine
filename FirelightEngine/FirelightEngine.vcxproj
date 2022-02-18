@@ -455,6 +455,10 @@
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
     <ClInclude Include="Source\Utils\Time.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\Template.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIButton.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UICanvas.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
@@ -519,6 +523,10 @@
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
     <ClCompile Include="Source\Utils\Time.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\Template.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIButton.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UICanvas.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

@@ -24,6 +24,7 @@ namespace Firelight::ECS
 	{
 		m_entityManager = std::make_unique<EntityManager>();
 		m_componentManager = std::make_unique<ComponentManager>();
+		m_templateComponentManager = std::make_unique<ComponentManager>();
 
 		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
 	}
@@ -45,6 +46,19 @@ namespace Firelight::ECS
 	}
 
 	/// <summary>
+	/// Creates a new entity
+	/// </summary>
+	/// <returns></returns>
+	EntityID EntityComponentSystem::CreateTemplate()
+	{
+		EntityID templateID = m_entityManager->CreateTemplate();
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnTemplateCreatedEvent>();
+
+		return templateID;
+	}
+
+	/// <summary>
 	/// Creates a new entity with the given ID
 	/// </summary>
 	/// <param name="id"></param>
@@ -52,6 +66,22 @@ namespace Firelight::ECS
 	EntityID EntityComponentSystem::CreateEntity(EntityID id)
 	{
 		return m_entityManager->CreateEntity(id);
+	}
+
+	EntityID EntityComponentSystem::CreateEntityFromTemplate(EntityID id)
+	{
+		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> components = m_templateComponentManager->GetComponentDataCopy(id);
+		EntityID entityId = m_entityManager->CreateEntity();
+
+		for (auto componentType : components)
+		{
+			for (int i = 0; i < components[componentType.first].size(); ++i)
+			{
+				m_componentManager->AddComponent(entityId, componentType.first, components[componentType.first][i]);
+			}
+		}
+
+		return entityId;
 	}
 
 	/// <summary>
@@ -105,8 +135,8 @@ namespace Firelight::ECS
 		}
 	}
 
-	void EntityComponentSystem::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void EntityComponentSystem::Serialise()
 	{
-		m_componentManager->SerializeAllComponents(writer);
+		m_componentManager->SerialiseAllComponents();
 	}
 }

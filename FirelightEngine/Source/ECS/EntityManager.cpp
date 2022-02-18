@@ -102,4 +102,52 @@ namespace Firelight::ECS
 	{
 		return m_entities;
 	}
+
+	EntityID EntityManager::sm_nextTemplate = 0;
+
+	/// <summary>
+	/// Creates a new template with a unique ID
+	/// </summary>
+	/// <returns></returns>
+	EntityID EntityManager::CreateTemplate()
+	{
+		while (std::find(m_templates.begin(), m_templates.end(), sm_nextTemplate) != m_templates.end())
+		{
+			sm_nextTemplate++;
+		}
+		return CreateTemplateInternal(sm_nextTemplate++);
+	}
+
+	EntityID EntityManager::CreateTemplateInternal(EntityID id)
+	{
+		EntityID entityTemplate = id;
+		m_templates.push_back(entityTemplate);
+
+		return entityTemplate;
+	}
+
+	/// <summary>
+	/// Removes a template
+	/// </summary>
+	/// <param name="entity"></param>
+	void EntityManager::RemoveTemplate(EntityID enitityTemplate)
+	{
+		const auto& it = std::find(m_templates.begin(), m_templates.end(), enitityTemplate);
+
+		if (it == m_templates.end())
+		{
+			return;
+		}
+
+		m_templates.erase(it);
+	}
+
+	/// <summary>
+	/// Gets all entities
+	/// </summary>
+	/// <returns></returns>
+	std::vector<EntityID> EntityManager::GetTemplates()
+	{
+		return m_templates;
+	}
 }

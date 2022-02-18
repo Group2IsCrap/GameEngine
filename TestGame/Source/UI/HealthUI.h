@@ -2,6 +2,7 @@
 
 #include <Source/ECS/Components/UIComponents.h>
 #include <Source/ECS/EntityWrappers/UIEntity.h>
+#include <Source/ECS/EntityWrappers/UIPanel.h>
 
 #include <Source/Events/Listener.h>
 
@@ -11,7 +12,7 @@
 class HealthUI : public Firelight::Events::Listener
 {
 public:
-	HealthUI(Firelight::ECS::UIWidget* parent);
+	HealthUI(Firelight::ECS::Entity* parent);
 	~HealthUI();
 
 	void SetHealthAmount(int health);
@@ -21,5 +22,5 @@ private:
 	std::string m_iconPath;
 	Firelight::ECS::UIEntity* m_uiEntity;
 	std::vector<Firelight::ECS::UIEntity*> m_healthUIEntities;
-	Firelight::ECS::UIWidget* m_parentUI;
+	Firelight::ECS::Entity* m_parentUI;
 };

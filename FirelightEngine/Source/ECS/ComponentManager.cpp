@@ -1,12 +1,20 @@
 #include "ComponentManager.h"
+#include "../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
 
 namespace Firelight::ECS
 {
 	ComponentTypeID ComponentManager::sm_nextComponentID = 0;
 
+	std::unordered_map<TypeHash, ComponentTypeID> ComponentManager::sm_componentHashTypes;
+	std::unordered_map<ComponentTypeID, TypeHash> ComponentManager::sm_componentTypeHash;
+	std::unordered_map<TypeHash, const char*> ComponentManager::sm_componentHashNames;
+
+
 	int ComponentManager::GetRegisteredComponentTypeCount()
 	{
-		return (int)m_componentTypeHash.size();
+		return (int)sm_componentTypeHash.size();
 	}
 
 	/// <summary>
@@ -19,13 +27,33 @@ namespace Firelight::ECS
 	}
 
 	/// <summary>
+	/// Returns the entire map of component data
+	/// </summary>
+	/// <returns></returns>
+	std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> ComponentManager::GetComponentDataCopy(EntityID id)
+	{
+		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> associatedComponents = std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>>();
+		for (auto& typeComponentListPair : m_componentMap)
+		{
+			associatedComponents.insert(std::make_pair(typeComponentListPair.first, std::vector<BaseComponent*>()));
+
+			for (auto element : m_componentMap[typeComponentListPair.first][id])
+			{
+				associatedComponents[typeComponentListPair.first].push_back(m_componentData[typeComponentListPair.first][element]->Clone());
+			}
+		}
+
+		return associatedComponents;
+	}
+
+	/// <summary>
 	/// Returns the name of the given component ID
 	/// </summary>
 	/// <param name="typeID"></param>
 	/// <returns></returns>
 	const char* ComponentManager::GetComponentName(ComponentTypeID typeID)
 	{
-		return m_componentHashNames[m_componentTypeHash[typeID]];
+		return sm_componentHashNames[sm_componentTypeHash[typeID]];
 	}	
 
 	bool ComponentManager::HasComponent(ComponentTypeID typeID, EntityID entity)
@@ -53,92 +81,82 @@ namespace Firelight::ECS
 		}
 	}
 
-	void ComponentManager::SerializeAllComponents(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+	void ComponentManager::SerialiseAllComponents()
 	{
 		//Create Component Group
-		writer.Key("Components");
-		writer.StartArray();
+		Serialiser::StartArray("ComponentTypes");
 		for (auto& it : m_componentData)
 		{
-			writer.StartObject();
+			Serialiser::StartObject();
 			//Create ComponentType group
-			writer.Key("ComponentID");
-			writer.Uint(it.first);
-			writer.Key("Components");
-			writer.StartArray();
+			Serialiser::Serialise("ComponentID", it.first);
+
+			Serialiser::StartArray("Components");
 			for (auto component : it.second)
 			{
 				//Create component object
-				writer.StartObject();
-				component->Serialise(writer);
+				Serialiser::StartObject();
+				component->Serialise();
 				//close object
-				writer.EndObject();
+				Serialiser::EndObject();
 			}
 			//close group
-			writer.EndArray();
-			writer.EndObject();
+			Serialiser::EndArray();
+			Serialiser::EndObject();
 		}
 		//Close component group
-		writer.EndArray();
+		Serialiser::EndArray();
 
 		//Create ComponentType group
-		writer.Key("ComponentMap");
-		writer.StartArray();
+		Serialiser::StartArray("ComponentMap");
 		for (auto &it : m_componentMap)
 		{
 			//Create entity group
 
-			writer.StartObject();
-			writer.Key("ComponentID");
-			writer.Uint(it.first);
-			writer.Key("EntityIDs");
-			writer.StartArray();
+			Serialiser::StartObject();
+			Serialiser::Serialise("ComponentID", it.first);
+			Serialiser::StartArray("EntityIDs");
 			for (auto& it2 : m_componentMap[it.first])
 			{
 				//Create entityIndices
-				writer.StartObject();
-				writer.Key("EntityID");
-				writer.Uint(it2.first);
-				writer.Key("Indices");
+				Serialiser::StartObject();
+				Serialiser::Serialise("EntityID", it2.first);
 
-				writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
-				writer.StartArray();
+				Serialiser::SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
+				Serialiser::StartArray("Indices");
 				for (auto index : m_componentMap[it.first][it2.first])
 				{
 					//write index
-					writer.Int(index);
+					Serialiser::Serialise(index);
 				}
 				//close entityIndices
-				writer.EndArray();
+				Serialiser::EndArray();
 
-				writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
-				writer.EndObject();
+				Serialiser::SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
+				Serialiser::EndObject();
 			}
 			//close entity group
-			writer.EndArray();
-			writer.EndObject();
+			Serialiser::EndArray();
+			Serialiser::EndObject();
 		}
 		//close componenttype group
-		writer.EndArray();
+		Serialiser::EndArray();
 
 
 		//create type group
-		writer.Key("ComponentTypeReference");
-		writer.StartArray();
-		for(auto& it : m_componentHashTypes)
+		Serialiser::StartArray("ComponentTypeReference");
+		for(auto& it : sm_componentHashTypes)
 		{
-			writer.StartObject();
+			Serialiser::StartObject();
 			//write name
-			writer.Key("ComponentTypeName");
-			writer.String(m_componentHashNames[it.first]);
+			Serialiser::Serialise("ComponentTypeName", sm_componentHashNames[it.first]);
 
 			//write id
-			writer.Key("ComponentTypeID");
-			writer.Uint(m_componentHashTypes[it.first]);
+			Serialiser::Serialise("ComponentTypeID", sm_componentHashTypes[it.first]);
 
-			writer.EndObject();
+			Serialiser::EndObject();
 		}
-		writer.EndArray();
+		Serialiser::EndArray();
 	}
 
 	/// <summary>
