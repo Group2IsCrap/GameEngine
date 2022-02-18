@@ -106,47 +106,47 @@ void CreatUITest() {
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
-	panelSound->SetDefaultDimensions(Maths::Vec3f(128, 360,0 ));
+	panelSound->SetDefaultDimensions(Maths::Vec3f(200, 400,0 ));
 
 	UIButton* buttonSound = new UIDraggableButton();
-	buttonSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/ButtonTest.png");
-	buttonSound->SetAnchorSettings(ECS::e_AnchorSettings::Center);
-	buttonSound->SetDefaultDimensions(Maths::Vec3f(640, 72, 0));
-	buttonSound->SetOffset(Maths::Vec2f(0.0f, -150.0f));
+	buttonSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
+	buttonSound->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+	buttonSound->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+	buttonSound->SetOffset(Maths::Vec2f(0.0f, 10.0f));
 	buttonSound->BindOnLeftPressed(std::bind(PlayBeuu));
 	buttonSound->SetParent(panelSound->GetEntityID());
 
 	UIButton* buttonMusic = new UIDraggableButton();
-	buttonMusic->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/ButtonTest.png");
-	buttonMusic->SetAnchorSettings(ECS::e_AnchorSettings::Center);
-	buttonMusic->SetDefaultDimensions(Maths::Vec3f(640, 72, 0));
-	buttonMusic->SetOffset(Maths::Vec2f(0.0f, -100.0f));
+	buttonMusic->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/MusicButton.png");
+	buttonMusic->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+	buttonMusic->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+	buttonMusic->SetOffset(Maths::Vec2f(0.0f, 90.0f));
 	buttonMusic->BindOnLeftPressed(std::bind(PlayMusic));
 	buttonMusic->SetParent(panelSound->GetEntityID());
 
 	UIButton* buttonVolUp = new UIDraggableButton();
-	buttonVolUp->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/ButtonTest.png");
-	buttonVolUp->SetAnchorSettings(ECS::e_AnchorSettings::Center);
-	buttonVolUp->SetDefaultDimensions(Maths::Vec3f(640, 72, 0));
-	buttonVolUp->SetOffset(Maths::Vec2f(0.0f, -50.0f));
+	buttonVolUp->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/VolUpButton.png");
+	buttonVolUp->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+	buttonVolUp->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+	buttonVolUp->SetOffset(Maths::Vec2f(0.0f, 170.0f));
 	buttonVolUp->BindOnLeftPressed(std::bind(VolUp));
 	buttonVolUp->SetParent(panelSound->GetEntityID());
 
 	UIButton* buttonVolDown = new UIDraggableButton();
-	buttonVolDown->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/ButtonTest.png");
-	buttonVolDown->SetAnchorSettings(ECS::e_AnchorSettings::Center);
-	buttonVolDown->SetDefaultDimensions(Maths::Vec3f(640, 72, 0));
-	buttonVolDown->SetOffset(Maths::Vec2f(0.0f, 0.0f));
+	buttonVolDown->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/VolDownButton.png");
+	buttonVolDown->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+	buttonVolDown->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+	buttonVolDown->SetOffset(Maths::Vec2f(0.0f, 250.0f));
 	buttonVolDown->BindOnLeftPressed(std::bind(VolDown));
 	buttonVolDown->SetParent(panelSound->GetEntityID());
 
 	UIButton* buttonStopPlay = new UIDraggableButton();
-	buttonStopPlay->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/ButtonTest.png");
-	buttonStopPlay->SetAnchorSettings(ECS::e_AnchorSettings::Center);
-	buttonStopPlay->SetDefaultDimensions(Maths::Vec3f(640, 72, 0));
+	buttonStopPlay->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/StopButton.png");
+	buttonStopPlay->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+	buttonStopPlay->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+	buttonStopPlay->SetOffset(Maths::Vec2f(0.0f, 330.0f));
 	buttonStopPlay->BindOnLeftPressed(std::bind(StopSounds));
 	buttonStopPlay->SetParent(panelSound->GetEntityID());
-	buttonStopPlay->SetOffset(Maths::Vec2f(0.0f, 50.0f));
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
