@@ -40,7 +40,7 @@
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
-
+#include"Inventory/Inventory.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Serialisation;
@@ -152,6 +152,7 @@ void CreatUITest() {
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
+	
 }
 
 void SpawnItem0()
@@ -214,6 +215,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		CreatUITest();
 
 		SetupDebugUI();
+
+		Inventory* invTestA = new Inventory();
+		invTestA->CreatInventory(Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;

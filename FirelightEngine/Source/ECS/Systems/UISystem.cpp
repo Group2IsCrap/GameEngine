@@ -369,11 +369,17 @@ namespace Firelight::UI {
 		}
 		if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease && m_dragWidget == UIComponent) 
 		{
+			m_dragWidget->anchorSettings = m_CurrDragAnchor;
+			if (m_dragWidget->hasParent)
+			{
+				AnchorSettings(entity);
+			}
 			m_dragEntity = nullptr;
 			m_dragWidget = nullptr;
 			m_dragSprite = nullptr;
 			m_dragTransform = nullptr;
 			m_isDragging = false;
+			
 		}
 		
 	
