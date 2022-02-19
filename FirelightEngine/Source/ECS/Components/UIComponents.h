@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 #include "../ECSDefines.h"
-#include"../Components/BasicComponents.h"
-#include"RenderingComponents.h"
+#include "../Components/BasicComponents.h"
+#include "RenderingComponents.h"
 #include "../../Serialisation/Serialiser.h"
-#include<vector>
+#include <vector>
 #include <functional>
 
 using namespace Firelight::Serialisation;

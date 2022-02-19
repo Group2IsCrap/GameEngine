@@ -363,6 +363,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\ItemComponents.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />

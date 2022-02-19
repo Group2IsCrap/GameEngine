@@ -155,6 +155,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Items\ItemDatabase.cpp" />
+    <ClCompile Include="Source\ImGuiItemLayer.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
     <ClCompile Include="Source\Player\PlayerSystem.cpp" />
@@ -165,6 +167,8 @@
     <None Include="Assets\cube.mtls" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Items\ItemDatabase.h" />
+    <ClInclude Include="Source\ImGuiItemLayer.h" />
     <ClInclude Include="Source\Components\HealthComponent.h" />
     <ClInclude Include="Source\Components\PlayerComponent.h" />
     <ClInclude Include="Source\Events\HealthEvent.h" />
