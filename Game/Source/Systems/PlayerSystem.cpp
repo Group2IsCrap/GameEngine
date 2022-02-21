@@ -7,6 +7,8 @@
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 
+static bool s_triggered = false;
+
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
@@ -39,8 +41,9 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 		m_entities[0]->GetComponent<Firelight::ECS::TransformComponent>()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_entities[0]->GetComponent<PlayerComponent>()->speed);
 	}
 
-	if (Firelight::Input::InputGet.KeyIsPress('K'))
+	if (Firelight::Input::InputGet.KeyIsPress('K') && !s_triggered)
 	{
+		s_triggered = true;
 		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
 		playerEntity->RemoveHealth(1);
 	}

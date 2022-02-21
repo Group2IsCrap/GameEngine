@@ -14,6 +14,7 @@ PlayerEntity::PlayerEntity()
 PlayerEntity::PlayerEntity(Firelight::ECS::EntityID entityID)
 {
 	Entity::Entity(entityID);
+
 }
 
 void PlayerEntity::HealthBelowZero()
