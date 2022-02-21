@@ -5,6 +5,7 @@
 #include <Source/Engine.h>
 
 #include "../Player/PlayerComponent.h"
+#include "../Player/PlayerEntity.h"
 
 PlayerSystem::PlayerSystem()
 {
@@ -36,5 +37,11 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	if (Firelight::Input::InputGet.KeyIsPress('D'))
 	{
 		m_entities[0]->GetComponent<Firelight::ECS::TransformComponent>()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_entities[0]->GetComponent<PlayerComponent>()->speed);
+	}
+
+	if (Firelight::Input::InputGet.KeyIsPress('K'))
+	{
+		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
+		playerEntity->RemoveHealth(1);
 	}
 }

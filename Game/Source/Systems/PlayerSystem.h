@@ -7,4 +7,7 @@ class PlayerSystem : public Firelight::ECS::System
 public:
 	PlayerSystem();
 	void Update(const Firelight::Utils::Time& time) override;
+
+private:
+	PlayerEntity* playerEntity;
 };

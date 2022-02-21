@@ -2,8 +2,12 @@
 
 #include "FModAudio.h"
 
+#include <Source/ECS/EntityWrappers/UICanvas.h>
+
 #include "Source/Systems/PlayerSystem.h"
 #include "Source/Player/PlayerEntity.h"
+#include "Source/UI/PlayerHealthUI.h"
+
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -22,6 +26,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
+
+		// UI
+		UICanvas* canvas = new UICanvas();
+		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
