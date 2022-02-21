@@ -146,13 +146,15 @@
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="Source\Systems\PlayerSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\CharacterEntity.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />
-    <ClInclude Include="Source\Components\HealthComponent.h" />
-    <ClInclude Include="Source\Components\HungerComponent.h" />
+    <ClInclude Include="Source\CoreComponents\HealthComponent.h" />
+    <ClInclude Include="Source\CoreComponents\HungerComponent.h" />
     <ClInclude Include="Source\Player\PlayerComponent.h" />
+    <ClInclude Include="Source\Systems\PlayerSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

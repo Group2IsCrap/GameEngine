@@ -2,7 +2,7 @@
 
 #include <Source/ECS/EntityWrappers/SpriteEntity.h>
 
-#include "../Components/HealthComponent.h"
+#include "../CoreComponents/HealthComponent.h"
 
 class CharacterEntity : public Firelight::ECS::SpriteEntity
 {

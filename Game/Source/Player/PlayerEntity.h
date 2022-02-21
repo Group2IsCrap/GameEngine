@@ -4,6 +4,7 @@
 
 class PlayerEntity : public CharacterEntity
 {
-
+public:
+	PlayerEntity();
 };
 
