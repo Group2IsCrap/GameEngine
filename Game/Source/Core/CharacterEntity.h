@@ -15,8 +15,5 @@ public:
 	int GetHealth();
 	virtual void RemoveHealth(int amount);
 	virtual void HealthBelowZero();
-
-public:
-	HealthComponent* m_HealthComponent;
 };
 

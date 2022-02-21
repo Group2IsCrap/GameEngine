@@ -2,8 +2,7 @@
 
 namespace Firelight::ECS
 {
-	CameraEntity::CameraEntity() :
-		GameEntity()
+	CameraEntity::CameraEntity() : GameEntity()
 	{
 		AddComponent<Camera2DComponent>();
 	}

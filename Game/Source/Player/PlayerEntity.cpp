@@ -25,7 +25,7 @@ void PlayerEntity::RemoveHealth(int amount)
 {
 	CharacterEntity::RemoveHealth(amount);
 	int health = GetHealth();
-	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerHealthChanged>((void*)&health);
+	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerHealthChanged>((void*)health);
 }
 
 void PlayerEntity::PlayerHealthUpdated()

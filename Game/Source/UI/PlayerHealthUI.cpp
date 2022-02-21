@@ -14,6 +14,5 @@ PlayerHealthUI::PlayerHealthUI(Firelight::ECS::Entity* canvas)
 void PlayerHealthUI::HandleEvents(const char* event, void* data)
 {
 	// Change text
-	int health = *reinterpret_cast<int*>(data);
-	bool test = true;
+	int health = reinterpret_cast<int>(data);
 }

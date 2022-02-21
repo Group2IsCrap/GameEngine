@@ -2,30 +2,31 @@
 
 CharacterEntity::CharacterEntity()
 {
-	m_HealthComponent = new HealthComponent();
-	AddComponent(m_HealthComponent);
+	AddComponent<HealthComponent>();
 }
 
 CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)
 {
+
 }
 
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
-	return m_HealthComponent;
+	return GetComponent<HealthComponent>();
 }
 
 int CharacterEntity::GetHealth()
 {
-	return m_HealthComponent->currentHealth;
+	return GetComponent<HealthComponent>()->currentHealth;
 }
 
 void CharacterEntity::RemoveHealth(int amount)
 {
-	m_HealthComponent->currentHealth -= amount;
-	if (m_HealthComponent->currentHealth <= 0)
+	HealthComponent* component = GetComponent<HealthComponent>();
+	component->currentHealth -= amount;
+	if (component->currentHealth <= 0)
 	{
-		m_HealthComponent->currentHealth = 0;
+		component->currentHealth = 0;
 		HealthBelowZero();
 	}
 }
