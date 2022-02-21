@@ -58,9 +58,11 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void AddComponent()
+		T* AddComponent()
 		{
-			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, new T());
+			T* ptr = new T();
+			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, ptr);
+			return ptr;
 		}
 
 		/// <summary>

@@ -17,7 +17,6 @@ namespace Firelight::ECS
 	SpriteRenderSystem::SpriteRenderSystem()
 	{
 		AddWhitelistComponent<SpriteComponent>();
-		
 
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&SpriteRenderSystem::Render, this));
 	}

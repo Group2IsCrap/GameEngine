@@ -5,6 +5,8 @@
     <ClCompile Include="Source\UI\HealthUI.cpp" />
     <ClCompile Include="Source\Player\PlayerSystem.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="Source\ImGuiItemLayer.cpp" />
+    <ClCompile Include="Source\Items\ItemDatabase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UI\HealthUI.h" />
@@ -13,6 +15,8 @@
     <ClInclude Include="Source\Components\PlayerComponent.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />
     <ClInclude Include="Source\Components\HealthComponent.h" />
+    <ClInclude Include="Source\ImGuiItemLayer.h" />
+    <ClInclude Include="Source\Items\ItemDatabase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />
