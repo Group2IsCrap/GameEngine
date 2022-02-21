@@ -6,15 +6,37 @@
 #include <Source/ECS/EntityWrappers/CameraEntity.h>
 #include <Source/Maths/Vec2.h>
 #include <Source/Graphics/AssetManager.h>
+#include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "Source/Systems/PlayerSystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
+#include "Source/ImGuiDebugLayer.h"
+#include "Source/Items/ItemDatabase.h"
 
 
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace snowFallAudio::FModAudio;
+
+void SpawnItem0()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+}
+
+void SpawnItem1()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+}
+
+void SetupDebugUI()
+{
+	// ImGui Test code
+	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
+	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
@@ -43,6 +65,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas);
+
+		// Debug UI
+		SetupDebugUI();
+
+		// Load All Items
+		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

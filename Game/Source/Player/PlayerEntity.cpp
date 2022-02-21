@@ -9,6 +9,7 @@ PlayerEntity::PlayerEntity()
 {
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
+	GetSpriteComponent()->layer = 60;
 }
 
 PlayerEntity::PlayerEntity(Firelight::ECS::EntityID entityID) : CharacterEntity(entityID)

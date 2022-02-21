@@ -1,4 +1,4 @@
-#include "ImGuiItemLayer.h"
+#include "ImGuiDebugLayer.h"
 
 #include "Includes/imgui/imgui.h"
 #include "Includes/imgui/imgui_internal.h"
@@ -40,26 +40,14 @@ void ImGuiDebugLayer::Render()
 
 	ImGui::End();
 
-	ImGui::Begin("Item Debug Menu");
-	if (ImGui::Button("Spawn Item 0"))
+	ImGui::Begin("Debug Menu");
+	if (ImGui::Button("Spawn Rock"))
 	{
 		spawnItemCommand[0]();
 	}
-	if (ImGui::Button("Spawn Item 1"))
+	if (ImGui::Button("Spawn Stick"))
 	{
 		spawnItemCommand[1]();
-	}
-	if (ImGui::Button("Spawn Item 2"))
-	{
-		spawnItemCommand[2]();
-	}
-	if (ImGui::Button("Spawn Item 3"))
-	{
-		spawnItemCommand[3]();
-	}
-	if (ImGui::Button("Spawn Item 4"))
-	{
-		spawnItemCommand[4]();
 	}
 	ImGui::End();
 }
