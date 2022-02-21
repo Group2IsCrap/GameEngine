@@ -18,6 +18,7 @@
 #include"Source/ECS/EntityWrappers/UICanvas.h"
 #include"Source/ECS/EntityWrappers/UIPanel.h"
 #include "Source/ImGuiUI/ImGuiManager.h"
+#include "ImGuiItemLayer.h"
 
 #include "Source/Graphics/GraphicsHandler.h"
 #include "Source/Graphics/AssetManager.h"
@@ -38,6 +39,7 @@
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
+#include "Items/ItemDatabase.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -106,7 +108,7 @@ void CreatUITest() {
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
-	panelSound->SetDefaultDimensions(Maths::Vec3f(200, 400,0 ));
+	panelSound->SetDefaultDimensions(Maths::Vec3f(200, 400, 0));
 
 	UIButton* buttonSound = new UIDraggableButton();
 	buttonSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
@@ -152,6 +154,39 @@ void CreatUITest() {
 
 }
 
+void SpawnItem0()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+}
+void SpawnItem1()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+}
+void SpawnItem2()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+}
+void SpawnItem3()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+}
+void SpawnItem4()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(4);
+}
+
+void SetupDebugUI()
+{
+	// ImGui Test code
+	ImGuiItemLayer* itemTestLayer = new ImGuiItemLayer();
+	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	itemTestLayer->spawnItemCommand[2] = std::bind(SpawnItem2);
+	itemTestLayer->spawnItemCommand[3] = std::bind(SpawnItem3);
+	itemTestLayer->spawnItemCommand[4] = std::bind(SpawnItem4);
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -178,27 +213,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		CreatUITest();
 
-		SpriteEntity* barn = new SpriteEntity();
-		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
-		barn->GetComponent<TransformComponent>()->position.y = 5.0f;
-		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		barn->GetComponent<SpriteComponent>()->layer = 33;
-		barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
-		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
-		barn->GetComponent<StaticComponent>()->isStatic = true;
+		SetupDebugUI();
 
-		SpriteEntity* circle = new SpriteEntity();
-		circle->GetComponent<TransformComponent>()->position.x = -7.0f;
-		circle->GetComponent<TransformComponent>()->position.y = -5.0f;
-		circle->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ball.png");
-		circle->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		circle->GetComponent<SpriteComponent>()->layer = 32;
-		circle->AddComponent<ColliderComponent>(new BoxColliderComponent());
-		circle->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
-		circle->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
-		circle->GetComponent<StaticComponent>()->isStatic = false;
+		//SpriteEntity* barn = new SpriteEntity();
+		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		//barn->GetComponent<SpriteComponent>()->layer = 33;
+		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
+		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		//barn->GetComponent<StaticComponent>()->isStatic = true;
+
+		//SpriteEntity* circle = new SpriteEntity();
+		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
+		//circle->GetComponent<TransformComponent>()->position.y = -5.0f;
+		//circle->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ball.png");
+		//circle->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		//circle->GetComponent<SpriteComponent>()->layer = 32;
+		//circle->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
+		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		//circle->GetComponent<StaticComponent>()->isStatic = false;
+
+		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{

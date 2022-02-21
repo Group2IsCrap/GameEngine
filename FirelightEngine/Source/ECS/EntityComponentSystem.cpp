@@ -73,13 +73,19 @@ namespace Firelight::ECS
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> components = m_templateComponentManager->GetComponentDataCopy(id);
 		EntityID entityId = m_entityManager->CreateEntity();
 
-		for (auto componentType : components)
+		m_entityManager->CreateNewEntitySignature(entityId, m_componentManager->GetRegisteredComponentTypeCount());
+
+		for (auto& componentType : components)
 		{
 			for (int i = 0; i < components[componentType.first].size(); ++i)
 			{
 				m_componentManager->AddComponent(entityId, componentType.first, components[componentType.first][i]);
+				m_entityManager->UpdateEntitySignature(entityId, componentType.first, true);
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
 			}
 		}
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
 
 		return entityId;
 	}

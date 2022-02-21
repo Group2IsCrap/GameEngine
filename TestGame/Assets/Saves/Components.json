@@ -42,12 +42,6 @@
                     },
                     {
                         "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
                     }
                 ]
             },
@@ -83,48 +77,6 @@
                             "Y": 0.0
                         },
                         "PixelsPerUnit": 20.0,
-                        "Colour": {
-                            "R": 255.0,
-                            "G": 255.0,
-                            "B": 255.0,
-                            "A": 255.0
-                        },
-                        "SourceRect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
-                        }
-                    },
-                    {
-                        "Layer": 33,
-                        "Texture": "INSERT TEXTURE HERE",
-                        "DrawOffset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "PixelsPerUnit": 50.0,
-                        "Colour": {
-                            "R": 255.0,
-                            "G": 255.0,
-                            "B": 255.0,
-                            "A": 255.0
-                        },
-                        "SourceRect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
-                        }
-                    },
-                    {
-                        "Layer": 32,
-                        "Texture": "INSERT TEXTURE HERE",
-                        "DrawOffset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "PixelsPerUnit": 50.0,
                         "Colour": {
                             "R": 255.0,
                             "G": 255.0,
@@ -178,12 +130,6 @@
                     },
                     {
                         "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": true
                     },
                     {
                         "IsStatic": false
@@ -367,32 +313,6 @@
                             "Y": 0.08332161605358124,
                             "Z": 0.0
                         }
-                    },
-                    {
-                        "Rotation": 0.0,
-                        "Position": {
-                            "X": 7.0,
-                            "Y": 5.0,
-                            "Z": 0.0
-                        },
-                        "Scale": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Rotation": 0.0,
-                        "Position": {
-                            "X": -7.0,
-                            "Y": -5.0,
-                            "Z": 0.0
-                        },
-                        "Scale": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        }
                     }
                 ]
             },
@@ -425,22 +345,6 @@
                             "Y": -0.5,
                             "Width": 2.0,
                             "Height": 2.200000047683716
-                        }
-                    },
-                    {
-                        "Rect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": 8.0,
-                            "Height": 7.0
-                        }
-                    },
-                    {
-                        "Rect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": 2.0,
-                            "Height": 2.0
                         }
                     }
                 ]
@@ -1216,14 +1120,6 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
@@ -1237,14 +1133,6 @@
                     {
                         "EntityID": 2,
                         "Indices": [1]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [3]
                     }
                 ]
             },
@@ -1302,14 +1190,6 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
@@ -1376,14 +1256,6 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
@@ -1411,14 +1283,6 @@
                     {
                         "EntityID": 1,
                         "Indices": [0]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [2]
                     }
                 ]
             },
@@ -1720,6 +1584,10 @@
             {
                 "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
                 "ComponentTypeID": 16
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::ItemComponent",
+                "ComponentTypeID": 18
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
