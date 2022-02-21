@@ -11,10 +11,9 @@ PlayerEntity::PlayerEntity()
 	AddComponent<PlayerComponent>();
 }
 
-PlayerEntity::PlayerEntity(Firelight::ECS::EntityID entityID)
+PlayerEntity::PlayerEntity(Firelight::ECS::EntityID entityID) : CharacterEntity(entityID)
 {
-	Entity::Entity(entityID);
-
+	
 }
 
 void PlayerEntity::HealthBelowZero()

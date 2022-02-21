@@ -6,6 +6,10 @@ CharacterEntity::CharacterEntity()
 	AddComponent(m_HealthComponent);
 }
 
+CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)
+{
+}
+
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
 	return m_HealthComponent;

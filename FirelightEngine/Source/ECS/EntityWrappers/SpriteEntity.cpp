@@ -9,6 +9,11 @@ namespace Firelight::ECS
 		
 	}
 
+	SpriteEntity::SpriteEntity(Firelight::ECS::EntityID entityID) : GameEntity(entityID)
+	{
+
+	}
+
 	SpriteComponent* SpriteEntity::GetSpriteComponent()
 	{
 		return GetComponent<SpriteComponent>();

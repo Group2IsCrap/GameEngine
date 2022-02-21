@@ -9,6 +9,7 @@ class CharacterEntity : public Firelight::ECS::SpriteEntity
 public:
 
 	CharacterEntity();
+	CharacterEntity(Firelight::ECS::EntityID entityID);
 
 	HealthComponent* GetHealthComponent();
 	int GetHealth();

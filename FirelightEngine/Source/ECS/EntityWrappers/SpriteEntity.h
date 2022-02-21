@@ -9,6 +9,7 @@ namespace Firelight::ECS
     {
     public:
         SpriteEntity();
+        SpriteEntity(Firelight::ECS::EntityID entityID);
 
         SpriteComponent* GetSpriteComponent();
        
