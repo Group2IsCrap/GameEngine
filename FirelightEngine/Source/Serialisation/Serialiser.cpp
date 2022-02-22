@@ -158,7 +158,7 @@ namespace Firelight::Serialisation
 		Writer->Uint(value);
 	}
 
-	void Serialiser::Serialise(std::string name, std::string value)
+	void Serialiser::Serialise(std::string name, const std::string& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -184,7 +184,7 @@ namespace Firelight::Serialisation
 
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Vec3f value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Vec3f& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -202,7 +202,7 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Vec2f value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Vec2f& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -218,7 +218,7 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Rectf value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Rectf& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -260,7 +260,7 @@ namespace Firelight::Serialisation
 		Writer->String("INSERT ANIMATION HERE");
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Graphics::Colour::RGBA value)
+	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Colour::RGBA& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -280,5 +280,14 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
-	
+	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Text& value)
+	{
+		if (!IsWriterValid())
+		{
+			return;
+		}
+
+		WriteKey(name);
+		Writer->String("INSERT TEXT HERE");
+	}
 }

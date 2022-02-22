@@ -475,6 +475,7 @@
     <ClInclude Include="Source\ECS\EntityWrappers\UIButton.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UICanvas.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
+    <ClInclude Include="Source\ECS\Systems\TextSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Graphics\Text\FontGlyph.cpp" />
@@ -546,6 +547,7 @@
     <ClCompile Include="Source\ECS\EntityWrappers\UIButton.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UICanvas.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UIPanel.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

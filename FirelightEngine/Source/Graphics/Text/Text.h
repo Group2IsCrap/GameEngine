@@ -44,7 +44,7 @@ namespace Firelight::Graphics
     class Text
     {
     public:
-        Text(const std::string& string, Font* font);
+        Text(const std::string& string = "null", Font* font = nullptr);
         ~Text();
 
         void Draw() const;

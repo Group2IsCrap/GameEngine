@@ -4,6 +4,8 @@
 
 #include "../Data/VertexTypes.h"
 
+#include "../AssetManager.h"
+
 #include "../../Engine.h"
 
 namespace Firelight::Graphics
@@ -24,6 +26,14 @@ namespace Firelight::Graphics
         m_mesh(nullptr),
         m_textCB()
     {
+
+        if (m_font == nullptr)
+        {
+            // CHANGE ME
+            m_font = new Font();
+            m_font->LoadFont("Fonts/twcenmt");
+        }
+
         // Create cb and default values
         m_textCB.Initialize(GraphicsHandler::Instance().GetDevice(), GraphicsHandler::Instance().GetDeviceContext());
 

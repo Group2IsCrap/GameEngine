@@ -7,6 +7,7 @@
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/Components/AnimationComponent.h"
+#include "Source/ECS/Components/RenderingComponents.h"
 #include "Source/ECS/Components/PhysicsComponents.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/ECS/Systems/System.h"
@@ -206,14 +207,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 
 		CreatUITest();
 
 		SetupDebugUI();
+
+		GameEntity* text = new GameEntity();
+		text->AddComponent<TextComponent>();
+
+		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(700.0f, 700.0f, 0.0f);
 
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
