@@ -1,107 +1,6 @@
 {
     "Scene": {
-        "Components": [
-            {
-                "ComponentID": 0,
-                "Components": [
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 64,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 200.0
-                    },
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 16,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 25.0
-                    },
-                    {
-                        "Texture": "INSERT TEXTURE HERE",
-                        "Layer": 33,
-                        "DrawOffset": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "PixelsPerUnit": 50.0
-                    }
-                ]
-            },
-            {
-                "ComponentID": 1,
-                "Components": []
-            },
-            {
-                "ComponentID": 2,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 3,
-                "Components": [
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    },
-                    {
-                        "Rotation": 0.0
-                    }
-                ]
-            },
-            {
-                "ComponentID": 4,
-                "Components": [
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 5,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 6,
-                "Components": [
-                    {},
-                    {}
-                ]
-            },
+        "ComponentTypes": [
             {
                 "ComponentID": 7,
                 "Components": [
@@ -109,7 +8,7 @@
                         "Name": ""
                     },
                     {
-                        "Name": ""
+                        "Name": "Player"
                     },
                     {
                         "Name": ""
@@ -131,6 +30,65 @@
                     },
                     {
                         "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    }
+                ]
+            },
+            {
+                "ComponentID": 0,
+                "Components": [
+                    {
+                        "Layer": 60,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 40.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
+                    },
+                    {
+                        "Layer": 16,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 20.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
                     }
                 ]
             },
@@ -162,7 +120,199 @@
                         "IsStatic": false
                     },
                     {
-                        "IsStatic": true
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "Components": [
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "Components": [
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 648.0,
+                            "Y": 379.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 48.0,
+                            "Y": 46.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 123.0,
+                            "Y": 46.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 198.0,
+                            "Y": 46.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 379.5,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.15432098507881165,
+                            "Y": 0.5270092487335205,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 221.12054443359375,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 301.12054443359375,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 381.12054443359375,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 461.12054443359375,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 1196.0,
+                            "Y": 541.1205444335938,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
                     }
                 ]
             },
@@ -173,143 +323,749 @@
                         "ViewportWorldHeight": 20.0
                     }
                 ]
-            }
-        ],
-        "ComponentMap": [
-            {
-                "ComponentID": 0,
-                "EntityIDs": [
-                    {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [2]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 1,
-                "EntityIDs": []
-            },
-            {
-                "ComponentID": 2,
-                "EntityIDs": [
-                    {
-                        "EntityID": 3,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [4]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 3,
-                "EntityIDs": [
-                    {
-                        "EntityID": 0,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 1,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 3,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [5]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [6]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [7]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [8]
-                    }
-                ]
             },
             {
                 "ComponentID": 4,
-                "EntityIDs": [
+                "Components": [
                     {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 5,
-                "EntityIDs": [
-                    {
-                        "EntityID": 3,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [4]
+                        "CurrentAnimation": "INSERT ANIMATION HERE",
+                        "CurrentFrameCount": 0.0,
+                        "CurrentFrameIndex": 0,
+                        "PlayOnStart": true,
+                        "ShouldPlay": false
                     }
                 ]
             },
             {
                 "ComponentID": 6,
-                "EntityIDs": [
+                "Components": [
                     {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [1]
+                        "Rect": {
+                            "X": 0.0,
+                            "Y": -0.5,
+                            "Width": 2.0,
+                            "Height": 2.200000047683716
+                        }
                     }
                 ]
             },
+            {
+                "ComponentID": 10,
+                "Components": [
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "Components": [
+                    {
+                        "ParentID": 0,
+                        "HasParent": false,
+                        "Index": 10,
+                        "AnchorSettings": 6,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 100.0,
+                            "Y": 100.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 1.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 75.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 4,
+                        "Offset": {
+                            "X": 150.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 96.0,
+                            "Y": 72.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.07407407462596893,
+                            "Y": 0.09486165642738342,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 3,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 200.0,
+                            "Y": 400.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.15432098507881165,
+                            "Y": 0.5270092487335205,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.15432098507881165,
+                            "Y": 0.5270092487335205,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 7,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 10.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 880.0,
+                            "Y": 120.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.6790123581886292,
+                            "Y": 0.15810276567935944,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 7,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 90.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 880.0,
+                            "Y": 120.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.6790123581886292,
+                            "Y": 0.15810276567935944,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 7,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 170.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 880.0,
+                            "Y": 120.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.6790123581886292,
+                            "Y": 0.15810276567935944,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 7,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 250.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 880.0,
+                            "Y": 120.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.6790123581886292,
+                            "Y": 0.15810276567935944,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "ParentID": 7,
+                        "HasParent": true,
+                        "Index": 10,
+                        "AnchorSettings": 7,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 330.0
+                        },
+                        "DefaultPosition": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "DefaultDimensions": {
+                            "X": 880.0,
+                            "Y": 120.0,
+                            "Z": 0.0
+                        },
+                        "DefaultScale": {
+                            "X": 0.6790123581886292,
+                            "Y": 0.15810276567935944,
+                            "Z": 0.0
+                        },
+                        "CurrentScale": {
+                            "X": 0.10478585958480835,
+                            "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    }
+                ]
+            },
+            {
+                "ComponentID": 2,
+                "Components": [
+                    {
+                        "Layer": 100,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": false
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 101,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    },
+                    {
+                        "Layer": 102,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true
+                    }
+                ]
+            },
+            {
+                "ComponentID": 12,
+                "Components": [
+                    {
+                        "Layer": 100.0,
+                        "XScreenSize": 1296.0,
+                        "YScreenSize": 759.0
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 15,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "Components": [
+                    {
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    },
+                    {
+                        "IsChangeOfTex": true,
+                        "Colours": [
+                            "Colour",
+                            {
+                                "R": 255.0,
+                                "G": 255.0,
+                                "B": 255.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            },
+                            "Colour",
+                            {
+                                "R": 0.0,
+                                "G": 0.0,
+                                "B": 0.0,
+                                "A": 255.0
+                            }
+                        ],
+                        "RectsOfButton": []
+                    }
+                ]
+            },
+            {
+                "ComponentID": 17,
+                "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            }
+        ],
+        "ComponentMap": [
             {
                 "ComponentID": 7,
                 "EntityIDs": [
@@ -348,6 +1104,35 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 0,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [1]
                     }
                 ]
             },
@@ -389,6 +1174,88 @@
                     {
                         "EntityID": 8,
                         "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
                     }
                 ]
             },
@@ -398,6 +1265,253 @@
                     {
                         "EntityID": 0,
                         "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 4,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 10,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [9]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 2,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [9]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 12,
+                "EntityIDs": [
+                    {
+                        "EntityID": 3,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "EntityIDs": [
+                    {
+                        "EntityID": 4,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [3]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 15,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 17,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
                     }
                 ]
             }
@@ -428,12 +1542,12 @@
                 "ComponentTypeID": 3
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIWidget",
-                "ComponentTypeID": 5
-            },
-            {
                 "ComponentTypeName": "struct Firelight::ECS::ColliderComponent",
                 "ComponentTypeID": 6
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIBaseWidgetComponent",
+                "ComponentTypeID": 5
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::StaticComponent",
@@ -442,6 +1556,42 @@
             {
                 "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
                 "ComponentTypeID": 9
+            },
+            {
+                "ComponentTypeName": "class PlayerComponent",
+                "ComponentTypeID": 10
+            },
+            {
+                "ComponentTypeName": "class HealthComponent",
+                "ComponentTypeID": 11
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
+                "ComponentTypeID": 12
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
+                "ComponentTypeID": 13
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
+                "ComponentTypeID": 14
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
+                "ComponentTypeID": 15
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeID": 16
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::ItemComponent",
+                "ComponentTypeID": 18
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
+                "ComponentTypeID": 17
             }
         ]
     }

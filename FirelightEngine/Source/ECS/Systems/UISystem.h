@@ -36,35 +36,40 @@ namespace Firelight::UI {
 	private:
 
 		//Event function Invoke
-		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
-		void OnLeave(int x, int y);
-		void OnHover(int x, int y, ECS::UIWidget* widget);
-		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::UIWidget* widget);
+		void OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity);
+		void OnLeave(int x, int y, ECS::Entity* entity);
+		void OnHover(int x, int y, ECS::Entity* entity);
+		void OnDrag(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity);
 		
 		//move through items
-		void OnNavergate();
+		void OnNavigate();
 		void AnchorSettings();
 
-		bool IsHit(int x, int y,ECS::UIWidget* widget);
-		void AnchorSettings(ECS::UI_Child* widget);
-		
-		void AnchorSettings(ECS::UI_Canvas* widget);
+		bool IsHit(int x, int y,ECS::UIBaseWidgetComponent* widget, ECS::TransformComponent* transform);
+		void AnchorSettings(ECS::Entity* entity);
 
 	private:
+		ECS::Entity* m_dragEntity;
+		ECS::UIBaseWidgetComponent* m_dragWidget= nullptr;
+		ECS::PixelSpriteComponent* m_dragSprite = nullptr;
+		ECS::TransformComponent* m_dragTransform = nullptr;
 
-		ECS::UIWidget* m_DragItem= nullptr;
-		ECS::UIWidget* m_FocusedItem = nullptr;
+		ECS::Entity* m_focusedEntity = nullptr;
+		ECS::UIBaseWidgetComponent* m_focusedWidget = nullptr;
+		ECS::PixelSpriteComponent* m_focusedSprite = nullptr;
+		ECS::TransformComponent* m_focusedTransform = nullptr;
+
 		Maths::Vec3f m_MousePosDrag;
 		Maths::Vec2f m_MouseRawCurr;
 		Utils::Timer m_ClickTimer;
 
-		bool m_DragButtionIsPressed = false;
-		bool m_IsDragging = false;
+		bool m_dragButtonIsPressed = false;
+		bool m_isDragging = false;
 
 		ECS::e_AnchorSettings m_CurrDragAnchor = ECS::e_AnchorSettings::None;
 
 		Firelight::Events::Input::ControllerState m_PrevEventController;
-
+		ECS::Entity* m_Canvas = nullptr;
 		float m_CanvasLayer;
 	};
 

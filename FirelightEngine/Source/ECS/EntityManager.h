@@ -23,13 +23,21 @@ namespace Firelight::ECS
 
 		EntityManager() = default;
 		~EntityManager() = default;
+
+
+		EntityID CreateTemplate();
+		void RemoveTemplate(EntityID enitityTemplate);
+		std::vector<EntityID> GetTemplates();
 	private:
 		EntityID CreateEntityInternal(EntityID id);
+		EntityID CreateTemplateInternal(EntityID id);
 	private:
 		std::vector<EntityID> m_entities;
 		std::unordered_map<EntityID,Signature> m_signatures;
+		std::vector<EntityID> m_templates;
 
+		static EntityID sm_nextTemplate;
 		static EntityID sm_nextEntity;
 
-	};
+	};	
 }
