@@ -17,7 +17,7 @@ namespace Firelight::Graphics
         m_textAnchor(TextAnchor::e_TopLeft),
         m_textAlign(TextAlign::e_Left),
         
-        m_textHeight(100.0f),
+        m_textHeight(250.0f),
         m_spacingMod(0.7f),
         m_maxLineWidth(0.0f),
         
@@ -238,9 +238,9 @@ namespace Firelight::Graphics
             return fminf(1.0f, fmaxf(0.0f, (t - edge0) / (edge1 - edge0)));
         };
 
-        float heightNormalised = linearProgress(10.0f, 450.0f, m_textHeight);
+        float heightNormalised = linearProgress(10.0f, 700.0f, m_textHeight);
 
-        m_textCB.m_data.m_antiAliasDistanceRange = lerp(0.175f, 0.015f, 1.0f - powf(1.0f - heightNormalised, 3.5f));
+        m_textCB.m_data.m_antiAliasDistanceRange = lerp(0.25f, 0.015f, 1.0f - powf(1.0f - heightNormalised, 5.0f));
     }
 
     void Text::MapCBToGPU() const
