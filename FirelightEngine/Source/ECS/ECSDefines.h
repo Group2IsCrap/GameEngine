@@ -15,13 +15,17 @@ namespace Firelight::ECS
 	struct BaseComponent
 	{
 		/// <summary>
-		/// Serialises the component
+		/// Serialises the component. DO NOT NEED TO PUT START OBJECT
 		/// </summary>
 		/// <returns></returns>
 		virtual void Serialise()
 		{
 			return;
+		}
 
+		virtual BaseComponent* Clone()
+		{
+			return nullptr;
 		}
 	};
 }

@@ -185,11 +185,12 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
 		}
 		//set volume
-		engine->ErrorCheck(channel->setVolume(volumedB));
+		engine->ErrorCheck(channel->setVolume(volumedB/100));
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
 
 		//add the previous channel
+		fmodInstance->m_volumes[volumedB/100] = channel;
 		fmodInstance->m_channels[nextChannelId] = channel;
 	}
 	return nextChannelId;
@@ -230,6 +231,17 @@ void snowFallAudio::FModAudio::AudioEngine::SetChannelVolume(int channelId, floa
 	engine->ErrorCheck(channelFound->second->setVolume(dBToVolume(volumedB)));
 }
 
+void snowFallAudio::FModAudio::AudioEngine::VolumeChange(float volume)
+{
+	for (auto channel : fmodInstance->m_volumes)
+	{
+		float prevVol;
+		prevVol = channel.first;
+		prevVol = prevVol * 100;
+		channel.second->setVolume((prevVol * (volume/100))/100);
+	}
+}
+
 //Error checking function
 int snowFallAudio::FModAudio::AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
@@ -256,5 +268,23 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadAllSounds()
 	{
 		std::string soundName = sound.first;
 		engine->UnLoadSound(soundName);
+	}
+}
+
+void snowFallAudio::FModAudio::AudioEngine::StopChannel(int channelId)
+{
+	auto channelFound = fmodInstance->m_channels.find(channelId);
+	if (channelFound != fmodInstance->m_channels.end())
+	{
+		channelFound->second->stop();
+		return;
+	}
+}
+
+void snowFallAudio::FModAudio::AudioEngine::StopAllChannels()
+{
+	for (auto channel : fmodInstance->m_channels)
+	{
+		StopChannel(channel.first);
 	}
 }

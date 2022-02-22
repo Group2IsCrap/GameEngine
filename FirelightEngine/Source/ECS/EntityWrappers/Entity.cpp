@@ -11,6 +11,11 @@ namespace Firelight::ECS
 	{
 		m_entityID = EntityComponentSystem::Instance()->CreateEntity(id);
 	}
+	
+	Entity::Entity(bool isTemplate, EntityID templateID)
+	{
+		m_entityID = EntityComponentSystem::Instance()->CreateEntityFromTemplate(templateID);
+	}
 
 	Entity::~Entity()
 	{

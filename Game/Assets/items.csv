@@ -1,0 +1,3 @@
+﻿ItemID,ItemName,ItemDescription,IconPath,StackSize
+0,Rock,It's a stone,Sprites/Rock.png,69
+1,Stick, A piece of a tree,Sprites/Stick.png,69

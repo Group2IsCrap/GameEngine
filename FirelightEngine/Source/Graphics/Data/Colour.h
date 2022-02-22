@@ -99,6 +99,9 @@ namespace Firelight::Graphics
 	{
 		static const Colour::RGBA sc_white(255, 255, 255);
 		static const Colour::RGBA sc_black(0, 0, 0);
+		static const Colour::RGBA sc_red(255, 0, 0);
+		static const Colour::RGBA sc_green(0, 255, 0);
+		static const Colour::RGBA sc_blue(0, 0, 255);
 
 		static const Colour::RGBA sc_unhandledTextureColour(255, 0, 255);
 
