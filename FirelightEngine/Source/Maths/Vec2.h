@@ -24,6 +24,7 @@ namespace Firelight::Maths
         Vec2<T>        operator*(const T scalar) const;
         void           operator*=(const T scalar);
                        
+        Vec2<T>        operator/(const Vec2<T>& vector) const;
         Vec2<T>        operator/(const T scalar) const;
         void           operator/=(const T scalar);
 

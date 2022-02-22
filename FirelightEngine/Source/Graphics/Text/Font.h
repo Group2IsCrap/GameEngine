@@ -21,7 +21,7 @@ namespace Firelight::Graphics
 		~Font();
 
 		void        LoadFont(std::string name);
-		void        RenderText(std::string text, const Maths::Vec2f& screenPos, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, float& outTextWidthHeightRatio, float spacingMod);
+		void        RenderText(std::string text, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, Maths::Vec2f& outBaseTextExtents, float spacingMod);
 		static void UpdateMinAndMaxPositions(Maths::Vec2f& minPos, Maths::Vec2f& maxPos, const Maths::Vec3f& checkPos);
 
 		Texture*    GetTexture();
@@ -30,8 +30,8 @@ namespace Firelight::Graphics
 		Maths::Vec4i m_padding;
 		Maths::Vec2i m_spacing;
 
-		int m_lineHeight;
-		int m_baseLine;
+		float m_lineHeight;
+		float m_baseLine;
 
 		Maths::Vec2i m_expectedImageSize;
 		

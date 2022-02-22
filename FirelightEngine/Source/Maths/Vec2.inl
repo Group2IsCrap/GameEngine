@@ -93,6 +93,12 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline Vec2<T> Vec2<T>::operator/(const Vec2<T>& vector) const
+    {
+        return Vec2<T>(x / vector.x, y / vector.y);
+    }
+
+    template<typename T>
     inline Vec2<T> Vec2<T>::operator/(const T scalar) const
     {
         return Vec2<T>(x / scalar, y / scalar);

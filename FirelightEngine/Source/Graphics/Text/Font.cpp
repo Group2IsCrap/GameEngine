@@ -98,11 +98,11 @@ namespace Firelight::Graphics
 			// Common
 			// Load lineheight
 			loadNextValue();
-			m_lineHeight = std::atoi(buffer.c_str());
+			m_lineHeight = (float)std::atoi(buffer.c_str());
 
 			// Load base
 			loadNextValue();
-			m_baseLine = std::atoi(buffer.c_str());
+			m_baseLine = (float)std::atoi(buffer.c_str());
 
 			// Load expected image width and height
 			loadNextValue();
@@ -171,7 +171,7 @@ namespace Firelight::Graphics
 		}
     }
 
-    void Font::RenderText(std::string text, const Maths::Vec2f& screenPos, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, float& outTextWidthHeightRatio, float spacingMod)
+    void Font::RenderText(std::string text, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, Maths::Vec2f& outBaseTextExtents, float spacingMod)
     {
 		Maths::Vec2f minPos(FLT_MAX, FLT_MAX);
 		Maths::Vec2f maxPos(-FLT_MAX, -FLT_MAX);
@@ -226,10 +226,7 @@ namespace Firelight::Graphics
 			Font::UpdateMinAndMaxPositions(minPos, maxPos, botRight.m_pos);
 		}
 
-		Maths::Vec2f extents = Maths::Vec2f(maxPos.x - minPos.x, maxPos.y - minPos.y);
-		outTextWidthHeightRatio = extents.x / extents.y;
-
-		const Maths::Vec2f& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
+		outBaseTextExtents = Maths::Vec2f(maxPos.x - minPos.x, maxPos.y - minPos.y);
 
 		// Convert from pixel space to NDC
 		int numVerts = static_cast<int>(vertices.size());
@@ -237,9 +234,17 @@ namespace Firelight::Graphics
 		{
 			Maths::Vec3f& vertexPos = vertices[vertexIndex].m_pos;
 
-			vertexPos.x = ((screenPos.x + vertexPos.x) / windowDimensions.x) * 2.0f - 1.0f;
-			vertexPos.y = ((screenPos.y + vertexPos.y) / windowDimensions.y) * 2.0f - 1.0f;
+			// Move to centre
+			vertexPos.x -= outBaseTextExtents.x * 0.5f;
+			vertexPos.y += m_lineHeight * 0.5f;
+
+			// Normalize
+			vertexPos.x /= outBaseTextExtents.x * 0.5f;
+			vertexPos.y /= m_lineHeight * 0.5f;
 		}
+
+		// Return size 1 text extents
+		outBaseTextExtents /= m_lineHeight;
     }
 
     void Font::UpdateMinAndMaxPositions(Maths::Vec2f& minPos, Maths::Vec2f& maxPos, const Maths::Vec3f& checkPos)
