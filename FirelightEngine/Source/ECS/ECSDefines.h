@@ -7,6 +7,7 @@ namespace Firelight::ECS
 {
 	typedef std::uint32_t EntityID;
 	typedef std::uint16_t ComponentTypeID;
+	typedef size_t TypeHash;
 
 	/// <summary>
 	/// Base struct of all components
@@ -14,12 +15,17 @@ namespace Firelight::ECS
 	struct BaseComponent
 	{
 		/// <summary>
-		/// Outputs the contents of the component for debug purposes
+		/// Serialises the component. DO NOT NEED TO PUT START OBJECT
 		/// </summary>
 		/// <returns></returns>
-		virtual std::string Output()
+		virtual void Serialise()
 		{
-			return "";
+			return;
+		}
+
+		virtual BaseComponent* Clone()
+		{
+			return nullptr;
 		}
 	};
 }

@@ -1,4 +1,7 @@
 #include "EntityComponentSystem.h"
+#include "../Events/EventDispatcher.h"
+#include "ECSEvents.h"
+
 #include <windows.h> 
 #include <debugapi.h> 
 #include <iostream> 
@@ -21,6 +24,9 @@ namespace Firelight::ECS
 	{
 		m_entityManager = std::make_unique<EntityManager>();
 		m_componentManager = std::make_unique<ComponentManager>();
+		m_templateComponentManager = std::make_unique<ComponentManager>();
+
+		Events::EventDispatcher::SubscribeFunction<Events::ECS::OnComponentRegisteredEvent>(std::bind(&EntityComponentSystem::UpdateAllEntitySignatures, this));
 	}
 
 
@@ -30,7 +36,26 @@ namespace Firelight::ECS
 	/// <returns></returns>
 	EntityID EntityComponentSystem::CreateEntity()
 	{
-		return m_entityManager->CreateEntity();
+		EntityID entity = m_entityManager->CreateEntity();
+
+		m_entityManager->CreateNewEntitySignature(entity, m_componentManager->GetRegisteredComponentTypeCount());
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
+
+		return entity;
+	}
+
+	/// <summary>
+	/// Creates a new entity
+	/// </summary>
+	/// <returns></returns>
+	EntityID EntityComponentSystem::CreateTemplate()
+	{
+		EntityID templateID = m_entityManager->CreateTemplate();
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnTemplateCreatedEvent>();
+
+		return templateID;
 	}
 
 	/// <summary>
@@ -43,46 +68,81 @@ namespace Firelight::ECS
 		return m_entityManager->CreateEntity(id);
 	}
 
-
-	/// <summary>
-	/// Outputs debug data on all entities
-	/// </summary>
-	void EntityComponentSystem::DebugEntities()
+	EntityID EntityComponentSystem::CreateEntityFromTemplate(EntityID id)
 	{
-		OutputDebugStringA("-------------------------------------\n");
-		for (EntityID entity : m_entityManager->GetEntities())
+		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> components = m_templateComponentManager->GetComponentDataCopy(id);
+		EntityID entityId = m_entityManager->CreateEntity();
+
+		m_entityManager->CreateNewEntitySignature(entityId, m_componentManager->GetRegisteredComponentTypeCount());
+
+		for (auto& componentType : components)
 		{
-			std::string output = "";
-			Signature signature = m_entityManager->GetEntitySignature(entity);
-			output += "Entity: " + std::to_string(entity) + ", Signature: ";
-			for (auto bit : signature)
+			for (int i = 0; i < components[componentType.first].size(); ++i)
 			{
-				output += std::to_string(bit);
-			}
-			output += "\n";
-			OutputDebugStringA(output.c_str());
-			for (auto& componentType : m_componentManager->GetComponentData())
-			{
-				output = "Component: ";
-				if (signature[componentType.first])
-				{
-					output += m_componentManager->GetComponentName(componentType.first);
-					output += "Value: ";
-					BaseComponent* component = m_componentManager->GetComponent(componentType.first, entity);
-					output += component->Output();
-					output += "\n";
-					OutputDebugStringA(output.c_str());
-				}
+				m_componentManager->AddComponent(entityId, componentType.first, components[componentType.first][i]);
+				m_entityManager->UpdateEntitySignature(entityId, componentType.first, true);
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
 			}
 		}
-		OutputDebugStringA("***********************************\n");
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityCreatedEvent>();
+
+		return entityId;
 	}
+
+	/// <summary>
+	/// Get all entities
+	/// </summary>
+	/// <returns></returns>
 	std::vector<EntityID> EntityComponentSystem::GetEntities()
 	{
 		return m_entityManager->GetEntities();
 	}
+
+	/// <summary>
+	/// Get signature of specific entity
+	/// </summary>
+	/// <param name="entityID"></param>
+	/// <returns></returns>
 	Signature EntityComponentSystem::GetSignature(EntityID entityID)
 	{
 		return m_entityManager->GetEntitySignature(entityID);
+	}
+
+
+	/// <summary>
+	/// Get total number of registered components
+	/// </summary>
+	/// <returns></returns>
+	int EntityComponentSystem::GetRegisteredComponentTypeCount()
+	{
+		return m_componentManager->GetRegisteredComponentTypeCount();
+	}
+
+	/// <summary>
+	/// Updates the signatures of all entities
+	/// </summary>
+	void EntityComponentSystem::UpdateAllEntitySignatures()
+	{
+		m_entityManager->ClearSignatures();
+
+		int numComponents = m_componentManager->GetRegisteredComponentTypeCount();
+		auto componentData = m_componentManager->GetComponentData();
+
+		for (auto& entity : m_entityManager->GetEntities())
+		{
+			m_entityManager->CreateNewEntitySignature(entity, numComponents);
+
+			for (auto componentType : componentData)
+			{
+				bool entityHasComponent = m_componentManager->HasComponent(componentType.first,entity);
+				m_entityManager->UpdateEntitySignature(entity, componentType.first, entityHasComponent);
+			}
+		}
+	}
+
+	void EntityComponentSystem::Serialise()
+	{
+		m_componentManager->SerialiseAllComponents();
 	}
 }

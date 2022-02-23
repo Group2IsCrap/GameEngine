@@ -1,4 +1,7 @@
 #include "EntityManager.h"
+#include "../Events/EventDispatcher.h"
+#include "ECSEvents.h"
+
 #include <assert.h> 
 
 namespace Firelight::ECS
@@ -15,11 +18,7 @@ namespace Firelight::ECS
 		{
 			sm_nextEntity++;
 		}
-		EntityID entity = sm_nextEntity++;
-		m_entities.push_back(entity);
-		// To Do: Make signature size update based on the number of components
-		m_signatures.insert({ entity, Signature(3) });
-		return entity;
+		return CreateEntityInternal(sm_nextEntity++);
 	}
 
 	EntityID EntityManager::CreateEntity(EntityID id)
@@ -28,11 +27,14 @@ namespace Firelight::ECS
 		{
 			return id;
 		}
-		
+		return CreateEntityInternal(id);
+	}
+
+	EntityID EntityManager::CreateEntityInternal(EntityID id)
+	{
 		EntityID entity = id;
 		m_entities.push_back(entity);
-		// To Do: Make signature size update based on the number of components
-		m_signatures.insert({ entity, Signature(3) });
+
 		return entity;
 	}
 
@@ -45,6 +47,21 @@ namespace Firelight::ECS
 	void EntityManager::UpdateEntitySignature(EntityID entity, ComponentTypeID componentID, bool contains)
 	{
 		m_signatures[entity][componentID] = contains;
+	}
+
+	/// <summary>
+	/// Creates a new signature for the entity that has a set number of components
+	/// </summary>
+	/// <param name="entity"></param>
+	/// <param name="numComponents"></param>
+	void EntityManager::CreateNewEntitySignature(EntityID entity, int numComponents)
+	{
+		m_signatures[entity] = Signature(numComponents);
+	}
+
+	void EntityManager::ClearSignatures()
+	{
+		m_signatures.clear();
 	}
 
 	/// <summary>
@@ -63,6 +80,8 @@ namespace Firelight::ECS
 		// Entity was found so it can be removed
 		m_signatures.erase(entity);
 		m_entities.erase(it);
+
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityDestroyedEvent>();
 	}
 
 	/// <summary>
@@ -82,5 +101,53 @@ namespace Firelight::ECS
 	std::vector<EntityID> EntityManager::GetEntities()
 	{
 		return m_entities;
+	}
+
+	EntityID EntityManager::sm_nextTemplate = 0;
+
+	/// <summary>
+	/// Creates a new template with a unique ID
+	/// </summary>
+	/// <returns></returns>
+	EntityID EntityManager::CreateTemplate()
+	{
+		while (std::find(m_templates.begin(), m_templates.end(), sm_nextTemplate) != m_templates.end())
+		{
+			sm_nextTemplate++;
+		}
+		return CreateTemplateInternal(sm_nextTemplate++);
+	}
+
+	EntityID EntityManager::CreateTemplateInternal(EntityID id)
+	{
+		EntityID entityTemplate = id;
+		m_templates.push_back(entityTemplate);
+
+		return entityTemplate;
+	}
+
+	/// <summary>
+	/// Removes a template
+	/// </summary>
+	/// <param name="entity"></param>
+	void EntityManager::RemoveTemplate(EntityID enitityTemplate)
+	{
+		const auto& it = std::find(m_templates.begin(), m_templates.end(), enitityTemplate);
+
+		if (it == m_templates.end())
+		{
+			return;
+		}
+
+		m_templates.erase(it);
+	}
+
+	/// <summary>
+	/// Gets all entities
+	/// </summary>
+	/// <returns></returns>
+	std::vector<EntityID> EntityManager::GetTemplates()
+	{
+		return m_templates;
 	}
 }

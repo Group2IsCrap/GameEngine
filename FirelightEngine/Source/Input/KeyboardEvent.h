@@ -1,25 +1,54 @@
 #pragma once
-namespace Firelight::Input {
-	class KeyboardEvent
+
+#include"..\Events\Event.h"
+
+namespace Firelight::Events::Input 
+{
+	class KeyboardEvent: public Events::Event
 	{
 	public:
 		enum class KeyEvent
 		{
-			press,
-			release,
+			Press,
+			Release,
 			Invalid
-
 		};
+
+	public:
 		KeyboardEvent();
 		KeyboardEvent(const KeyEvent type, const unsigned char key);
 
-		bool isPressed() const;
-		bool isReleased() const;
-		bool isValid() const;
+		bool IsPressed() const;
+		bool IsReleased() const;
+		bool IsValid() const;
+
 		unsigned char GetKeyCode() const;
-	private:
+		
+		static constexpr DescriptorType sm_descriptor = "KeyboardEvent";
+		
+	protected:
 		KeyEvent m_Type;
 		unsigned char m_Key;
 	};
 
+
+	class OnKeyPress : public KeyboardEvent
+	{
+	public:
+		OnKeyPress();
+		OnKeyPress(const KeyEvent type, const unsigned char key);
+		~OnKeyPress();
+		static constexpr DescriptorType sm_descriptor = "OnKeyPress";
+	};
+
+	
+	class OnKeyRelease : public KeyboardEvent
+	{
+	public:
+		OnKeyRelease();
+		OnKeyRelease(const KeyEvent type, const unsigned char key);
+		~OnKeyRelease();
+
+		static constexpr DescriptorType sm_descriptor = "OnKeyRelease";
+	};
 }

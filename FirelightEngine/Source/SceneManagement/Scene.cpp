@@ -26,7 +26,7 @@ namespace Firelight::SceneManagement
 
 	void Scene::DestroyEntity(Firelight::ECS::Entity* entity)
 	{
-
+		(void)entity;
 	}
 
 	void Scene::Update(double deltaTime)

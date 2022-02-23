@@ -37,36 +37,48 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -363,6 +375,25 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\ItemComponents.h" />
+    <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
+    <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
+    <ClInclude Include="Source\Animation\Animation.h" />
+    <ClInclude Include="Source\Audio\AudioClip.h" />
+    <ClInclude Include="Source\ECS\Components\AnimationComponent.h" />
+    <ClInclude Include="Source\ECS\Components\UIComponents.h" />
+    <ClInclude Include="Source\ECS\Components\AudioComponents.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\CameraEntity.h" />
+    <ClInclude Include="Source\ECS\Components\BasicComponents.h" />
+    <ClInclude Include="Source\ECS\Components\PhysicsComponents.h" />
+    <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
+    <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
+    <ClInclude Include="Source\ECS\Systems\UISystem.h" />
+    <ClInclude Include="Source\Events\UIEvents.h" />
+    <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
+    <ClInclude Include="Source\Input\ControllerEvent.h" />
+    <ClInclude Include="Source\Input\GetInput.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Includes\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -371,13 +402,16 @@
     <ClInclude Include="Includes\imgui\imstb_rectpack.h" />
     <ClInclude Include="Includes\imgui\imstb_textedit.h" />
     <ClInclude Include="Includes\imgui\imstb_truetype.h" />
-    <ClInclude Include="Source\ECS\Entity.h" />
-    <ClInclude Include="Source\ECS\GameEntity.h" />
+    <ClInclude Include="Source\ECS\ECSEvents.h" />
+    <ClInclude Include="Includes\WICTextureLoader.h" />
+    <ClInclude Include="Source\Graphics\RenderTextures.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\Entity.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\GameEntity.h" />
+    <ClInclude Include="Source\Events\Listener.h" />
     <ClInclude Include="Source\Graphics\Data\Material.h" />
     <ClInclude Include="Source\Graphics\AssetManager.h" />
     <ClInclude Include="Source\Graphics\Shaders\ComputeShader.h" />
     <ClInclude Include="Source\ECS\ComponentManager.h" />
-    <ClInclude Include="Source\ECS\Components.h" />
     <ClInclude Include="Source\ECS\ECSDefines.h" />
     <ClInclude Include="Source\ECS\EntityComponentSystem.h" />
     <ClInclude Include="Source\ECS\EntityManager.h" />
@@ -392,6 +426,7 @@
     <ClInclude Include="Source\Graphics\Data\Colour.h" />
     <ClInclude Include="Source\Graphics\Shaders\IShader.h" />
     <ClInclude Include="Source\Graphics\Shaders\PixelShader.h" />
+    <ClInclude Include="Source\Graphics\SpriteBatch.h" />
     <ClInclude Include="Source\ImGuiUI\ImGuiLayer.h" />
     <ClInclude Include="Source\ImGuiUI\ImGuiManager.h" />
     <ClInclude Include="Source\Input\ControllerInput.h" />
@@ -403,8 +438,14 @@
     <ClInclude Include="Source\Input\ProcessInput.h" />
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
+    <ClInclude Include="Source\Physics\IntersectData.h" />
+    <ClInclude Include="Source\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
+    <ClInclude Include="Source\Maths\Vec4.h" />
+    <ClInclude Include="Source\Serialisation\Serialiser.h" />
+    <ClInclude Include="Source\TileMap\Tile.h" />
+    <ClInclude Include="Source\TileMap\TileMap.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
     <ClInclude Include="Source\Graphics\GraphicsHandler.h" />
     <ClInclude Include="Source\Utils\Errors\AssertionError.h" />
@@ -421,10 +462,25 @@
     <ClInclude Include="Source\Graphics\Data\VertexTypes.h" />
     <ClInclude Include="Source\Maths\Vec2.h" />
     <ClInclude Include="Source\Maths\Vec3.h" />
-    <ClInclude Include="Source\ECS\System.h" />
+    <ClInclude Include="Source\ECS\Systems\System.h" />
     <ClInclude Include="Source\Graphics\Shaders\VertexShader.h" />
+    <ClInclude Include="Source\ECS\Systems\SpriteRenderSystem.h" />
+    <ClInclude Include="Source\ECS\SystemManager.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
+    <ClInclude Include="Source\Utils\Time.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\Template.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIButton.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UICanvas.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIEntity.cpp" />
+    <ClCompile Include="Source\ECS\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\UISystem.cpp" />
+    <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />
@@ -432,8 +488,9 @@
     <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Includes\imgui\imgui_tables.cpp" />
     <ClCompile Include="Includes\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Source\ECS\Entity.cpp" />
-    <ClCompile Include="Source\ECS\GameEntity.cpp" />
+    <ClCompile Include="Source\Graphics\RenderTextures.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\Entity.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\GameEntity.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Material.cpp" />
@@ -449,6 +506,7 @@
     <ClCompile Include="Source\Graphics\Data\Colour.cpp" />
     <ClCompile Include="Source\Graphics\Data\VertexTypes.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\IShader.cpp" />
+    <ClCompile Include="Source\Graphics\SpriteBatch.cpp" />
     <ClCompile Include="Source\ImGuiUI\ImGuiLayer.cpp" />
     <ClCompile Include="Source\ImGuiUI\ImGuiManager.cpp" />
     <ClCompile Include="Source\Input\ControllerInput.cpp" />
@@ -458,8 +516,12 @@
     <ClCompile Include="Source\Input\MouseEvent.cpp" />
     <ClCompile Include="Source\Input\MouseInput.cpp" />
     <ClCompile Include="Source\Input\ProcessInput.cpp" />
+    <ClCompile Include="Source\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="Source\Serialisation\Serialiser.cpp" />
+    <ClCompile Include="Source\TileMap\Tile.cpp" />
+    <ClCompile Include="Source\TileMap\TileMap.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
@@ -468,8 +530,16 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\WindowContainer.cpp" />
     <ClCompile Include="Source\Graphics\Data\Texture.cpp" />
-    <ClCompile Include="Source\ECS\System.cpp" />
+    <ClCompile Include="Source\ECS\Systems\System.cpp" />
     <ClCompile Include="Source\Graphics\Shaders\VertexShader.cpp" />
+    <ClCompile Include="Source\ECS\Systems\SpriteRenderSystem.cpp" />
+    <ClCompile Include="Source\ECS\SystemManager.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
+    <ClCompile Include="Source\Utils\Time.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\Template.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIButton.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UICanvas.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />
@@ -493,6 +563,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Source\Events\EventDispatcher.inl" />
     <None Include="Source\Graphics\Buffers\ConstantBuffer.inl" />
     <None Include="Source\Graphics\Data\Mesh.inl" />
     <None Include="Source\Graphics\AssetManager.inl" />
@@ -500,6 +571,7 @@
     <None Include="Source\Maths\Rect.inl" />
     <None Include="Source\Maths\Vec2.inl" />
     <None Include="Source\Maths\Vec3.inl" />
+    <None Include="Source\Maths\Vec4.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\%24ENGINE_readme.txt" />

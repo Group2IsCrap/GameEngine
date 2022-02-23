@@ -29,26 +29,34 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -125,13 +133,13 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib</AdditionalDependencies>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,15 +163,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ImGuiTestLayer.cpp" />
-    <ClCompile Include="TestGame.cpp" />
+    <ClCompile Include="Source\Items\ItemDatabase.cpp" />
+    <ClCompile Include="Source\ImGuiItemLayer.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="Source\Player\PlayerSystem.cpp" />
+    <ClCompile Include="Source\UI\HealthUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />
     <None Include="Assets\cube.mtls" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImGuiTestLayer.h" />
+    <ClInclude Include="Source\Items\ItemDatabase.h" />
+    <ClInclude Include="Source\ImGuiItemLayer.h" />
+    <ClInclude Include="Source\Components\HealthComponent.h" />
+    <ClInclude Include="Source\Components\PlayerComponent.h" />
+    <ClInclude Include="Source\Events\HealthEvent.h" />
+    <ClInclude Include="Source\Player\PlayerEntity.h" />
+    <ClInclude Include="Source\Player\PlayerSystem.h" />
+    <ClInclude Include="Source\UI\HealthUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
+      <Project>{ea744fde-6588-4aa7-94ba-318d00e409dc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SnowfallEngine\SnowfallEngine.vcxproj">
+      <Project>{2e6e55df-89ad-461d-8acc-b73399320c31}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

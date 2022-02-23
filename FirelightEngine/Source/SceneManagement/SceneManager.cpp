@@ -40,6 +40,7 @@ namespace Firelight::SceneManagement
 	//First unloads active scene & then loads scene with entities coresponding with index
 	void SceneManager::LoadScene(int index)
 	{
+		UNREFERENCED_PARAMETER(index);
 		//Max S edit. First unloads active scene before loading new scene
 		UnloadScene(m_activeScene);
 
@@ -49,7 +50,7 @@ namespace Firelight::SceneManagement
 	//Max S edit. Changed so a scene pointer is passed in as opposed to index. Allows for active scene to be unloaded directly rather than searching for index beforehand.
 	void SceneManager::UnloadScene(Scene* scene)
 	{
-
+		UNREFERENCED_PARAMETER(index);
 	}
 	
 	void SceneManager::SetBuildIndex(Scene* scene, int index)

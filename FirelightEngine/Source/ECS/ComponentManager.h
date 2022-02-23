@@ -2,8 +2,11 @@
 
 #include "ECSDefines.h"
 #include "EntityManager.h"
+#include "../Events/EventDispatcher.h"
+#include "ECSEvents.h"
 
 #include "../Utils/ErrorManager.h"
+#include "rapidjson/prettywriter.h"
 
 #include<vector>
 #include<unordered_map>
@@ -15,36 +18,119 @@ namespace Firelight::ECS
 	{
 	public:
 		/// <summary>
-		/// Registers the given component so that it's existance is guaranteed
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		template<typename T>
-		void RegisterComponent()
-		{
-			const char* typeName = typeid(T).name();
-
-			ASSERT_THROW(m_componentTypes.find(typeName) == m_componentTypes.end(), ("Component " + std::string(typeName) + " is already registered"));
-
-			ComponentTypeID componentType = sm_nextComponentID++;
-			m_componentTypes.insert({ typeName, componentType });
-			m_componentNames.insert({ componentType, typeName });
-			m_componentData.insert({ componentType,std::vector<BaseComponent*>() });
-		}
-
-		/// <summary>
 		/// Returns the component type id of the given typename
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns>ComponentTypeID</returns>
 		template<typename T>
-		ComponentTypeID GetComponentType()
+		static ComponentTypeID GetComponentType()
 		{
-			const char* typeName = typeid(T).name();
+			RegisterComponent<T>();
 
-			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			ASSERT_THROW(sm_componentHashTypes.find(typeName) != sm_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
 
 			// Return this component's type - used for creating signatures
-			return m_componentTypes[typeName];
+			return sm_componentHashTypes[typeName];
+		}
+
+		/// <summary>
+		/// Returns a ptr to a specific component type on the given entity
+		/// </summary>
+		/// <typeparam name="T">Component Type</typeparam>
+		/// <param name="typeID"></param>
+		/// <param name="entity"></param>
+		/// <returns>T*</returns>
+		template<typename T>
+		T* GetComponent(EntityID entity, int index = 0)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return nullptr;
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				return dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
+			}
+			return nullptr;
+		}
+
+		template<typename T, typename T2>
+		T2* GetComponent(EntityID entity, int index = 0)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return nullptr;
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				return dynamic_cast<T2*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
+			}
+			return nullptr;
+		}
+
+
+		/// <summary>
+		/// Returns full vector of components of a given type for a given entity
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetComponents(EntityID entity)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return std::vector<T*>();
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
+			{
+				std::vector<T*> components = std::vector<T*>();
+				for (int i = 0; i < m_componentMap[typeID][entity].size(); ++i)
+				{
+					components.push_back(dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][i]]));
+				}
+
+				return components;
+			}
+			return std::vector<T*>();
+		}
+
+		/// <summary>
+		/// Returns all components of a given type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		template<typename T>
+		std::vector<T*> GetAllComponents()
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return std::vector<T*>();
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+			std::vector<T*> components = std::vector<T*>();
+			for (int i = 0; i < m_componentData[typeID].size(); ++i)
+			{
+				components.push_back(dynamic_cast<T*>(m_componentData[typeID][i]));
+			}
+			return components;
 		}
 
 		/// <summary>
@@ -59,27 +145,6 @@ namespace Firelight::ECS
 		}
 
 		/// <summary>
-		/// Returns a ptr to a specific component type on the given entity
-		/// </summary>
-		/// <typeparam name="T">Component Type</typeparam>
-		/// <param name="typeID"></param>
-		/// <param name="entity"></param>
-		/// <returns>T*</returns>
-		template<typename T>
-		T* GetComponent(EntityID entity, int index = 0)
-		{
-			const char* typeName = typeid(T).name();
-
-			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
-			ComponentTypeID typeID = m_componentTypes[typeName];
-			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
-			{
-				return dynamic_cast<T*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
-			}
-			return nullptr;
-		}
-
-		/// <summary>
 		/// Associates a component to the given entity
 		/// </summary>
 		/// <typeparam name="T">Component Type</typeparam>
@@ -88,10 +153,33 @@ namespace Firelight::ECS
 		template<typename T>
 		void AddComponent(EntityID entity, T* component)
 		{
-			const char* typeName = typeid(T).name();
+			RegisterComponent<T>();
 
-			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
-			ComponentTypeID typeID = m_componentTypes[typeName];
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+			ASSERT_THROW(sm_componentHashTypes.find(typeName) != sm_componentHashTypes.end(), ("Component " + std::string(typeid(T).name()) + " is not registered"));
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+
+			if (m_componentData.find(typeID) == m_componentData.end())
+			{
+				m_componentData.insert({ typeID,std::vector<BaseComponent*>() });
+			}
+
+			m_componentData[typeID].push_back(component);
+			int componentIndex = (int)m_componentData[typeID].size() - 1;
+			if(!m_componentMap[typeID].contains(entity))
+			{
+				m_componentMap[typeID].insert({ entity,std::vector<int>() });
+			}
+			m_componentMap[typeID][entity].push_back(componentIndex);
+		}
+		
+		void AddComponent(EntityID entity, ComponentTypeID typeID,  BaseComponent* component)
+		{
+			if (m_componentData.find(typeID) == m_componentData.end())
+			{
+				m_componentData.insert({ typeID,std::vector<BaseComponent*>() });
+			}
+
 			m_componentData[typeID].push_back(component);
 			int componentIndex = (int)m_componentData[typeID].size() - 1;
 			if(!m_componentMap[typeID].contains(entity))
@@ -110,10 +198,14 @@ namespace Firelight::ECS
 		template<typename T>
 		void RemoveComponent(EntityID entity, int index = 0)
 		{
-			const char* typeName = typeid(T).name();
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
-			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
-			ComponentTypeID typeID = m_componentTypes[typeName];
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return;
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
 
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
 			{
@@ -138,30 +230,96 @@ namespace Firelight::ECS
 		template<typename T>
 		bool HasComponent(EntityID entity)
 		{
-			const char* typeName = typeid(T).name();
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
 
-			ASSERT_THROW(m_componentTypes.find(typeName) != m_componentTypes.end(), ("Component " + std::string(typeName) + " is not registered"));
-			ComponentTypeID typeID = m_componentTypes[typeName];
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return false;
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
 
 			return (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end());
+		}
+
+		template<typename T, typename T2>
+		bool HasComponent(EntityID entity)
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) == sm_componentHashTypes.end())
+			{
+				return false;
+			}
+
+			ComponentTypeID typeID = sm_componentHashTypes[typeName];
+			auto it = m_componentMap[typeID].find(entity);
+			if (it == m_componentMap[typeID].end())
+			{
+				return false;
+			}
+
+			for (int componentIndex : m_componentMap[typeID][entity])
+			{
+				T2* castComponent = dynamic_cast<T2*>(m_componentData[typeID][componentIndex]);
+				if (castComponent != nullptr)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		ComponentManager() = default;
 		~ComponentManager() = default;
 
+		bool HasComponent(ComponentTypeID typeID, EntityID entity);
+		int GetRegisteredComponentTypeCount();
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentData();
+		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> GetComponentDataCopy(EntityID id);
 		const char* GetComponentName(ComponentTypeID typeID);
 		void RemoveEntity(EntityID entity);
 
+		void SerialiseAllComponents();
+
 	private:
+
+		/// <summary>
+		/// Registers the given component so that it's existance is guaranteed
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		template<typename T>
+		static void RegisterComponent()
+		{
+			TypeHash typeName = std::hash<std::string>{}(std::string(typeid(T).name()));
+
+			if (sm_componentHashTypes.find(typeName) != sm_componentHashTypes.end())
+			{
+				return;
+			}
+			while (sm_componentTypeHash.find(sm_nextComponentID) != sm_componentTypeHash.end())
+			{
+				sm_nextComponentID++;
+			}
+			ComponentTypeID componentType = sm_nextComponentID++;
+			sm_componentHashTypes.insert({ typeName, componentType });
+			sm_componentHashNames.insert({ typeName, typeid(T).name() });
+			sm_componentTypeHash.insert({ componentType, typeName });
+
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRegisteredEvent>();
+		}
+
 		void UpdateComponentMap(ComponentTypeID componentType, int removedIndex);
+
 	private:
 		std::unordered_map<ComponentTypeID, std::vector<BaseComponent*>> m_componentData;
 		std::unordered_map<ComponentTypeID, std::unordered_map<EntityID,std::vector<int>>> m_componentMap;
-		std::unordered_map<const char*, ComponentTypeID> m_componentTypes;
-		std::unordered_map<ComponentTypeID, const char*> m_componentNames;
+		static std::unordered_map<TypeHash, ComponentTypeID> sm_componentHashTypes;
+		static std::unordered_map<ComponentTypeID, TypeHash> sm_componentTypeHash;
+		static std::unordered_map<TypeHash, const char*> sm_componentHashNames;
 
 		static ComponentTypeID sm_nextComponentID;
 	};
+
 
 }

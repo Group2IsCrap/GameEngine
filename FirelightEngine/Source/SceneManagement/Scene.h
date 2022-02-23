@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ECS/Entity.h"
+#include "../ECS/EntityWrappers/Entity.h"
 
 #include <vector>
 

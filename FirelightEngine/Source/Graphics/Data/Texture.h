@@ -8,14 +8,20 @@
 
 #include "Colour.h"
 
+#include "../../Maths/Vec2.h"
+#include "../../Maths/Vec3.h"
+
+
+#include "rapidjson/prettywriter.h"
+
 namespace Firelight::Graphics
 {
 	class Texture
 	{
 	public:
 		Texture();
-		Texture(const Colour& colour);
-		Texture(const Colour* colourData, UINT width, UINT height);
+		Texture(const Colour::RGBA& colour);
+		Texture(const Colour::RGBA* colourData, UINT width, UINT height);
 		Texture(const std::string& filePath);
 		Texture(const uint8_t* pData, size_t size);
 
@@ -24,20 +30,22 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Resource>&           GetResource();
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
-		int GetWidth() const;
-		int GetHeight() const;
-		int GetDepth() const;
+		const Maths::Vec3i& GetDimensions() const;
+		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const;
+
+		void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 	private:
-		void InitialiseColourTexture(const Colour* colourData, UINT width, UINT height);
-		void Initialise1x1ColourTexture(const Colour& colour);
+		void InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height);
+		void Initialise1x1ColourTexture(const Colour::RGBA& colour);
 
 		void UpdateDimensionsUsingResource2D();
 
 	private:
+
 		Microsoft::WRL::ComPtr<ID3D11Resource>           m_texture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_textureView;
 
-		int                                              m_width, m_height, m_depth;
+		Maths::Vec3i                                     m_dimensions;
 	};
 }
