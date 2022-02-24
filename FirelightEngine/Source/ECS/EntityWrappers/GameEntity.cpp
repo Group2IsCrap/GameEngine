@@ -6,6 +6,7 @@ namespace Firelight::ECS
 	{
 		AddComponent<IdentificationComponent>();
 		AddComponent<StaticComponent>();
+		AddComponent<LayerComponent>();
 		AddComponent<TransformComponent>();
 	}
 	/// <summary>
@@ -24,6 +25,15 @@ namespace Firelight::ECS
 	StaticComponent* GameEntity::GetStaticComponent()
 	{
 		return GetComponent<StaticComponent>();
+	}
+
+	/// <summary>
+	/// Wrapper that returns the Layer Component
+	/// </summary>
+	/// <returns></returns>
+	LayerComponent* GameEntity::GetLayerComponent()
+	{
+		return GetComponent<LayerComponent>();
 	}
 
 	/// <summary>
