@@ -9,6 +9,12 @@ namespace Firelight::ECS
 		AddComponent<LayerComponent>();
 		AddComponent<TransformComponent>();
 	}
+
+	GameEntity::GameEntity(Firelight::ECS::EntityID entityID) : Entity(entityID)
+	{
+
+	}
+
 	/// <summary>
 	/// Wrapper that returns the Identification Component
 	/// </summary>

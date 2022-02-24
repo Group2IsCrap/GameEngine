@@ -7,7 +7,8 @@ namespace Firelight::ECS
 	{
 	public:
 		Entity();
-		Entity(EntityID id);
+		Entity(EntityID entityID);
+		Entity(bool isTemplate, EntityID templateID);
 		~Entity();
 
 		void Destroy();
@@ -44,9 +45,10 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void AddComponent(T* component)
+		T* AddComponent(T* component)
 		{
 			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, component);
+			return component;
 		}
 
 		/// <summary>
@@ -56,9 +58,11 @@ namespace Firelight::ECS
 		/// <param name="entity"></param>
 		/// <param name="component"></param>
 		template<typename T>
-		void AddComponent()
+		T* AddComponent()
 		{
-			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, new T());
+			T* ptr = new T();
+			EntityComponentSystem::Instance()->AddComponent<T>(m_entityID, ptr);
+			return ptr;
 		}
 
 		/// <summary>

@@ -37,36 +37,48 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|X64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '16.0'">v142</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '17.0'">v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
@@ -363,6 +375,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\ItemComponents.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
     <ClInclude Include="Source\Animation\Animation.h" />
@@ -430,6 +443,7 @@
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
+    <ClInclude Include="Source\Serialisation\Serialiser.h" />
     <ClInclude Include="Source\TileMap\Tile.h" />
     <ClInclude Include="Source\TileMap\TileMap.h" />
     <ClInclude Include="Source\Utils\AdapterReader.h" />
@@ -454,6 +468,10 @@
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
     <ClInclude Include="Source\Utils\Time.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\Template.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIButton.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UICanvas.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
@@ -501,6 +519,7 @@
     <ClCompile Include="Source\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
+    <ClCompile Include="Source\Serialisation\Serialiser.cpp" />
     <ClCompile Include="Source\TileMap\Tile.cpp" />
     <ClCompile Include="Source\TileMap\TileMap.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
@@ -517,6 +536,10 @@
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
     <ClCompile Include="Source\Utils\Time.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\Template.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIButton.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UICanvas.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\UIPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

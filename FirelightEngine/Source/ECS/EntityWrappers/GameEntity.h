@@ -9,6 +9,7 @@ namespace Firelight::ECS
     {
     public:
         GameEntity();
+        GameEntity(Firelight::ECS::EntityID entityID);
 
         IdentificationComponent* GetIDComponent();
         StaticComponent*         GetStaticComponent();

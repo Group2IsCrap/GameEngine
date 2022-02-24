@@ -4,6 +4,9 @@
 
 #include "../ECSDefines.h"
 #include "../../Maths/Vec3.h"
+#include "../../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
 
 namespace Firelight::ECS
 {
@@ -16,7 +19,15 @@ namespace Firelight::ECS
 
 		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Name", name.c_str());
+		}
+
+		IdentificationComponent* Clone() override
+		{
+			IdentificationComponent* clone = new IdentificationComponent();
+			clone->name = name;
+
+			return clone;
 		}
 	};
 
@@ -25,11 +36,19 @@ namespace Firelight::ECS
 	/// </summary>
 	struct StaticComponent : BaseComponent
 	{
-		bool isStatic;
+		bool isStatic = false;
 
 		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("IsStatic", isStatic);
+		}
+
+		StaticComponent* Clone() override
+		{
+			StaticComponent* clone = new StaticComponent();
+			clone->isStatic = isStatic;
+
+			return clone;
 		}
 	};
 
@@ -62,11 +81,23 @@ namespace Firelight::ECS
 	{
 		Firelight::Maths::Vec3f position;
 		Firelight::Maths::Vec3f scale;
-		float                   rotation;
+		float                   rotation = 0.0f;
 
 		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("Rotation", rotation);
+			Serialiser::Serialise("Position", position);
+			Serialiser::Serialise("Scale", scale);
+		}
+
+		TransformComponent* Clone() override
+		{
+			TransformComponent* clone = new TransformComponent();
+			clone->position = position;
+			clone->scale = scale;
+			clone->rotation = rotation;
+
+			return clone;
 		}
 	};
 
