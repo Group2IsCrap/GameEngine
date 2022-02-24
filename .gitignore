@@ -57,6 +57,10 @@
 !/TestGame/fmodL.dll
 !/TestGame/fmodstudio.dll
 !/TestGame/fmodstudioL.dll
+!/Game/fmod.dll
+!/Game/fmodL.dll
+!/Game/fmodstudio.dll
+!/Game/fmodstudioL.dll
 
 !/Libs/Shared/assimp-vc140-mt.lib
 !/Libs/x64/Debug/DirectXTK.lib
