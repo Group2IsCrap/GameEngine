@@ -19,7 +19,7 @@ namespace Firelight::Physics
 	public:
 
 		/// <summary>
-		/// Returns a vector of entities that intersect within a circle at the given point of given radius on corrosponding layer.
+		/// Returns a vector of entities that intersect within a circle at the given point of given radius on corresponding layer.
 		/// </summary>
 		/// <param name="point">The location of the point</param>
 		/// <param name="radius">The radius of the circle check</param>
