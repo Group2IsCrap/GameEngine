@@ -39,7 +39,7 @@ namespace Firelight::Physics
 				}
 
 				// Skip if the layer is not the same
-				if (!entity->GetComponent<LayerComponent>()->layer != layer)
+				if (entity->GetComponent<LayerComponent>()->layer != layer)
 				{
 					continue;
 				}
@@ -60,7 +60,29 @@ namespace Firelight::Physics
 				// Secondly, we check the circle against a box collider
 				else if (entity->HasComponent<ColliderComponent, BoxColliderComponent>())
 				{
+					Maths::Vec2f circleDistance;
+					TransformComponent* transform = entity->GetComponent<TransformComponent>();
+					BoxColliderComponent* boxCollider = entity->GetComponent<ColliderComponent, BoxColliderComponent>();
+					circleDistance.x = std::abs(transform->position.x - point.x);
+					circleDistance.y = std::abs(transform->position.y - point.y);
 
+					if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
+					{
+						continue;
+					}
+
+					if (circleDistance.x <= (boxCollider->rect.w / 2) || circleDistance.y <= (boxCollider->rect.h / 2))
+					{
+						entities.push_back(entity);
+					}
+
+					float cornerDistanceSquared = std::pow((circleDistance.x - boxCollider->rect.w / 2), 2) +
+						std::pow((circleDistance.y - boxCollider->rect.h / 2), 2);
+
+					if (cornerDistanceSquared <= (radius * radius) == true)
+					{
+						entities.push_back(entity);
+					}
 				}
 			}
 
