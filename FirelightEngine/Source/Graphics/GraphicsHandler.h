@@ -70,8 +70,5 @@ namespace Firelight::Graphics
         Microsoft::WRL::ComPtr<ID3D11SamplerState>      m_clampSamplerState;
 
         std::unique_ptr<SpriteBatch>                    m_spriteBatch;
-
-        Font*                                           m_testFont;
-        Text*                                           m_testText;
     };
 }

@@ -157,6 +157,7 @@ namespace Firelight::ECS
 	struct TextComponent : BaseComponent
 	{
 		Firelight::Graphics::Text text;
+		int                       layer;
 
 		void Serialise() override
 		{

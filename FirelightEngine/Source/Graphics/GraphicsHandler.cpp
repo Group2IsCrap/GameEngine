@@ -51,13 +51,6 @@ namespace Firelight::Graphics
 		m_spriteBatch = std::make_unique<SpriteBatch>();
 		m_spriteBatch->SetSortMode(SpriteBatch::SortMode::e_BackToFrontTexture);
 
-		m_testFont = new Font();
-		m_testFont->LoadFont("Fonts/twcenmt");
-
-		m_testText = new Text("basic text lmao", m_testFont);
-
-		m_testText->UpdateMesh();
-
 		m_initialised = true;
 
         return true;
@@ -305,16 +298,7 @@ namespace Firelight::Graphics
 		// Render Sprite batch batches
 		m_deviceContext->OMSetDepthStencilState(m_disabledDepthStencilState.Get(), 0);
 
-		m_spriteBatch->CreateBatches();
-		for (auto& batch : m_spriteBatch->GetBatches())
-		{
-			batch.Draw();
-		}
-
-		m_deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
-		m_deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Text")->GetShader(), NULL, 0);
-
-		m_testText->Draw();
+		m_spriteBatch->CreateAndDrawBatches();
 
 		// Copy final image to the back buffer
 		m_deviceContext->CopyResource(m_backBuffer.Get(), m_finalImage.m_texture2D.Get());

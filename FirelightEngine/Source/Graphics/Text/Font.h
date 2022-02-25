@@ -20,7 +20,7 @@ namespace Firelight::Graphics
 		Font();
 		~Font();
 
-		void        LoadFont(std::string name);
+		bool        LoadFont(std::string name);
 		void        RenderText(std::string text, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, Maths::Vec2f& outBaseTextExtents, float spacingMod);
 		static void UpdateMinAndMaxPositions(Maths::Vec2f& minPos, Maths::Vec2f& maxPos, const Maths::Vec3f& checkPos);
 

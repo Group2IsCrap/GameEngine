@@ -9,6 +9,8 @@
 
 #include "../../Engine.h"
 
+#include "../../Utils/StringHelpers.h"
+
 namespace Firelight::Graphics
 {
     Font::Font()
@@ -19,12 +21,18 @@ namespace Firelight::Graphics
     {
     }
 
-    void Font::LoadFont(std::string path)
+    bool Font::LoadFont(std::string path)
     {
 		std::string texturePath = path + ".png";
+
+		// Get rid of "Assets/" from the start
+		Utils::StringHelpers::RemoveDirectoriesFromStart(texturePath, 1);
+
 		m_texture = AssetManager::Instance().GetTexture(texturePath.c_str());
 
-		std::string fontFilePath = "Assets/" + path + ".fnt";
+		ASSERT_RETURN(m_texture != AssetManager::Instance().GetDefaultTexture(), "Failed to load font at path: '" + path + "' It had no image file", false);
+
+		std::string fontFilePath = path + ".fnt";
 		std::ifstream fontFile(fontFilePath.c_str());
 		std::string buffer;
 
@@ -169,6 +177,13 @@ namespace Firelight::Graphics
 				m_glyphs.insert({ (char)charId, glyph });
 			}
 		}
+		else
+		{
+			ERROR_STANDARD("Failed to load font file at path : '" + fontFilePath);
+			return false;
+		}
+
+		return true;
     }
 
     void Font::RenderText(std::string text, std::vector<UnlitVertex>& vertices, std::vector<DWORD>& indices, Maths::Vec2f& outBaseTextExtents, float spacingMod)

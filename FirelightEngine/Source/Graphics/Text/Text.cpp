@@ -29,9 +29,7 @@ namespace Firelight::Graphics
 
         if (m_font == nullptr)
         {
-            // CHANGE ME
-            m_font = new Font();
-            m_font->LoadFont("Fonts/twcenmt");
+            m_font = AssetManager::Instance().GetDefaultFont();
         }
 
         // Create cb and default values
@@ -157,6 +155,18 @@ namespace Firelight::Graphics
     void Text::SetAnchorPosition(const Maths::Vec2f& anchorPosition, bool updateCB)
     {
         m_anchorPosition = anchorPosition;
+
+        if (updateCB)
+        {
+            UpdatePositionOffset();
+
+            m_textCB.MapToGPU();
+        }
+    }
+
+    void Text::SetTextAnchor(TextAnchor textAnchor, bool updateCB)
+    {
+        m_textAnchor = textAnchor;
 
         if (updateCB)
         {

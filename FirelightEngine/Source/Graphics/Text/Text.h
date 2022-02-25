@@ -63,6 +63,8 @@ namespace Firelight::Graphics
         void SetTextHeight(float textHeight, bool updateCB = true);
         void SetSpacingMod(float spacingMod, bool updateMesh = true);
         void SetAnchorPosition(const Maths::Vec2f& position, bool updateCB = true);
+        void SetTextAnchor(TextAnchor textAnchor, bool updateCB = true);
+
         void SetSpace(TextSpace textSpace);
 
         void UpdateMesh();

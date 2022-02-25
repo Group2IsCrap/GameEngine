@@ -39,7 +39,7 @@ namespace Firelight::ECS
 				textComponent->text.UpdateMesh();
 			}
 
-			//textComponent->text.Draw();
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->DrawTextStandard(&(textComponent->text), textComponent->layer);
 		}
 	}
 }
