@@ -58,10 +58,10 @@ namespace Firelight::Graphics
         // Calculate tex coords if weve been given a source rect
         if (sourceRect.IsValid())
         {
-            quad->m_topLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y));
-            quad->m_topRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
-            quad->m_bottomLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
-            quad->m_bottomRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_topLeft.m_texCoord, Maths::Vec2f(sourceRect.x, sourceRect.y));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_topRight.m_texCoord, Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_bottomLeft.m_texCoord, Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_bottomRight.m_texCoord, Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
         }
         // Otherwise just use default texcoords
         else

@@ -198,25 +198,25 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	if (Engine::Instance().Initialise(hInstance, "GameSmiths - Vertical Slice", "windowClass", Maths::Vec2i(1280, 720)))
 	{
-		// Register Systems
-		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
+		//// Register Systems
+		//Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 
-		// Player Character
-		float playerSpeed = 10.0f;
-		PlayerEntity* player = new PlayerEntity(playerSpeed);
+		//// Player Character
+		//float playerSpeed = 10.0f;
+		//PlayerEntity* player = new PlayerEntity(playerSpeed);
 
-		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		//Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
-		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
+		//const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 
-		CreatUITest();
+		//CreatUITest();
 
-		SetupDebugUI();
+		//SetupDebugUI();
 
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
@@ -240,29 +240,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
 		//circle->GetComponent<StaticComponent>()->isStatic = false;
 
-		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+		//ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
 		// Tilemap Test
 		TilemapComponent* tilemapComponent = new TilemapComponent();
-		tilemapComponent->cellSize = 1;
+		tilemapComponent->sourceSize = 1;
+		tilemapComponent->sourceSpacing = 2;
+		tilemapComponent->cellSize = 100;
 		tilemapComponent->width = 10;
 		tilemapComponent->height = 10;
-		tilemapComponent->Texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/TilemapTest.png");
-		for (int y = 0; y < 10; y++)
+		tilemapComponent->Texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/TilemapTest1.png");
+		int alternate = 0;
+		for (int y = 0; y < 5; y++)
 		{
 			for (int x = 0; x < 10; x++)
 			{
 				std::pair<int, int> position(x, y);
 				Firelight::TileMap::Tile* tile;
-				if (x % 2 == 1)
+				if (alternate % 3 == 0)
 				{
 					tile = new Firelight::TileMap::Tile(0, 0, 25);
 				}
-				else
+				else if(alternate % 3 == 1)
 				{
 					tile = new Firelight::TileMap::Tile(1, 0, 25);
 				}
+				else
+				{
+					tile = new Firelight::TileMap::Tile(2, 0, 25);
+				}
 				tilemapComponent->map[position] = tile;
+				alternate++;
 			}
 		}
 		GameEntity* tileMapEntity = new GameEntity();

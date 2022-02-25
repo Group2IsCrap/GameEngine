@@ -33,11 +33,11 @@ namespace Firelight::ECS
 	
 	void TilemapSystem::RenderTilemap(Firelight::ECS::TilemapComponent* tilemap)
 	{
-		for (std::map<std::pair<int, int>, Firelight::TileMap::Tile*>::iterator it = tilemap->map.begin(); it != tilemap->map.end(); ++it)
+		for (auto it = tilemap->map.begin(); it != tilemap->map.end(); ++it)
 		{
-			Firelight::Maths::Rectf destinationRect(it->first.first * tilemap->cellSize, it->first.second * tilemap->cellSize, tilemap->cellSize, tilemap->cellSize);
-			Firelight::Maths::Rectf sourceRect(it->second->m_x * tilemap->cellSize, it->second->m_y * tilemap->cellSize, tilemap->cellSize, tilemap->cellSize);
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destinationRect, tilemap->Texture, it->second->m_layer, 0.0f, Firelight::Graphics::Colours::sc_white, sourceRect);
+			Firelight::Maths::Rectf destinationRect(it->first.first * tilemap->cellSize + 100.0f, it->first.second * tilemap->cellSize + 100.0f, tilemap->cellSize, tilemap->cellSize);
+			Firelight::Maths::Rectf sourceRect(it->second->m_x * (tilemap->sourceSize + tilemap->sourceSpacing), it->second->m_y * (tilemap->sourceSize + tilemap->sourceSpacing), tilemap->sourceSize, tilemap->sourceSize);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destinationRect, tilemap->Texture, it->second->m_layer, 0.0f, Firelight::Graphics::Colours::sc_white, sourceRect);
 		}
 	}
 }

@@ -57,7 +57,6 @@ namespace Firelight::Input {
 		bool KeyIsPress(const unsigned char key);
 		//set auto repeat keys/char
 		void SetAutoRepeatKeys(bool isAutoRepeat);
-#
 
 		//mouse inputs
 		bool MouseButtonPress(e_MouseButtonPress mouseButton);
