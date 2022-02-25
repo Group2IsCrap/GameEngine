@@ -50,7 +50,7 @@ namespace Firelight::SceneManagement
 	//Max S edit. Changed so a scene pointer is passed in as opposed to index. Allows for active scene to be unloaded directly rather than searching for index beforehand.
 	void SceneManager::UnloadScene(Scene* scene)
 	{
-		UNREFERENCED_PARAMETER(index);
+		UNREFERENCED_PARAMETER(scene);
 	}
 	
 	void SceneManager::SetBuildIndex(Scene* scene, int index)

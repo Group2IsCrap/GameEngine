@@ -100,6 +100,11 @@ namespace Firelight
     {
         return m_systemManager;
     }
+
+    KeyBinder& Engine::GetKeyBinder()
+    {
+        return m_keyBinder;
+    }
   
     bool Engine::ProcessMessages()
     {

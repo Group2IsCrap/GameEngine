@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\CharacterEntity.h" />
+    <ClInclude Include="Source\Events\InputEvents.h" />
     <ClInclude Include="Source\ImGuiDebugLayer.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />

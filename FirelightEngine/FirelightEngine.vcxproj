@@ -375,6 +375,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\KeyBinder.h" />
     <ClInclude Include="Source\ECS\Components\ItemComponents.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
@@ -474,6 +475,7 @@
     <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\KeyBinder.cpp" />
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />

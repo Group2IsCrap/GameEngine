@@ -71,5 +71,8 @@
     <ClInclude Include="Source\ImGuiDebugLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Events\InputEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
