@@ -51,4 +51,14 @@ namespace Firelight::Events::Input
 
 		static constexpr DescriptorType sm_descriptor = "OnKeyRelease";
 	};
+	
+	class KeyIsPressed : public KeyboardEvent
+	{
+	public:
+		KeyIsPressed();
+		KeyIsPressed(const KeyEvent type, const unsigned char key);
+		~KeyIsPressed();
+
+		static constexpr DescriptorType sm_descriptor = "KeyIsPressed";
+	};
 }

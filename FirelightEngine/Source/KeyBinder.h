@@ -21,8 +21,9 @@ namespace Firelight
 		virtual void HandleEvents(DescriptorType event, void* data) override;
 	private:
 		std::unordered_map<unsigned char, DescriptorType> m_keyBinds;
-		std::unordered_map<DescriptorType, std::pair<unsigned char, float>> m_keyAxisBinds; 
+		std::unordered_map<DescriptorType, std::pair<unsigned char, float>> m_keyAxisBinds;
 		void RouteOnKeyPress(unsigned char pressedKey);
+		void RouteKeyIsPressed(unsigned char pressedKey);
 		void RouteOnKeyReleased(unsigned char pressedKey);
 		void RouteControllerEvent(void* data);
 	};

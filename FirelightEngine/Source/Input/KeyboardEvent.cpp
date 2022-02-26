@@ -57,4 +57,16 @@ namespace Firelight::Events::Input
     Input::OnKeyRelease::~OnKeyRelease()
     {
     }
+
+    Input::KeyIsPressed::KeyIsPressed()
+    {
+    }
+
+    Input::KeyIsPressed::KeyIsPressed(const KeyEvent type, const unsigned char key):KeyboardEvent(type, key)
+    {
+    }
+
+    Input::KeyIsPressed::~KeyIsPressed()
+    {
+    }
 }

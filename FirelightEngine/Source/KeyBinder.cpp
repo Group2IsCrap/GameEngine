@@ -12,12 +12,13 @@ namespace Firelight
 
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyPress>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyRelease>(this);
+		Events::EventDispatcher::AddListener<Events::Input::KeyIsPressed>(this);
 		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
 	}
 
 	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, unsigned char key)
 	{
-		m_keyBinds[key] = eventName;
+		m_keyBinds[std::tolower(key)] = eventName;
 	}
 
 	void KeyBinder::BindKeyboardAxisEvent(DescriptorType eventName, unsigned char key, float axisValue)
@@ -35,6 +36,10 @@ namespace Firelight
 		{
 			RouteOnKeyReleased(reinterpret_cast<unsigned char>(data));
 		}
+		else if (event == Events::Input::KeyIsPressed::sm_descriptor)
+		{
+			RouteKeyIsPressed(reinterpret_cast<unsigned char>(data));
+		}
 		else if (event == Events::Input::ContollerEvent::sm_descriptor)
 		{
 			RouteControllerEvent(data);
@@ -43,14 +48,24 @@ namespace Firelight
 
 	void KeyBinder::RouteOnKeyPress(unsigned char pressedKey)
 	{
+		//if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		//{
+		//	Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
+		//}
+	}
+	void KeyBinder::RouteOnKeyReleased(unsigned char pressedKey)
+	{
+		//if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		//{
+		//	Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
+		//}
+	}
+	void KeyBinder::RouteKeyIsPressed(unsigned char pressedKey)
+	{
 		if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
 		{
 			Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
 		}
-	}
-	void KeyBinder::RouteOnKeyReleased(unsigned char pressedKey)
-	{
-
 	}
 	void KeyBinder::RouteControllerEvent(void* data)
 	{

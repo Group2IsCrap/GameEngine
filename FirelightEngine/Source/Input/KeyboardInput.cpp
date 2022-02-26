@@ -38,7 +38,7 @@ namespace Firelight::Input
     {
         (void)key;
 
-        //for a later created event if needed
+        Events::EventDispatcher::InvokeListeners<Events::Input::KeyIsPressed>((void*)key);
     }
 
     //repeat keyinput
