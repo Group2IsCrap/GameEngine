@@ -4,6 +4,7 @@
 
 namespace Firelight::Events::Input 
 {
+	NEW_EVENT(OnKeyPressNonRepeat);
 	class KeyboardEvent: public Events::Event
 	{
 	public:

@@ -170,6 +170,7 @@ namespace Firelight
 
     void Engine::Update()
     {
+        m_keyBinder.Update();
         Input::ProcessInput::Instance()->ControllerInput();
 
         m_time.Update();

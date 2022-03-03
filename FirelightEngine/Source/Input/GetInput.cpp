@@ -142,18 +142,7 @@ namespace Firelight::Input
         return 0.0f;
     }
     
-    void GetInput::SetAutoRepeatKeys(bool isAutoRepeat)
-    {
-        if (isAutoRepeat) {
-            m_KeyboardCapture->EnableAutoRepeatChars();
-            m_KeyboardCapture->EnableAutoRepeatKeys();
-        }
-        else
-        {
-            m_KeyboardCapture->DisableAutoRepeatChars();
-            m_KeyboardCapture->DisableAutoRepeatKeys();
-        }
-    }
+    
 
     void GetInput::SetDeadZone(double deadzoneRight,double deadzoneLeft)
     {

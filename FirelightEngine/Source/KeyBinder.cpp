@@ -14,6 +14,12 @@ namespace Firelight
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyRelease>(this);
 		Events::EventDispatcher::AddListener<Events::Input::KeyIsPressed>(this);
 		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
+
+		for (int i = 0; i < 256; i++)
+		{
+			m_Keystates.emplace(i, false);
+			//m_KeystatesNonRepeat[i] = false;
+		}
 	}
 
 	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, unsigned char key)
@@ -30,15 +36,19 @@ namespace Firelight
 	{
 		if (event == Events::Input::OnKeyPress::sm_descriptor)
 		{
-			RouteOnKeyPress(reinterpret_cast<unsigned char>(data));
+			unsigned char a = reinterpret_cast<unsigned char>(data);
+			m_Keystates[a] = true;
+			//RouteOnKeyPress(tolower(reinterpret_cast<unsigned char>(data)));
 		}
 		else if (event == Events::Input::OnKeyRelease::sm_descriptor)
 		{
-			RouteOnKeyReleased(reinterpret_cast<unsigned char>(data));
+			m_Keystates[reinterpret_cast<unsigned char>(data)] = false;
+			//RouteOnKeyReleased(reinterpret_cast<unsigned char>(data));
 		}
 		else if (event == Events::Input::KeyIsPressed::sm_descriptor)
 		{
-			RouteKeyIsPressed(reinterpret_cast<unsigned char>(data));
+			//RouteKeyIsPressed(reinterpret_cast<unsigned char>(data));
+
 		}
 		else if (event == Events::Input::ContollerEvent::sm_descriptor)
 		{
@@ -46,12 +56,25 @@ namespace Firelight
 		}
 	}
 
+	void KeyBinder::Update()
+	{
+		
+		for (auto& key : m_Keystates) {
+			if (key.second == true) {
+				RouteOnKeyPress(tolower(key.first));
+			}
+		}
+	}
+
+	
+
+	
 	void KeyBinder::RouteOnKeyPress(unsigned char pressedKey)
 	{
-		//if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
-		//{
-		//	Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
-		//}
+		if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		{
+			Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
+		}
 	}
 	void KeyBinder::RouteOnKeyReleased(unsigned char pressedKey)
 	{
@@ -62,10 +85,10 @@ namespace Firelight
 	}
 	void KeyBinder::RouteKeyIsPressed(unsigned char pressedKey)
 	{
-		if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		/*if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
 		{
 			Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
-		}
+		}*/
 	}
 	void KeyBinder::RouteControllerEvent(void* data)
 	{

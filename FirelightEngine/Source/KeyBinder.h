@@ -5,6 +5,7 @@
 #include "Utils/ErrorManager.h"
 
 #include <vector>
+#include<map>
 #include <unordered_map>
 
 namespace Firelight
@@ -19,7 +20,10 @@ namespace Firelight
 		void BindKeyboardAxisEvent(DescriptorType eventName, unsigned char key, float axisValue);
 
 		virtual void HandleEvents(DescriptorType event, void* data) override;
+
+		void Update();
 	private:
+		std::map<unsigned char, bool> m_Keystates;
 		std::unordered_map<unsigned char, DescriptorType> m_keyBinds;
 		std::unordered_map<DescriptorType, std::pair<unsigned char, float>> m_keyAxisBinds;
 		void RouteOnKeyPress(unsigned char pressedKey);

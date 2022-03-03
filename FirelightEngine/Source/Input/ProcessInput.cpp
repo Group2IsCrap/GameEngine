@@ -79,6 +79,7 @@ namespace Firelight::Input
 		// Keyborad Input
 		case WM_KEYUP:
 		{
+
 			unsigned char ch = static_cast<unsigned char>(wParam);
 
 			m_KeyboardCapture->OnKeyReplace(ch);
@@ -90,40 +91,29 @@ namespace Firelight::Input
 		{
 			unsigned char ch = static_cast<unsigned char>(wParam);
 
-			if (m_KeyboardCapture->IsKeysAutoRepeat())
-			{
-				m_KeyboardCapture->OnKeyPress(ch);
-			}
-			else
-			{
-				const bool wasPressed = lParam & WAS_PRESSED;
 
-				if (!wasPressed)
-				{
-					m_KeyboardCapture->OnKeyPress(ch);
-				}
+			m_KeyboardCapture->OnKeyPress(ch);
+			const bool wasPressed = lParam & WAS_PRESSED;
+
+			if (!wasPressed)
+			{
+				m_KeyboardCapture->OnKeyPressNonRepeat(ch);
 			}
+
 			return true;
 		}
 		break;
 		case WM_CHAR:
 		{
 			unsigned char ch = static_cast<unsigned char>(wParam);
-
-			if (m_KeyboardCapture->IsCharAutoRepeat())
+			m_KeyboardCapture->OnChar(ch);
+			const bool wasPressed = lParam & WAS_PRESSED;
+			if (!wasPressed)
 			{
-				m_KeyboardCapture->OnChar(ch);
+				m_KeyboardCapture->OnCharNoRepeat(ch);
 			}
-			else
-			{
-				const bool wasPressed = lParam & WAS_PRESSED;
 
-				if (!wasPressed)
-				{
-					m_KeyboardCapture->OnChar(ch);
-				}
 
-			}
 			return true;
 		}
 		break;

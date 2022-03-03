@@ -2,6 +2,8 @@
 
 namespace Firelight::Events::Input 
 {
+    
+
     KeyboardEvent::KeyboardEvent() :
         m_Type(KeyEvent::Invalid),
         m_Key('A')
