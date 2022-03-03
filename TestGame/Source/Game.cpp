@@ -34,13 +34,14 @@
 #include "UI/HealthUI.h"
 
 #include "Source/Serialisation/Serialiser.h"
+#include"Source/Input/GetInput.h"
 
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
-#include"Inventory/Inventory.h"
+#include"Inventory/InventoryManager.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Serialisation;
@@ -154,14 +155,14 @@ void CreatUITest() {
 
 	
 }
-
+InventoryManager* invTestA;
 void SpawnItem0()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	invTestA->AddItem("PlayerInv", "MainIven",ItemDatabase::Instance()->CreateInstanceOfItem(0));
 }
 void SpawnItem1()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	invTestA->AddItem("PlayerInv", "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(1));
 }
 void SpawnItem2()
 {
@@ -216,8 +217,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		SetupDebugUI();
 
-		Inventory* invTestA = new Inventory();
-		invTestA->CreatInventory(Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
+		invTestA = new InventoryManager();
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
@@ -248,6 +249,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().Update();
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
+
+
+			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
+				invTestA->LoadInventoryGroup("PlayerInv");
+			}
+			if (Input::InputGet.KeyIsPressNonRepeat('G')) {
+				invTestA->UnloadInventoryGroup("PlayerInv");
+			}
+			if (Input::InputGet.KeyIsPressNonRepeat('P')) {
+				invTestA->RemoveItem("PlayerInv", "MainIven",1,10);
+			}
 		}
 
 		Serialiser::SaveSceneJSON();

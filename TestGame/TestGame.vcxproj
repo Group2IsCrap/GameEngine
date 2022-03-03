@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\ImGuiItemLayer.cpp" />
@@ -168,6 +169,7 @@
     <None Include="Assets\cube.mtls" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Inventory\InventoryManager.h" />
     <ClInclude Include="Source\Inventory\Inventory.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\ImGuiItemLayer.h" />

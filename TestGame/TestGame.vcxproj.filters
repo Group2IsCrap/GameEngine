@@ -8,6 +8,7 @@
     <ClCompile Include="Source\ImGuiItemLayer.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
+    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UI\HealthUI.h" />
@@ -19,6 +20,7 @@
     <ClInclude Include="Source\ImGuiItemLayer.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Inventory\Inventory.h" />
+    <ClInclude Include="Source\Inventory\InventoryManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />
