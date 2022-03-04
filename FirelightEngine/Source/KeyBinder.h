@@ -23,9 +23,12 @@ namespace Firelight
 
 		void Update();
 	private:
-		std::map<unsigned char, bool> m_Keystates;
-		std::unordered_map<unsigned char, DescriptorType> m_keyBinds;
+		
+		std::unordered_map<unsigned char,std::pair<DescriptorType,bool>> m_keyBinds;
 		std::unordered_map<DescriptorType, std::pair<unsigned char, float>> m_keyAxisBinds;
+
+		void CheckAllKeyOnPress();
+
 		void RouteOnKeyPress(unsigned char pressedKey);
 		void RouteKeyIsPressed(unsigned char pressedKey);
 		void RouteOnKeyReleased(unsigned char pressedKey);

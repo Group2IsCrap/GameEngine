@@ -12,21 +12,29 @@ namespace Firelight::Input
         for (int i = 0; i < 256; i++)
         {
             m_Keystates.emplace(i,false);
-            //m_KeystatesNonRepeat[i] = false;
+            
         }
         m_KeystatesNonRepeat = m_Keystates;
     }
 
     bool KeyboardInput::KeyIsPress(const unsigned char key)
     {
-        return m_Keystates[key];
+        if (m_Keystates.find(key) != m_Keystates.end())
+        {
+            return m_Keystates.at(key);
+        }
+        return false;
     }
 
     bool KeyboardInput::KeyIsPressNoRepeat(const unsigned char key)
     {
-        bool KeyIsPress = m_KeystatesNonRepeat[key];
-        m_KeystatesNonRepeat[key] = false;
-        return KeyIsPress;
+        if (m_KeystatesNonRepeat.find(key) != m_KeystatesNonRepeat.end())
+        {
+            bool KeyIsPress = m_KeystatesNonRepeat[key];
+            m_KeystatesNonRepeat[key] = false;
+            return KeyIsPress;
+        }
+        return false;
     }
 
     void KeyboardInput::OnKeyPress(const unsigned char key)
@@ -49,11 +57,9 @@ namespace Firelight::Input
         Events::EventDispatcher::InvokeListeners<Events::Input::OnKeyRelease>((void*)key);
     }
 
+    //just sends out key
     void KeyboardInput::OnChar(const unsigned char key)
     {
-        //m_Keystates[key] = true;
-        //Engine::Instance().GetKeyBinder().RouteOnKeysPress(m_Keystates);
-
         //for a later created event if needed
         Events::EventDispatcher::InvokeListeners<Events::Input::KeyIsPressed>((void*)key);
     }
