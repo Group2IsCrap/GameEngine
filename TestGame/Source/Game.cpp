@@ -250,7 +250,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 
-
+			// get input onece
 			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
 				invTestA->LoadInventoryGroup("PlayerInv");
 			}
