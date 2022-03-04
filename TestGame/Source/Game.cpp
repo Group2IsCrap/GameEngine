@@ -180,7 +180,7 @@ void SpawnItem4()
 void SetupDebugUI()
 {
 	// ImGui Test code
-	ImGuiItemLayer* itemTestLayer = new ImGuiItemLayer();
+	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
 	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
 	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
 	itemTestLayer->spawnItemCommand[2] = std::bind(SpawnItem2);

@@ -41,6 +41,8 @@ namespace Firelight
 
         void                UpdateActiveCamera2DRect();
         const Maths::Rectf& GetActiveCamera2DRect() const;
+        ECS::CameraEntity*  GetActiveCamera() const;
+        void                SetActiveCamera(ECS::CameraEntity* camera);
 
         bool   ProcessMessages();
         void   Update();

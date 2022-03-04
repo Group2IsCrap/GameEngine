@@ -153,6 +153,16 @@ namespace Firelight
         return m_activeCameraRect;
     }
 
+    ECS::CameraEntity* Engine::GetActiveCamera() const
+    {
+        return m_activeCamera;
+    }
+
+    void Engine::SetActiveCamera(ECS::CameraEntity* camera)
+    {
+        m_activeCamera = camera;
+    }
+
     void Engine::Update()
     {
         Input::ProcessInput::Instance()->ControllerInput();
