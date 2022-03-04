@@ -1,7 +1,15 @@
 #include "InventoryManager.h"
 
-InventoryManager::InventoryManager()
+InventoryManager::InventoryManager(ECS::Entity* parent)
 {
+    ECS::UIButton* button= new ECS::UIButton();
+    button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
+    button->SetAnchorSettings(ECS::e_AnchorSettings::Top);
+    button->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
+    button->SetOffset(Maths::Vec2f(0.0f, 10.0f));
+    button->SetParent(parent->GetEntityID());
+    
+
 }
 
 InventoryManager::~InventoryManager()
@@ -10,6 +18,21 @@ InventoryManager::~InventoryManager()
 
 void InventoryManager::ItemChangeInventory()
 {
+    
+    for (auto In : m_Inventory) {
+        for (auto inv: In.second)
+        {
+            if (inv->GetNullSlotData().size() == 0) {
+                continue;
+            }
+            for (auto Slot : inv->GetNullSlotData()) {
+                //do something
+                
+
+            }
+        }
+    }
+    //drop
 }
 
 void InventoryManager::CreatInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::Entity* parent)

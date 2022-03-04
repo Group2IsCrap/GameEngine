@@ -1,12 +1,13 @@
 #pragma once
 #include"Inventory.h"
-
+#include"Source/ECS/EntityWrappers/UIButton.h"
+#include "Source/Graphics/AssetManager.h"
 
 typedef std::string GroupName;
 class InventoryManager
 {
 public:
-	InventoryManager();
+	InventoryManager(ECS::Entity* parent);
 	~InventoryManager();
 	
 	void ItemChangeInventory();

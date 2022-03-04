@@ -65,7 +65,7 @@ public:
 	void Place(SlotData* slotData);
 
 
-
+	std::vector <SlotData*> GetNullSlotData() { return NullSlotData; }
 	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }
