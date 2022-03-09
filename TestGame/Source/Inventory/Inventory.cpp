@@ -194,6 +194,7 @@ void Inventory::CreatInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entity
 //draw on screen
 void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit)
 {
+	
 	isDisplay = true;
 	InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
 	
@@ -217,6 +218,9 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 	int nextFreePannle = -1;
 	for (size_t i = 0; i < PannleToUse->size(); i++)
 	{
+		if (PannleToUse->at(i)->GetWidgetComponent()->parentID == InventorySpace->GetEntityID()) {
+			return;
+		}
 		if (!PannleToUse->at(i)->GetSpriteComponent()->toDraw) {
 			nextFreePannle = i;
 			break;
@@ -232,7 +236,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 		{
 			ECS::UIPanel* Slot;
 			//panel to use
-			if (PannleToUse->size()-1 > nextFreePannle && nextFreePannle != -1){
+			if (PannleToUse->size() > nextFreePannle && nextFreePannle != -1){
 				//use exsting pannle
 				Slot = PannleToUse->at(nextFreePannle);
 				Slot->GetSpriteComponent()->texture=Graphics::AssetManager::Instance().GetTexture("Sprites/UI/StopButton.png");
@@ -245,7 +249,10 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 				do
 				{
 					nextFreePannle++;
-					if (nextFreePannle < PannleToUse->size() - 1){
+					if (nextFreePannle < PannleToUse->size()){
+						break;
+					}
+					if (nextFreePannle == PannleToUse->size()) {
 						break;
 					}
 				} while (PannleToUse->at(nextFreePannle)->GetSpriteComponent()->toDraw);
@@ -295,7 +302,9 @@ void Inventory::UnloadInventory()
 	InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
 	for (auto& Slot : Grid)
 	{
-		ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(Slot.first.SlotID)->toDraw = false;
+		if (ECS::PixelSpriteComponent* sprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(Slot.first.SlotID)) {
+			sprite->toDraw = false;
+		}
 		Slot.first.SlotID = NULL;
 		if (ECS::PixelSpriteComponent* pix = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(Slot.second->UITexID)) {
 			pix->toDraw = isDisplay;
@@ -451,6 +460,11 @@ bool Inventory::AddItem(SlotData* item)
 		else {
 			delete Slot.second;
 			Slot.second = item;
+			Slot.second->CurrSlot = &Slot.first;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(Slot.second->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
+
+
+			Slot.first.IsUsed = true;
 			isFail = false;
 			break;
 		}
@@ -533,9 +547,11 @@ void Inventory::Place(SlotData* slotData)
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
 
 	Grid[slotData->CurrSlot->CurrPos].second = new SlotData();
-
+	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
 	//to be used some were else
 	NullSlotData.push_back(slotData);
+
+	Events::EventDispatcher::InvokeFunctions<Events::Inv::UPDATEINV>();
 
 }
 

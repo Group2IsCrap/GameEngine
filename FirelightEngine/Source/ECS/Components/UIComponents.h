@@ -103,7 +103,7 @@ namespace Firelight::ECS
 		bool isChangeOfTex = true;
 		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
 		std::vector<Maths::Rectf> rectsOfButton;
-		const char* buttonText = nullptr;
+		std::string buttonText = std::string();
 
 		void Serialise() override
 		{
@@ -122,7 +122,7 @@ namespace Firelight::ECS
 			}
 			Serialiser::EndArray();
 
-			Serialiser::Serialise("ButtonText", buttonText);
+			Serialiser::Serialise("ButtonText", buttonText.c_str());
 		}
 	};
 

@@ -219,7 +219,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		invTestA = new InventoryManager(s_uiCanvas);
 		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
-
+		invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
 		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;

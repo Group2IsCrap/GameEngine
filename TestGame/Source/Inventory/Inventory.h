@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+#include"Source/Events/EventDispatcher.h"
+#include"InventoryEvents.h"
+
 using namespace Firelight;
 
 struct SlotInfo
@@ -65,7 +68,7 @@ public:
 	void Place(SlotData* slotData);
 
 
-	std::vector <SlotData*> GetNullSlotData() { return NullSlotData; }
+	std::vector <SlotData*>* GetNullSlotData() { return &NullSlotData; }
 	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }

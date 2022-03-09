@@ -21,6 +21,7 @@
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Inventory\Inventory.h" />
     <ClInclude Include="Source\Inventory\InventoryManager.h" />
+    <ClInclude Include="Source\Inventory\InventoryEvents.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />

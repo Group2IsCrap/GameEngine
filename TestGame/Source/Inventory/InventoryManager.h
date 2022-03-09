@@ -2,8 +2,12 @@
 #include"Inventory.h"
 #include"Source/ECS/EntityWrappers/UIButton.h"
 #include "Source/Graphics/AssetManager.h"
-
+#include"Source/Events/EventDispatcher.h"
+#include"InventoryEvents.h"
 typedef std::string GroupName;
+
+
+
 class InventoryManager
 {
 public:
