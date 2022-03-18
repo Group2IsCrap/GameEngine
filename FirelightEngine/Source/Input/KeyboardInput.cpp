@@ -12,7 +12,6 @@ namespace Firelight::Input
         for (int i = 0; i < 256; i++)
         {
             m_Keystates.emplace(i,false);
-            
         }
         m_KeystatesNonRepeat = m_Keystates;
     }
@@ -37,10 +36,16 @@ namespace Firelight::Input
         return false;
     }
 
+    bool KeyboardInput::KeyIsPressNoRepeat(const unsigned char key)
+    {
+        bool KeyIsPress = m_KeystatesNonRepeat[key];
+        m_KeystatesNonRepeat[key] = false;
+        return KeyIsPress;
+    }
+
     void KeyboardInput::OnKeyPress(const unsigned char key)
     {
         m_Keystates[key] = true;
-       
         Events::EventDispatcher::InvokeListeners<Events::Input::OnKeyPress>((void*)key);
 
     }

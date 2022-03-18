@@ -44,7 +44,7 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 		keyPress = true;
 	}
 
-	if (Firelight::Input::InputGet.KeyIsPress('S'))
+	if (Firelight::Input::InputGet.KeyIsPressNonRepeat('S'))
 	{
 		SetState(m_right ? 1 : 2);
 		m_entities[0]->GetComponent<Firelight::ECS::TransformComponent>()->position.y -= Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_entities[0]->GetComponent<PlayerComponent>()->speed;

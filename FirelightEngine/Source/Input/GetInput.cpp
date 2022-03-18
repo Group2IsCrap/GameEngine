@@ -26,6 +26,11 @@ namespace Firelight::Input
         return m_KeyboardCapture->KeyIsPress(key);
     }
 
+    bool GetInput::KeyIsPressNonRepeat(const unsigned char key)
+    {
+        return m_KeyboardCapture->KeyIsPressNoRepeat(key);
+    }
+
     bool GetInput::MouseButtonPress(e_MouseButtonPress mouseButton)
     {
 
@@ -141,8 +146,6 @@ namespace Firelight::Input
         }
         return 0.0f;
     }
-    
-    
 
     void GetInput::SetDeadZone(double deadzoneRight,double deadzoneLeft)
     {

@@ -2,7 +2,7 @@
 
 #include "..\Source\Engine.h"
 
-
+static bool isNotToDoFLag = false;
 namespace Firelight::UI {
 	
 	UISystem::UISystem()
@@ -48,8 +48,12 @@ namespace Firelight::UI {
 			POINT currMousePos;
 			GetCursorPos(&currMousePos);
 			ScreenToClient(Engine::Instance().GetWindowHandle(), &currMousePos);
-			if (IsHit(currMousePos.x, currMousePos.y, UIComponent, UITransformComponent)) 
+			if (IsHit(currMousePos.x, currMousePos.y, UIComponent, UITransformComponent))
 			{
+				isNotToDoFLag = false;
+				break;
+			}
+			else if (isNotToDoFLag) {
 				break;
 			}
 			if (m_dragWidget != nullptr)
@@ -66,6 +70,7 @@ namespace Firelight::UI {
 			m_isDragging = false;
 
 			AnchorSettings();
+			isNotToDoFLag = true;
 
 		}
 
@@ -133,6 +138,10 @@ namespace Firelight::UI {
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 			{
 				ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+
+				if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
+					continue;
+				}
 
 				if (eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove)
 				{
@@ -369,11 +378,25 @@ namespace Firelight::UI {
 		}
 		if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease && m_dragWidget == UIComponent) 
 		{
+			m_dragWidget->anchorSettings = m_CurrDragAnchor;
+
+			for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions)
+			{
+				Event();
+			}
+			if (m_dragWidget->hasParent)
+			{
+				AnchorSettings(entity);
+			}
+			AnchorSettings();
+
+
 			m_dragEntity = nullptr;
 			m_dragWidget = nullptr;
 			m_dragSprite = nullptr;
 			m_dragTransform = nullptr;
 			m_isDragging = false;
+			
 		}
 		
 	
