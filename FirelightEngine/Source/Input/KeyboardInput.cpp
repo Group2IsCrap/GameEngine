@@ -27,17 +27,6 @@ namespace Firelight::Input
 
     bool KeyboardInput::KeyIsPressNoRepeat(const unsigned char key)
     {
-        if (m_KeystatesNonRepeat.find(key) != m_KeystatesNonRepeat.end())
-        {
-            bool KeyIsPress = m_KeystatesNonRepeat[key];
-            m_KeystatesNonRepeat[key] = false;
-            return KeyIsPress;
-        }
-        return false;
-    }
-
-    bool KeyboardInput::KeyIsPressNoRepeat(const unsigned char key)
-    {
         bool KeyIsPress = m_KeystatesNonRepeat[key];
         m_KeystatesNonRepeat[key] = false;
         return KeyIsPress;
