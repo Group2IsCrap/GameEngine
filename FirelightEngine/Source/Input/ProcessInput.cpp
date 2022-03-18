@@ -91,7 +91,6 @@ namespace Firelight::Input
 		{
 			unsigned char ch = static_cast<unsigned char>(wParam);
 
-
 			m_KeyboardCapture->OnKeyPress(ch);
 			const bool wasPressed = lParam & WAS_PRESSED;
 
