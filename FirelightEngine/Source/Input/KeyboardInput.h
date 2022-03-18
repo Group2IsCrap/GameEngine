@@ -1,6 +1,6 @@
 #pragma once
 
-#include<queue>
+#include<map>
 
 namespace Firelight::Input 
 {
@@ -19,8 +19,8 @@ namespace Firelight::Input
 		void OnChar(const unsigned char key);
 		void OnCharNoRepeat(const unsigned char key);
 	private:
-		
-		bool m_Keystates[256];
-		bool m_KeystatesNonRepeat[256];
+		//map of all keys pressed
+		std::map<unsigned char,bool> m_Keystates;
+		std::map<unsigned char, bool> m_KeystatesNonRepeat;
 	};
 }
