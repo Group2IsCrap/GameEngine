@@ -59,6 +59,10 @@ namespace Firelight::UI {
 			if (m_dragWidget != nullptr)
 			{
 				m_dragWidget->anchorSettings = m_CurrDragAnchor;
+				for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions)
+				{
+					Event();
+				}
 				if (m_dragWidget->hasParent)
 				{
 					AnchorSettings(m_dragEntity);
@@ -351,6 +355,10 @@ namespace Firelight::UI {
 
 					m_CurrDragAnchor = m_dragWidget->anchorSettings;
 					m_dragWidget->anchorSettings = ECS::e_AnchorSettings::None;
+					for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions)
+					{
+						Event();
+					}
 				}
 				else if (m_dragWidget == nullptr)
 				{
@@ -371,6 +379,10 @@ namespace Firelight::UI {
 
 					m_CurrDragAnchor = m_dragWidget->anchorSettings;
 					m_dragWidget->anchorSettings = ECS::e_AnchorSettings::None;
+					for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions)
+					{
+						Event();
+					}
 				}
 
 			}
@@ -411,6 +423,7 @@ namespace Firelight::UI {
 	{
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
+			
 			AnchorSettings(m_entities[entityIndex]);
 		}
 	}
@@ -528,6 +541,7 @@ namespace Firelight::UI {
 				UITransformComponent->position = UIComponent->defaultPosition;
 				break;
 			}
+			return;
 		}
 		else
 		{
@@ -540,7 +554,8 @@ namespace Firelight::UI {
 				UIComponent->defaultScale.x = UIComponent->defaultDimensions.x / currCanvas->XScreenSize;
 				UIComponent->defaultScale.y = UIComponent->defaultDimensions.y / currCanvas->YScreenSize;
 			}
-			UIComponent->currentScale = UIComponent->defaultScale * currWidgetParent->currentScale;
+
+			//UIComponent->currentScale = UIComponent->defaultScale * currWidgetParent->currentScale;
 			UITransformComponent->scale = UIComponent->currentScale;
 
 			float width = screen.x * currTransform->scale.x;
@@ -596,6 +611,8 @@ namespace Firelight::UI {
 					
 					for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 					{
+						
+
 						//checks
 						ECS::UICanvasComponent* UICanvas = m_entities[entityIndex]->GetComponent<ECS::UICanvasComponent>();
 						ECS::UIContainerComponent* UIPanel = m_entities[entityIndex]->GetComponent<ECS::UIContainerComponent>();
@@ -606,6 +623,9 @@ namespace Firelight::UI {
 						}
 						else if (UIPanel == nullptr) 
 						{
+							/*if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
+								continue;
+							}*/
 							if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIComponent, UITransformComponent))
 							{								
 								currentParent = m_entities[entityIndex];
@@ -613,6 +633,9 @@ namespace Firelight::UI {
 						}
 						else if(currentParent!= nullptr)
 						{
+							/*if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
+								continue;
+							}*/
 							ECS::UIBaseWidgetComponent* UIContainerComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
 							ECS::TransformComponent* UIPanelTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
 							if (m_entities[entityIndex] != entity) 
@@ -640,20 +663,50 @@ namespace Firelight::UI {
 					ECS::TransformComponent* newParentTransform = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(UIComponent->parentID);
 					ECS::PixelSpriteComponent* newParentSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
 
-					UIComponent->currentScale= UIComponent->defaultScale * newParentTransform->scale;
-					UITransformComponent->scale = UIComponent->currentScale;
-					UISpriteComponent->layer = newParentSprite->layer+1;
-					return;
+					switch (UIComponent->scaleSetting)
+					{
+					case Firelight::ECS::e_Scale::Absolute:
+					{
+						UITransformComponent->scale = UIComponent->currentScale;
+						UISpriteComponent->layer = currSprite->layer + 1;
+					}
+					break;
+					case Firelight::ECS::e_Scale::Relative:
+						//default setting is Relative Scaling
+					default:
+					{
+						UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
+						UITransformComponent->scale = UIComponent->currentScale;
+						UISpriteComponent->layer = currSprite->layer + 1;
+					}
+					break;
+					}
+					return;					
 				}
 					break;
 			default:
 				break;
 			}
 		
-
-			UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
-			UITransformComponent->scale = UIComponent->currentScale;
-			UISpriteComponent->layer = currSprite->layer + 1;
+			switch (UIComponent->scaleSetting)
+			{
+			case Firelight::ECS::e_Scale::Absolute:
+			{
+				UITransformComponent->scale = UIComponent->defaultScale;
+				UISpriteComponent->layer = currSprite->layer + 1;
+			}
+			break;
+			case Firelight::ECS::e_Scale::Relative:
+				//default setting is Relative Scaling
+			default:
+			{
+				UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
+				UITransformComponent->scale = UIComponent->currentScale;
+				UISpriteComponent->layer = currSprite->layer + 1;
+			}
+				break;
+			}
+		
 		}
 		
 		if (currCanvas != nullptr) {

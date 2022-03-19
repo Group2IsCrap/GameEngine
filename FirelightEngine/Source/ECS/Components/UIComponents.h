@@ -27,7 +27,11 @@ namespace Firelight::ECS
 		None
 
 	};
-
+	enum class e_Scale
+	{
+		Absolute=0,
+		Relative
+	};
 
 	//Base Widget
 	struct UIBaseWidgetComponent : BaseComponent
@@ -42,6 +46,8 @@ namespace Firelight::ECS
 
 		Maths::Vec3f defaultPosition = Maths::Vec3f(0, 0, 0);
 		Maths::Vec3f defaultDimensions = Maths::Vec3f(100, 100, 0);
+
+		e_Scale scaleSetting = e_Scale::Relative;
 		Maths::Vec3f defaultScale = Maths::Vec3f(1, 1, 0);
 		Maths::Vec3f currentScale = Maths::Vec3f(1, 1, 0);
 
@@ -53,6 +59,8 @@ namespace Firelight::ECS
 
 			//Maybe?
 			Serialiser::Serialise("AnchorSettings", (int)anchorSettings);
+			Serialiser::Serialise("ScaleSetting", (int)scaleSetting);
+
 
 			Serialiser::Serialise("Offset", offSet);
 			Serialiser::Serialise("DefaultPosition", defaultPosition);

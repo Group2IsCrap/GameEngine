@@ -95,6 +95,7 @@ void CreatUITest() {
 	s_uiCanvas = new UICanvas();
 	s_uiCanvas->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/CanvasTest.png");
 	s_uiCanvas->GetSpriteComponent()->toDraw = false;
+	s_uiCanvas->GetWidgetComponent()->hasParent = false;
 	s_uiCanvas->SetAnchorSettings(ECS::e_AnchorSettings::Center);
 	s_uiCanvas->GetCanvasComponent()->XScreenSize = Engine::Instance().GetWindowDimensionsFloat().x;
 	s_uiCanvas->GetCanvasComponent()->YScreenSize = Engine::Instance().GetWindowDimensionsFloat().y;
@@ -218,8 +219,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupDebugUI();
 
 		invTestA = new InventoryManager(s_uiCanvas);
-		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
-		invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(100,0));
+		invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
+		invTestA->CreatInventory("PlayerInv2", "MainIven3", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
+		invTestA->CreatInventory("PlayerInv2", "MainIven4", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
+
+
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
 		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
@@ -252,13 +257,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 			// get input onece
 			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
+				//invTestA->LoadInventory("PlayerInv","MainIven");
+				//invTestA->LoadInventory("PlayerInv", "MainIven2");
 				invTestA->LoadInventoryGroup("PlayerInv");
+				invTestA->LoadInventoryGroup("PlayerInv2");
 			}
 			if (Input::InputGet.KeyIsPressNonRepeat('G')) {
 				invTestA->UnloadInventoryGroup("PlayerInv");
+				invTestA->UnloadInventoryGroup("PlayerInv2");
+				//invTestA->UnloadInventoryGroup("PlayerInv2");
 			}
 			if (Input::InputGet.KeyIsPressNonRepeat('P')) {
 				invTestA->RemoveItem("PlayerInv", "MainIven",1,10);
+				//invTestA->RemoveItem("PlayerInv2","MainIven2",0,3);
 			}
 		}
 

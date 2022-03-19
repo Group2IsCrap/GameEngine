@@ -34,8 +34,8 @@ public:
 	~Inventory();
 
 
-	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::Entity* parent);
-	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entity* parent);
+	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::Entity* parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entity* parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 
 	//inventory without manager
 	void CreatInventory(Maths::Vec2f size, float slotCount,ECS::Entity* parent);
@@ -48,7 +48,7 @@ public:
 	//item controlls
 	bool AddItem(Firelight::ECS::Entity* item);
 	bool AddItem(Firelight::ECS::EntityID item);
-	bool AddItem(SlotData* item);
+	bool AddItem(SlotData* item, bool useSlotPlacement);
 
 	void RemoveItem(Firelight::ECS::Entity* item);
 	void RemoveItem(Firelight::ECS::EntityID item);

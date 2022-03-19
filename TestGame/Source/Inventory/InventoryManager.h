@@ -17,7 +17,7 @@ public:
 	void ItemChangeInventory();
 
 	//creation
-	void CreatInventory(GroupName group,std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::Entity* parent);
+	void CreatInventory(GroupName group,std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::Entity* parent, Maths::Vec2f offSet);
 	void CreatInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::Entity* parent);
 
 	//render on screen
@@ -52,6 +52,9 @@ private:
 
 	//inv list
 	std::map<GroupName, std::vector<Inventory*>> m_Inventory;
+
+	ECS::EntityID ParentID;
+
 };
 
 //TODO Change to templates
