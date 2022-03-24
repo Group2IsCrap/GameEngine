@@ -94,4 +94,19 @@ namespace Firelight::Events
 			observer();
 		}
 	}
+
+	inline void EventDispatcher::InvokeFunctions(DescriptorType descriptor)
+	{
+		if (sm_observers.find(descriptor) == sm_observers.end())
+		{
+			return;
+		}
+
+		auto&& observers = sm_observers.at(descriptor);
+
+		for (auto&& observer : observers)
+		{
+			observer();
+		}
+	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include<queue>
+#include<map>
 
 namespace Firelight::Input 
 {
@@ -8,24 +8,19 @@ namespace Firelight::Input
 	{
 	public:
 		KeyboardInput();
+
 		bool KeyIsPress(const unsigned char key);
+		bool KeyIsPressNoRepeat(const unsigned char key);
 		void OnKeyPress(const unsigned char key);
+		void OnKeyPressNonRepeat(const unsigned char key);
+
 		void OnKeyReplace(const unsigned char key);
+
 		void OnChar(const unsigned char key);
-
-
-		void EnableAutoRepeatKeys();
-		void DisableAutoRepeatKeys();
-
-		void EnableAutoRepeatChars();
-		void DisableAutoRepeatChars();
-
-		bool IsCharAutoRepeat();
-		bool IsKeysAutoRepeat();
-
+		void OnCharNoRepeat(const unsigned char key);
 	private:
-		bool m_AutoRepeatKeys = true;
-		bool m_AutoRepeatChars = false;
-		bool m_Keystates[256];
+		//map of all keys pressed
+		std::map<unsigned char,bool> m_Keystates;
+		std::map<unsigned char, bool> m_KeystatesNonRepeat;
 	};
 }
