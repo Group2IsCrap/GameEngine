@@ -17,10 +17,13 @@ private:
 	size_t m_playerMoveLeftIndex;
 	size_t m_playerMoveDownIndex;
 	size_t m_playerMoveRightIndex;
+	size_t m_interactionEventIndex;
+
 	PlayerEntity* playerEntity;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();
 	void MovePlayerDown();
 	void MovePlayerRight();
+	void Interact();
 };

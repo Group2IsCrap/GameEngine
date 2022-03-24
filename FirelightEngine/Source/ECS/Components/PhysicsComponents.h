@@ -40,6 +40,7 @@ namespace Firelight::ECS
 	{
 		bool isEnabled = true;
 		bool drawCollider = false;
+		bool isTrigger = false;
 
 		void Serialise() override
 		{
