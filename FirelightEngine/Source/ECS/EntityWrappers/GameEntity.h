@@ -13,6 +13,7 @@ namespace Firelight::ECS
 
         IdentificationComponent* GetIDComponent();
         StaticComponent*         GetStaticComponent();
+        LayerComponent*          GetLayerComponent();
         TransformComponent*      GetTransformComponent();
     };
 }

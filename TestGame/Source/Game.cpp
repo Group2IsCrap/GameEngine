@@ -215,16 +215,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		SetupDebugUI();
 
-		//SpriteEntity* barn = new SpriteEntity();
-		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
-		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
-		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		//barn->GetComponent<SpriteComponent>()->layer = 33;
-		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->AddComponent<ColliderComponent>(new CircleColliderComponent());
+		barn->GetComponent<ColliderComponent, CircleColliderComponent>()->radius = 3;
 		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
-		//barn->GetComponent<StaticComponent>()->isStatic = true;
+		barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
+		barn->GetComponent<StaticComponent>()->isStatic = true;
 
 		//SpriteEntity* circle = new SpriteEntity();
 		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
