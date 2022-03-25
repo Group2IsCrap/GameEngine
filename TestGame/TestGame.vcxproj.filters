@@ -9,6 +9,7 @@
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
     <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
+    <ClCompile Include="Source\Inventory\InventoryWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\UI\HealthUI.h" />
@@ -22,6 +23,8 @@
     <ClInclude Include="Source\Inventory\Inventory.h" />
     <ClInclude Include="Source\Inventory\InventoryManager.h" />
     <ClInclude Include="Source\Inventory\InventoryEvents.h" />
+    <ClInclude Include="Source\Inventory\InventoryComponents.h" />
+    <ClInclude Include="Source\Inventory\InventoryWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\%24ENGINE\Materials\default.json" />

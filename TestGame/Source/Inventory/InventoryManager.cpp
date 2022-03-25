@@ -1,30 +1,17 @@
 #include "InventoryManager.h"
 
+InventoryManager::InventoryManager()
+{
+    AddWhitelistComponent<ECS::UIBaseWidgetComponent>();
+    AddWhitelistComponent<ECS::PixelSpriteComponent>();
+    AddWhitelistComponent<ECS::TransformComponent>();
+}
+
 InventoryManager::InventoryManager(ECS::Entity* parent)
 {
     //creat intital ui entitys here
     ParentID = parent->GetEntityID();
-   /* ECS::UIButton* button= new ECS::UIButton();
-    button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
-    button->SetAnchorSettings(ECS::e_AnchorSettings::Left);
-    button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
-    button->SetOffset(Maths::Vec2f(0.0f, 10.0f));
-    button->SetParent(parent->GetEntityID());
-    button->GetSpriteComponent()->toDraw=false;
-    button->AddComponent<ECS::UIContainerComponent>();
-    button->GetButtonComponent()->buttonText = "null";
-    EntityIDButtion.push_back(button->GetEntityID());
-
-    button = new ECS::UIButton();
-    button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
-    button->SetAnchorSettings(ECS::e_AnchorSettings::Left);
-    button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
-    button->SetOffset(Maths::Vec2f(0.0f, 150.0f));
-    button->SetParent(parent->GetEntityID());
-    button->GetSpriteComponent()->toDraw = false;
-    button->AddComponent<ECS::UIContainerComponent>();
-    button->GetButtonComponent()->buttonText = "null";
-    EntityIDButtion.push_back(button->GetEntityID());*/
+ 
 
     //sub to this event
     Events::EventDispatcher::SubscribeFunction<Events::Inv::UPDATEINV>(std::bind(&InventoryManager::ItemChangeInventory, this));
@@ -86,7 +73,7 @@ void InventoryManager::ItemChangeInventory()
 void InventoryManager::CreatInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::Entity* parent, Maths::Vec2f offSet)
 {
     Inventory* newInv = new Inventory(InvName);
-    newInv->CreatInventoryNoPannel(size, columnRows, parent,ECS::e_AnchorSettings::Top, offSet);
+    newInv->CreatInventoryNoPannel(size, columnRows, parent,ECS::e_AnchorSettings::TopRight, offSet);
     m_Inventory[group].emplace_back(newInv);
 }
 
@@ -118,11 +105,11 @@ void InventoryManager::LoadInventoryGroup(std::string group)
             if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText ==  "null") {
                 break;
             }
-            else if (index == EntityIDButtion.size()) {
+            if (index == EntityIDButtion.size()) {
                 //create new buttion
                 ECS::UIButton* button = new ECS::UIButton();
                 button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
-                button->SetAnchorSettings(ECS::e_AnchorSettings::Left);
+                button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
                 button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
                 button->SetOffset(Maths::Vec2f(0.0f, 0.0f));
                 button->SetParent(ParentID);
@@ -138,7 +125,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
         if (EntityIDButtion.size() == 0) {
             ECS::UIButton* button = new ECS::UIButton();
             button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
-            button->SetAnchorSettings(ECS::e_AnchorSettings::Left);
+            button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
             button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
             button->SetOffset(Maths::Vec2f(0.0f, 0.0f));
             button->SetParent(ParentID);
@@ -154,9 +141,13 @@ void InventoryManager::LoadInventoryGroup(std::string group)
 
                 ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(EntityIDButtion[index])->buttonText = In->GetName();
                 ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(EntityIDButtion[index])->toDraw = true;
+                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(EntityIDButtion[index])->anchorSettings = In->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->anchorSettings;
+                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(EntityIDButtion[index])->offSet= Maths::Vec2f( -In->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->defaultDimensions.x, 120.0f* groupIndex);
+                //ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(EntityIDButtion[index]);
+
                 for (size_t i = 0; i < m_Inventory[group].size(); i++)
                 {
-                    if (i == index) {
+                    if (i == groupIndex) {
                         continue;
                     }
                     ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(EntityIDButtion[index])->onLeftPressFunctions.push_back(std::bind(&Inventory::UnloadInventory, m_Inventory[group][i]));
@@ -173,12 +164,12 @@ void InventoryManager::LoadInventoryGroup(std::string group)
                     if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText == "null") {
                         break;
                     }
-                    else if (index == EntityIDButtion.size()-1) {
+                    if (index == EntityIDButtion.size()-1) {
                         //create new buttion
                         index++;
                         ECS::UIButton* button = new ECS::UIButton();
                         button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PlayButton.png");
-                        button->SetAnchorSettings(ECS::e_AnchorSettings::Left);
+                        button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
                         button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
                         button->SetOffset(Maths::Vec2f(0.0f, 150.0f*index));
                         button->SetParent(ParentID);

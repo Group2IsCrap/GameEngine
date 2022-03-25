@@ -78,7 +78,11 @@ private:
 
 private:
 
+	//pannle created by this 
 	ECS::UIPanel* InventorySpace;
+
+
+	//data to remove
 	std::string m_Name;
 	UINT SlotCount = 0;
 	int RowCount = 0;
@@ -94,6 +98,10 @@ private:
 	Maths::Vec2i Size;
 	std::vector<std::pair<SlotInfo, SlotData*>> Grid;
 
+	//invetory entity
+	ECS::EntityID IveID;
+
+	//slots to remove
 	std::vector <SlotData*> NullSlotData;
 };
 

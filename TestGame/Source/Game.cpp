@@ -36,6 +36,8 @@
 #include "Source/Serialisation/Serialiser.h"
 #include"Source/Input/GetInput.h"
 
+
+
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
@@ -106,7 +108,7 @@ void CreatUITest() {
 
 	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 
-	UIPanel* panelSound = new UIPanel();
+	/*UIPanel* panelSound = new UIPanel();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
@@ -150,7 +152,7 @@ void CreatUITest() {
 	buttonStopPlay->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
 	buttonStopPlay->SetOffset(Maths::Vec2f(0.0f, 330.0f));
 	buttonStopPlay->BindOnLeftPressed(std::bind(StopSounds));
-	buttonStopPlay->SetParent(panelSound->GetEntityID());
+	buttonStopPlay->SetParent(panelSound->GetEntityID());*/
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
@@ -167,15 +169,15 @@ void SpawnItem1()
 }
 void SpawnItem2()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+	invTestA->AddItem("PlayerInv", "MainIven2", ItemDatabase::Instance()->CreateInstanceOfItem(2));
 }
 void SpawnItem3()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+	invTestA->AddItem("PlayerInv2", "MainIven3", ItemDatabase::Instance()->CreateInstanceOfItem(3));
 }
 void SpawnItem4()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(4);
+	invTestA->AddItem("PlayerInv2", "MainIven4", ItemDatabase::Instance()->CreateInstanceOfItem(4));
 }
 
 void SetupDebugUI()
@@ -219,12 +221,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupDebugUI();
 
 		invTestA = new InventoryManager(s_uiCanvas);
-		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(100,0));
-		invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
-		invTestA->CreatInventory("PlayerInv2", "MainIven3", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
-		invTestA->CreatInventory("PlayerInv2", "MainIven4", Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(-100, 0));
-
-
+		//invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(100,0));
+		//invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 5), s_uiCanvas, Maths::Vec2f(100, 0));
+		invTestA->CreatInventory("PlayerInv2", "MainIven3", Maths::Vec2f(200, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(0, 0));
+		invTestA->CreatInventory("PlayerInv2", "MainIven4", Maths::Vec2f(200, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(0, 0));
+		Engine::Instance().GetSystemManager().RegisterGameSystem<InventoryManager>();
+		
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
 		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;

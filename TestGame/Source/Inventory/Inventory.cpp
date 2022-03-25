@@ -198,7 +198,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 {
 	if (isDisplay) {
 		return;
-		}
+	}
 	isDisplay = true;
 	InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
 	
@@ -250,16 +250,15 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 				Slot->SetOffset(Maths::Vec2f(currX, currY));
 
 				//find next non drawn pannle
-				do
+				for (size_t i = 0; i < PannleToUse->size(); i++)
 				{
-					nextFreePannle++;
-					if (nextFreePannle < PannleToUse->size()){
+					if (!PannleToUse->at(i)->GetSpriteComponent()->toDraw) {
+						nextFreePannle = i;
 						break;
 					}
-					if (nextFreePannle == PannleToUse->size()) {
-						break;
-					}
-				} while (PannleToUse->at(nextFreePannle)->GetSpriteComponent()->toDraw);
+
+				}
+
 			}
 			else
 			{

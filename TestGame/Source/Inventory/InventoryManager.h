@@ -4,13 +4,15 @@
 #include "Source/Graphics/AssetManager.h"
 #include"Source/Events/EventDispatcher.h"
 #include"InventoryEvents.h"
+
+#include<Source/ECS/Systems/System.h>
+
 typedef std::string GroupName;
 
-
-
-class InventoryManager
+class InventoryManager: public Firelight::ECS::System
 {
 public:
+	InventoryManager();
 	InventoryManager(ECS::Entity* parent);
 	~InventoryManager();
 	
