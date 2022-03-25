@@ -4,8 +4,9 @@
 #include <cstdio>
 
 #include "..\Events\EventDispatcher.h"
-#include "ControllerEvent.h"
+
 #include"..\Source\Engine.h"
+
 namespace Firelight::Input 
 {
     ControllerInput::ControllerInput() :
@@ -54,7 +55,7 @@ namespace Firelight::Input
 
         if (dwResult == ERROR_SUCCESS)
         {
-            m_Isconnected = true;
+            m_IsConnected = true;
 
             return true;
         }
@@ -87,10 +88,59 @@ namespace Firelight::Input
             state.m_RightBumber = IsPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER);
             state.m_Back = IsPressed(XINPUT_GAMEPAD_BACK);
             state.m_Start = IsPressed(XINPUT_GAMEPAD_START);
-            state.m_StickLeftPress = IsPressed(XINPUT_GAMEPAD_LEFT_THUMB);
-            state.m_StickRightPress = IsPressed(XINPUT_GAMEPAD_RIGHT_THUMB);
+            state.m_LeftStickPress = IsPressed(XINPUT_GAMEPAD_LEFT_THUMB);
+            state.m_RightStickPress = IsPressed(XINPUT_GAMEPAD_RIGHT_THUMB);
 
-            Events::EventDispatcher::InvokeListeners<Events::Input::ContollerEvent>((void*)&state);
+            Events::EventDispatcher::InvokeListeners<Events::Input::ControllerEvent>((void*)&state);
+
+            ProcessStateChange(state);
+        }
+    }
+
+    void ControllerInput::ProcessStateChange(Events::Input::ControllerState state)
+    {
+        ProcessButtonPressed(state.m_A, m_previousState.m_A, ControllerButtons::A);
+        ProcessButtonPressed(state.m_B, m_previousState.m_B, ControllerButtons::B);
+        ProcessButtonPressed(state.m_X, m_previousState.m_X, ControllerButtons::X);
+        ProcessButtonPressed(state.m_Y, m_previousState.m_Y, ControllerButtons::Y);
+        ProcessButtonPressed(state.m_Back, m_previousState.m_Back, ControllerButtons::BACK);
+        ProcessButtonPressed(state.m_DPadDown, m_previousState.m_DPadDown, ControllerButtons::DPAD_DOWN);
+        ProcessButtonPressed(state.m_DPadLeft, m_previousState.m_DPadLeft, ControllerButtons::DPAD_LEFT);
+        ProcessButtonPressed(state.m_DPadRight, m_previousState.m_DPadRight, ControllerButtons::DPAD_RIGHT);
+        ProcessButtonPressed(state.m_DPadUp, m_previousState.m_DPadUp, ControllerButtons::DPAD_UP);
+        ProcessButtonPressed(state.m_LeftBumber, m_previousState.m_LeftBumber, ControllerButtons::LB);
+        ProcessButtonPressed(state.m_LeftStickPress, m_previousState.m_LeftStickPress, ControllerButtons::STICK_LEFT);
+        ProcessButtonPressed(state.m_LeftTrigger, m_previousState.m_LeftTrigger, ControllerButtons::LT);
+        ProcessButtonPressed(state.m_RightBumber, m_previousState.m_RightBumber, ControllerButtons::RB);
+        ProcessButtonPressed(state.m_RightStickPress, m_previousState.m_RightStickPress, ControllerButtons::STICK_RIGHT);
+        ProcessButtonPressed(state.m_RightTrigger, m_previousState.m_RightTrigger, ControllerButtons::RT);
+        ProcessButtonPressed(state.m_Start, m_previousState.m_Start, ControllerButtons::START);
+
+        if (state.m_LeftStick != m_previousState.m_LeftStick)
+        {
+            Events::EventDispatcher::InvokeListeners<Events::Input::OnLeftThumbstickMoved>((void*)&state.m_LeftStick);
+        }
+        if (state.m_RightStick != m_previousState.m_RightStick)
+        {
+            Events::EventDispatcher::InvokeListeners<Events::Input::OnRightThumbstickMoved>((void*)&state.m_RightStick);
+        }
+
+        m_previousState = state;
+    }
+
+    void ControllerInput::ProcessButtonPressed(bool state, bool previousState, ControllerButtons button)
+    {
+        if (state)
+        {
+            Events::EventDispatcher::InvokeListeners<Events::Input::OnButtonPressed>((void*)static_cast<int>(button));
+            if (previousState)
+            {
+                Events::EventDispatcher::InvokeListeners<Events::Input::OnButtonPressedSingle>((void*)static_cast<int>(button));
+            }
+        }
+        else if (previousState)
+        {
+            Events::EventDispatcher::InvokeListeners<Events::Input::OnButtonReleased>((void*)static_cast<int>(button));
         }
     }
 

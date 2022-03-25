@@ -3,6 +3,27 @@
 #include"..\Events\Event.h"
 namespace Firelight::Events::Input 
 {
+	enum class ControllerButtons
+	{
+		A,
+		B,
+		X,
+		Y,
+		STICK_LEFT,
+		STICK_RIGHT,
+		DPAD_LEFT,
+		DPAD_UP,
+		DPAD_RIGHT,
+		DPAD_DOWN,
+		LB,
+		RB,
+		LT,
+		RT,
+		START,
+		BACK,
+		SHARE,
+		HOME
+	};
 
 	//More Readable format 
 	struct ControllerState
@@ -15,8 +36,8 @@ namespace Firelight::Events::Input
 		bool m_RightBumber = false;
 		bool m_LeftBumber = false;
 
-		bool m_StickLeftPress = false;
-		bool m_StickRightPress = false;
+		bool m_LeftStickPress = false;
+		bool m_RightStickPress = false;
 		bool m_Back = false;
 		bool m_Start = false;
 
@@ -31,12 +52,10 @@ namespace Firelight::Events::Input
 
 	};
 
-	class ContollerEvent : public Events::Event
-	{
-	public:
-		ContollerEvent() {}
-		~ContollerEvent() {}
-
-		static constexpr DescriptorType sm_descriptor = "ControllerState";
-	};
+	NEW_EVENT(ControllerEvent);
+	NEW_EVENT(OnButtonPressed);
+	NEW_EVENT(OnButtonPressedSingle);
+	NEW_EVENT(OnButtonReleased);
+	NEW_EVENT(OnLeftThumbstickMoved);
+	NEW_EVENT(OnRightThumbstickMoved);
 }
