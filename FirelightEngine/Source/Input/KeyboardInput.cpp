@@ -44,7 +44,7 @@ namespace Firelight::Input
         Events::EventDispatcher::InvokeListeners<Events::Input::OnKeyPressNonRepeat>((void*)key);
     }
 
-    void KeyboardInput::OnKeyReplace(const unsigned char key)
+    void KeyboardInput::OnKeyRelease(const unsigned char key)
     {
         m_Keystates[key] = false;
         m_KeystatesNonRepeat[key] = false;

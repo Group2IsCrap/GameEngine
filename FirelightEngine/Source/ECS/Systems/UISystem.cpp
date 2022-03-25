@@ -78,7 +78,7 @@ namespace Firelight::UI {
 
 	void UISystem::HandleEvents(const char* event , void* data)
 	{
-		if (event == Events::Input::ContollerEvent::sm_descriptor) 
+		if (event == Events::Input::ControllerEvent::sm_descriptor) 
 		{
 			Firelight::Events::Input::ControllerState* eventController = (Firelight::Events::Input::ControllerState*)data;
 			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
@@ -180,7 +180,7 @@ namespace Firelight::UI {
 		Events::EventDispatcher::AddListener<Events::Input::MouseButtonReleaseEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::MouseMoveEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::MouseMoveRawEvent>(this);
-		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::ControllerEvent>(this);
 	}
 	
 	void UISystem::OnPress(int x, int y, Firelight::Events::Input::e_MouseEventType mouseEvent, ECS::Entity* entity)

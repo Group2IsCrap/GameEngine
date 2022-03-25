@@ -82,7 +82,7 @@ namespace Firelight::Input
 
 			unsigned char ch = static_cast<unsigned char>(wParam);
 
-			m_KeyboardCapture->OnKeyReplace(ch);
+			m_KeyboardCapture->OnKeyRelease(ch);
 
 			return true;
 		}

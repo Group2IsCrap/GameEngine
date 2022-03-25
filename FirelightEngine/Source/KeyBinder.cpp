@@ -1,7 +1,6 @@
 #include "KeyBinder.h"
 #include "Events/EventDispatcher.h"
 #include "Input/KeyboardEvent.h"
-#include "Input/ControllerEvent.h"
 
 namespace Firelight
 {
@@ -9,104 +8,228 @@ namespace Firelight
 	{
 		SetUpKeyMap();
 
-		m_keyBinds = std::unordered_map<unsigned char, std::pair<DescriptorType,bool>>();
-		m_keyAxisBinds = std::unordered_map<DescriptorType, std::pair<unsigned char, float>>();
-
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyPress>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnKeyPressNonRepeat>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyRelease>(this);
-		Events::EventDispatcher::AddListener<Events::Input::KeyIsPressed>(this);
-		Events::EventDispatcher::AddListener<Events::Input::ContollerEvent>(this);
+		//Events::EventDispatcher::AddListener<Events::Input::KeyIsPressed>(this);
+		//Events::EventDispatcher::AddListener<Events::Input::ControllerEvent>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnButtonPressed>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnButtonPressedSingle>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnButtonReleased>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnLeftThumbstickMoved>(this);
+		Events::EventDispatcher::AddListener<Events::Input::OnRightThumbstickMoved>(this);
 
 	}
 
-	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, unsigned char key)
-	{
-		m_keyBinds[key].first = eventName;
-		m_keyBinds[key].second = false;
-	}
-
-	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, Keys key)
+	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, Keys key, KeyEventType eventType)
 	{
 		unsigned char keyChar = m_keyMap[key];
-
-		m_keyBinds[keyChar].first = eventName;
-		m_keyBinds[keyChar].second = false;
+		BindKeyboardActionEvent(eventName, keyChar, eventType);
 	}
 
-	void KeyBinder::BindKeyboardAxisEvent(DescriptorType eventName, unsigned char key, float axisValue)
+	void KeyBinder::BindControllerActionEvent(DescriptorType eventName, ControllerButtons button, ControllerEventType eventType)
 	{
-		m_keyAxisBinds[eventName] = std::make_pair(key, axisValue);
+		switch (eventType)
+		{
+		case ControllerEventType::ButtonPress:
+			m_controllerBindsOnPress[button] = eventName;
+			break;
+		case ControllerEventType::ButtonPressSingle:
+			m_controllerBindsOnPressSingle[button] = eventName;
+			break;
+		case ControllerEventType::ButtonRelease:
+			m_controllerBindsOnRelease[button] = eventName;
+			break;
+		}
+
+		if (!m_buttonStates.contains(button))
+		{
+			m_buttonStates[button] = false;
+			m_previousButtonStates[button] = false;
+			m_buttonSingleStates[button] = false;
+		}
 	}
+
+	void KeyBinder::BindControllerAxisEvent(DescriptorType eventName, Axis axis, ControllerThumbsticks stick, float value)
+	{
+		if (value < 0)
+		{
+			value = -1;
+		}
+		if (value > 0)
+		{
+			value = 1;
+		}
+
+		switch (stick)
+		{
+		case ControllerThumbsticks::LEFT:
+			m_leftStickAxisBinds[eventName] = std::make_pair(axis, value);
+			break;
+		case ControllerThumbsticks::RIGHT:
+			m_rightStickAxisBinds[eventName] = std::make_pair(axis, value);
+			break;
+		}
+	}
+
+	void KeyBinder::BindKeyboardActionEvent(DescriptorType eventName, unsigned char key, KeyEventType eventType)
+	{
+		switch (eventType)
+		{
+		case KeyEventType::KeyPress:
+			m_keyBindsOnPress[key] = eventName;
+			break;
+		case KeyEventType::KeyPressSingle:
+			m_keyBindsOnPressSingle[key] = eventName;
+			break;
+		case KeyEventType::KeyRelease:
+			m_keyBindsOnRelease[key] = eventName;
+			break;
+		}
+
+		if (!m_keyStates.contains(key))
+		{
+			m_keyStates[key] = false;
+			m_previousKeyStates[key] = false;
+			m_keySingleStates[key] = false;
+		}
+	}
+
 
 	void KeyBinder::HandleEvents(DescriptorType event, void* data)
 	{
 		if (event == Events::Input::OnKeyPress::sm_descriptor)
 		{
-			if (m_keyBinds.find(reinterpret_cast<unsigned char>(data)) != m_keyBinds.end())
+			if (m_keyStates.find(reinterpret_cast<unsigned char>(data)) != m_keyStates.end())
 			{
-				m_keyBinds.at(reinterpret_cast<unsigned char>(data)).second = true;
-			}
-			
-		}
-		else if (event == Events::Input::OnKeyRelease::sm_descriptor)
-		{
-			if (m_keyBinds.find(reinterpret_cast<unsigned char>(data)) != m_keyBinds.end())
-			{
-				m_keyBinds.at(reinterpret_cast<unsigned char>(data)).second = false;
+				m_keyStates.at(reinterpret_cast<unsigned char>(data)) = true;
 			}
 		}
-		else if (event == Events::Input::ContollerEvent::sm_descriptor)
+		if (event == Events::Input::OnKeyPressNonRepeat::sm_descriptor)
 		{
-			//RouteControllerEvent(data);
+			if (m_keySingleStates.find(reinterpret_cast<unsigned char>(data)) != m_keySingleStates.end())
+			{
+				m_keySingleStates.at(reinterpret_cast<unsigned char>(data)) = true;
+			}
+		}
+		if (event == Events::Input::OnKeyRelease::sm_descriptor)
+		{
+			if (m_keyStates.find(reinterpret_cast<unsigned char>(data)) != m_keyStates.end())
+			{
+				m_keyStates.at(reinterpret_cast<unsigned char>(data)) = false;
+			}
+		}
+		if (event == Events::Input::OnButtonPressed::sm_descriptor)
+		{
+			if (m_buttonStates.find(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) != m_buttonStates.end())
+			{
+				m_buttonStates.at(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) = true;
+			}
 
-			//get contoller data
-			//Firelight::Events::Input::ControllerState* eventController = (Firelight::Events::Input::ControllerState*)data;
-			
 		}
-		
+		if (event == Events::Input::OnButtonPressedSingle::sm_descriptor)
+		{
+			if (m_buttonSingleStates.find(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) != m_buttonSingleStates.end())
+			{
+				m_buttonSingleStates.at(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) = true;
+			}
+		}
+		if (event == Events::Input::OnButtonReleased::sm_descriptor)
+		{
+			if (m_buttonStates.find(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) != m_buttonStates.end())
+			{
+				m_buttonStates.at(static_cast<ControllerButtons>(reinterpret_cast<int>(data))) = false;
+			}
+		}
+		if (event == Events::Input::OnLeftThumbstickMoved::sm_descriptor)
+		{
+			m_leftStickAxis = *reinterpret_cast<Maths::Vec2f*>(data);
+		}
+		if (event == Events::Input::OnRightThumbstickMoved::sm_descriptor)
+		{
+			m_rightStickAxis = *reinterpret_cast<Maths::Vec2f*>(data);
+		}
 	}
 
 	void KeyBinder::Update()
 	{
-		//done here to allow for rendring to to stutter
-		CheckAllKeyOnPress(); 
-	}
+		//done here to allow for rendering to to stutter
 
-	void KeyBinder::CheckAllKeyOnPress()
-	{
-		for (auto& key: m_keyBinds)
+		for (auto& key : m_keySingleStates)
 		{
-			if (key.second.second)
+			if (key.second)
 			{
-				Events::EventDispatcher::InvokeFunctions(key.second.first);
+				if (m_keyBindsOnPressSingle.find(key.first) != m_keyBindsOnPressSingle.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_keyBindsOnPressSingle[key.first]);
+					key.second = false;
+				}
 			}
 		}
-	}
-
-	void KeyBinder::RouteOnKeyPress(unsigned char pressedKey)
-	{
-		if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		for (auto& key : m_keyStates)
 		{
-			Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey].first);
+			if (key.second)
+			{
+				if (m_keyBindsOnPress.find(key.first) != m_keyBindsOnPress.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_keyBindsOnPress[key.first]);
+				}
+			}
+			else if (m_previousKeyStates[key.first])
+			{
+				if (m_keyBindsOnRelease.find(key.first) != m_keyBindsOnRelease.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_keyBindsOnRelease[key.first]);
+				}
+			}
 		}
-	}
-	void KeyBinder::RouteOnKeyReleased(unsigned char pressedKey)
-	{
-		//if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
-		//{
-		//	Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
-		//}
-	}
-	void KeyBinder::RouteKeyIsPressed(unsigned char pressedKey)
-	{
-		/*if (m_keyBinds.find(pressedKey) != m_keyBinds.end())
+		for (auto& button : m_buttonSingleStates)
 		{
-			Events::EventDispatcher::InvokeFunctions(m_keyBinds[pressedKey]);
-		}*/
-	}
-	void KeyBinder::RouteControllerEvent(void* data)
-	{
+			if (button.second)
+			{
+				if (m_controllerBindsOnPressSingle.find(button.first) != m_controllerBindsOnPressSingle.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_controllerBindsOnPressSingle[button.first]);
+					button.second = false;
+				}
+			}
+		}
+		for (auto& button : m_buttonStates)
+		{
+			if (button.second)
+			{
+				if (m_controllerBindsOnPress.find(button.first) != m_controllerBindsOnPress.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_controllerBindsOnPress[button.first]);
+				}
+			}
+			else if (m_previousButtonStates[button.first])
+			{
+				if (m_controllerBindsOnRelease.find(button.first) != m_controllerBindsOnRelease.end())
+				{
+					Events::EventDispatcher::InvokeFunctions(m_controllerBindsOnRelease[button.first]);
+				}
+			}
+		}
+		for (auto& axisBind : m_leftStickAxisBinds)
+		{
+			float axisValue = axisBind.second.first == Axis::X ? m_leftStickAxis.x : m_leftStickAxis.y;
+			if (axisBind.second.second < 0 && axisValue < -0.5 || axisBind.second.second > 0 && axisValue > 0.5)
+			{
+				Events::EventDispatcher::InvokeFunctions(axisBind.first);
+			}
+		}
+		for (auto& axisBind : m_rightStickAxisBinds)
+		{
+			float axisValue = axisBind.second.first == Axis::X ? m_rightStickAxis.x : m_rightStickAxis.y;
+			if (axisBind.second.second < 0 && axisValue < -0.5 || axisBind.second.second > 0 && axisValue > 0.5)
+			{
+				Events::EventDispatcher::InvokeFunctions(axisBind.first);
+			}
+		}
 
+		m_previousButtonStates = m_buttonStates;
+		m_previousKeyStates = m_keyStates;
 	}
 
 	void KeyBinder::SetUpKeyMap()
@@ -149,7 +272,7 @@ namespace Firelight
 		m_keyMap[Keys::KEY_9] = 0x39;
 		m_keyMap[Keys::KEY_LEFT_ARROW] = 37;
 		m_keyMap[Keys::KEY_UP_ARROW] = 38;
-		m_keyMap[Keys::KEY_RIGHT_ARROW] = 39 ;
+		m_keyMap[Keys::KEY_RIGHT_ARROW] = 39;
 		m_keyMap[Keys::KEY_DOWN_ARROW] = 40;
 		m_keyMap[Keys::KEY_SHIFT] = 16;
 		m_keyMap[Keys::KEY_CTRL] = 17;
