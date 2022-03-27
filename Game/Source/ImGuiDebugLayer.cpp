@@ -42,6 +42,7 @@ void ImGuiDebugLayer::Render()
 
 	RenderItemWindow();
 	RenderKeyBindingPrototype();
+	RenderDebugInformation();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -113,6 +114,14 @@ void ImGuiDebugLayer::RenderKeyBindingPrototype()
 		}
 	}
 	ImGui::EndTabBar();
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderDebugInformation()
+{
+	ImGui::Begin("Debug Info");
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::Text("Keys down:");  for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyDown(i)) { ImGui::SameLine(); ImGui::Text("%d (0x%X)", i, i); }
 	ImGui::End();
 }
 
