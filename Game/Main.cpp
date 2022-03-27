@@ -16,7 +16,6 @@
 
 #include "Source/Events/InputEvents.h"
 
-
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace snowFallAudio::FModAudio;
@@ -46,18 +45,9 @@ void BindDefaultKeys()
 	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
 	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
 	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_UP_ARROW);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_LEFT_ARROW);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_DOWN_ARROW);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_RIGHT_ARROW);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::OnPlayerMoveUpEvent::sm_descriptor, Events::Input::ControllerButtons::DPAD_UP);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Events::Input::ControllerButtons::DPAD_LEFT);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Events::Input::ControllerButtons::DPAD_DOWN);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Events::Input::ControllerButtons::DPAD_RIGHT);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveUpEvent::sm_descriptor, Axis::Y, ControllerThumbsticks::LEFT, 1.0f);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Axis::X, ControllerThumbsticks::LEFT, -1.0f);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Axis::Y, ControllerThumbsticks::LEFT, -1.0f);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Axis::X, ControllerThumbsticks::LEFT, 1.0f);
+	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, ControllerButtons::A, ControllerEventType::ButtonPressSingle);
+	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)

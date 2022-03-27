@@ -29,16 +29,21 @@ namespace Firelight::Events
 	template<typename EventType>
 	void EventDispatcher::InvokeListeners(void* data)
 	{
-		if (sm_listeners.find(EventType::sm_descriptor) == sm_listeners.end())
+		InvokeListeners(EventType::sm_descriptor, data);
+	}
+
+	inline void EventDispatcher::InvokeListeners(DescriptorType descriptor, void* data)
+	{
+		if (sm_listeners.find(descriptor) == sm_listeners.end())
 		{
 			return;
 		}
 
-		auto&& listeners = sm_listeners.at(EventType::sm_descriptor);
+		auto&& listeners = sm_listeners.at(descriptor);
 
 		for (auto&& listener : listeners)
 		{
-			listener->HandleEvents(EventType::sm_descriptor,data);
+			listener->HandleEvents(descriptor, data);
 		}
 	}
 
@@ -54,7 +59,7 @@ namespace Firelight::Events
 	}
 
 	template<typename EventType>
-	void EventDispatcher::UnsubscribeFunction(const size_t index)
+	inline void EventDispatcher::UnsubscribeFunction(const size_t index)
 	{
 		size_t trueIndex = sm_eventMap[EventType::sm_descriptor][index];
 		if (trueIndex < sm_observers[EventType::sm_descriptor].size())
@@ -74,7 +79,7 @@ namespace Firelight::Events
 
 
 	template<typename EventType>
-	void EventDispatcher::UnsubscribeAllFunctions()
+	inline void EventDispatcher::UnsubscribeAllFunctions()
 	{
 		sm_observers[EventType::sm_descriptor].clear();
 	}
@@ -82,17 +87,7 @@ namespace Firelight::Events
 	template<typename EventType>
 	inline void EventDispatcher::InvokeFunctions()
 	{
-		if (sm_observers.find(EventType::sm_descriptor) == sm_observers.end())
-		{
-			return;
-		}
-
-		auto&& observers = sm_observers.at(EventType::sm_descriptor);
-
-		for (auto&& observer : observers)
-		{
-			observer();
-		}
+		InvokeFunctions(EventType::sm_descriptor);
 	}
 
 	inline void EventDispatcher::InvokeFunctions(DescriptorType descriptor)

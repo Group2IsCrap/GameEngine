@@ -144,6 +144,20 @@ namespace Firelight
 		Y
 	};
 
+	struct KeyboardBindingData
+	{
+		std::string eventType;
+		Keys key;
+		DescriptorType eventName;
+	};
+
+	struct ControllerBindingData
+	{
+		std::string eventType;
+		ControllerButtons button;
+		DescriptorType eventName;
+	};
+
 	class KeyBinder : public Events::Listener
 	{
 	public:
@@ -153,11 +167,33 @@ namespace Firelight
 		void BindControllerActionEvent(DescriptorType eventName, ControllerButtons button, ControllerEventType eventType = ControllerEventType::ButtonPress);
 		void BindControllerAxisEvent(DescriptorType eventName, Axis axis, ControllerThumbsticks stick, float value);
 
-		virtual void HandleEvents(DescriptorType event, void* data) override;
+		void BindControllerAxisEvent(DescriptorType eventName, ControllerThumbsticks stick);
+
 
 		void Update();
+
+		std::vector<KeyboardBindingData> GetCurrentKeyBindings();
+		std::vector<ControllerBindingData> GetCurrentControllerBindings();
+
+		void ChangeKeyEventType(KeyboardBindingData binding, std::string newTypeString);
+		bool ChangeEventKey(KeyboardBindingData binding, std::string newKeyString);
+		void ChangeControllerEventType(ControllerBindingData binding, std::string newTypeString);
+		bool ChangeEventButton(ControllerBindingData binding, std::string newButtonString);
+
+		std::string GetEnumString(KeyEventType eventType);
+		KeyEventType GetStringKeyEventTypeEnum(std::string eventType);
+		std::string GetEnumString(Keys key);
+		Keys GetStringKeyEnum(std::string key);
+		std::string GetEnumString(ControllerEventType eventType);
+		ControllerEventType GetStringControllerEventTypeEnum(std::string eventType);
+		std::string GetEnumString(ControllerButtons button);
+		ControllerButtons GetStringButtonEnum(std::string button);
 	private:
-		
+
+		void CheckKey(KeyEventType eventType, unsigned char key);
+		void CheckButton(ControllerEventType eventType, ControllerButtons button);
+		virtual void HandleEvents(DescriptorType event, void* data) override;
+
 		std::unordered_map<unsigned char, bool> m_keyStates;
 		std::unordered_map<unsigned char, bool> m_previousKeyStates;
 		std::unordered_map<unsigned char, bool> m_keySingleStates;
@@ -177,8 +213,11 @@ namespace Firelight
 
 		std::unordered_map<DescriptorType, std::pair<Axis, float>> m_leftStickAxisBinds;
 		std::unordered_map<DescriptorType, std::pair<Axis, float>> m_rightStickAxisBinds;
+		std::vector<DescriptorType> m_leftStickGenericAxisBinds;
+		std::vector<DescriptorType> m_rightStickGenericAxisBinds;
 
 		std::unordered_map<Keys, unsigned char> m_keyMap;
+		std::unordered_map<unsigned char, Keys> m_charMap;
 
 		void SetUpKeyMap();
 	};
