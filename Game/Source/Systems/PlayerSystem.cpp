@@ -6,7 +6,7 @@
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
-#include "../Events/InputEvents.h"
+#include "../Items/ItemDatabase.h"
 
 static bool s_triggered = false;
 
@@ -20,6 +20,9 @@ PlayerSystem::PlayerSystem()
 	m_playerMoveLeftIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
 	m_playerMoveRightIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
 	m_playerMoveDownIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
+	m_spawnItemEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
+
+	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -29,6 +32,7 @@ PlayerSystem::~PlayerSystem()
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
+	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(m_spawnItemEventIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -53,6 +57,17 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	}
 }
 
+void PlayerSystem::HandleEvents(DescriptorType event, void* data)
+{
+	if (event == Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor)
+	{
+		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
+
+		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
+		playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+	}
+}
+
 void PlayerSystem::MovePlayerUp()
 {
 	playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
@@ -68,4 +83,9 @@ void PlayerSystem::MovePlayerDown()
 void PlayerSystem::MovePlayerRight()
 {
 	playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+}
+void PlayerSystem::SpawnItem()
+{
+	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 }

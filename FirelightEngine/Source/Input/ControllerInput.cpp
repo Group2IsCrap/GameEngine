@@ -133,7 +133,7 @@ namespace Firelight::Input
         if (state)
         {
             Events::EventDispatcher::InvokeListeners<Events::Input::OnButtonPressed>((void*)static_cast<int>(button));
-            if (previousState)
+            if (!previousState)
             {
                 Events::EventDispatcher::InvokeListeners<Events::Input::OnButtonPressedSingle>((void*)static_cast<int>(button));
             }
