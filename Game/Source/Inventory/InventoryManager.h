@@ -27,6 +27,7 @@ public:
 	void CreatInventory(GroupName group,std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
 	void CreatInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
 
+	void GroupLoadOrUnload(std::string group);
 	//render on screen
 	void LoadInventory(GroupName group, std::string name);
 	void LoadInventoryGroup(std::string group);
@@ -60,7 +61,7 @@ private:
 
 	//inv list
 	std::map<GroupName, std::vector<Inventory*>> m_Inventory;
-
+	std::map<GroupName, bool> m_InventoryLoaded;
 };
 
 

@@ -109,4 +109,14 @@ namespace Firelight::Events
 			observer();
 		}
 	}
+
+	inline size_t EventDispatcher::SubscribeFunction(DescriptorType descriptor, CallbackFunctionType&& callbackFunction)
+	{
+		sm_observers[descriptor].push_back(callbackFunction);
+		size_t index = sm_observers[descriptor].size() - 1;
+
+		sm_eventMap[descriptor].insert({ index,index });
+
+		return index;
+	}
 }

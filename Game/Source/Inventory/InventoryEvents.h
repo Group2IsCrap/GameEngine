@@ -11,8 +11,5 @@ namespace Firelight::Events::Inv
 
 	NEW_EVENT(LOAD_INVENTORY_GROUP);
 	NEW_EVENT(UNLOAD_INVENTORY_GROUP);
-
-
-
 	
 }

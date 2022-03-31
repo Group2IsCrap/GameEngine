@@ -1,6 +1,8 @@
 #include "InventoryManager.h"
 #include"InventoryComponents.h"
 #include"Source/ECS/ECSEvents.h"
+#include"Source/Events/Event.h"
+#include "Source/Engine.h"
 InventoryManager::InventoryManager()
 {
     AddWhitelistComponent<InventoryComponent>();
@@ -13,8 +15,8 @@ InventoryManager::InventoryManager()
     //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(std::bind(&InventoryManager::CreateInvetory, this));
     //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityDestroyedEvent>(std::bind(&InventoryManager::RemoveInvetory, this));
 
-    Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
-    Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
+    //Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
+    //Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
 }
 
 InventoryManager::~InventoryManager()
@@ -30,7 +32,20 @@ void InventoryManager::HandleEvents(const char* event, void* data)
     }
     else if(event == Events::Inv::UNLOAD_INVENTORY_GROUP::sm_descriptor)
     {
-        UnloadInventoryGroup(*(std::string*)data);
+        const char* ab = (const char*)data;
+        UnloadInventoryGroup(ab);
+    }
+
+}
+void InventoryManager::GroupLoadOrUnload(std::string group)
+{
+    if (!m_InventoryLoaded[group]) {
+        LoadInventoryGroup(group);
+        m_InventoryLoaded[group] = true;
+    }
+    else {
+        UnloadInventoryGroup(group);
+        m_InventoryLoaded[group] = false;
     }
 
 }
@@ -55,6 +70,13 @@ void InventoryManager::CreateInvetory()
             CreatInventory(b->Group, a->Name, a->Size, Maths::Vec2f(a->ColoumCount, a->RowCount), ParentID, a->offset,a->AnchorSettings);
             m_Inventory[b->Group].back()->SetEntityData(m_entities.back()->GetEntityID());
         }
+    }
+
+    for (auto group: m_Inventory)
+    {
+        m_InventoryLoaded[group.first];
+        Events::EventDispatcher::SubscribeFunction(group.first.c_str(),std::bind(&InventoryManager::GroupLoadOrUnload, this, group.first));
+        Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(group.first.c_str(), Keys::KEY_E, Firelight::KeyEventType::KeyPressSingle);
     }
 }
 
@@ -128,13 +150,6 @@ void InventoryManager::CreatInventory(std::string group, std::string InvName, Ma
     m_Inventory[group].emplace_back(newInv);
 }
 
-void InventoryManager::GroupLoadOrUnload(std::string group)
-{
-
-
-
-}
-
 void InventoryManager::LoadInventory(GroupName group, std::string name)
 {
     //create Group
@@ -159,7 +174,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
             if (index == EntityIDButtion.size()) {
                 //create new buttion
                 ECS::UIButton* button = new ECS::UIButton();
-                button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+                button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
                 button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
                 button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
                 button->SetOffset(Maths::Vec2f(0.0f, 0.0f));
@@ -175,7 +190,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
 
         if (EntityIDButtion.size() == 0) {
             ECS::UIButton* button = new ECS::UIButton();
-            button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+            button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
             button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
             button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
             button->SetOffset(Maths::Vec2f(0.0f, 0.0f));
@@ -217,7 +232,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
                                     //create new buttion
                                     index++;
                                     ECS::UIButton* button = new ECS::UIButton();
-                                    button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+                                    button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
                                     button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
                                     button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
                                     button->SetOffset(Maths::Vec2f(0.0f, 150.0f*index));

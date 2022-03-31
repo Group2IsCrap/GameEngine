@@ -22,7 +22,7 @@ Inventory::~Inventory()
 void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
 	InventorySpace = new ECS::UIPanel();
-	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	InventorySpace->GetSpriteComponent()->toDraw = false;
 	InventorySpace->SetAnchorSettings(Anchor);
 	InventorySpace->SetParent(parent);
@@ -64,7 +64,7 @@ void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::
 void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
 	InventorySpace = new ECS::UIPanel();
-	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	InventorySpace->GetSpriteComponent()->toDraw = false;
 	InventorySpace->SetAnchorSettings(Anchor);
 	InventorySpace->SetParent(parent);
@@ -143,7 +143,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 			if (PannleToUse->size() > nextFreePannle && nextFreePannle != -1){
 				//use exsting pannle
 				Slot = PannleToUse->at(nextFreePannle);
-				Slot->GetSpriteComponent()->texture=Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+				Slot->GetSpriteComponent()->texture=Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 				Slot->GetSpriteComponent()->toDraw = isDisplay;
 				Slot->SetParent(InventorySpace->GetEntityID());
 				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / InventorySpace->GetWidgetComponent()->currentScale.y, 0));
@@ -164,7 +164,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 			{
 				//new pannle
 				Slot = new ECS::UIPanel();
-				Slot->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+				Slot->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 				Slot->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
 				Slot->SetParent(InventorySpace->GetEntityID());
 				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / InventorySpace->GetWidgetComponent()->currentScale.y, 0));
