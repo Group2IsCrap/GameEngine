@@ -8,6 +8,8 @@
 #include "Shaders/PixelShader.h"
 #include "Shaders/ComputeShader.h"
 
+#include "Text/Font.h"
+
 #include "Data/VertexTypes.h"
 
 namespace Firelight::Graphics
@@ -43,7 +45,11 @@ namespace Firelight::Graphics
         m_defaultPS = GetPixelShader("$ENGINE/Shaders/Pixel/Unlit");
         m_defaultCS = nullptr;
 
+        m_defaultFont = GetFont("$ENGINE/Fonts/twcenmt");
+
         m_screenQuad = GetModel<UnlitVertex>("$ENGINE/Models/screenQuad.obj");
+
+        m_currentlyBoundMaterial = nullptr;
 
         return true;
     }
@@ -166,6 +172,27 @@ namespace Firelight::Graphics
         }
     }
 
+    Font* AssetManager::GetFont(const std::string& path)
+    {
+        const auto& fontItr = m_fonts.find(path);
+        if (fontItr != m_fonts.end())
+        {
+            return fontItr->second;
+        }
+        else
+        {
+            Font* newFont = new Font();
+            std::string fontPath = "Assets/" + path;
+            if (!newFont->LoadFont(fontPath.c_str()))
+            {
+                delete newFont;
+                newFont = m_defaultFont;
+            }
+            m_fonts.insert({ path, newFont });
+            return newFont;
+        }
+    }
+
     Texture* AssetManager::GetDefaultTexture()
     {
         return m_defaultTexture;
@@ -196,8 +223,18 @@ namespace Firelight::Graphics
         return m_defaultCS;
     }
 
+    Font* AssetManager::GetDefaultFont()
+    {
+        return m_defaultFont;
+    }
+
     Model* AssetManager::GetScreenQuad()
     {
         return m_screenQuad;
+    }
+
+    Material* AssetManager::GetCurrentlyBoundMaterial()
+    {
+        return m_currentlyBoundMaterial;
     }
 }

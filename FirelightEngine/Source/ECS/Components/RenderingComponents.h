@@ -6,6 +6,7 @@
 
 #include "../../Graphics/Data/Texture.h"
 #include "../../Graphics/Data/Colour.h"
+#include "../../Graphics/Text/Text.h"
 
 #include "../../Maths/Rect.h"
 #include "../../Serialisation/Serialiser.h"
@@ -145,6 +146,28 @@ namespace Firelight::ECS
 			clone->colour = colour;
 			clone->sourceRect = sourceRect;
 			clone->toDraw = toDraw;
+
+			return clone;
+		}
+	};
+
+	/// <summary>
+	/// Contains a text object
+	/// </summary>
+	struct TextComponent : BaseComponent
+	{
+		Firelight::Graphics::Text text;
+		int                       layer;
+
+		void Serialise() override
+		{
+			Serialiser::Serialise("Text", text);
+		}
+
+		TextComponent* Clone() override
+		{
+			TextComponent* clone = new TextComponent();
+			clone->text = text;
 
 			return clone;
 		}
