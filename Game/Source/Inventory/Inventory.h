@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include"InventoryComponents.h"
 #include"Source/Events/EventDispatcher.h"
 #include"InventoryEvents.h"
 
@@ -46,7 +47,7 @@ public:
 	//item controlls
 	bool AddItem(Firelight::ECS::Entity* item);
 	bool AddItem(Firelight::ECS::EntityID item);
-	bool AddItem(SlotData* item, bool useSlotPlacement);
+	bool AddItem(InventoryStoreData* item, bool useSlotPlacement);
 
 	void RemoveItem(Firelight::ECS::Entity* item);
 	void RemoveItem(Firelight::ECS::EntityID item);
@@ -63,10 +64,10 @@ public:
 	void RemoveSlot(SlotData* item);
 	SlotInfo* FindSlot(int Number);
 
-	void Place(SlotData* slotData);
+	void Place(InventoryStoreData* slotData);
 
 
-	std::vector <SlotData*>* GetNullSlotData() { return &NullSlotData; }
+	std::vector <InventoryStoreData*>* GetNullSlotData() { return &NullSlotData; }
 	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }
@@ -80,26 +81,26 @@ private:
 	ECS::UIPanel* InventorySpace;
 
 
-	//data to remove
-	std::string m_Name;
-	UINT SlotCount = 0;
-	int RowCount = 0;
-	int ColoumCount = 0;
+	////data to remove
+	//std::string m_Name;
+	//UINT SlotCount = 0;
+	//int RowCount = 0;
+	//int ColoumCount = 0;
 
 
-	bool isOutput;
-	bool isInput;
-	bool isSwap;
+	//bool isOutput;
+	//bool isInput;
+	//bool isSwap;
 
-	bool isDisplay = false;
+	//bool isDisplay = false;
 
-	Maths::Vec2i Size;
-	std::vector<std::pair<SlotInfo, SlotData*>> Grid;
+	//Maths::Vec2i Size;
+	//std::vector<std::pair<SlotInfo, SlotData*>> Grid;
 
 	//invetory entity
 	ECS::EntityID IveID;
 
 	//slots to remove
-	std::vector <SlotData*> NullSlotData;
+	std::vector <InventoryStoreData*> NullSlotData;
 };
 

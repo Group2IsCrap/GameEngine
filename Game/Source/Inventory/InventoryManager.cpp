@@ -12,11 +12,9 @@ InventoryManager::InventoryManager()
     Events::EventDispatcher::SubscribeFunction<Events::Inv::UPDATEINV>(std::bind(&InventoryManager::ItemChangeInventory, this));
     Events::EventDispatcher::SubscribeFunction<Events::Inv::ADD_NEW_INV>(std::bind(&InventoryManager::CreateInvetory, this));
 
-    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(std::bind(&InventoryManager::CreateInvetory, this));
-    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityDestroyedEvent>(std::bind(&InventoryManager::RemoveInvetory, this));
-
-    //Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
-    //Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
+    Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
+    Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
+    Events::EventDispatcher::AddListener<Events::Inv::REMOVE_INV>(this);
 }
 
 InventoryManager::~InventoryManager()
@@ -34,6 +32,10 @@ void InventoryManager::HandleEvents(const char* event, void* data)
     {
         const char* ab = (const char*)data;
         UnloadInventoryGroup(ab);
+    }
+    else if (event == Events::Inv::REMOVE_INV::sm_descriptor)
+    {
+       
     }
 
 }
@@ -60,24 +62,41 @@ void InventoryManager::CreateInvetory()
         InventoryComponent* a = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(ab);
         InventoryComponentGroupID* b = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(ab);
         bool toAdd = true;
-        for (auto In : m_Inventory[b->Group]) {
-            if ( In->GetName() == a->Name) {
-                toAdd = false;
-            }
-        }
 
-        if (toAdd) {
+      
+
+        if (m_Inventory[b->Group].size() == 0 && b->keyToAcvate != Keys::KEY_INVALID && b->Group != "NULL") {
+            Events::EventDispatcher::SubscribeFunction(b->Group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, b->Group));
+            Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
+        } 
+
+        
+            for (auto& In : m_Inventory) {
+                if (In.first == b->Group) {  
+                    for (auto In : m_Inventory[b->Group]) {
+                        if ( In->GetName() == a->Name) {
+                            toAdd = false;
+                        }
+                    }
+                    continue;
+                }
+                int index = 0;
+                for (auto NULLIn : In.second) {
+                    if (NULLIn->GetName() == a->Name) {
+
+                        m_Inventory[b->Group].push_back(NULLIn);
+                        In.second.erase(In.second.begin() + index);
+                        toAdd = false;
+                    }
+                    index++;
+                }
+            }
+        if (toAdd) {    
             CreatInventory(b->Group, a->Name, a->Size, Maths::Vec2f(a->ColoumCount, a->RowCount), ParentID, a->offset,a->AnchorSettings);
             m_Inventory[b->Group].back()->SetEntityData(m_entities.back()->GetEntityID());
         }
     }
 
-    for (auto group: m_Inventory)
-    {
-        m_InventoryLoaded[group.first];
-        Events::EventDispatcher::SubscribeFunction(group.first.c_str(),std::bind(&InventoryManager::GroupLoadOrUnload, this, group.first));
-        Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(group.first.c_str(), Keys::KEY_E, Firelight::KeyEventType::KeyPressSingle);
-    }
 }
 
 void InventoryManager::RemoveInvetory()
@@ -127,12 +146,17 @@ void InventoryManager::ItemChangeInventory()
                 }
             }
             inv->GetNullSlotData()->clear();
+            if (toDrop) {
+                //drop code here
+                for (auto&& out : ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inv->GetEntityData())->OutputCommand) {
+                    out();
+                }
+            }
+
         }
     }
    
-    if (toDrop) {
-         //drop code here
-    }
+    
 
 }
 

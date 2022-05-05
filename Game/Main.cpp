@@ -85,33 +85,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas);
 
 
-
+		//inv
 		ParentID = canvas->GetEntityID();
 		InventoryComponentGroupID group1;
 		group1.Group = "PlayerInv";
 		group1.isDisplayAll = true;
+		group1.keyToAcvate = Keys::KEY_F;
 
-		InventoryWrapper* inv1 = new InventoryWrapper();
+		InventoryWrapper* inv1 = new InventoryWrapper("MainIven",10,3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
 		inv1->SetGroup(group1);
-		inv1->GetInvComp()->Name = "MainIven";
-		inv1->GetInvComp()->offset = Maths::Vec2f(0, 0);
-		inv1->GetInvComp()->Size = Maths::Vec2f(300, 720 / 2);
-		inv1->GetInvComp()->RowCount = 10;
-		inv1->GetInvComp()->ColoumCount = 3;
-		inv1->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
 
-
-		InventoryWrapper* inv2 = new InventoryWrapper();
+		InventoryWrapper* inv2 = new InventoryWrapper("equaitment",10,3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
 		inv2->SetGroup(group1);
-		inv2->GetInvComp()->Name = "equaitment";
-		inv2->GetInvComp()->Size = Maths::Vec2f(300, 720 / 2);
-		inv2->GetInvComp()->RowCount = 10;
-		inv2->GetInvComp()->ColoumCount = 3;
-		inv2->GetInvComp()->offset = Maths::Vec2f(0, (720 / 2)+100);
-		inv2->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
+		
 
+
+		
 		Firelight::Events::EventDispatcher::InvokeFunctions<Events::Inv::ADD_NEW_INV>();
-
 		//open via interation
 		//Firelight::Events::EventDispatcher::InvokeListeners<Events::Inv::LOAD_INVENTORY_GROUP>((void*)"PlayerInv");
 
