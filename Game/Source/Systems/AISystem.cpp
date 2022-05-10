@@ -39,31 +39,57 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 
 void AISystem::PassiveStateChanges(Entity* currentEntity)
 {
-
+	if (/*Attacked*/nullptr)
+	{
+		//Flee state
+	}
+	else if (/*Hasn't been attacked for 10 seconds or certain distance from player*/nullptr)
+	{
+		//Idle state
+	}
 }
 
 void AISystem::NeutralStateChanges(Entity* currentEntity)
 {
+	if (/*Attacked*/nullptr)
+	{
+		//Attack state
+	}
+	else if (/*Certain distance from player*/nullptr)
+	{
+		//Idle state
+	}
 
 }
 
 void AISystem::HostileStateChanges(Entity* currentEntity)
 {
-
+	if (/*Attacked*/nullptr)
+	{
+		//Attack state
+	}
+	else if (/*Certain distance to player*/nullptr)
+	{
+		//Attack state
+	}
+	else if (/*Certain distance from player*/nullptr)
+	{
+		//Idle state
+	}
 }
 
 void AISystem::Idle(Entity* currentEntity)
 {
-
+	//Wander
 }
 
 void AISystem::Attack(Entity* currentEntity)
 {
-
+	//Attack player
 }
 
 void AISystem::Flee(Entity* currentEntity)
 {
-
+	//Run away
 }
 
