@@ -228,7 +228,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//barn->GetComponent<SpriteComponent>()->layer = 33;
 		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
 		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		//barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
 		//barn->GetComponent<StaticComponent>()->isStatic = true;
 
 		//SpriteEntity* circle = new SpriteEntity();

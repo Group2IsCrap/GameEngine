@@ -15,6 +15,11 @@ HealthComponent* CharacterEntity::GetHealthComponent()
 	return GetComponent<HealthComponent>();
 }
 
+Firelight::ECS::RigidBodyComponent* CharacterEntity::GetRigidBodyComponent()
+{
+	return GetComponent<Firelight::ECS::RigidBodyComponent>();
+}
+
 int CharacterEntity::GetHealth()
 {
 	return GetComponent<HealthComponent>()->currentHealth;

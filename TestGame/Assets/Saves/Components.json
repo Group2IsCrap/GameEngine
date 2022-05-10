@@ -45,9 +45,6 @@
                     },
                     {
                         "Name": ""
-                    },
-                    {
-                        "Name": ""
                     }
                 ]
             },
@@ -71,8 +68,8 @@
                         "SourceRect": {
                             "X": 0.0,
                             "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
+                            "Width": 96.0,
+                            "Height": 128.0
                         }
                     },
                     {
@@ -83,6 +80,27 @@
                             "Y": 0.0
                         },
                         "PixelsPerUnit": 20.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
+                    },
+                    {
+                        "Layer": 33,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
                         "Colour": {
                             "R": 255.0,
                             "G": 255.0,
@@ -141,17 +159,55 @@
                         "IsStatic": false
                     },
                     {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
+                        "IsStatic": true
                     }
                 ]
             },
             {
-                "ComponentID": 11,
+                "ComponentID": 9,
                 "Components": [
-                    {}
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    },
+                    {
+                        "Layer": 0
+                    }
                 ]
             },
             {
@@ -173,8 +229,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 31.08675765991211,
-                            "Y": 0.0,
+                            "X": -6.66893196105957,
+                            "Y": -1.9018967151641846,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -329,33 +385,20 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 648.0,
-                            "Y": 70.0,
+                            "X": 7.0,
+                            "Y": 5.0,
                             "Z": 0.0
                         },
                         "Scale": {
-                            "X": 0.6790123581886292,
-                            "Y": 0.15810276567935944,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Rotation": 0.0,
-                        "Position": {
-                            "X": 648.0,
-                            "Y": 360.0,
-                            "Z": 0.0
-                        },
-                        "Scale": {
-                            "X": 0.07716049253940582,
-                            "Y": 0.948616623878479,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         }
                     }
                 ]
             },
             {
-                "ComponentID": 9,
+                "ComponentID": 10,
                 "Components": [
                     {
                         "ViewportWorldHeight": 20.0
@@ -367,11 +410,17 @@
                 "Components": [
                     {
                         "CurrentAnimation": "INSERT ANIMATION HERE",
-                        "CurrentFrameCount": 0.0,
+                        "CurrentFrameCount": 7.029000282287598,
                         "CurrentFrameIndex": 0,
                         "PlayOnStart": true,
                         "ShouldPlay": true
                     }
+                ]
+            },
+            {
+                "ComponentID": 12,
+                "Components": [
+                    {}
                 ]
             },
             {
@@ -384,11 +433,14 @@
                             "Width": 2.0,
                             "Height": 2.200000047683716
                         }
+                    },
+                    {
+                        "Radius": 3.0
                     }
                 ]
             },
             {
-                "ComponentID": 10,
+                "ComponentID": 11,
                 "Components": [
                     {}
                 ]
@@ -695,66 +747,6 @@
                             "Y": 0.08332161605358124,
                             "Z": 0.0
                         }
-                    },
-                    {
-                        "ParentID": 3,
-                        "HasParent": true,
-                        "Index": 10,
-                        "AnchorSettings": 7,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 10.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultDimensions": {
-                            "X": 880.0,
-                            "Y": 120.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.6790123581886292,
-                            "Y": 0.15810276567935944,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.6790123581886292,
-                            "Y": 0.15810276567935944,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "ParentID": 3,
-                        "HasParent": true,
-                        "Index": 10,
-                        "AnchorSettings": 7,
-                        "Offset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "DefaultPosition": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        },
-                        "DefaultDimensions": {
-                            "X": 100.0,
-                            "Y": 720.0,
-                            "Z": 0.0
-                        },
-                        "DefaultScale": {
-                            "X": 0.07716049253940582,
-                            "Y": 0.948616623878479,
-                            "Z": 0.0
-                        },
-                        "CurrentScale": {
-                            "X": 0.07716049253940582,
-                            "Y": 0.948616623878479,
-                            "Z": 0.0
-                        }
                     }
                 ]
             },
@@ -970,53 +962,11 @@
                             "Height": -1.0
                         },
                         "ToDraw": true
-                    },
-                    {
-                        "Layer": 101,
-                        "Texture": "INSERT TEXTURE HERE",
-                        "DrawOffset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "Colour": {
-                            "R": 255.0,
-                            "G": 255.0,
-                            "B": 255.0,
-                            "A": 255.0
-                        },
-                        "SourceRect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
-                        },
-                        "ToDraw": true
-                    },
-                    {
-                        "Layer": 101,
-                        "Texture": "INSERT TEXTURE HERE",
-                        "DrawOffset": {
-                            "X": 0.0,
-                            "Y": 0.0
-                        },
-                        "Colour": {
-                            "R": 255.0,
-                            "G": 255.0,
-                            "B": 255.0,
-                            "A": 255.0
-                        },
-                        "SourceRect": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Width": -1.0,
-                            "Height": -1.0
-                        },
-                        "ToDraw": false
                     }
                 ]
             },
             {
-                "ComponentID": 12,
+                "ComponentID": 13,
                 "Components": [
                     {
                         "Layer": 100.0,
@@ -1026,20 +976,8 @@
                 ]
             },
             {
-                "ComponentID": 13,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
                 "ComponentID": 14,
                 "Components": [
-                    {},
-                    {},
                     {},
                     {},
                     {},
@@ -1053,40 +991,22 @@
                     {},
                     {},
                     {},
-                    {},
                     {}
                 ]
             },
             {
                 "ComponentID": 16,
                 "Components": [
-                    {
-                        "IsChangeOfTex": true,
-                        "Colours": [
-                            "Colour",
-                            {
-                                "R": 255.0,
-                                "G": 255.0,
-                                "B": 255.0,
-                                "A": 255.0
-                            },
-                            "Colour",
-                            {
-                                "R": 0.0,
-                                "G": 0.0,
-                                "B": 0.0,
-                                "A": 255.0
-                            },
-                            "Colour",
-                            {
-                                "R": 0.0,
-                                "G": 0.0,
-                                "B": 0.0,
-                                "A": 255.0
-                            }
-                        ],
-                        "RectsOfButton": []
-                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 17,
+                "Components": [
                     {
                         "IsChangeOfTex": true,
                         "Colours": [
@@ -1225,7 +1145,7 @@
                 ]
             },
             {
-                "ComponentID": 17,
+                "ComponentID": 18,
                 "Components": [
                     {},
                     {},
@@ -1294,10 +1214,6 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
@@ -1311,6 +1227,10 @@
                     {
                         "EntityID": 2,
                         "Indices": [1]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [2]
                     }
                 ]
             },
@@ -1372,19 +1292,67 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
             {
-                "ComponentID": 11,
+                "ComponentID": 9,
                 "EntityIDs": [
                     {
-                        "EntityID": 1,
+                        "EntityID": 0,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
                     }
                 ]
             },
@@ -1446,15 +1414,11 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
                     }
                 ]
             },
             {
-                "ComponentID": 9,
+                "ComponentID": 10,
                 "EntityIDs": [
                     {
                         "EntityID": 0,
@@ -1472,7 +1436,7 @@
                 ]
             },
             {
-                "ComponentID": 6,
+                "ComponentID": 12,
                 "EntityIDs": [
                     {
                         "EntityID": 1,
@@ -1481,7 +1445,20 @@
                 ]
             },
             {
-                "ComponentID": 10,
+                "ComponentID": 6,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
                 "EntityIDs": [
                     {
                         "EntityID": 1,
@@ -1531,14 +1508,6 @@
                     {
                         "EntityID": 12,
                         "Indices": [9]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [10]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [11]
                     }
                 ]
             },
@@ -1584,19 +1553,11 @@
                     {
                         "EntityID": 12,
                         "Indices": [9]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [10]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [11]
                     }
                 ]
             },
             {
-                "ComponentID": 12,
+                "ComponentID": 13,
                 "EntityIDs": [
                     {
                         "EntityID": 3,
@@ -1605,7 +1566,7 @@
                 ]
             },
             {
-                "ComponentID": 13,
+                "ComponentID": 14,
                 "EntityIDs": [
                     {
                         "EntityID": 4,
@@ -1616,45 +1577,12 @@
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 14,
-                        "Indices": [4]
-                    },
-                    {
                         "EntityID": 6,
                         "Indices": [2]
                     },
                     {
                         "EntityID": 7,
                         "Indices": [3]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 14,
-                "EntityIDs": [
-                    {
-                        "EntityID": 8,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 9,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 10,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 11,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 12,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [5]
                     }
                 ]
             },
@@ -1680,10 +1608,6 @@
                     {
                         "EntityID": 12,
                         "Indices": [4]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [5]
                     }
                 ]
             },
@@ -1709,15 +1633,36 @@
                     {
                         "EntityID": 12,
                         "Indices": [4]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [5]
                     }
                 ]
             },
             {
                 "ComponentID": 17,
+                "EntityIDs": [
+                    {
+                        "EntityID": 8,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 18,
                 "EntityIDs": [
                     {
                         "EntityID": 8,
@@ -1780,44 +1725,48 @@
                 "ComponentTypeID": 8
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
+                "ComponentTypeName": "struct Firelight::ECS::LayerComponent",
                 "ComponentTypeID": 9
             },
             {
-                "ComponentTypeName": "class PlayerComponent",
+                "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
                 "ComponentTypeID": 10
             },
             {
-                "ComponentTypeName": "class HealthComponent",
+                "ComponentTypeName": "class PlayerComponent",
                 "ComponentTypeID": 11
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
+                "ComponentTypeName": "class HealthComponent",
                 "ComponentTypeID": 12
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
                 "ComponentTypeID": 13
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
                 "ComponentTypeID": 14
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
                 "ComponentTypeID": 15
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
                 "ComponentTypeID": 16
             },
             {
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeID": 17
+            },
+            {
                 "ComponentTypeName": "struct Firelight::ECS::ItemComponent",
-                "ComponentTypeID": 18
+                "ComponentTypeID": 19
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
-                "ComponentTypeID": 17
+                "ComponentTypeID": 18
             }
         ]
     }

@@ -23,7 +23,7 @@ PlayerEntity::PlayerEntity(float speed)
 
 	AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent());
 	GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, -0.5f, 2.0f, 2.2f);
-	GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = false;
+	GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>()->drawCollider = true;
 	GetComponent<Firelight::ECS::StaticComponent>()->isStatic = false;
 	
 	

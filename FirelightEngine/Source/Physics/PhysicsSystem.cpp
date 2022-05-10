@@ -19,6 +19,7 @@ namespace Firelight::Physics
 {
 	PhysicsSystem::PhysicsSystem()
 	{
+		AddWhitelistComponent<Firelight::ECS::RigidBodyComponent>();
 		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
 
 		m_onEarlyRenderSub = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&PhysicsSystem::Render, this));
@@ -67,7 +68,7 @@ namespace Firelight::Physics
 						(transformComponent->position.x - (circleCollider->radius) + spriteComponent->drawOffset.x),
 						(transformComponent->position.y - (circleCollider->radius) + spriteComponent->drawOffset.y),
 						circleCollider->radius + circleCollider->radius, circleCollider->radius + circleCollider->radius);
-					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, circleCollider->radius * 2, circleCollider->radius * 2);
+					sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, 100.0f, 100.0f);
 				}
 				else if (entity->HasComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>())
 				{
@@ -97,18 +98,56 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::Update(const Utils::Time& time)
 	{
-		UNREFERENCED_PARAMETER(time);
-		HandleCollisions();
+
+		for (int i = 0; i < m_entities.size(); ++i)
+		{
+			Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
+			Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
+
+			if (rigidBodyComponent->interpolate)
+			{
+				float timeVal = rigidBodyComponent->interpolationTime / time.GetPhysicsTimeStep();
+
+				transformComponent->position = Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal);
+				rigidBodyComponent->interpolationTime += time.GetDeltaTime();
+			}
+		}
 	}
 
-	void PhysicsSystem::PhysicsUpdate(const Utils::Time& time)
+	void PhysicsSystem::FixedUpdate(const Utils::Time& time)
 	{
-		
+
+		ApplyForces(time.GetPhysicsTimeStep());
+		HandleCollisions();
 	}
 
 	void PhysicsSystem::ApplyForces(double fixedDeltaTime)
 	{
-		UNREFERENCED_PARAMETER(fixedDeltaTime);
+		for (int i = 0; i < m_entities.size(); ++i)
+		{
+			Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
+			Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
+			if (rigidBodyComponent->interpolate)
+			{
+				rigidBodyComponent->interpolationTime = 0.0f;
+				rigidBodyComponent->lastPos = rigidBodyComponent->nextPos;
+				rigidBodyComponent->nextPos += rigidBodyComponent->velocity;
+
+			}
+			else
+			{
+				transformComponent->position += rigidBodyComponent->velocity;
+
+			}
+
+			float val = (1 - fixedDeltaTime * rigidBodyComponent->dragCoefficient);
+
+			rigidBodyComponent->velocity *= val < 0 ? 0 : val;
+			if (rigidBodyComponent->velocity.Length() < 0.001)
+			{
+				rigidBodyComponent->velocity = 0;
+			}
+		}
 	}
 
 	void PhysicsSystem::Simulate(double fixedDeltaTime)
@@ -258,7 +297,25 @@ namespace Firelight::Physics
 					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
 						entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()))
 					{
-						
+						bool collision = true;
+						do
+						{
+							auto& pos1 = entity->GetComponent<Firelight::ECS::TransformComponent>()->position;
+							auto& pos2 = entity2->GetComponent<Firelight::ECS::TransformComponent>()->position;
+
+							auto e1toe2 = Firelight::Maths::Vec3f::Normalise(pos2 - pos1);
+
+							if (!entity2->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos2 += e1toe2 * 0.02f;
+							}
+							if (!entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos1 -= e1toe2 * 0.02f;
+							}
+							collision = CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
+								entity2->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>());
+						} while (collision);
 					}
 				}
 				else if (HasColliderPair<Firelight::ECS::CircleColliderComponent, Firelight::ECS::BoxColliderComponent>(entity, entity2))
@@ -266,7 +323,25 @@ namespace Firelight::Physics
 					if (CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
 						entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()))
 					{
-						
+						bool collision = true;
+						do
+						{
+							auto& pos1 = entity->GetComponent<Firelight::ECS::TransformComponent>()->position;
+							auto& pos2 = entity2->GetComponent<Firelight::ECS::TransformComponent>()->position;
+
+							auto e1toe2 = Firelight::Maths::Vec3f::Normalise(pos2 - pos1);
+
+							if (!entity2->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos2 += e1toe2 * 0.02f;
+							}
+							if (!entity->GetComponent<Firelight::ECS::StaticComponent>()->isStatic)
+							{
+								pos1 -= e1toe2 * 0.02f;
+							}
+							collision = CheckCollision(entity->GetComponent<Firelight::ECS::TransformComponent>(), entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>(),
+								entity->GetComponent<Firelight::ECS::TransformComponent>(), entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>());
+						} while (collision);
 					}
 				}
 			}
@@ -303,10 +378,23 @@ namespace Firelight::Physics
 	
 	bool PhysicsSystem::CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider)
 	{
-		UNREFERENCED_PARAMETER(transform);
-		UNREFERENCED_PARAMETER(boxCollider);
-		UNREFERENCED_PARAMETER(transform2);
-		UNREFERENCED_PARAMETER(circleCollider);
-		return false;
+		Maths::Vec2f circleDistance;
+		circleDistance.x = std::abs(transform2->position.x - transform->position.x);
+		circleDistance.y = std::abs(transform2->position.y - transform->position.y);
+
+		if (circleDistance.x > (boxCollider->rect.w / 2 + circleCollider->radius) || circleDistance.y > (boxCollider->rect.h / 2 + circleCollider->radius))
+		{
+			return false;
+		}
+
+		if (circleDistance.x <= (boxCollider->rect.w / 2) || circleDistance.y <= (boxCollider->rect.h / 2))
+		{
+			return true;
+		}
+
+		float cornerDistanceSquared = std::pow((circleDistance.x - boxCollider->rect.w / 2), 2) + 
+			std::pow((circleDistance.y - boxCollider->rect.h / 2), 2);
+
+		return (cornerDistanceSquared <= (circleCollider->radius * circleCollider->radius));
 	}
 }
