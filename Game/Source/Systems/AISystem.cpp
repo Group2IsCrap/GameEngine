@@ -20,18 +20,20 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		Entity* currentEntity = m_entities[entityIndex];
 		AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
 		CircleColliderComponent* circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
+
+		circleComponent->radius = 5;
 		
 		//Call state change function based on hostility
 		switch (aiComponent->hostility)
 		{
 		case 1: //Passive
-			PassiveStateChanges(currentEntity);
+			PassiveStateChanges(currentEntity, aiComponent);
 			break;
 		case 2: //Neutral
-			NeutralStateChanges(currentEntity);
+			NeutralStateChanges(currentEntity, aiComponent);
 			break;
 		case 3: //Hostile
-			HostileStateChanges(currentEntity);
+			HostileStateChanges(currentEntity, aiComponent);
 			break;
 		}
 
@@ -39,87 +41,83 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		switch (aiComponent->state)
 		{
 		case 1: //Idle
-			Idle(currentEntity);
+			Idle(currentEntity, aiComponent);
 			break;
 		case 2: //Flee
-			Flee(currentEntity);
+			Flee(currentEntity, aiComponent);
 			break;
 		case 3: //Attack
-			Attack(currentEntity);
+			Attack(currentEntity, aiComponent);
 			break;
-		}
-
-		//Passive enemies will never have a target (they don't attack)
-		if (aiComponent->hostility == 1 /*Passive*/)
-		{
-			aiComponent->target = nullptr;
 		}
 	}
 }
 
-void AISystem::PassiveStateChanges(Entity* currentEntity)
+void AISystem::PassiveStateChanges(Entity* currentEntity, AIComponent* aiComponent)
 {
 	if (/*Attacked*/nullptr)
 	{
-		//Flee state
+		aiComponent->state = 2; //Flee
 	}
 	else if (/*Hasn't been attacked for 10 seconds or certain distance from player*/nullptr)
 	{
-		//Idle state
+		aiComponent->state = 1; //Idle
 	}
 }
 
-void AISystem::NeutralStateChanges(Entity* currentEntity)
+void AISystem::NeutralStateChanges(Entity* currentEntity, AIComponent* aiComponent)
 {
 	if (/*Attacked*/nullptr)
 	{
-		//Attack state
+		aiComponent->target = nullptr; //Aggressor
+		aiComponent->state = 3; //Attack
 	}
 	else if (/*Certain distance from player*/nullptr)
 	{
-		//Idle state
+		aiComponent->state = 1; //Idle
 	}
-
 }
 
-void AISystem::HostileStateChanges(Entity* currentEntity)
+void AISystem::HostileStateChanges(Entity* currentEntity, AIComponent* aiComponent)
 {
 	if (/*Attacked*/nullptr)
 	{
-		//Attack state
+		aiComponent->target = nullptr; //Aggressor
+		aiComponent->state = 3; //Attack
 	}
-	else if (/*Certain distance to player*/nullptr)
+	else if (/*In-range of player*/nullptr)
 	{
-		//Attack state
+		aiComponent->target = nullptr; //Target
+		aiComponent->state = 3; //Attack
 	}
 	else if (/*Certain distance from player*/nullptr)
 	{
-		//Idle state
+		aiComponent->state = 1; //Idle
 	}
 }
 
-void AISystem::Idle(Entity* currentEntity)
+void AISystem::Idle(Entity* currentEntity, AIComponent* aiComponent)
 {
 	//Wander
 }
 
-void AISystem::Attack(Entity* currentEntity)
+void AISystem::Attack(Entity* currentEntity, AIComponent* aiComponent)
 {
 	//Attack player
 }
 
-void AISystem::Flee(Entity* currentEntity)
+void AISystem::Flee(Entity* currentEntity, AIComponent* aiComponent)
 {
 	//Run away
 }
 
-Entity* AISystem::GetTarget(Entity* currentEntity)
+Entity* AISystem::GetTarget(Entity* currentEntity, AIComponent* aiComponent)
 {
-	AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
+	aiComponent = currentEntity->GetComponent<AIComponent>();
 	return aiComponent->target;
 }
 
-Entity* AISystem::SelectTarget(Entity* currentEntity)
+void AISystem::SelectTarget(Entity* currentEntity, AIComponent* aiComponent, CircleColliderComponent* circleComponent)
 {
-	CircleColliderComponent* circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
+	circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
 }

@@ -14,15 +14,14 @@ public:
 	~AISystem();
 
 	void Update(const Firelight::Utils::Time& time) override;
-	void PassiveStateChanges(Entity* currentEntity);
-	void NeutralStateChanges(Entity* currentEntity);
-	void HostileStateChanges(Entity* currentEntity);
-	void Idle(Entity* currentEntity);
-	void Flee(Entity* currentEntity);
-	void Attack(Entity* currentEntity);
+	void PassiveStateChanges(Entity* currentEntity, AIComponent* aiComponent);
+	void NeutralStateChanges(Entity* currentEntity, AIComponent* aiComponent);
+	void HostileStateChanges(Entity* currentEntity, AIComponent* aiComponent);
+	void Idle(Entity* currentEntity, AIComponent* aiComponent);
+	void Flee(Entity* currentEntity, AIComponent* aiComponent);
+	void Attack(Entity* currentEntity, AIComponent* aiComponent);
+	void SelectTarget(Entity* currentEntity, AIComponent* aiComponent, CircleColliderComponent* circleComponent);
 
-	Entity* GetTarget(Entity* currentEntity);
-
-	Entity* SelectTarget(Entity* currentEntity);
+	Entity* GetTarget(Entity* currentEntity, AIComponent* aiComponent);
 };
 
