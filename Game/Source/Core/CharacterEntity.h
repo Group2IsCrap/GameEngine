@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Source/ECS/EntityWrappers/SpriteEntity.h>
+#include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../CoreComponents/HealthComponent.h"
 
@@ -12,6 +13,7 @@ public:
 	CharacterEntity(Firelight::ECS::EntityID entityID);
 
 	HealthComponent* GetHealthComponent();
+	Firelight::ECS::RigidBodyComponent* GetRigidBodyComponent();
 	int GetHealth();
 	virtual void RemoveHealth(int amount);
 	virtual void HealthBelowZero();

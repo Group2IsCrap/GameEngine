@@ -9,6 +9,10 @@ namespace Firelight::Events::InputEvents
 	NEW_EVENT(OnPlayerMoveRightEvent);
 	NEW_EVENT(OnPlayerMoveLeftEvent);
 	NEW_EVENT(OnPlayerMoveDownEvent);
+	NEW_EVENT(OnPlayerMoveUpTransformEvent);
+	NEW_EVENT(OnPlayerMoveRightTransformEvent);
+	NEW_EVENT(OnPlayerMoveLeftTransformEvent);
+	NEW_EVENT(OnPlayerMoveDownTransformEvent);
 	NEW_EVENT(OnInteractEvent);
 	NEW_EVENT(SpawnItemEvent)
 }
