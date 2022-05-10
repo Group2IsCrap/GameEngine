@@ -15,6 +15,7 @@ static std::filesystem::path s_newAnimationPath;
 AnimationWindow::AnimationWindow()
 {
 	m_selectedAnimation = new Firelight::Animation::Animation();
+	GetAllAnimations();
 }
 
 AnimationWindow::~AnimationWindow()
@@ -36,6 +37,7 @@ void AnimationWindow::Draw()
 	ImGuiWindow* menu_bar_window = ImGui::FindWindowByName("Animation Window##AnimationWindow");
 	DrawMenuBar(menu_bar_window);
 
+	// Animation Name
 	ImGui::AlignTextToFramePadding();
 	ImGui::Text("Name:");
 	ImGui::SameLine();
@@ -46,7 +48,18 @@ void AnimationWindow::Draw()
 	std::strncpy(buffer, animName.c_str(), sizeof(buffer));
 	ImGui::SetNextItemWidth(180.0f);
 	if (ImGui::InputText("##AnimPath", buffer, sizeof(buffer)))
+	{
 		animName = std::string(buffer);
+	}
+	m_selectedAnimation->m_animationName = animName;
+
+	// Frame Count
+	// Animation Name
+	ImGui::AlignTextToFramePadding();
+	ImGui::Text("Frame Count");
+	ImGui::SameLine();
+	auto& frameCount = m_selectedAnimation->m_frameCount;
+	ImGui::InputInt("##AnimFrameCount", &frameCount);
 
 	Firelight::Graphics::Texture* icon;
 
@@ -88,6 +101,10 @@ void AnimationWindow::DrawMenuBar(ImGuiWindow* window)
 			if (ImGui::MenuItem("New Animation##AnimNew"))
 			{
 				s_newAnimation = true;
+			}
+			if (ImGui::MenuItem("Save##SaveAnim"))
+			{
+				SaveFile(m_selectedAnimation->m_animationName.c_str());
 			}
 			ImGui::EndMenu();
 		}
@@ -134,10 +151,10 @@ void AnimationWindow::CreateAnimation()
 	}
 }
 
-void AnimationWindow::SaveAnimation(const char* fileName, const char* json)
+void AnimationWindow::SaveAnimation(const char* fileName, rapidjson::StringBuffer* json)
 {
 	std::ofstream of(fileName, std::ofstream::out | std::ofstream::trunc);
-	of << json;
+	of << json->GetString();
 	of.close();
 }
 
@@ -147,7 +164,14 @@ void AnimationWindow::SaveFile(const char* animName)
 	fileName += ".anim";
 	std::string newPath = "Assets/Animations/" + fileName;
 
-	Serialiser::Serialise(m_selectedAnimation->m_animationName);
+	rapidjson::StringBuffer* buffer = new rapidjson::StringBuffer();
+	Serialiser::Writer = new rapidjson::PrettyWriter<rapidjson::StringBuffer>(*buffer);
+
+	Serialiser::StartObject();
+	Serialiser::Serialise("AnimationName", m_selectedAnimation->m_animationName);
+	Serialiser::Serialise("FrameCount", m_selectedAnimation->m_frameCount);
+	Serialiser::EndObject();
+	SaveAnimation(newPath.c_str(), buffer);
 }
 
 void AnimationWindow::GetAllAnimations()
@@ -170,6 +194,12 @@ void AnimationWindow::GetAllAnimations()
 		{
 			std::string filePath = path.string();
 			// Load file and create new Animation struct
+			if (Serialiser::LoadFile("Assets/Animations/Test23.anim"))
+			{
+				std::string name;
+				Serialiser::Deserialize("AnimationName", name);
+				std::string test;
+			}
 		}
 	}
 }

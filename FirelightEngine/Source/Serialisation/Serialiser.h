@@ -9,7 +9,7 @@
 #include "../Graphics/Data/Texture.h"
 #include "../Graphics/Data/Colour.h"
 #include "../Animation/Animation.h"
-#include "../rapidjson/document.h"
+#include "../Includes/rapidjson/document.h"
 
 namespace Firelight::Serialisation
 {
@@ -56,10 +56,10 @@ namespace Firelight::Serialisation
 
 		static bool LoadFile(const char* fileName);
 
+		static rapidjson::PrettyWriter<rapidjson::StringBuffer>* Writer;
 	private:
 		static void WriteToFileJSON(std::string filename, std::string jsonText);
 		static bool IsWriterValid();
-		static rapidjson::PrettyWriter<rapidjson::StringBuffer>* Writer;
 		static void WriteKey(std::string key);
 
 		static rapidjson::Document* FileDocument;
