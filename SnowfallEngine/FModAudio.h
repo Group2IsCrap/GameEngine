@@ -18,6 +18,16 @@ namespace snowFallAudio
 {
 	namespace FModAudio
 	{
+		struct AudioChannel
+		{
+			AudioChannel(int priority, float volume);
+			~AudioChannel();
+
+			int channelPriority = 0;
+
+			float channelVol = 50.0f;
+		};
+
 		struct Instance
 		{
 			Instance();
@@ -35,7 +45,6 @@ namespace snowFallAudio
 
 			soundMap m_sounds;
 			channelMap m_channels;
-
 		};
 
 		class AudioEngine
@@ -54,7 +63,7 @@ namespace snowFallAudio
 			void LoadSound(const std::string& soundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 			void UnLoadSound(const std::string& soundName);
 			void SetListenerPos(const Vector2D& playerPos);
-			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos = Vector3D(0.0f, 0.0f, 0.0f), float volumedB = 0.0f);
+			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB, AudioChannel audioChannel, bool looping);
 			int PlaySound2D(const std::string& soundName, const Vector2D& playerPos, float volumedB = 0.0f);
 			void StopChannel(int channelId);
 			void StopAllChannels();
@@ -62,6 +71,8 @@ namespace snowFallAudio
 			void SetChannelVolume(int channelId, float volumedB);
 			bool IsPlaying(int channelId) const;
 			void UnLoadAllSounds();
+
+			void Ducking();
 
 			float dBToVolume(float dB);
 			float VolumeTodB(float volume);

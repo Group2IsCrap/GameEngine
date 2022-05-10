@@ -42,7 +42,8 @@ using namespace snowFallAudio::FModAudio;
 
 void playSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
 {
-	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
+	AudioChannel channel(1,10);
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB, channel, true);
 }
 
 void playTestSound()

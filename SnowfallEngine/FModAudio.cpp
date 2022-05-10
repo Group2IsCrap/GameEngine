@@ -2,6 +2,20 @@
 #include <io.h>
 #include <Windows.h>
 
+snowFallAudio::FModAudio::AudioChannel::AudioChannel(int priority, float volume)
+{
+	this->channelPriority = priority;
+	this->channelVol = volume;
+}
+
+snowFallAudio::FModAudio::AudioChannel::~AudioChannel()
+{
+	delete this;
+}
+
+
+
+
 snowFallAudio::FModAudio::AudioEngine* snowFallAudio::FModAudio::AudioEngine::engine = new snowFallAudio::FModAudio::AudioEngine;
 
 snowFallAudio::FModAudio::AudioEngine::AudioEngine()
@@ -150,7 +164,7 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadSound(const std::string& sound
 	fmodInstance->m_sounds.erase(soundFound);
 }
 
-int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB, AudioChannel audioChannel, bool looping)
 {
 	newString = audioFolder + soundName;
 	//Set the next channel
@@ -192,6 +206,10 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 			//set the 3d position
 			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
 		}
+		/*if (currentMode & FMOD_LOOP_NORMAL)
+		{
+			engine->ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
+		}*/
 		//set volume
 		engine->ErrorCheck(channel->setVolume(volumedB));
 		//unpause
@@ -265,4 +283,9 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadAllSounds()
 		std::string soundName = sound.first;
 		engine->UnLoadSound(soundName);
 	}
+}
+
+void snowFallAudio::FModAudio::AudioEngine::Ducking()
+{
+
 }
