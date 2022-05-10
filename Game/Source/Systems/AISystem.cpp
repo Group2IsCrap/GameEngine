@@ -21,7 +21,7 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
 		CircleColliderComponent* circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
 
-		circleComponent->radius = 5;
+		circleComponent->radius = 5.0f;
 		
 		//Call state change function based on hostility
 		switch (aiComponent->hostility)
