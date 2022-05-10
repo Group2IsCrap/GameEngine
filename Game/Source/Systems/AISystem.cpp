@@ -1,13 +1,11 @@
 #include "AISystem.h"
-#include "../CoreComponents/AIComponent.h"
 
 using namespace Firelight::ECS;
 
 AISystem::AISystem()
 {
 	AddWhitelistComponent<AIComponent>();
-
-
+	AddWhitelistComponent<CircleColliderComponent>();
 }
 
 AISystem::~AISystem()
@@ -21,6 +19,7 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 	{
 		Entity* currentEntity = m_entities[entityIndex];
 		AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
+		CircleColliderComponent* circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
 		
 		//Call state change function based on hostility
 		switch (aiComponent->hostility)
@@ -55,8 +54,6 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		{
 			aiComponent->target = nullptr;
 		}
-
-
 	}
 }
 
@@ -116,3 +113,13 @@ void AISystem::Flee(Entity* currentEntity)
 	//Run away
 }
 
+Entity* AISystem::GetTarget(Entity* currentEntity)
+{
+	AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
+	return aiComponent->target;
+}
+
+Entity* AISystem::SelectTarget(Entity* currentEntity)
+{
+	CircleColliderComponent* circleComponent = currentEntity->GetComponent<CircleColliderComponent>();
+}

@@ -3,6 +3,7 @@
 #include <Source/Serialisation/Serialiser.h>
 
 using namespace Firelight::Serialisation;
+using namespace Firelight::ECS;
 
 struct AIComponent : Firelight::ECS::BaseComponent
 {
@@ -17,6 +18,7 @@ struct AIComponent : Firelight::ECS::BaseComponent
 	{
 		Serialiser::Serialise("State", state);
 		Serialiser::Serialise("hostility", hostility);
+		Serialiser::Serialise("target", target);
 	}
 
 	AIComponent* Clone() override
@@ -24,6 +26,7 @@ struct AIComponent : Firelight::ECS::BaseComponent
 		AIComponent* clone = new AIComponent();
 		clone->state = state;
 		clone->hostility = hostility;
+		clone->target = target;
 
 		return clone;
 	}
