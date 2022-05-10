@@ -6,8 +6,11 @@ using namespace Firelight::Serialisation;
 
 struct AIComponent : Firelight::ECS::BaseComponent
 {
-	int state; //Idle = 1, Run = 2, Attack = 3
+	int state; //Idle = 1, Flee = 2, Attack = 3
 	int hostility; //Passive = 1, Neutral = 2, Hostile = 3
+	
+	//Attack target, will always be NULL for passive entities
+	Entity* target;
 
 
 	void Serialise() override

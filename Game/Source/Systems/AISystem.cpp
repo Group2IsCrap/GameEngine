@@ -22,6 +22,7 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		Entity* currentEntity = m_entities[entityIndex];
 		AIComponent* aiComponent = currentEntity->GetComponent<AIComponent>();
 		
+		//Call state change function based on hostility
 		switch (aiComponent->hostility)
 		{
 		case 1: //Passive
@@ -34,6 +35,28 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 			HostileStateChanges(currentEntity);
 			break;
 		}
+
+		// Call behaviour function based on state
+		switch (aiComponent->state)
+		{
+		case 1: //Idle
+			Idle(currentEntity);
+			break;
+		case 2: //Flee
+			Flee(currentEntity);
+			break;
+		case 3: //Attack
+			Attack(currentEntity);
+			break;
+		}
+
+		//Passive enemies will never have a target (they don't attack)
+		if (aiComponent->hostility == 1 /*Passive*/)
+		{
+			aiComponent->target = nullptr;
+		}
+
+
 	}
 }
 

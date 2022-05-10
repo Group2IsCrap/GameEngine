@@ -15,8 +15,8 @@ public:
 	void HostileStateChanges(Entity* currentEntity);
 
 	void Idle(Entity* currentEntity);
-	void Attack(Entity* currentEntity);
 	void Flee(Entity* currentEntity);
+	void Attack(Entity* currentEntity);
 
 };
 
