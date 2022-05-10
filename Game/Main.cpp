@@ -16,6 +16,8 @@
 
 #include "Source/Events/InputEvents.h"
 
+#include "Source/PCG/BiomeGeneration.h"
+
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace snowFallAudio::FModAudio;
@@ -30,12 +32,19 @@ void SpawnItem1()
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
 }
 
+void GenerateBiomeUI()
+{
+	BiomeGeneration::Instance()->Render();
+}
+
+
 void SetupDebugUI()
 {
 	// ImGui Test code
 	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
 	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
 	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	itemTestLayer->spawnItemCommand[2] = std::bind(GenerateBiomeUI);
 	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
 }
 
@@ -70,6 +79,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
+
+		//Biome Generation Testing LOL
+		BiomeGeneration::Instance()->Initialise();
 
 		// Grass
 		SpriteEntity* test2 = new SpriteEntity();

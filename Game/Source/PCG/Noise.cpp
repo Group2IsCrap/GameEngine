@@ -3,6 +3,8 @@
 Noise::Noise()
     : m_noiseData()
     , m_noise(nullptr)
+    , m_noiseScale(75.5f)
+    , m_seed(2000)
 {}
 
 Noise::~Noise()
@@ -12,16 +14,16 @@ Noise::~Noise()
 
 void Noise::CreateNoise()
 {
-    m_noise = new FastNoiseLite(1337);
+    m_noise = new FastNoiseLite(m_seed);
 	m_noise->SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
 
     int index = 0;
 
-    for (int y = 0; y < 128; ++y)
+    for (size_t y = 0; y < NOISE_DATA_SIZE; ++y)
     {
-        for (int x = 0; x < 128; ++x)
+        for (size_t x = 0; x < NOISE_DATA_SIZE; ++x)
         {
-            m_noiseData[index++] = m_noise->GetNoise((float)x, (float)y);
+            m_noiseData[index++] = m_noise->GetNoise((float)x * m_noiseScale, (float)y * m_noiseScale);
         }
     }
 }
@@ -31,4 +33,12 @@ float* Noise::GetNoiseData()
     return m_noiseData;
 }
 
-// Use the noise data for the islands
+void Noise::SetSeed(int seed)
+{
+    m_seed = seed;
+}
+
+int Noise::GetSeed()
+{
+    return m_seed;
+}

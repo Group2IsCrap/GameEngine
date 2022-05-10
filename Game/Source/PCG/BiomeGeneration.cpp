@@ -7,7 +7,7 @@
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
 #include "../FirelightEngine/Source/Events/EventDispatcher.h"
 
-
+unsigned int BiomeGeneration::mapSeed = 1234;
 
 BiomeGeneration::BiomeGeneration()
 	: m_noise(nullptr)
@@ -54,15 +54,17 @@ void BiomeGeneration::Draw()
 
 	//For 5 points, draw an image somewhere randomly.
 
-	for (int i = 0; i < 5; ++i)
+	for (size_t i = 0; i < 20; ++i)
 	{
+		Firelight::Maths::Rectf m_destinationRect = Firelight::Maths::Rectf(-2.0f, -10.0f + (i * 1.5), 1.0f, 1.0f);
 		Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(m_destinationRect, sm_biomeMap[RandomBiomeIndex(i)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, m_sourceRect);
 	}
 }
 
 size_t BiomeGeneration::RandomBiomeIndex(int perlinIndex)
 {
-	float data = *(m_noise->GetNoiseData() + perlinIndex);
+	float* noiseData = m_noise->GetNoiseData();
+	float data = noiseData[perlinIndex];
 
 	if (data >= -1.0 && data <= -0.6)
 	{
@@ -80,7 +82,7 @@ size_t BiomeGeneration::RandomBiomeIndex(int perlinIndex)
 	{
 		return 3;
 	}
-	if (data >= 6.0 && data <= 1.0)
+	if (data >= 0.6 && data <= 1.0)
 	{
 		return 4;
 	}

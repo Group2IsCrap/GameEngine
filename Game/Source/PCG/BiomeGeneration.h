@@ -17,9 +17,13 @@ public:
 	void Render();
 
 private:
+
+	void BuildBridges();
+
 	Noise* m_noise;
 
 	static BiomeGeneration* sm_instance;
+	static unsigned int mapSeed;
 
 
 	//list of biomes to get their textures
