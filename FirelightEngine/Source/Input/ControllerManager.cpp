@@ -27,7 +27,7 @@ namespace Firelight::Input
 	{
 		for (const auto& controller : m_Controller)
 		{
-			if (controller->m_Isconnected) {
+			if (controller->m_IsConnected) {
 				controller->TestInput();
 			}
 		}

@@ -17,7 +17,6 @@ namespace Firelight::ECS
 	SpriteRenderSystem::SpriteRenderSystem()
 	{
 		AddWhitelistComponent<SpriteComponent>();
-		
 
 		Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&SpriteRenderSystem::Render, this));
 	}
@@ -41,7 +40,8 @@ namespace Firelight::ECS
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}
 
-			const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit;
+			const Maths::Vec2f spriteWorldSize = (!spriteComponent->sourceRect.IsValid()) ? Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit 
+				: Maths::Vec2f(spriteComponent->sourceRect.w, spriteComponent->sourceRect.h) / spriteComponent->pixelsPerUnit;
 
 			Maths::Rectf destRect(
 				transformComponent->position.x - spriteWorldSize.x * 0.5f + spriteComponent->drawOffset.x,

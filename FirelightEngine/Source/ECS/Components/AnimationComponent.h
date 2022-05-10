@@ -5,6 +5,10 @@
 #include "../Source/Graphics/Data/Texture.h"
 #include "../Source/Maths/Rect.h"
 
+#include "../../Serialisation/Serialiser.h"
+
+using namespace Firelight::Serialisation;
+
 #include <string>
 #include <map>
 
@@ -19,9 +23,28 @@ namespace Firelight::ECS
 		bool shouldPlay = false;
 		std::map<std::string, Firelight::Animation::Animation> animations;
 
-		void Serialise(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override
+		void Serialise() override
 		{
-			return;
+			Serialiser::Serialise("CurrentAnimation", currentAnimation);
+			Serialiser::Serialise("CurrentFrameCount", currentFrameCount);
+			Serialiser::Serialise("CurrentFrameIndex", currentFrameIndex);
+			Serialiser::Serialise("PlayOnStart", playOnStart);
+			Serialiser::Serialise("ShouldPlay", shouldPlay);
+
+			//Serialise Map
+		}
+
+		AnimationComponent* Clone() override
+		{
+			AnimationComponent* clone = new AnimationComponent();
+			clone->currentAnimation = currentAnimation;
+			clone->currentFrameCount = currentFrameCount;
+			clone->currentFrameIndex = currentFrameIndex;
+			clone->playOnStart = playOnStart;
+			clone->shouldPlay = shouldPlay;
+			clone->animations = animations;
+
+			return clone;
 		}
 	};
 }

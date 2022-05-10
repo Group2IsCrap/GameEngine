@@ -42,6 +42,7 @@ namespace snowFallAudio
 
 			typedef std::map<std::string, FMOD::Sound*> soundMap;
 			typedef std::map<int, FMOD::Channel*> channelMap;
+			typedef std::map<float, FMOD::Channel*> volumeMap;
 
 			soundMap m_sounds;
 			channelMap m_channels;
@@ -71,6 +72,7 @@ namespace snowFallAudio
 			void SetChannelVolume(int channelId, float volumedB);
 			bool IsPlaying(int channelId) const;
 			void UnLoadAllSounds();
+			void VolumeChange(float volume);
 
 			void Ducking();
 
