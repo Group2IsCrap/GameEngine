@@ -58,7 +58,7 @@ namespace Firelight::Serialisation
 		FileDocument = new rapidjson::Document();
 		std::ifstream fileObject(fileName);
 
-		ASSERT_RETURN(fileObject, std::string("File at ") + fileName + "did not exist", false);
+		ASSERT_RETURN(fileObject, std::string("File at ") + fileName + " did not exist", false);
 
 		std::stringstream buffer;
 		buffer << fileObject.rdbuf();
@@ -352,5 +352,11 @@ namespace Firelight::Serialisation
 	}
 
 	
-	
+	void Serialiser::Deserialize(std::string name, bool& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetBool();
+		}
+	}
 }

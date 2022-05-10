@@ -1,0 +1,9 @@
+{
+    "AnimationName": "PlayerIdle",
+    "Loop": false,
+    "FrameTime": 0.0,
+    "FrameCount": 1,
+    "TextureNames": [
+        "Sprites\\character_idle.png"
+    ]
+}

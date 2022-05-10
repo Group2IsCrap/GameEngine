@@ -47,6 +47,7 @@ namespace Firelight::Serialisation
 		static void Deserialize(std::string name, int& value);
 		static void Deserialize(std::string name, float& value);
 		static void Deserialize(std::string name, std::string& value);
+		static void Deserialize(std::string name, bool& value);
 
 		static void StartArray(std::string key);
 		static void EndArray();
@@ -57,12 +58,13 @@ namespace Firelight::Serialisation
 		static bool LoadFile(const char* fileName);
 
 		static rapidjson::PrettyWriter<rapidjson::StringBuffer>* Writer;
+		static rapidjson::Document* FileDocument;
+
 	private:
 		static void WriteToFileJSON(std::string filename, std::string jsonText);
 		static bool IsWriterValid();
 		static void WriteKey(std::string key);
 
-		static rapidjson::Document* FileDocument;
 	};
 }
 
