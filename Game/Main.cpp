@@ -9,10 +9,12 @@
 #include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "Source/Systems/PlayerSystem.h"
+#include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
 #include "Source/ImGuiDebugLayer.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/CoreComponents/AIComponent.h"
 
 #include "Source/Events/InputEvents.h"
 
@@ -50,6 +52,27 @@ void BindDefaultKeys()
 	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 }
 
+void SetupEnemyTemplate()
+{
+	Template* enemyTemplate = new Template();
+	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
+	/*itemComponent->itemID = std::stoi(itemData[i][0]);
+	itemComponent->name = itemData[i][1];
+	itemComponent->description = itemData[i][2];
+	itemComponent->iconPath = itemData[i][3];
+	itemComponent->stackSize = std::stoi(itemData[i][4]);*/
+	SpriteComponent* spriteComponent = enemyTemplate->AddComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Rock.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = 50;
+	TransformComponent* transformComponent = enemyTemplate->AddComponent<TransformComponent>();
+	transformComponent->position.x = 0.0f;
+	transformComponent->position.y = 0.0f;
+
+	Entity* entity1 = new Entity(true, enemyTemplate->GetTemplateID());
+	Entity* entity2 = new Entity(true, enemyTemplate->GetTemplateID());
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -60,6 +83,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
+
 
 		// Register KeyBindings
 		BindDefaultKeys();
@@ -70,6 +95,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
+
+		//AI
+		SetupEnemyTemplate();
+		
 
 		// Grass
 		SpriteEntity* test2 = new SpriteEntity();
