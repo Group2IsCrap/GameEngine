@@ -34,13 +34,14 @@
 #include "UI/HealthUI.h"
 
 #include "Source/Serialisation/Serialiser.h"
+#include"Source/Input/GetInput.h"
 
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
-
+#include"Inventory/InventoryManager.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Serialisation;
@@ -152,15 +153,16 @@ void CreatUITest() {
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
+	
 }
-
+InventoryManager* invTestA;
 void SpawnItem0()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	invTestA->AddItem("PlayerInv", "MainIven",ItemDatabase::Instance()->CreateInstanceOfItem(0));
 }
 void SpawnItem1()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	invTestA->AddItem("PlayerInv", "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(1));
 }
 void SpawnItem2()
 {
@@ -215,17 +217,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		SetupDebugUI();
 
-		SpriteEntity* barn = new SpriteEntity();
-		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
-		barn->GetComponent<TransformComponent>()->position.y = 5.0f;
-		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		barn->GetComponent<SpriteComponent>()->layer = 33;
-		barn->AddComponent<ColliderComponent>(new CircleColliderComponent());
-		barn->GetComponent<ColliderComponent, CircleColliderComponent>()->radius = 3;
+		invTestA = new InventoryManager(s_uiCanvas);
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
+
+		//SpriteEntity* barn = new SpriteEntity();
+		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		//barn->GetComponent<SpriteComponent>()->layer = 33;
+		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
 		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
-		barn->GetComponent<StaticComponent>()->isStatic = true;
+		//barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
+		//barn->GetComponent<StaticComponent>()->isStatic = true;
 
 		//SpriteEntity* circle = new SpriteEntity();
 		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
@@ -245,6 +249,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().Update();
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
+
+			// get input onece
+			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
+				invTestA->LoadInventoryGroup("PlayerInv");
+			}
+			if (Input::InputGet.KeyIsPressNonRepeat('G')) {
+				invTestA->UnloadInventoryGroup("PlayerInv");
+			}
+			if (Input::InputGet.KeyIsPressNonRepeat('P')) {
+				invTestA->RemoveItem("PlayerInv", "MainIven",1,10);
+			}
 		}
 
 		Serialiser::SaveSceneJSON();

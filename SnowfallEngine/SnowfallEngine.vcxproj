@@ -151,13 +151,11 @@
     <ClInclude Include="FModAudio.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector3D.h" />
-    <ClInclude Include="WASAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FModAudio.cpp" />
     <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Vector3D.cpp" />
-    <ClCompile Include="WASAPI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

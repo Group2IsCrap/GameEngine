@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WindowContainer.h"
+#include "KeyBinder.h"
 
 #include "Maths/Rect.h"
 
@@ -30,6 +31,7 @@ namespace Firelight
         void                SetWindowDimensions(const Maths::Vec2i& dimensions);
 
         ECS::SystemManager& GetSystemManager();
+        KeyBinder&          GetKeyBinder();
 
         const Maths::Vec2i& GetWindowDimensions() const;
         const Maths::Vec2f& GetWindowDimensionsFloat() const;
@@ -56,6 +58,7 @@ namespace Firelight
         Utils::Time        m_time;
 
         ECS::SystemManager m_systemManager;
+        KeyBinder          m_keyBinder;
 
         WindowContainer    m_windowContainer;
 

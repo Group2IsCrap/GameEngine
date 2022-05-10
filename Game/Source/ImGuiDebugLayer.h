@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Source/ImGuiUI/ImGuiLayer.h"
+#include "Source/Engine.h"
+
 
 #include <vector>
 #include <functional>
@@ -17,7 +19,15 @@ public:
 	ImGuiDebugLayer();
 	~ImGuiDebugLayer();
 
+	void RenderItemWindow();
+
+	void RenderKeyBindingPrototype();
+
+	void RenderDebugInformation();
 private:
 	void SetupTheme();
+	void AddKeyBindingWidget(Firelight::KeyboardBindingData binding);
+	void AddButtonBindingWidget(Firelight::ControllerBindingData binding);
+
 private:
 };
