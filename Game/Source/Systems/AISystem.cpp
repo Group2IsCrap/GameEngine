@@ -52,3 +52,18 @@ void AISystem::HostileStateChanges(Entity* currentEntity)
 
 }
 
+void AISystem::Idle(Entity* currentEntity)
+{
+
+}
+
+void AISystem::Attack(Entity* currentEntity)
+{
+
+}
+
+void AISystem::Flee(Entity* currentEntity)
+{
+
+}
+
