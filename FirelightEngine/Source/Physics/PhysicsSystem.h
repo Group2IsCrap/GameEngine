@@ -20,7 +20,7 @@ namespace Firelight::Physics
 
 		void Render();
 		void Update(const Utils::Time& time) override;
-		void PhysicsUpdate(const Utils::Time& time) override;
+		void FixedUpdate(const Utils::Time& time) override;
 
 		void ApplyForces(double fixedDeltaTime);
 		void Simulate(double fixedDeltaTime);
@@ -65,5 +65,6 @@ namespace Firelight::Physics
 
 	private:
 		size_t m_onEarlyRenderSub;
+		float interpolationTime = 0.0f;
 	};
 }
