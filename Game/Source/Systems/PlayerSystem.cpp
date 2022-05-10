@@ -20,7 +20,10 @@ PlayerSystem::PlayerSystem()
 	m_playerMoveLeftIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
 	m_playerMoveRightIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
 	m_playerMoveDownIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
-	m_spawnItemEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
+	m_spawnItemEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::AttackEvent>(std::bind(&PlayerSystem::Attack, this));
+
+	//temp attack to test
+	m_attackIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 }
@@ -33,6 +36,7 @@ PlayerSystem::~PlayerSystem()
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(m_spawnItemEventIndex);
+	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::AttackEvent>(m_attackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -87,5 +91,11 @@ void PlayerSystem::MovePlayerRight()
 void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+}
+void PlayerSystem::Attack()
+{
+	//temp logic for testing
+	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(1);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 }

@@ -22,6 +22,7 @@ private:
 	size_t m_playerMoveDownIndex;
 	size_t m_playerMoveRightIndex;
 	size_t m_spawnItemEventIndex;
+	size_t m_attackIndex;
 	PlayerEntity* playerEntity;
 
 	void MovePlayerUp();
@@ -29,4 +30,5 @@ private:
 	void MovePlayerDown();
 	void MovePlayerRight();
 	void SpawnItem();
+	void Attack();
 };

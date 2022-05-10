@@ -161,6 +161,7 @@
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Combat\CombatComponant.h" />
     <ClInclude Include="Source\Core\CharacterEntity.h" />
     <ClInclude Include="Source\Events\InputEvents.h" />
     <ClInclude Include="Source\ImGuiDebugLayer.h" />
