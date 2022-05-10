@@ -20,11 +20,10 @@ namespace snowFallAudio
 	{
 		struct AudioChannel
 		{
-			AudioChannel(int priority, float volume);
+			AudioChannel(std::string name, int priority, float volume);
 			~AudioChannel();
 
 			int channelPriority = 0;
-
 			float channelVol = 50.0f;
 		};
 
@@ -42,10 +41,14 @@ namespace snowFallAudio
 
 			typedef std::map<std::string, FMOD::Sound*> soundMap;
 			typedef std::map<int, FMOD::Channel*> channelMap;
-			typedef std::map<float, FMOD::Channel*> volumeMap;
+			typedef std::map<FMOD::Channel*, float> volumeMap;
+			typedef std::map<std::string, AudioChannel*> channelList;
 
 			soundMap m_sounds;
 			channelMap m_channels;
+			volumeMap m_volumes;
+			channelList m_channelList;
+			
 		};
 
 		class AudioEngine
@@ -63,14 +66,11 @@ namespace snowFallAudio
 
 			void LoadSound(const std::string& soundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 			void UnLoadSound(const std::string& soundName);
-			void SetListenerPos(const Vector2D& playerPos);
-			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB, AudioChannel audioChannel, bool looping);
-			int PlaySound2D(const std::string& soundName, const Vector2D& playerPos, float volumedB = 0.0f);
+			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volume, AudioChannel audioChannel, bool looping, bool is3d, bool streaming);
 			void StopChannel(int channelId);
 			void StopAllChannels();
 			void SetChannelPos(int channelId, const Vector3D& channelPos);
-			void SetChannelVolume(int channelId, float volumedB);
-			bool IsPlaying(int channelId) const;
+			void SetChannelVolume(int channelId, float volume);
 			void UnLoadAllSounds();
 			void VolumeChange(float volume);
 
@@ -78,6 +78,8 @@ namespace snowFallAudio
 
 			float dBToVolume(float dB);
 			float VolumeTodB(float volume);
+
+			AudioChannel getChannel(std::string ChannelName);
 
 		private:
 			std::string audioFolder = "AudioFolder/";
