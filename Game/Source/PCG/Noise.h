@@ -16,6 +16,9 @@ public:
 	int GetSeed();
 	void SetSeed(int seed);
 
+	float GetNoiseScale();
+	void SetNoiseScale(float noiseScale);
+
 private:
 	float m_noiseData[NOISE_DATA_SIZE * NOISE_DATA_SIZE];
 

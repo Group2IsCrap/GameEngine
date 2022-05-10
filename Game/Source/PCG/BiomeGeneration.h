@@ -10,26 +10,22 @@ public:
 
 	static BiomeGeneration* Instance();
 	void Initialise();
+	void Uninitialise();
 
-	size_t RandomBiomeIndex(int perlinIndex);
+	size_t RandomBiomeIndex(unsigned int perlinIndex);
+	size_t CalculateIslandShape(int perlinIndex);
 
 	void Draw();
 	void Render();
 
 private:
 
-	void BuildBridges();
-
-	Noise* m_noise;
+	Noise* m_biomeNoise;
+	Noise* m_islandShapeNoise;
 
 	static BiomeGeneration* sm_instance;
 	static unsigned int mapSeed;
 
-
-	//list of biomes to get their textures
-
 	std::vector< Firelight::Graphics::Texture*> sm_biomeMap;
 	Biome m_biome;
-
-	//Array of biomes
 };

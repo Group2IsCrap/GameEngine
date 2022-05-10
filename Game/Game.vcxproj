@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IslandGeneration.cpp" />
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IslandGeneration.h" />
     <ClInclude Include="Source\Core\CharacterEntity.h" />
     <ClInclude Include="Source\Events\InputEvents.h" />
     <ClInclude Include="Source\ImGuiDebugLayer.h" />

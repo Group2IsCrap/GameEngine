@@ -33,12 +33,22 @@ float* Noise::GetNoiseData()
     return m_noiseData;
 }
 
+int Noise::GetSeed()
+{
+    return m_seed;
+}
+
 void Noise::SetSeed(int seed)
 {
     m_seed = seed;
 }
 
-int Noise::GetSeed()
+float Noise::GetNoiseScale()
 {
-    return m_seed;
+    return m_noiseScale;
+}
+
+void Noise::SetNoiseScale(float noiseScale)
+{
+    m_noiseScale = noiseScale;
 }

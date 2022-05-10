@@ -10,7 +10,8 @@
 unsigned int BiomeGeneration::mapSeed = 1234;
 
 BiomeGeneration::BiomeGeneration()
-	: m_noise(nullptr)
+	: m_biomeNoise(nullptr)
+	, m_islandShapeNoise(nullptr)
 	, m_biome()
 {
 	sm_biomeMap =
@@ -36,8 +37,20 @@ BiomeGeneration* BiomeGeneration::Instance()
 
 void BiomeGeneration::Initialise()
 {
-	m_noise = new Noise();
-	m_noise->CreateNoise();
+	m_biomeNoise = new Noise();
+	m_biomeNoise->SetSeed(3007);
+	m_biomeNoise->SetNoiseScale(250.0f);
+	m_biomeNoise->CreateNoise();
+
+	m_islandShapeNoise = new Noise();
+	m_islandShapeNoise->SetNoiseScale(1.0f);
+	m_islandShapeNoise->CreateNoise();
+}
+
+void BiomeGeneration::Uninitialise()
+{
+	delete m_biomeNoise;
+	delete m_islandShapeNoise;
 }
 
 void BiomeGeneration::Render()
@@ -47,23 +60,24 @@ void BiomeGeneration::Render()
 
 void BiomeGeneration::Draw()
 {
+	//TILE MAP DRAWS SO THIS FUNCTION SHOULDNT EXIST
+
+
 	Firelight::Maths::Rectf m_sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 	Firelight::Maths::Rectf m_destinationRect = Firelight::Maths::Rectf(-2.0f, -2.0f, 1.0f, 1.0f);
 	int m_layer = 32;
 	double m_rotation = 0.0;
 
-	//For 5 points, draw an image somewhere randomly.
-
-	for (size_t i = 0; i < 20; ++i)
+	for (size_t i = 0; i < 10; ++i)
 	{
-		Firelight::Maths::Rectf m_destinationRect = Firelight::Maths::Rectf(-2.0f, -10.0f + (i * 1.5), 1.0f, 1.0f);
+		Firelight::Maths::Rectf m_destinationRect = Firelight::Maths::Rectf(-5.0f + (i * 1.5), 3.0f, 1.0f, 1.0f);
 		Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(m_destinationRect, sm_biomeMap[RandomBiomeIndex(i)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, m_sourceRect);
 	}
 }
 
-size_t BiomeGeneration::RandomBiomeIndex(int perlinIndex)
+size_t BiomeGeneration::RandomBiomeIndex(unsigned int perlinIndex)
 {
-	float* noiseData = m_noise->GetNoiseData();
+	float* noiseData = m_biomeNoise->GetNoiseData();
 	float data = noiseData[perlinIndex];
 
 	if (data >= -1.0 && data <= -0.6)
@@ -86,4 +100,14 @@ size_t BiomeGeneration::RandomBiomeIndex(int perlinIndex)
 	{
 		return 4;
 	}
+}
+
+size_t BiomeGeneration::CalculateIslandShape(int perlinIndex)
+{
+	float* noiseData = m_islandShapeNoise->GetNoiseData();
+	float data = noiseData[perlinIndex];
+
+
+
+	return 0;
 }
