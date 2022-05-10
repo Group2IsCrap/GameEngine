@@ -1,7 +1,12 @@
 #include "Serialiser.h"
 #include "rapidjson/prettywriter.h"
+
+#include "rapidjson/document.h"
+
 #include "../ECS/EntityComponentSystem.h"
 #include <fstream>
+
+using namespace rapidjson;
 
 namespace Firelight::Serialisation
 {
@@ -46,6 +51,14 @@ namespace Firelight::Serialisation
 		}
 
 		Writer->SetFormatOptions(options);
+	}
+
+	bool Serialiser::LoadFile(const char* fileName)
+	{
+		FileDocument = new rapidjson::Document();
+		FileDocument->Parse(fileName);
+
+		return true;
 	}
 
 	void Serialiser::EndObject()
@@ -278,6 +291,31 @@ namespace Firelight::Serialisation
 		WriteKey("A");
 		Writer->Double(value.GetA());
 		EndObject();
+	}
+
+	void Serialiser::Deserialize(std::string name, int& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetInt();
+		}
+
+	}
+
+	void Serialiser::Deserialize(std::string name, float& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetFloat();
+		}
+	}
+
+	void Serialiser::Deserialize(std::string name, std::string& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetString();
+		}
 	}
 
 	

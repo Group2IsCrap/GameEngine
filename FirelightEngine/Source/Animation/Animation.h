@@ -5,18 +5,15 @@
 
 #include <string>
 #include <math.h>
+#include <vector>
 
 namespace Firelight::Animation
 {
 	struct Animation
 	{
-		Animation() {}
-		Animation(std::string name, Firelight::Graphics::Texture* texture, int cellWidth, int cellHeight, int frameCount, float frameTime = 100.0f, bool loop = true) : m_animationName(name), m_texture(texture), m_cellWidth(cellWidth), m_cellHeight(cellHeight), m_frameCount(frameCount),
-			m_frameTime(frameTime), m_loop(loop)
+		Animation() 
 		{
-			Firelight::Maths::Vec3i textureSize = m_texture->GetDimensions();
-			m_rows = static_cast<int>(std::floor(textureSize.x / m_cellWidth));
-			m_columns = static_cast<int>(std::floor(textureSize.y / m_cellHeight));
+			m_path = "";
 		}
 
 		std::string m_animationName;
@@ -29,6 +26,10 @@ namespace Firelight::Animation
 		
 		int m_rows = 0;
 		int m_columns = 0;
+
+		std::vector<std::string> m_textureNames;
+		std::vector<Firelight::Graphics::Texture*> m_textures;
+		std::string m_path;
 
 	};
 }
