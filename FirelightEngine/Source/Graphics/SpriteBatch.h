@@ -72,18 +72,20 @@ namespace Firelight::Graphics
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,
-			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f),
+			bool flipX = false, bool flipY = false
 		);
-		
+
 		// Draw with a dest rect in screen pixels
 		void PixelDraw(const Maths::Rectf& destRectPixel,
 			Texture* texture = nullptr,
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,
-			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f),
+			bool flipX = false, bool flipY = false
 		);
-		
+
 		// Draw with a dest rect in world units
 		void WorldDraw(
 			const Maths::Rectf& destRectWorld,
@@ -91,7 +93,8 @@ namespace Firelight::Graphics
 			int layer = 32,
 			double rotation = 0.0,
 			const Colour::RGBA& colour = Colours::sc_white,
-			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f)
+			const Maths::Rectf& sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f),
+			bool flipX = false, bool flipY = false
 		);
 
 		void DrawTextStandard(Text* text, int layer = 32);

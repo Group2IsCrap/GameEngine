@@ -27,7 +27,7 @@ namespace Firelight::Graphics
         m_sortMode = sortMode;
     }
 
-    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         // If there is already an entry in the queue overwrite the existing data,
         // otherwise create push back new data
@@ -62,6 +62,32 @@ namespace Firelight::Graphics
             quad->m_topRight.m_texCoord = Maths::Vec2f(1.0f, 0.0f);
             quad->m_bottomLeft.m_texCoord = Maths::Vec2f(0.0f, 1.0f);
             quad->m_bottomRight.m_texCoord = Maths::Vec2f(1.0f, 1.0f);
+        }
+
+        // Perform flips if necessary
+        if (flipX)
+        {
+            // Make copies of the original tex coords
+            Maths::Vec2f topLeftCoord = quad->m_topLeft.m_texCoord;
+            Maths::Vec2f botLeftCoord = quad->m_bottomLeft.m_texCoord;
+
+            // Do the actual flip
+            quad->m_topLeft.m_texCoord = quad->m_topRight.m_texCoord;
+            quad->m_topRight.m_texCoord = topLeftCoord;
+            quad->m_bottomLeft.m_texCoord = quad->m_bottomRight.m_texCoord;
+            quad->m_bottomRight.m_texCoord = botLeftCoord;
+        }
+        if (flipY)
+        {
+            // Make copies of the original tex coords
+            Maths::Vec2f topLeftCoord = quad->m_topLeft.m_texCoord;
+            Maths::Vec2f topRightCoord = quad->m_topRight.m_texCoord;
+
+            // Do the actual flip
+            quad->m_topLeft.m_texCoord = quad->m_bottomLeft.m_texCoord;
+            quad->m_topRight.m_texCoord = quad->m_bottomRight.m_texCoord;
+            quad->m_bottomLeft.m_texCoord = topLeftCoord;
+            quad->m_bottomRight.m_texCoord = topRightCoord;
         }
 
         // If we are given a rotation, rotate the points
@@ -100,18 +126,18 @@ namespace Firelight::Graphics
         quad->m_bottomRight.m_colour = floatColour;
     }
 
-    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
 
-        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect, flipX, flipY);
     }
 
-    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRectWorld, Engine::Instance().GetActiveCamera2DRect());
  
-        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect, flipX, flipY);
     }
 
     void SpriteBatch::DrawTextStandard(Text* text, int layer)

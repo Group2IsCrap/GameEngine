@@ -326,6 +326,17 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
+	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Text& value)
+	{
+		if (!IsWriterValid())
+		{
+			return;
+		}
+
+		WriteKey(name);
+		Writer->String("INSERT TEXT DATA HERE");
+	}
+
 	void Serialiser::Deserialize(std::string name, int& value)
 	{
 		if (FileDocument->HasMember(name.c_str()))
@@ -358,16 +369,5 @@ namespace Firelight::Serialisation
 		{
 			value = (*FileDocument)[name.c_str()].GetBool();
 		}
-	}
-
-	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Text& value)
-	{
-		if (!IsWriterValid())
-		{
-			return;
-		}
-
-		WriteKey(name);
-		Writer->String("INSERT TEXT HERE");
 	}
 }

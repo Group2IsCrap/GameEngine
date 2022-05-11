@@ -229,16 +229,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
 		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 300.0f, 0.0f);
 
-		//SpriteEntity* barn = new SpriteEntity();
-		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
-		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
-		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		//barn->GetComponent<SpriteComponent>()->layer = 33;
-		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		//barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
-		//barn->GetComponent<StaticComponent>()->isStatic = true;
+		/*SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->GetComponent<SpriteComponent>()->flipY = true;
+		barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
+		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		barn->GetComponent<StaticComponent>()->isStatic = true;*/
 
 		//SpriteEntity* circle = new SpriteEntity();
 		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
