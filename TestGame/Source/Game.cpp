@@ -216,6 +216,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		CreatUITest();
 
 		SetupDebugUI();
+    
+		invTestA = new InventoryManager(s_uiCanvas);
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
+
+		//SpriteEntity* barn = new SpriteEntity();
+		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		//barn->GetComponent<SpriteComponent>()->layer = 33;
+		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
+		//barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
+		//barn->GetComponent<StaticComponent>()->isStatic = true;
+
+		//SpriteEntity* circle = new SpriteEntity();
+		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
+		//circle->GetComponent<TransformComponent>()->position.y = -5.0f;
+		//circle->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ball.png");
+		//circle->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		//circle->GetComponent<SpriteComponent>()->layer = 32;
+		//circle->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 2.0f);
+		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		//circle->GetComponent<StaticComponent>()->isStatic = false;
 
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 

@@ -40,6 +40,13 @@ void ImGuiDebugLayer::Render()
 
 	ImGui::End();
 
+	RenderItemWindow();
+	RenderKeyBindingPrototype();
+	RenderDebugInformation();
+}
+
+void ImGuiDebugLayer::RenderItemWindow()
+{
 	ImGui::Begin("Debug Menu");
 	if (ImGui::Button("Spawn Rock"))
 	{
@@ -50,6 +57,188 @@ void ImGuiDebugLayer::Render()
 		spawnItemCommand[1]();
 	}
 	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderKeyBindingPrototype()
+{
+	ImGui::Begin("Key Bindings");
+	if(ImGui::BeginTabBar("##KeyBindingTabs"))
+	{
+		if (ImGui::BeginTabItem("Keyboard"))
+		{
+			// Get Current Key Bindings
+			// Display List of Bindings with drop down for current key.
+			// When a key is selected, unbind the previous key and bind the new key
+			static std::vector<Firelight::KeyboardBindingData> keyBindings;
+			keyBindings = Firelight::Engine::Instance().GetKeyBinder().GetCurrentKeyBindings();
+
+			if (ImGui::BeginTable("##KeyBindingTable", 3));
+			{            
+				ImGui::TableSetupColumn("Event", ImGuiTableColumnFlags_WidthFixed);
+				ImGui::TableSetupColumn("Mode", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+				ImGui::TableSetupColumn("Bound Key", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+				ImGui::TableHeadersRow();
+				for (auto& binding : keyBindings)
+				{
+					ImGui::TableNextRow();
+
+					AddKeyBindingWidget(binding);
+				}
+
+				ImGui::EndTable();
+			}
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("Controller"))
+		{
+			//Same as above, but for controller
+			static std::vector<Firelight::ControllerBindingData> buttonBindings;
+			buttonBindings = Firelight::Engine::Instance().GetKeyBinder().GetCurrentControllerBindings();
+
+			if (ImGui::BeginTable("##ButtonBindingTable", 3));
+			{
+				ImGui::TableSetupColumn("Event", ImGuiTableColumnFlags_WidthFixed);
+				ImGui::TableSetupColumn("Mode", ImGuiTableColumnFlags_WidthFixed, 175.0f);
+				ImGui::TableSetupColumn("Bound Button", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+				ImGui::TableHeadersRow();
+				for (auto& binding : buttonBindings)
+				{
+					ImGui::TableNextRow();
+
+					AddButtonBindingWidget(binding);
+				}
+
+				ImGui::EndTable();
+			}
+			ImGui::EndTabItem();
+		}
+	}
+	ImGui::EndTabBar();
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderDebugInformation()
+{
+	ImGui::Begin("Debug Info");
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::Text("Keys down:");  for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyDown(i)) { ImGui::SameLine(); ImGui::Text("%d (0x%X)", i, i); }
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::AddKeyBindingWidget(Firelight::KeyboardBindingData binding)
+{
+	ImGui::TableSetColumnIndex(0);
+	ImGui::Text(binding.eventName);
+	ImGui::SameLine();
+	
+	const char* eventTypes[] = { "Key Press", "Key Press Single", "Key Release" };
+	const char* currentEventType = binding.eventType.c_str();
+
+	ImGui::TableSetColumnIndex(1);
+	ImGui::SetNextItemWidth(150.0f);
+	if (ImGui::BeginCombo(("##" + std::string(binding.eventName) + "EventTypeCombo").c_str(), currentEventType))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(eventTypes); n++)
+		{
+			bool isSelected = (currentEventType == eventTypes[n]);
+			if (ImGui::Selectable(eventTypes[n], isSelected))
+			{
+				Firelight::Engine::Instance().GetKeyBinder().ChangeKeyEventType(binding, eventTypes[n]);
+				currentEventType = eventTypes[n];
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+
+	const char* keys[] = { "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","0","1","2","3","4","5","6","7","8","9","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12",",",".","/","\\",";","'","#","[","]","-","=","LEFT","UP","RIGHT","DOWN","NUMPAD 0" ,"NUMPAD 1" ,"NUMPAD 2" ,"NUMPAD 3" ,"NUMPAD 4" ,"NUMPAD 5" ,"NUMPAD 6" ,"NUMPAD 7" ,"NUMPAD 8" ,"NUMPAD 9" };
+	std::string currentKeyString = Firelight::Engine::Instance().GetKeyBinder().GetEnumString(binding.key);
+	const char* currentKey = currentKeyString.c_str();
+
+	ImGui::TableSetColumnIndex(2);
+	ImGui::SetNextItemWidth(100.0f);
+	if (ImGui::BeginCombo(("##" + std::string(binding.eventName) + "KeyCombo").c_str(), currentKey))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(keys); n++)
+		{
+			bool isSelected = (currentKey == keys[n]);
+			if (ImGui::Selectable(keys[n], isSelected))
+			{
+				if (Firelight::Engine::Instance().GetKeyBinder().ChangeEventKey(binding, keys[n]))
+				{
+					currentKey = keys[n];
+					if (isSelected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+
+}
+
+void ImGuiDebugLayer::AddButtonBindingWidget(Firelight::ControllerBindingData binding)
+{
+	ImGui::TableSetColumnIndex(0);
+	ImGui::Text(binding.eventName);
+	ImGui::SameLine();
+	
+	const char* eventTypes[] = { "Button Press", "Button Press Single", "Button Release" };
+	const char* currentEventType = binding.eventType.c_str();
+
+	ImGui::TableSetColumnIndex(1);
+	ImGui::SetNextItemWidth(175.0f);
+	if (ImGui::BeginCombo(("##" + std::string(binding.eventName) + "EventTypeCombo").c_str(), currentEventType))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(eventTypes); n++)
+		{
+			bool isSelected = (currentEventType == eventTypes[n]);
+			if (ImGui::Selectable(eventTypes[n], isSelected))
+			{
+				Firelight::Engine::Instance().GetKeyBinder().ChangeControllerEventType(binding, eventTypes[n]);
+				currentEventType = eventTypes[n];
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::SameLine();
+
+	const char* buttons[] = { "A","B","X","Y","LB","RB","LT","RT","STICK LEFT", "STICK RIGHT","UP","LEFT","DOWN","RIGHT","START","BACK"};
+	std::string currentButtonString = Firelight::Engine::Instance().GetKeyBinder().GetEnumString(binding.button);
+	const char* currentButton = currentButtonString.c_str();
+
+	ImGui::TableSetColumnIndex(2);
+	ImGui::SetNextItemWidth(100.0f);
+	if (ImGui::BeginCombo(("##" + std::string(binding.eventName) + "ButtonCombo").c_str(), currentButton))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(buttons); n++)
+		{
+			bool isSelected = (currentButton == buttons[n]);
+			if (ImGui::Selectable(buttons[n], isSelected))
+			{
+				if (Firelight::Engine::Instance().GetKeyBinder().ChangeEventButton(binding, buttons[n]))
+				{
+					currentButton = buttons[n];
+					if (isSelected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 }
 
 void ImGuiDebugLayer::SetupTheme()

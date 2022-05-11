@@ -14,7 +14,7 @@ namespace Firelight::Input
 		void OnKeyPress(const unsigned char key);
 		void OnKeyPressNonRepeat(const unsigned char key);
 
-		void OnKeyReplace(const unsigned char key);
+		void OnKeyRelease(const unsigned char key);
 
 		void OnChar(const unsigned char key);
 		void OnCharNoRepeat(const unsigned char key);

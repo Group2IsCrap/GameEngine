@@ -19,6 +19,7 @@ namespace Firelight::Physics
 {
 	PhysicsSystem::PhysicsSystem()
 	{
+		AddWhitelistComponent<Firelight::ECS::RigidBodyComponent>();
 		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
 
 		m_onEarlyRenderSub = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&PhysicsSystem::Render, this));
@@ -97,18 +98,56 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::Update(const Utils::Time& time)
 	{
-		UNREFERENCED_PARAMETER(time);
-		HandleCollisions();
+
+		for (int i = 0; i < m_entities.size(); ++i)
+		{
+			Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
+			Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
+
+			if (rigidBodyComponent->interpolate)
+			{
+				float timeVal = rigidBodyComponent->interpolationTime / time.GetPhysicsTimeStep();
+
+				transformComponent->position = Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal);
+				rigidBodyComponent->interpolationTime += time.GetDeltaTime();
+			}
+		}
 	}
 
-	void PhysicsSystem::PhysicsUpdate(const Utils::Time& time)
+	void PhysicsSystem::FixedUpdate(const Utils::Time& time)
 	{
-		
+
+		ApplyForces(time.GetPhysicsTimeStep());
+		HandleCollisions();
 	}
 
 	void PhysicsSystem::ApplyForces(double fixedDeltaTime)
 	{
-		UNREFERENCED_PARAMETER(fixedDeltaTime);
+		for (int i = 0; i < m_entities.size(); ++i)
+		{
+			Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
+			Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
+			if (rigidBodyComponent->interpolate)
+			{
+				rigidBodyComponent->interpolationTime = 0.0f;
+				rigidBodyComponent->lastPos = rigidBodyComponent->nextPos;
+				rigidBodyComponent->nextPos += rigidBodyComponent->velocity;
+
+			}
+			else
+			{
+				transformComponent->position += rigidBodyComponent->velocity;
+
+			}
+
+			float val = (1 - fixedDeltaTime * rigidBodyComponent->dragCoefficient);
+
+			rigidBodyComponent->velocity *= val < 0 ? 0 : val;
+			if (rigidBodyComponent->velocity.Length() < 0.001)
+			{
+				rigidBodyComponent->velocity = 0;
+			}
+		}
 	}
 
 	void PhysicsSystem::Simulate(double fixedDeltaTime)

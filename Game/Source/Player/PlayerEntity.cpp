@@ -10,6 +10,8 @@ PlayerEntity::PlayerEntity()
 {
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
+	AddComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
+	AddComponent<Firelight::ECS::ColliderComponent>();
 	GetSpriteComponent()->layer = 60;
 
 	AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());

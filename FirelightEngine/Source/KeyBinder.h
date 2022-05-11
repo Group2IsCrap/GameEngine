@@ -8,6 +8,10 @@
 #include<map>
 #include <unordered_map>
 
+#include "Input/ControllerEvent.h"
+
+using namespace Firelight::Events::Input;
+
 namespace Firelight
 {
 	using DescriptorType = const char*;
@@ -114,30 +118,107 @@ namespace Firelight
 		KEY_NUMPAD_DIVIDE,
 	};
 
+	enum class KeyEventType
+	{
+		KeyPress,
+		KeyPressSingle,
+		KeyRelease
+	};
+
+	enum class ControllerEventType
+	{
+		ButtonPress,
+		ButtonPressSingle,
+		ButtonRelease
+	};
+
+	enum class ControllerThumbsticks
+	{
+		LEFT,
+		RIGHT
+	};
+
+	enum class Axis
+	{
+		X,
+		Y
+	};
+
+	struct KeyboardBindingData
+	{
+		std::string eventType;
+		Keys key;
+		DescriptorType eventName;
+	};
+
+	struct ControllerBindingData
+	{
+		std::string eventType;
+		ControllerButtons button;
+		DescriptorType eventName;
+	};
+
 	class KeyBinder : public Events::Listener
 	{
 	public:
 		KeyBinder();
-		void BindKeyboardActionEvent(DescriptorType eventName, unsigned char key);
-		void BindKeyboardActionEvent(DescriptorType eventName, Keys key);
-		void BindKeyboardAxisEvent(DescriptorType eventName, unsigned char key, float axisValue);
+		void BindKeyboardActionEvent(DescriptorType eventName, unsigned char key, KeyEventType eventType = KeyEventType::KeyPress);
+		void BindKeyboardActionEvent(DescriptorType eventName, Keys key, KeyEventType eventType = KeyEventType::KeyPress);
+		void BindControllerActionEvent(DescriptorType eventName, ControllerButtons button, ControllerEventType eventType = ControllerEventType::ButtonPress);
+		void BindControllerAxisEvent(DescriptorType eventName, Axis axis, ControllerThumbsticks stick, float value);
 
-		virtual void HandleEvents(DescriptorType event, void* data) override;
+		void BindControllerAxisEvent(DescriptorType eventName, ControllerThumbsticks stick);
+
 
 		void Update();
+
+		std::vector<KeyboardBindingData> GetCurrentKeyBindings();
+		std::vector<ControllerBindingData> GetCurrentControllerBindings();
+
+		void ChangeKeyEventType(KeyboardBindingData binding, std::string newTypeString);
+		bool ChangeEventKey(KeyboardBindingData binding, std::string newKeyString);
+		void ChangeControllerEventType(ControllerBindingData binding, std::string newTypeString);
+		bool ChangeEventButton(ControllerBindingData binding, std::string newButtonString);
+
+		std::string GetEnumString(KeyEventType eventType);
+		KeyEventType GetStringKeyEventTypeEnum(std::string eventType);
+		std::string GetEnumString(Keys key);
+		Keys GetStringKeyEnum(std::string key);
+		std::string GetEnumString(ControllerEventType eventType);
+		ControllerEventType GetStringControllerEventTypeEnum(std::string eventType);
+		std::string GetEnumString(ControllerButtons button);
+		ControllerButtons GetStringButtonEnum(std::string button);
 	private:
-		
-		std::unordered_map<unsigned char,std::pair<DescriptorType,bool>> m_keyBinds;
-		std::unordered_map<DescriptorType, std::pair<unsigned char, float>> m_keyAxisBinds;
+
+		void CheckKey(KeyEventType eventType, unsigned char key);
+		void CheckButton(ControllerEventType eventType, ControllerButtons button);
+		virtual void HandleEvents(DescriptorType event, void* data) override;
+
+		std::unordered_map<unsigned char, bool> m_keyStates;
+		std::unordered_map<unsigned char, bool> m_previousKeyStates;
+		std::unordered_map<unsigned char, bool> m_keySingleStates;
+		std::unordered_map<ControllerButtons, bool> m_buttonStates;
+		std::unordered_map<ControllerButtons, bool> m_previousButtonStates;
+		std::unordered_map<ControllerButtons, bool> m_buttonSingleStates;
+
+		Maths::Vec2f m_leftStickAxis = Maths::Vec2f(0,0);
+		Maths::Vec2f m_rightStickAxis = Maths::Vec2f(0,0);
+
+		std::unordered_map<unsigned char, DescriptorType> m_keyBindsOnPress;
+		std::unordered_map<unsigned char, DescriptorType> m_keyBindsOnPressSingle;
+		std::unordered_map<unsigned char, DescriptorType> m_keyBindsOnRelease;
+		std::unordered_map<ControllerButtons, DescriptorType> m_controllerBindsOnPress;
+		std::unordered_map<ControllerButtons, DescriptorType> m_controllerBindsOnPressSingle;
+		std::unordered_map<ControllerButtons, DescriptorType> m_controllerBindsOnRelease;
+
+		std::unordered_map<DescriptorType, std::pair<Axis, float>> m_leftStickAxisBinds;
+		std::unordered_map<DescriptorType, std::pair<Axis, float>> m_rightStickAxisBinds;
+		std::vector<DescriptorType> m_leftStickGenericAxisBinds;
+		std::vector<DescriptorType> m_rightStickGenericAxisBinds;
 
 		std::unordered_map<Keys, unsigned char> m_keyMap;
+		std::unordered_map<unsigned char, Keys> m_charMap;
 
-		void CheckAllKeyOnPress();
-
-		void RouteOnKeyPress(unsigned char pressedKey);
-		void RouteKeyIsPressed(unsigned char pressedKey);
-		void RouteOnKeyReleased(unsigned char pressedKey);
-		void RouteControllerEvent(void* data);
 		void SetUpKeyMap();
 	};
 }

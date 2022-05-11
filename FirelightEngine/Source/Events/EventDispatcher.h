@@ -23,6 +23,7 @@ namespace Firelight::Events
 		static void RemoveAllListeners();
 		template<typename EventType>
 		static void InvokeListeners(void* data);
+		static void InvokeListeners(DescriptorType descriptor, void* data);
 
 		//Function Events
 		template<typename EventType>
@@ -32,9 +33,10 @@ namespace Firelight::Events
 		template<typename EventType>
 		static void UnsubscribeAllFunctions();
 		template<typename EventType>
-		static void InvokeFunctions();		
-		
+		static void InvokeFunctions();
 		static void InvokeFunctions(DescriptorType descriptor);
+		
+
 
 	private:
 		static std::map<Event::DescriptorType, std::vector<Listener*>> sm_listeners;
