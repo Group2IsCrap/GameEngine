@@ -90,16 +90,19 @@ namespace Firelight::ECS
 	struct CircleColliderComponent : ColliderComponent
 	{
 		float radius;
+		Firelight::Maths::Vec2f offset;
 
 		void Serialise() override
 		{
 			Serialiser::Serialise("Radius", radius);
+			Serialiser::Serialise("Offset", offset);
 		}
 
 		CircleColliderComponent* Clone() override
 		{
 			CircleColliderComponent* clone = new CircleColliderComponent();
 			clone->radius = radius;
+			clone->offset = offset;
 
 			return clone;
 		}
