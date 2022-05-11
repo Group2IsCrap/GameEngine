@@ -13,9 +13,12 @@ PlayerEntity::PlayerEntity()
 	AddComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
 	GetSpriteComponent()->layer = 60;
 
-	AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent());
-	GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->drawCollider = true;
-	GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>()->radius = 1.0f;
+	//Firelight::ECS::CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
+	//collider->drawCollider = true;
+	//collider->radius = 1.0f;
+	Firelight::ECS::BoxColliderComponent* boxCollider = dynamic_cast<Firelight::ECS::BoxColliderComponent*>(AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent()));
+	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 2.0f);
+	boxCollider->drawCollider = true;
 }
 
 PlayerEntity::PlayerEntity(Firelight::ECS::EntityID entityID) : CharacterEntity(entityID)
