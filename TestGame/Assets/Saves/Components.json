@@ -68,11 +68,82 @@
                     },
                     {
                         "Name": ""
+                    },
+                    {
+                        "Name": ""
                     }
                 ]
             },
             {
                 "ComponentID": 9,
+                "Components": [
+                    {
+                        "Layer": 60,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 40.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": 96.0,
+                            "Height": 128.0
+                        }
+                    },
+                    {
+                        "Layer": 16,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 20.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
+                    },
+                    {
+                        "Layer": 33,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        }
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
                 "Components": [
                     {
                         "IsStatic": false
@@ -112,7 +183,16 @@
                     },
                     {
                         "IsStatic": false
+                    },
+                    {
+                        "IsStatic": true
                     }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "Components": [
+                    {}
                 ]
             },
             {
@@ -134,8 +214,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -0.44555243849754333,
-                            "Y": -1.3847969770431519,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -286,6 +366,19 @@
                             "Y": 0.0,
                             "Z": 0.0
                         }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 7.0,
+                            "Y": 5.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
                     }
                 ]
             },
@@ -302,7 +395,7 @@
                 "Components": [
                     {
                         "CurrentAnimation": "INSERT ANIMATION HERE",
-                        "CurrentFrameCount": 62.48200225830078,
+                        "CurrentFrameCount": 0.0,
                         "CurrentFrameIndex": 0,
                         "PlayOnStart": true,
                         "ShouldPlay": true
@@ -310,13 +403,7 @@
                 ]
             },
             {
-                "ComponentID": 12,
-                "Components": [
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 7,
+                "ComponentID": 6,
                 "Components": [
                     {
                         "Rect": {
@@ -325,6 +412,9 @@
                             "Width": 2.0,
                             "Height": 2.200000047683716
                         }
+                    },
+                    {
+                        "Radius": 3.0
                     }
                 ]
             },
@@ -1116,11 +1206,28 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
                     }
                 ]
             },
             {
                 "ComponentID": 9,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
                 "EntityIDs": [
                     {
                         "EntityID": 0,
@@ -1173,6 +1280,19 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
                     }
                 ]
             },
@@ -1230,6 +1350,10 @@
                     {
                         "EntityID": 12,
                         "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
                     }
                 ]
             },
@@ -1252,16 +1376,20 @@
                 ]
             },
             {
-                "ComponentID": 12,
+                "ComponentID": 6,
                 "EntityIDs": [
                     {
                         "EntityID": 1,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [1]
                     }
                 ]
             },
             {
-                "ComponentID": 7,
+                "ComponentID": 10,
                 "EntityIDs": [
                     {
                         "EntityID": 1,
@@ -1547,6 +1675,10 @@
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::StaticComponent",
+                "ComponentTypeID": 9
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::LayerComponent",
                 "ComponentTypeID": 9
             },
             {

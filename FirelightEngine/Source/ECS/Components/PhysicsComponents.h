@@ -18,18 +18,31 @@ namespace Firelight::ECS
 	struct RigidBodyComponent : BaseComponent
 	{
 		Firelight::Maths::Vec3f velocity;
+		Firelight::Maths::Vec3f lastPos;
+		Firelight::Maths::Vec3f nextPos;
+		bool interpolate = false;
+		float interpolationTime = 0.0f;
+		float dragCoefficient = 5.0f;
 		int layer;
 
 		void Serialise() override
 		{
 			Serialiser::Serialise("Velocity", velocity);
+			Serialiser::Serialise("LastPos", lastPos);
+			Serialiser::Serialise("NextPos", nextPos);
 			Serialiser::Serialise("Layer", layer);
+			Serialiser::Serialise("Interpolate", interpolate);
+			Serialiser::Serialise("InterpolationTime", interpolationTime);
 		}
 
 		RigidBodyComponent* Clone() override
 		{
 			RigidBodyComponent* clone = new RigidBodyComponent();
 			clone->velocity = velocity;
+			clone->lastPos = lastPos;
+			clone->interpolationTime = interpolate;
+			clone->interpolate = interpolationTime;
+			clone->nextPos = nextPos;
 			clone->layer = layer;
 
 			return clone;
@@ -40,6 +53,7 @@ namespace Firelight::ECS
 	{
 		bool isEnabled = true;
 		bool drawCollider = false;
+		bool isTrigger = false;
 
 		void Serialise() override
 		{
@@ -76,16 +90,19 @@ namespace Firelight::ECS
 	struct CircleColliderComponent : ColliderComponent
 	{
 		float radius;
+		Firelight::Maths::Vec2f offset;
 
 		void Serialise() override
 		{
 			Serialiser::Serialise("Radius", radius);
+			Serialiser::Serialise("Offset", offset);
 		}
 
 		CircleColliderComponent* Clone() override
 		{
 			CircleColliderComponent* clone = new CircleColliderComponent();
 			clone->radius = radius;
+			clone->offset = offset;
 
 			return clone;
 		}

@@ -10,6 +10,7 @@
 #include "../Graphics/Data/Colour.h"
 #include "../Graphics/Text/Text.h"
 #include "../Animation/Animation.h"
+#include "../Includes/rapidjson/document.h"
 
 namespace Firelight::Serialisation
 {
@@ -45,17 +46,27 @@ namespace Firelight::Serialisation
 		static void Serialise(std::string name, const Firelight::Graphics::Colour::RGBA& value);
 		static void Serialise(std::string name, const Firelight::Graphics::Text& value);
 
+		static void Deserialize(std::string name, int& value);
+		static void Deserialize(std::string name, float& value);
+		static void Deserialize(std::string name, std::string& value);
+		static void Deserialize(std::string name, bool& value);
+
 		static void StartArray(std::string key);
 		static void EndArray();
 		static void StartObject();
 		static void EndObject();
 		static void SetFormatOptions(rapidjson::PrettyFormatOptions options);
 
+		static bool LoadFile(const char* fileName);
+
+		static rapidjson::PrettyWriter<rapidjson::StringBuffer>* Writer;
+		static rapidjson::Document* FileDocument;
+
 	private:
 		static void WriteToFileJSON(std::string filename, std::string jsonText);
 		static bool IsWriterValid();
-		static rapidjson::PrettyWriter<rapidjson::StringBuffer>* Writer;
 		static void WriteKey(std::string key);
+
 	};
 }
 

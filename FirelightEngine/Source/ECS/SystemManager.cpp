@@ -26,11 +26,11 @@ namespace Firelight::ECS
 		}
 	}
 
-	void SystemManager::PhysicsUpdate(const Utils::Time& time)
+	void SystemManager::FixedUpdate(const Utils::Time& time)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->PhysicsUpdate(time);
+			m_systems[systemIndex]->FixedUpdate(time);
 		}
 	}
 

@@ -53,6 +53,28 @@ namespace Firelight::ECS
 	};
 
 	/// <summary>
+	/// Simple layer component
+	/// </summary>
+	struct LayerComponent : BaseComponent
+	{
+		// Layer 0 = Default
+		int layer = 0;
+
+		void Serialise() override
+		{
+			Serialiser::Serialise("Layer", layer);
+		}
+
+		LayerComponent* Clone() override
+		{
+			LayerComponent* clone = new LayerComponent();
+			clone->layer = layer;
+
+			return clone;
+		}
+	};
+
+	/// <summary>
 	/// Simple transform component used for testing
 	/// </summary>
 	struct TransformComponent : BaseComponent
