@@ -3,6 +3,9 @@
 #include "../Components/AnimationComponent.h"
 #include "../Components/RenderingComponents.h"
 #include "../Components/BasicComponents.h"
+#include <filesystem>
+#include "../../Graphics/AssetManager.h"
+#include "../Source/Animation/Animation.h"
 
 namespace Firelight::ECS
 {
@@ -13,8 +16,49 @@ namespace Firelight::ECS
 		if (sm_instance == nullptr)
 		{
 			sm_instance = new AnimationSystem();
+			sm_instance->GetAllAnimations();
 		}
 		return sm_instance;
+	}
+
+	void AnimationSystem::GetAllAnimations()
+	{
+		int count = 1;
+		for (auto& directoryEntry : std::filesystem::directory_iterator("Assets/Animations"))
+		{
+			const auto& path = directoryEntry.path();
+
+			auto relativePath = std::filesystem::relative(path, "Assets/Animations");
+			std::string filenameString = relativePath.filename().string();
+
+			std::string numberString = std::to_string(count);
+			const char* itemNumber = numberString.c_str();
+
+			Firelight::Graphics::Texture* icon;
+
+			std::string extension = path.extension().string();
+			if (extension == ".anim")
+			{
+				std::string filePath = path.string();
+				// Load file and create new Animation struct
+				if (Serialiser::LoadFile(path.string().c_str()))
+				{
+					Firelight::Animation::Animation* animation = new Firelight::Animation::Animation();
+					Serialiser::Deserialize("AnimationName", animation->m_animationName);
+					Serialiser::Deserialize("Loop", animation->m_loop);
+					Serialiser::Deserialize("FrameTime", animation->m_frameTime);
+					Serialiser::Deserialize("FrameCount", animation->m_frameCount);
+					auto genericArray = (*Serialiser::FileDocument)["TextureNames"].GetArray();
+					for (auto& value : genericArray)
+					{
+						std::string string = value.GetString();;
+						animation->m_textureNames.push_back(string);
+						animation->m_textures.push_back(Firelight::Graphics::AssetManager::Instance().GetTexture(string));
+					}
+					m_animations.insert(std::pair<std::string, Firelight::Animation::Animation*>(animation->m_animationName, animation));
+				}
+			}
+		}
 	}
 
 	AnimationSystem::AnimationSystem()
@@ -44,12 +88,7 @@ namespace Firelight::ECS
 				continue;
 			}
 
-			if (animatorComponent->currentAnimation == nullptr)
-			{
-				continue;
-			}
-
-			if (!animatorComponent->shouldPlay || animatorComponent->currentAnimation->m_texture == nullptr)
+			if (animatorComponent->currentAnimation == nullptr || !animatorComponent->shouldPlay)
 			{
 				continue;
 			}
@@ -64,24 +103,31 @@ namespace Firelight::ECS
 				}
 			}
 
-			animatorComponent->currentFrameCount += (float)time.GetGameDeltaTime() * 1000.0f;
+			if (currentAnimation == nullptr || currentAnimation->m_textures.size() < 1)
+				return;
+
+
+			animatorComponent->currentFrameCount += (float)time.GetDeltaTime() * 1000.0f;
+
 			if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
 			{
-				animatorComponent->currentFrameIndex++;
-				animatorComponent->currentFrameCount = 0.0f;
+				if (!currentAnimation->m_loop && animatorComponent->currentFrameIndex < currentAnimation->m_frameCount - 1 || currentAnimation->m_loop)
+					animatorComponent->currentFrameIndex++;
 
-				if (animatorComponent->currentFrameIndex > currentAnimation->m_frameCount - 1)
+				if (animatorComponent->currentFrameIndex >= currentAnimation->m_frameCount && currentAnimation->m_loop)
 				{
 					animatorComponent->currentFrameIndex = 0;
 				}
-
-				spriteComponent->sourceRect.w = (float)currentAnimation->m_cellWidth;
-				spriteComponent->sourceRect.h = (float)currentAnimation->m_cellHeight;
-				int xIndex = static_cast<int>(std::floor((animatorComponent->currentFrameIndex / currentAnimation->m_columns)));
-				int yIndex = animatorComponent->currentFrameIndex % currentAnimation->m_columns;
-				spriteComponent->sourceRect.x = (float)(currentAnimation->m_cellWidth * xIndex);
-				spriteComponent->sourceRect.y = (float)(currentAnimation->m_cellHeight * yIndex);
+				animatorComponent->currentFrameCount = 0.0f;
 			}
+
+			Firelight::Graphics::Texture* texture = currentAnimation->m_textures[animatorComponent->currentFrameIndex];
+			if (texture == nullptr)
+				return;
+
+			Firelight::Maths::Vec3i imageDimensions = texture->GetDimensions();
+
+			spriteComponent->texture = texture;
 		}
 	}
 	
@@ -94,24 +140,17 @@ namespace Firelight::ECS
 			return;
 		}
 
-		if (animatorComponent->animations.size() <= 0)
+		if (m_animations.size() <= 0)
 		{
 			return;
 		}
 
-		if (animatorComponent->animations.contains(animationName))
+		if (m_animations.contains(animationName))
 		{
-			animatorComponent->currentAnimation = &animatorComponent->animations[animationName];
-			spriteComponent->texture = animatorComponent->currentAnimation->m_texture;
+			animatorComponent->currentAnimation = m_animations[animationName];
 			animatorComponent->currentFrameCount = 0.0f;
 			animatorComponent->currentFrameIndex = 0;
 			animatorComponent->shouldPlay = true;
-
-			auto* spriteComponent = entity->GetComponent<SpriteComponent>();
-			spriteComponent->sourceRect.w = (float)animatorComponent->currentAnimation->m_cellWidth;
-			spriteComponent->sourceRect.h = (float)animatorComponent->currentAnimation->m_cellHeight;
-			spriteComponent->sourceRect.x = 0.0f;
-			spriteComponent->sourceRect.y = 0.0f;
 		}
 	}
 }

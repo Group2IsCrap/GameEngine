@@ -158,7 +158,7 @@ void CreatUITest() {
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
-	
+
 }
 InventoryManager* invTestA;
 void SpawnItem0()
@@ -222,35 +222,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		SetupDebugUI();
 
-		 ParentID = s_uiCanvas->GetEntityID();
-		//invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(100,0));
-		//invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 5), s_uiCanvas, Maths::Vec2f(100, 0));
-		
-		 InventoryComponentGroupID group1;
-		 group1.Group = "PlayerInv";
-		 group1.isDisplayAll = true;
-
-		InventoryWrapper* inv1 = new InventoryWrapper();
-		inv1->SetGroup(group1);
-		inv1->GetInvComp()->Name = "MainIven";
-		inv1->GetInvComp()->offset = Maths::Vec2f(0, 0);
-		inv1->GetInvComp()->Size = Maths::Vec2f(200, 720 / 2);
-		inv1->GetInvComp()->RowCount = 10;
-		inv1->GetInvComp()->ColoumCount = 3;
-		inv1->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
-
-
-		InventoryWrapper* inv2 = new InventoryWrapper();
-		inv2->SetGroup(group1);
-		inv2->GetInvComp()->Name = "equaitment";
-		inv2->GetInvComp()->Size = Maths::Vec2f(200, 720 / 2);
-		inv2->GetInvComp()->RowCount = 10;
-		inv2->GetInvComp()->ColoumCount = 3;
-		inv2->GetInvComp()->offset = Maths::Vec2f(0,720/2);
-		inv2->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
-
-		Firelight::Events::EventDispatcher::InvokeFunctions<Events::Inv::ADD_NEW_INV>();
-		Firelight::Events::EventDispatcher::InvokeListeners<Events::Inv::LOAD_INVENTORY_GROUP>((void*)"PlayerInv");
+		invTestA = new InventoryManager(s_uiCanvas);
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
 		//SpriteEntity* barn = new SpriteEntity();
 		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
@@ -260,7 +233,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//barn->GetComponent<SpriteComponent>()->layer = 33;
 		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
 		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		//barn->GetComponent<ColliderComponent, CircleColliderComponent>()->drawCollider = true;
 		//barn->GetComponent<StaticComponent>()->isStatic = true;
 
 		//SpriteEntity* circle = new SpriteEntity();

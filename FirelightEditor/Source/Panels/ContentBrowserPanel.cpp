@@ -1,4 +1,6 @@
-﻿#include "ContentBrowserPanel.h"
+﻿#pragma comment(lib, "SHELL32.LIB")
+
+#include "ContentBrowserPanel.h"
 
 #include "Source/Graphics/AssetManager.h"
 #include "Source/Graphics/Data/Texture.h"
@@ -36,6 +38,10 @@ void ContentBrowserPanel::Draw()
 			}
 
 			ImGui::EndMenu();
+		}
+		if (ImGui::MenuItem("Show In Explorer"))
+		{
+			ShellExecuteA(NULL, "open", m_currentDirectory.string().c_str(), NULL, NULL, SW_SHOWDEFAULT);
 		}
 		ImGui::EndPopup();
 	}

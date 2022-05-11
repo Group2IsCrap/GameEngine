@@ -440,6 +440,7 @@
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
     <ClInclude Include="Source\Physics\IntersectData.h" />
+    <ClInclude Include="Source\Physics\PhysicsHelpers.h" />
     <ClInclude Include="Source\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />

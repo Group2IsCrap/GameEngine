@@ -51,6 +51,8 @@ void BindDefaultKeys()
 	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
 	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, ControllerButtons::A, ControllerEventType::ButtonPressSingle);
 	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+
+	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnInteractEvent::sm_descriptor, Firelight::Keys::KEY_F);
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -79,6 +81,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
 		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
 		test2->GetSpriteComponent()->layer = 16;
+
+		SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->AddComponent<RigidBodyComponent>();
+		barn->GetComponent<StaticComponent>()->isStatic = true;
+		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
+		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
+		boxCollider->drawCollider = true;	
+		CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
+		collider->drawCollider = true;
+		collider->radius = 4.25f;
 
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0));
