@@ -216,7 +216,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		CreatUITest();
 
 		SetupDebugUI();
-
+    
 		invTestA = new InventoryManager(s_uiCanvas);
 		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 

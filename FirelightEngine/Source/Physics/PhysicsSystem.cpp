@@ -217,6 +217,11 @@ namespace Firelight::Physics
 				continue;
 			}
 
+			if (collider->isTrigger)
+			{
+				continue;
+			}
+
 			for (int j = i+1; j < m_entities.size(); ++j)
 			{
 				Firelight::ECS::Entity* entity2 = m_entities[j];
@@ -227,6 +232,11 @@ namespace Firelight::Physics
 				}
 
 				if (!collider2->isEnabled)
+				{
+					continue;
+				}
+
+				if (collider2->isTrigger)
 				{
 					continue;
 				}

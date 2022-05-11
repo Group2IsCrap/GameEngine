@@ -3,6 +3,7 @@
 #include <Source/Input/GetInput.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
+#include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "../Player/PlayerComponent.h"
@@ -25,10 +26,11 @@ PlayerSystem::PlayerSystem()
 	m_playerMoveLeftIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
 	m_playerMoveRightIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
 	m_playerMoveDownIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
+	m_interactionEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
+	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnInteractEvent::sm_descriptor, Firelight::Keys::KEY_F);
 	m_spawnItemEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
-
 
 	imguiLayer = new ImGuiPlayerLayer();
 	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
@@ -41,6 +43,7 @@ PlayerSystem::~PlayerSystem()
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
+	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnInteractEvent>(m_interactionEventIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveUpTransformEvent>(m_playerMoveUpTransformIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftTransformEvent>(m_playerMoveLeftTransformIndex);
 	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownTransformEvent>(m_playerMoveRightTransformIndex);
@@ -117,8 +120,18 @@ void PlayerSystem::MovePlayerRightTransform()
 {
 	playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 }
+void PlayerSystem::Interact()
+{
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, 1);
+	if (entitiesCollidedWith.size() > 0)
+	{
+		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	}
+}
+
 void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 }
+
