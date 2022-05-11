@@ -6,11 +6,10 @@ class InventoryWrapper:public Firelight::ECS::Entity
 {
 public:
     InventoryWrapper();
-    InventoryWrapper(std::string Name , int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor);
+    InventoryWrapper(std::string Name, bool isDisplayButtions, bool isDisplayAll, Firelight::Keys keyToAcvate);
     ~InventoryWrapper();
 
-    void SetGroup(InventoryComponentGroupID Group);
-    void SetGroup(InventoryComponentGroupID* Group);
+    void AddInventory(std::string Name, int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor);
 
     void AddInputCommands();
     void AddOutputCommands();
@@ -19,7 +18,7 @@ public:
     void AddButionLayout(Firelight::Maths::Vec2f offSet, Firelight::ECS::e_AnchorSettings anchorSettings, bool isActive);
 
     InventoryComponentGroupID* GetInvGroup() { return GetComponent<InventoryComponentGroupID>(); }
-    InventoryComponent* GetInvComp() { return GetComponent<InventoryComponent>(); }
+    InventoryComponent* GetInvComp(int number) { return GetComponent<InventoryComponent>(number); }
     
 
 };

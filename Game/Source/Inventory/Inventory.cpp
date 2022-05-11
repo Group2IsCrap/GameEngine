@@ -15,7 +15,7 @@ Inventory::~Inventory()
 	ECS::EntityComponentSystem::Instance()->RemoveEntity(InventorySpace->GetEntityID());
 }
 
-void Inventory::SetEntityData(ECS::EntityID ID, int InvListPos = 0) {
+void Inventory::SetEntityData(ECS::EntityID ID, int InvListPos) {
 	IveID = ID;
 	invetoryPos = InvListPos;
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
@@ -131,7 +131,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 	}
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		
 		InventoryStoreData* data = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
@@ -170,7 +170,7 @@ void Inventory::UnloadInventory()
 	}
 	Iventory->isDisplay = false;
 	InventorySpace->GetSpriteComponent()->toDraw = Iventory->isDisplay;
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon+Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* data = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, data->SlotIndex);
@@ -207,7 +207,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
 	InventoryComponentInPut* InputCommands = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentInPut>(IveID);
 
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -291,7 +291,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
 	
 	
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -343,7 +343,7 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 {
 	bool isFail = true;
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -382,7 +382,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 	InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
 
 
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData2 = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot2 = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData2->SlotIndex);
@@ -450,7 +450,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 ECS::EntityID Inventory::GetSpecialSlot(std::string Name)
 {
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -473,7 +473,7 @@ bool Inventory::FindItem(Firelight::ECS::Entity* item)
 bool Inventory::FindItem(Firelight::ECS::EntityID item)
 {
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -499,7 +499,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> DataToRemove;
 	int countToRemove = howMany;
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -537,7 +537,7 @@ int Inventory::GetItemTypeTotal(int type)
 {
 	InventoryComponent* Iventory = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos);
 	int total = 0;
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);
@@ -555,7 +555,7 @@ std::vector<ECS::EntityID> Inventory::GetItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> DataToAdd;
 	std::vector<ECS::EntityID> ids;
 	int countToAdd = howMany;
-	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotCount; i++)
+	for (int i = Iventory->SlotStartPositon; i < Iventory->SlotStartPositon + Iventory->SlotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(IveID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(IveID, slotData->SlotIndex);

@@ -55,7 +55,8 @@ struct InventoryComponentGroupID : Firelight::ECS::BaseComponent
 	bool isDisplayButtions = false;
 	bool isDisplayAll = false;
 	Firelight::Keys keyToAcvate = Firelight::Keys::KEY_INVALID;
-	
+	int NumberOfInvetorys = 0;
+	int TotalNumberOfSlots = 0;
 	void Serialise() override
 	{
 

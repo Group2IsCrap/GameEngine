@@ -3,25 +3,44 @@
 #include"InventoryEvents.h"
 InventoryWrapper::InventoryWrapper()
 {
-    AddComponent<InventoryComponent>();
+    
     AddComponent<InventoryComponentGroupID>();
-    AddComponent<InventoryComponentButtonLayout>();
+    
 }
 
-InventoryWrapper::InventoryWrapper(std::string Name, int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor)
+InventoryWrapper::InventoryWrapper(std::string Name, bool isDisplayButtions, bool isDisplayAll,Firelight::Keys keyToAcvate)
+{
+    AddComponent<InventoryComponentGroupID>();
+    
+    GetInvGroup()->Group = Name;
+    GetInvGroup()->isDisplayButtions = isDisplayButtions;
+    GetInvGroup()->isDisplayAll = isDisplayAll;
+    GetInvGroup()->keyToAcvate = keyToAcvate;
+    //add inv
+    Firelight::Events::EventDispatcher::InvokeFunctions <Firelight::Events::Inv::ADD_NEW_INV>();
+    
+}
+
+InventoryWrapper::~InventoryWrapper()
+{
+}
+
+void InventoryWrapper::AddInventory(std::string Name, int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor)
 {
     AddComponent<InventoryComponent>();
-    AddComponent<InventoryComponentGroupID>();
     AddComponent<InventoryComponentButtonLayout>();
+    GetInvGroup()->NumberOfInvetorys++;
 
-    this->GetInvComp()->Name = Name;
-    this->GetInvComp()->offset = OffSet;
-    this->GetInvComp()->Size = Size;
-    this->GetInvComp()->RowCount = RowCount;
-    this->GetInvComp()->ColoumCount = ColoumCount;
-    this->GetInvComp()->AnchorSettings = UIAnchor;
-    this->GetInvComp()->SlotCount = RowCount * ColoumCount;
-    int index = 0;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->Name = Name;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->offset = OffSet;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->Size = Size;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->RowCount = RowCount;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->ColoumCount = ColoumCount;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->AnchorSettings = UIAnchor;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->SlotCount = RowCount * ColoumCount;
+    this->GetInvComp(GetInvGroup()->NumberOfInvetorys - 1)->SlotStartPositon = GetInvGroup()->TotalNumberOfSlots;
+
+    int index = GetInvGroup()->TotalNumberOfSlots;
     for (size_t i = 0; i < RowCount; i++)
     {
         for (size_t i = 0; i < ColoumCount; i++)
@@ -33,31 +52,11 @@ InventoryWrapper::InventoryWrapper(std::string Name, int RowCount, int ColoumCou
             GetComponent<InventorySlots>(index)->CurrIndex = index;
             GetComponent<InventoryStoreData>(index)->SlotIndex = index;
             index++;
+            
         }
 
     }
-
+    GetInvGroup()->TotalNumberOfSlots = index;
     //add inv
     Firelight::Events::EventDispatcher::InvokeFunctions <Firelight::Events::Inv::ADD_NEW_INV>();
-    
-}
-
-InventoryWrapper::~InventoryWrapper()
-{
-}
-
-void InventoryWrapper::SetGroup(InventoryComponentGroupID Group)
-{
-    GetComponent<InventoryComponentGroupID>()->Group = Group.Group;
-    GetComponent<InventoryComponentGroupID>()->isDisplayButtions = Group.isDisplayButtions;
-    GetComponent<InventoryComponentGroupID>()->isDisplayAll = Group.isDisplayAll;
-    GetComponent<InventoryComponentGroupID>()->keyToAcvate = Group.keyToAcvate;
-
-    Firelight::Events::EventDispatcher::InvokeFunctions <Firelight::Events::Inv::ADD_NEW_INV>();
-}
-
-void InventoryWrapper::SetGroup(InventoryComponentGroupID* Group)
-{
-    RemoveComponent<InventoryComponentGroupID>();
-    AddComponent<InventoryComponentGroupID>(Group);
 }

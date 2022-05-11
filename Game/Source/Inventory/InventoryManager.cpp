@@ -10,15 +10,15 @@
 namespace InventorySystem {
     InventoryManager::InventoryManager()
     {
-        AddWhitelistComponent<InventoryComponent>();
+        //AddWhitelistComponent<InventoryComponent>();
         AddWhitelistComponent<InventoryComponentGroupID>();
 
         //sub to this event
         Events::EventDispatcher::SubscribeFunction<Events::Inv::UPDATEINV>(std::bind(&InventoryManager::ItemChangeInventory, this));
         Events::EventDispatcher::SubscribeFunction<Events::Inv::ADD_NEW_INV>(std::bind(&InventoryManager::CreateInvetory, this));
 
-        Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
-        Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
+        //Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
+        //Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
         Events::EventDispatcher::AddListener<Events::Inv::REMOVE_ITEM_TYPE>(this);
         Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE>(this);
         Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE_NUMBER>(this);
@@ -98,70 +98,44 @@ namespace InventorySystem {
     {
         for (size_t i = 0; i < m_entities.size(); i++)
         {
-            ECS::EntityID ab = m_entities[i]->GetEntityID();
-            InventoryComponent* a = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(ab);
-            InventoryComponentGroupID* b = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(ab);
-            bool toAdd = true;
-
-
-
-            if (m_Inventory[b->Group].size() == 0 && b->keyToAcvate != Keys::KEY_INVALID && b->Group != "NULL") {
-                Events::EventDispatcher::SubscribeFunction(b->Group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, b->Group));
-                Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
-            }
-
-
-            for (auto& In : m_Inventory) {
-                if (In.first == b->Group) {
-                    for (auto In : m_Inventory[b->Group]) {
-                        if (In->GetName() == a->Name) {
-                            toAdd = false;
-                        }
-                    }
-                    continue;
+            ECS::EntityID entityID = m_entities[i]->GetEntityID(); 
+            InventoryComponentGroupID* b = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(entityID);
+            if (!m_Inventory.contains(b->Group)) {
+                m_Inventory[b->Group]; 
+                if (m_Inventory[b->Group].size() == 0 && b->keyToAcvate != Keys::KEY_INVALID)
+                {
+                 
+                    Events::EventDispatcher::SubscribeFunction(b->Group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, b->Group));
+                    Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
+                
                 }
-                int index = 0;
-                for (auto NULLIn : In.second) {
-                    if (NULLIn->GetName() == a->Name) {
-
-                        m_Inventory[b->Group].push_back(NULLIn);
-                        In.second.erase(In.second.begin() + index);
+            }
+           
+            std::vector<InventoryComponent*> InventoryData = ECS::EntityComponentSystem::Instance()->GetComponents<InventoryComponent>(entityID);
+           
+            for (size_t i = 0; i < InventoryData.size(); i++)
+            {
+                bool toAdd = true;
+                for (size_t j = 0; j < m_Inventory[b->Group].size(); j++) {
+                    if (m_Inventory[b->Group][j]->GetInvetorNumber() == i) {
                         toAdd = false;
+                        break;
                     }
-                    index++;
                 }
-            }
-            if (toAdd) {
-                CreatInventory(b->Group, a->Name, a->Size, Maths::Vec2f(a->ColoumCount, a->RowCount), ParentID, a->offset, a->AnchorSettings);
-                m_Inventory[b->Group].back()->SetEntityData(m_entities.back()->GetEntityID());
+                if (toAdd) {
+                    CreatInventory(b->Group, InventoryData[i]->Name, InventoryData[i]->Size, Maths::Vec2f(InventoryData[i]->ColoumCount, InventoryData[i]->RowCount), ParentID, InventoryData[i]->offset, InventoryData[i]->AnchorSettings);
+                    m_Inventory[b->Group].back()->SetEntityData(m_entities.back()->GetEntityID(),i);
+                }
             }
 
         }
-        RemoveInvetory();
+        
     }
 
     void InventoryManager::RemoveInvetory()
     {
             
-            for (auto& In : m_Inventory) {
-                for (size_t i = 0; i < In.second.size(); i++) {
-                    bool isIn = false;
-                    for (size_t j = 0; j < m_entities.size(); j++)
-                    {   
-                        if (In.second[i]->GetEntityData() == m_entities[j]->GetEntityID()) {
-                            isIn = true;
-                            break;
-                        }
-                        
-                    }
-                    if (!isIn)
-                     {
-                        //not in
-                        In.second.erase(In.second.begin()+i);
-                    }
-                }
-                
-            }
+            
             
         
 
@@ -209,7 +183,7 @@ namespace InventorySystem {
                 inv->GetNullSlotData().clear();
                 if (toDrop) {
                     //drop code here
-                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inv->GetEntityData());
+                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inv->GetEntityData(),inv->GetInvetorNumber());
                    
                     if (data) {
                         for (auto& out : data->OutputCommand) {

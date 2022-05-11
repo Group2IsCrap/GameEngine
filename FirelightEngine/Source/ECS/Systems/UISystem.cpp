@@ -33,7 +33,7 @@ namespace Firelight::UI {
 				{
 					AnchorSettings(m_dragEntity);
 				}
-				AnchorSettings();
+				//AnchorSettings();
 			}
 		}
 
@@ -331,7 +331,7 @@ namespace Firelight::UI {
 				m_dragButtonIsPressed = false;
 				m_isDragging = false;
 
-				AnchorSettings();
+				//AnchorSettings();
 			}
 
 			if (m_dragButtonIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) 

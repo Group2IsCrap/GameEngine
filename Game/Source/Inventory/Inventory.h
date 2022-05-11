@@ -25,7 +25,7 @@ public:
 	
 	
 	ECS::EntityID GetEntityData() { return IveID; }
-
+	int GetInvetorNumber() { return invetoryPos; }
 	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 
@@ -55,8 +55,8 @@ public:
 
 	std::vector <InventoryStoreData> GetNullSlotData() { return NullSlotData; }
 	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
-	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID)->Name; }
-	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID)->isDisplay; }
+	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->Name; }
+	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->isDisplay; }
 private:
 
 

@@ -87,16 +87,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		//inv
 		InventorySystem::ParentID = canvas->GetEntityID();
-		InventoryComponentGroupID group1;
-		group1.Group = "PlayerInv";
-		group1.isDisplayAll = true;
-		group1.keyToAcvate = Keys::KEY_F;
+		InventoryWrapper* inv1 = new InventoryWrapper("PlayerInv", false, true, Keys::KEY_F);
+		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("equaitment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
 
-		InventoryWrapper* inv1 = new InventoryWrapper("MainIven",10,3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
-		inv1->SetGroup(group1);
-
-		InventoryWrapper* inv2 = new InventoryWrapper("equaitment",10,3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
-		inv2->SetGroup(group1);
+		//InventoryWrapper* inv2 = new InventoryWrapper();
+		InventoryWrapper* inv2 = new InventoryWrapper("PlayerInv2", false, true, Keys::KEY_J);
+		inv2->AddInventory("MainIven2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
+		inv2->AddInventory("equaitment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
 		
 
 
