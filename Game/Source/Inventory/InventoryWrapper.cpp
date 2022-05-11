@@ -5,13 +5,14 @@ InventoryWrapper::InventoryWrapper()
 {
     AddComponent<InventoryComponent>();
     AddComponent<InventoryComponentGroupID>();
-
+    AddComponent<InventoryComponentButtonLayout>();
 }
 
 InventoryWrapper::InventoryWrapper(std::string Name, int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor)
 {
     AddComponent<InventoryComponent>();
     AddComponent<InventoryComponentGroupID>();
+    AddComponent<InventoryComponentButtonLayout>();
 
     this->GetInvComp()->Name = Name;
     this->GetInvComp()->offset = OffSet;

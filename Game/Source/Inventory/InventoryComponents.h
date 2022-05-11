@@ -21,12 +21,13 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 	Firelight::Maths::Vec2f offset;
 	Firelight::ECS::e_AnchorSettings AnchorSettings;
 
-	std::string BackgroundTex;
-	std::string SlotTex;
+	std::string BackgroundTex= "Sprites/PanelTest.png";
+	std::string SlotTex= "Sprites/PanelTest.png";
 
 	UINT SlotCount = 0;
 	int RowCount=0;
 	int ColoumCount=0;
+	int SlotStartPositon = 0;
 
 	bool isDisplay = false;
 	bool isSwap= true;
@@ -81,7 +82,7 @@ struct InventorySlots : Firelight::ECS::BaseComponent
 	int CurrIndex = 0;
 	EntityID SlotID = NULL;
 	bool IsUsed = false;
-
+	int SpecialSlotIndex = -1;
 	void Serialise() override
 	{
 		//to store
@@ -111,7 +112,7 @@ struct InventoryStoreData : Firelight::ECS::BaseComponent
 };
 
 /// <summary>
-/// 
+/// when the slot data exits all inventorys do comnands
 /// </summary>
 struct InventoryComponentOutPut: Firelight::ECS::BaseComponent
 {
@@ -144,28 +145,33 @@ struct InventoryComponentInPut : Firelight::ECS::BaseComponent
 
 /// <summary>
 /// specilal slot
+/// creator is responsible for overlaps and if it looks bad
 /// </summary>
-struct InventoryComponentEqutmentSlot : Firelight::ECS::BaseComponent
+struct InventoryComponentSpecialSlot : Firelight::ECS::BaseComponent
 {
 	std::string SlotName;
 	Firelight::Maths::Vec2f OffSet;
 	Firelight::ECS::e_AnchorSettings AnchorSettings;
+	std::vector<std::string> Tags;
+
+	void Serialise() override
+	{
+
+	}
 };
 
-
-struct InventoryComponentButtionLayout : Firelight::ECS::BaseComponent
+struct InventoryComponentButtonLayout : Firelight::ECS::BaseComponent
 {
+	std::string ButtionTexuer;
 
+	Firelight::Maths::Vec2f OffSet;
+	Firelight::ECS::e_AnchorSettings AnchorSettings;
+	bool ToUse = false;
+
+	void Serialise() override
+	{
+
+	}
 };
 
 
-
-
-struct InventoryComponentManager : Firelight::ECS::BaseComponent
-{
-	Firelight::ECS::EntityID ParentID;
-	int PreCreatedButtions;
-	int PreCreatedSlots;
-
-
-};

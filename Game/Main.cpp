@@ -18,19 +18,19 @@
 
 #include"Source/Inventory/InventoryManager.h"
 #include"Source/Inventory/InventoryWrapper.h"
-
+#include"Source/Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace snowFallAudio::FModAudio;
 
 void SpawnItem0()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	InventorySystem::Global_Functions::AddItem("PlayerInv", "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(0));
 }
 
 void SpawnItem1()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	InventorySystem::Global_Functions::AddItem("PlayerInv", "equaitment",ItemDatabase::Instance()->CreateInstanceOfItem(1));
 }
 
 void SetupDebugUI()
@@ -63,7 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
-		Engine::Instance().GetSystemManager().RegisterGameSystem<InventoryManager>();
+		Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
 		// Register KeyBindings
 		BindDefaultKeys();
 
@@ -86,7 +86,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 		//inv
-		ParentID = canvas->GetEntityID();
+		InventorySystem::ParentID = canvas->GetEntityID();
 		InventoryComponentGroupID group1;
 		group1.Group = "PlayerInv";
 		group1.isDisplayAll = true;
@@ -102,8 +102,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		
 		Firelight::Events::EventDispatcher::InvokeFunctions<Events::Inv::ADD_NEW_INV>();
-		//open via interation
-		//Firelight::Events::EventDispatcher::InvokeListeners<Events::Inv::LOAD_INVENTORY_GROUP>((void*)"PlayerInv");
+		
 
 
 
