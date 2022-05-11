@@ -15,7 +15,7 @@ namespace Firelight::ECS
 		SystemManager();
 		~SystemManager();
 
-		void PhysicsUpdate(const Utils::Time& time);
+		void FixedUpdate(const Utils::Time& time);
 		void Update(const Utils::Time& time);
 		void LateUpdate(const Utils::Time& time);
 

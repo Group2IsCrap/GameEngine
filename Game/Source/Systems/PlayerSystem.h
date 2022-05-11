@@ -4,6 +4,7 @@
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
+#include "../ImGuiPlayerLayer.h"
 
 using DescriptorType = const char*;
 
@@ -21,12 +22,25 @@ private:
 	size_t m_playerMoveLeftIndex;
 	size_t m_playerMoveDownIndex;
 	size_t m_playerMoveRightIndex;
+	size_t m_interactionEventIndex;
+	size_t m_playerMoveUpTransformIndex;
+	size_t m_playerMoveLeftTransformIndex;
+	size_t m_playerMoveDownTransformIndex;
+	size_t m_playerMoveRightTransformIndex;
 	size_t m_spawnItemEventIndex;
+  
 	PlayerEntity* playerEntity;
+
+	ImGuiPlayerLayer* imguiLayer = nullptr;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();
 	void MovePlayerDown();
 	void MovePlayerRight();
+	void Interact();
+	void MovePlayerUpTransform();
+	void MovePlayerLeftTransform();
+	void MovePlayerDownTransform();
+	void MovePlayerRightTransform();
 	void SpawnItem();
 };

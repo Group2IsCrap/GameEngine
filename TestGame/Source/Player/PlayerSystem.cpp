@@ -80,7 +80,7 @@ void PlayerSystem::SetState(int state)
 	case 1:
 		if (!m_right)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkRight");
+			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalk");
 			m_right = true;
 			m_left = false;
 		}
@@ -88,7 +88,7 @@ void PlayerSystem::SetState(int state)
 	case 2:
 		if (!m_left)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkLeft");
+			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalk");
 			m_left = true;
 			m_right = false;
 		}
