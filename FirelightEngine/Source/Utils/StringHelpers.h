@@ -134,4 +134,5 @@ namespace Firelight::Utils::StringHelpers
 
 		return lineNumber;
 	}
+
 }
