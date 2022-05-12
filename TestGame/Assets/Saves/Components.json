@@ -2,7 +2,33 @@
     "Scene": {
         "ComponentTypes": [
             {
-                "ComponentID": 7,
+                "ComponentID": 0,
+                "Components": [
+                    {
+                        "Layer": 60,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 40.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": 96.0,
+                            "Height": 128.0
+                        }
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
                 "Components": [
                     {
                         "Name": ""
@@ -49,7 +75,7 @@
                 ]
             },
             {
-                "ComponentID": 0,
+                "ComponentID": 9,
                 "Components": [
                     {
                         "Layer": 60,
@@ -164,50 +190,9 @@
                 ]
             },
             {
-                "ComponentID": 9,
+                "ComponentID": 11,
                 "Components": [
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    },
-                    {
-                        "Layer": 0
-                    }
+                    {}
                 ]
             },
             {
@@ -229,19 +214,6 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -6.66893196105957,
-                            "Y": -1.9018967151641846,
-                            "Z": 0.0
-                        },
-                        "Scale": {
-                            "X": 0.0,
-                            "Y": 0.0,
-                            "Z": 0.0
-                        }
-                    },
-                    {
-                        "Rotation": 0.0,
-                        "Position": {
                             "X": 0.0,
                             "Y": 0.0,
                             "Z": 0.0
@@ -255,8 +227,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 648.0,
-                            "Y": 379.5,
+                            "X": 749.5,
+                            "Y": 441.5,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -268,8 +240,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 48.0,
-                            "Y": 46.0,
+                            "X": 55.51852035522461,
+                            "Y": 53.5151481628418,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -281,8 +253,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 123.0,
-                            "Y": 46.0,
+                            "X": 142.26620483398438,
+                            "Y": 53.5151481628418,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -294,8 +266,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 198.0,
-                            "Y": 46.0,
+                            "X": 229.01388549804688,
+                            "Y": 53.5151481628418,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -307,8 +279,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 379.5,
+                            "X": 1383.33642578125,
+                            "Y": 441.5,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -320,8 +292,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 221.12054443359375,
+                            "X": 1383.33642578125,
+                            "Y": 257.24566650390625,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -333,8 +305,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 301.12054443359375,
+                            "X": 1383.33642578125,
+                            "Y": 350.31549072265625,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -346,8 +318,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 381.12054443359375,
+                            "X": 1383.33642578125,
+                            "Y": 443.38531494140625,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -359,8 +331,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 461.12054443359375,
+                            "X": 1383.33642578125,
+                            "Y": 536.4551391601563,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -372,13 +344,26 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 1196.0,
-                            "Y": 541.1205444335938,
+                            "X": 1383.33642578125,
+                            "Y": 629.5249633789063,
                             "Z": 0.0
                         },
                         "Scale": {
                             "X": 0.10478585958480835,
                             "Y": 0.08332161605358124,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 700.0,
+                            "Y": 700.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         }
                     },
@@ -410,17 +395,11 @@
                 "Components": [
                     {
                         "CurrentAnimation": "INSERT ANIMATION HERE",
-                        "CurrentFrameCount": 7.029000282287598,
+                        "CurrentFrameCount": 0.0,
                         "CurrentFrameIndex": 0,
                         "PlayOnStart": true,
                         "ShouldPlay": true
                     }
-                ]
-            },
-            {
-                "ComponentID": 12,
-                "Components": [
-                    {}
                 ]
             },
             {
@@ -446,7 +425,7 @@
                 ]
             },
             {
-                "ComponentID": 5,
+                "ComponentID": 6,
                 "Components": [
                     {
                         "ParentID": 0,
@@ -479,7 +458,7 @@
                         }
                     },
                     {
-                        "ParentID": 3,
+                        "ParentID": 2,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -509,7 +488,7 @@
                         }
                     },
                     {
-                        "ParentID": 3,
+                        "ParentID": 2,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -539,7 +518,7 @@
                         }
                     },
                     {
-                        "ParentID": 3,
+                        "ParentID": 2,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -569,7 +548,7 @@
                         }
                     },
                     {
-                        "ParentID": 3,
+                        "ParentID": 2,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 0,
@@ -599,7 +578,7 @@
                         }
                     },
                     {
-                        "ParentID": 7,
+                        "ParentID": 6,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -629,7 +608,7 @@
                         }
                     },
                     {
-                        "ParentID": 7,
+                        "ParentID": 6,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -659,7 +638,7 @@
                         }
                     },
                     {
-                        "ParentID": 7,
+                        "ParentID": 6,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -689,7 +668,7 @@
                         }
                     },
                     {
-                        "ParentID": 7,
+                        "ParentID": 6,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -719,7 +698,7 @@
                         }
                     },
                     {
-                        "ParentID": 7,
+                        "ParentID": 6,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -1153,84 +1132,23 @@
                     {},
                     {}
                 ]
+            },
+            {
+                "ComponentID": 5,
+                "Components": [
+                    {
+                        "Text": "INSERT TEXT HERE"
+                    }
+                ]
             }
         ],
         "ComponentMap": [
-            {
-                "ComponentID": 7,
-                "EntityIDs": [
-                    {
-                        "EntityID": 0,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 1,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 3,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [5]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [6]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [7]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [8]
-                    },
-                    {
-                        "EntityID": 9,
-                        "Indices": [9]
-                    },
-                    {
-                        "EntityID": 10,
-                        "Indices": [10]
-                    },
-                    {
-                        "EntityID": 11,
-                        "Indices": [11]
-                    },
-                    {
-                        "EntityID": 12,
-                        "Indices": [12]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [13]
-                    }
-                ]
-            },
             {
                 "ComponentID": 0,
                 "EntityIDs": [
                     {
                         "EntityID": 1,
                         "Indices": [0]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [2]
                     }
                 ]
             },
@@ -1299,6 +1217,19 @@
                 "ComponentID": 9,
                 "EntityIDs": [
                     {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
+                "EntityIDs": [
+                    {
                         "EntityID": 0,
                         "Indices": [0]
                     },
@@ -1353,6 +1284,15 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
                     }
                 ]
             },
@@ -1436,15 +1376,6 @@
                 ]
             },
             {
-                "ComponentID": 12,
-                "EntityIDs": [
-                    {
-                        "EntityID": 1,
-                        "Indices": [0]
-                    }
-                ]
-            },
-            {
                 "ComponentID": 6,
                 "EntityIDs": [
                     {
@@ -1458,6 +1389,15 @@
                 ]
             },
             {
+                "ComponentID": 10,
+                "EntityIDs": [
+                    {
+                        "EntityID": 1,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
                 "ComponentID": 11,
                 "EntityIDs": [
                     {
@@ -1467,46 +1407,46 @@
                 ]
             },
             {
-                "ComponentID": 5,
+                "ComponentID": 6,
                 "EntityIDs": [
                     {
-                        "EntityID": 3,
+                        "EntityID": 2,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 4,
+                        "EntityID": 3,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 4,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 5,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 6,
                         "Indices": [4]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [5]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [6]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [7]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [8]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [9]
                     }
                 ]
@@ -1515,43 +1455,43 @@
                 "ComponentID": 2,
                 "EntityIDs": [
                     {
-                        "EntityID": 3,
+                        "EntityID": 2,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 4,
+                        "EntityID": 3,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 4,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 5,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 6,
                         "Indices": [4]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [5]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [6]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [7]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [8]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [9]
                     }
                 ]
@@ -1560,7 +1500,7 @@
                 "ComponentID": 13,
                 "EntityIDs": [
                     {
-                        "EntityID": 3,
+                        "EntityID": 2,
                         "Indices": [0]
                     }
                 ]
@@ -1569,19 +1509,19 @@
                 "ComponentID": 14,
                 "EntityIDs": [
                     {
-                        "EntityID": 4,
+                        "EntityID": 3,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 4,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 5,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 6,
                         "Indices": [3]
                     }
                 ]
@@ -1590,23 +1530,23 @@
                 "ComponentID": 15,
                 "EntityIDs": [
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [4]
                     }
                 ]
@@ -1615,23 +1555,23 @@
                 "ComponentID": 16,
                 "EntityIDs": [
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [4]
                     }
                 ]
@@ -1640,23 +1580,23 @@
                 "ComponentID": 17,
                 "EntityIDs": [
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [4]
                     }
                 ]
@@ -1665,40 +1605,45 @@
                 "ComponentID": 18,
                 "EntityIDs": [
                     {
-                        "EntityID": 8,
+                        "EntityID": 7,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 8,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 9,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 10,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 11,
                         "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 12,
+                        "Indices": [0]
                     }
                 ]
             }
         ],
         "ComponentTypeReference": [
             {
+                "ComponentTypeName": "struct Firelight::ECS::TextComponent",
+                "ComponentTypeID": 5
+            },
+            {
                 "ComponentTypeName": "struct Firelight::ECS::SpriteComponent",
                 "ComponentTypeID": 0
-            },
-            {
-                "ComponentTypeName": "struct Firelight::ECS::NDCSpriteComponent",
-                "ComponentTypeID": 1
-            },
-            {
-                "ComponentTypeName": "struct Firelight::ECS::IdentificationComponent",
-                "ComponentTypeID": 7
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::AnimationComponent",
@@ -1709,20 +1654,28 @@
                 "ComponentTypeID": 2
             },
             {
+                "ComponentTypeName": "struct Firelight::ECS::IdentificationComponent",
+                "ComponentTypeID": 8
+            },
+            {
+                "ComponentTypeName": "struct Firelight::ECS::NDCSpriteComponent",
+                "ComponentTypeID": 1
+            },
+            {
                 "ComponentTypeName": "struct Firelight::ECS::TransformComponent",
                 "ComponentTypeID": 3
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::ColliderComponent",
-                "ComponentTypeID": 6
+                "ComponentTypeID": 7
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::UIBaseWidgetComponent",
-                "ComponentTypeID": 5
+                "ComponentTypeID": 6
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::StaticComponent",
-                "ComponentTypeID": 8
+                "ComponentTypeID": 9
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::LayerComponent",

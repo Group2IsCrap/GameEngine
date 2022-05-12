@@ -48,7 +48,7 @@ namespace Firelight::ECS
 				transformComponent->position.y - spriteWorldSize.y * 0.5f + spriteComponent->drawOffset.y,
 				spriteWorldSize.x, spriteWorldSize.y);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect, spriteComponent->flipX, spriteComponent->flipY);
 		}
 
 		
