@@ -62,8 +62,6 @@ void ItemDatabase::LoadItems(std::string filepath)
 		spriteComponent->pixelsPerUnit = 50;
 		spriteComponent->layer = 33;
 		TransformComponent* transformComponent = itemTemplate->AddComponent<TransformComponent>();
-		transformComponent->position.x = 0.0f;
-		transformComponent->position.y = 0.0f;
 		StaticComponent* staticComponent = itemTemplate->AddComponent<StaticComponent>();
 		staticComponent->isStatic = false;
 		CircleColliderComponent* circleCollider = new CircleColliderComponent();
