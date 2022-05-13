@@ -226,8 +226,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		text->AddComponent<TextComponent>();
 		text->GetComponent<TextComponent>()->text.SetString("Epic String");
 		text->GetComponent<TextComponent>()->text.SetTextHeight(50.0f);
+		text->GetComponent<TextComponent>()->layer = 128;
 		text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 300.0f, 0.0f);
+		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(1100.0f, 300.0f, 0.0f);
 
 		/*SpriteEntity* barn = new SpriteEntity();
 		barn->GetComponent<TransformComponent>()->position.x = 7.0f;

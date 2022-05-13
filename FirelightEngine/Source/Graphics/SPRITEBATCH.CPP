@@ -163,7 +163,7 @@ namespace Firelight::Graphics
                 {
                     if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                     {
-                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                         {
                             return quadX->m_texture < quadY->m_texture;
                         }
@@ -182,7 +182,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
@@ -206,7 +206,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
