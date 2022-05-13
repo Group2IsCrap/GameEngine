@@ -43,12 +43,12 @@ BiomeGeneration* BiomeGeneration::Instance()
 void BiomeGeneration::Initialise()
 {
 	m_biomeNoise = new Noise();
-	m_biomeNoise->SetSeed(3207);
+	m_biomeNoise->SetSeed(3007);
 	m_biomeNoise->SetNoiseScale(250.0f);
 	m_biomeNoise->CreateNoise();
 
 	m_islandDirectionNoise = new Noise();
-	m_islandDirectionNoise->SetSeed(3207);
+	m_islandDirectionNoise->SetSeed(3007);
 	m_islandDirectionNoise->SetNoiseScale(250.0f);
 	m_islandDirectionNoise->CreateNoise();
 
@@ -60,35 +60,13 @@ void BiomeGeneration::Initialise()
 void BiomeGeneration::Uninitialise()
 {
 	delete m_biomeNoise;
+	delete m_islandDirectionNoise;
 	delete m_islandShapeNoise;
 }
 
 void BiomeGeneration::Render()
 {
 	Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&BiomeGeneration::Draw, this));
-}
-
-IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int noiseIndex)
-{
-	float* noiseData = m_islandDirectionNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	if (data >= -1.0 && data <= -0.5)
-	{
-		return IslandSpawnDirection::North;
-	}
-	if (data > -0.5 && data <= -0.0)
-	{
-		return IslandSpawnDirection::East;
-	}
-	if (data >= 0.0f && data < 0.5f)
-	{
-		return IslandSpawnDirection::South;
-	}
-	if (data >= 0.5 && data <= 1)
-	{
-		return IslandSpawnDirection::West;
-	}
 }
 
 void BiomeGeneration::Draw()
@@ -102,33 +80,6 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 {
 	srand(m_biomeNoise->GetSeed());
 	return rand() % m_OccupiedIslandSpaces.size();
-}
-
-unsigned int BiomeGeneration::RandomBiomeIndex(unsigned int noiseIndex)
-{
-	float* noiseData = m_biomeNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	if (data >= -1.0 && data <= -0.6)
-	{
-		return 0;
-	}
-	if (data > -0.6 && data <= -0.2)
-	{
-		return 1;
-	}
-	if (data >= -0.2 && data < 0.2)
-	{
-		return 2;
-	}
-	if (data >= 0.2 && data < 0.6)
-	{
-		return 3;
-	}
-	if (data >= 0.6 && data <= 1.0)
-	{
-		return 4;
-	}
 }
 
 void BiomeGeneration::DrawIslands()
@@ -146,6 +97,7 @@ void BiomeGeneration::DrawIslands()
 	Firelight::Maths::Rectf newDestRect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f);
 	int iterator = 0;
 	IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
+
 	for (size_t index = 0; index < numberOfIslands; ++index)
 	{
 		DrawIslandCircles(newDestRect, m_initialSourceRect, m_curIslandCentre, index);
@@ -162,49 +114,50 @@ void BiomeGeneration::DrawIslands()
 		bool isIslandPositionEmpty = false;
 		while (!isIslandPositionEmpty)
 		{
-			Firelight::Maths::Vec2i tempVec2i = Firelight::Maths::Vec2i(0, 0);
+			Firelight::Maths::Vec2i potentialNewIslandPosition = Firelight::Maths::Vec2i(0, 0);
 
-			tempVec2i = Firelight::Maths::Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
+			potentialNewIslandPosition = Firelight::Maths::Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
+
 			switch (direction)
 			{
 			case IslandSpawnDirection::North:
-				tempVec2i.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
-				if (IsIslandSpaceFree(tempVec2i))
+				potentialNewIslandPosition.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
+				if (IsIslandSpaceFree(potentialNewIslandPosition))
 				{
 					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.y = tempVec2i.y;
+					m_curIslandCentre.y = potentialNewIslandPosition.y;
 					isIslandPositionEmpty = true;
 				}
 
 				break;
 			case IslandSpawnDirection::East:
-				tempVec2i.x = m_curIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
-				if (IsIslandSpaceFree(tempVec2i))
+				potentialNewIslandPosition.x = m_curIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
+				if (IsIslandSpaceFree(potentialNewIslandPosition))
 				{
 					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.x = tempVec2i.x;
+					m_curIslandCentre.x = potentialNewIslandPosition.x;
 					isIslandPositionEmpty = true;
 				}
 
 				break;
 
 			case IslandSpawnDirection::South:
-				tempVec2i.y = m_curIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
-				if (IsIslandSpaceFree(tempVec2i))
+				potentialNewIslandPosition.y = m_curIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
+				if (IsIslandSpaceFree(potentialNewIslandPosition))
 				{
 					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.y = tempVec2i.y;
+					m_curIslandCentre.y = potentialNewIslandPosition.y;
 					isIslandPositionEmpty = true;
 				}
 
 				break;
 
 			case IslandSpawnDirection::West:
-				tempVec2i.x = m_curIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
-				if (IsIslandSpaceFree(tempVec2i))
+				potentialNewIslandPosition.x = m_curIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
+				if (IsIslandSpaceFree(potentialNewIslandPosition))
 				{
 					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.x = tempVec2i.x;
+					m_curIslandCentre.x = potentialNewIslandPosition.x;
 					isIslandPositionEmpty = true;
 				}
 
@@ -216,19 +169,6 @@ void BiomeGeneration::DrawIslands()
 	}
 
 	m_OccupiedIslandSpaces.clear();
-}
-
-unsigned int BiomeGeneration::CalculateDistance(Firelight::Maths::Rectf rect1, Firelight::Maths::Rectf rect2)
-{
-	return sqrt(pow(rect1.x - rect2.x, 2) + pow(rect1.y - rect2.y, 2));
-}
-
-unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
-{
-	float* noiseData = m_islandShapeNoise->GetNoiseData();
-	float data = noiseData[perlinIndex];
-
-	return 0;
 }
 
 void BiomeGeneration::DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index)
@@ -244,9 +184,20 @@ void BiomeGeneration::DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firel
 		for (int y = -m_radius; y <= m_radius; ++y)
 		{
 			destRect = Firelight::Maths::Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
-			if (CalculateDistance(destRect, currentIslandCentre) <= m_radius)
+			if (Firelight::Maths::Vec2i::Dist(Firelight::Maths::Vec2i((int)destRect.x, destRect.y), Firelight::Maths::Vec2i(currentIslandCentre.x, currentIslandCentre.y)) <= m_radius)
 			{
 				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, sourceRect);
+			}
+			else
+			{
+				//int numberOfExtraTiles = CalculateIslandShape(rand() + index);
+				//for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
+				//{
+				//	int extraX = x + i;
+				//	int extraY = y + i;
+				//	destRect = Firelight::Maths::Rectf(currentIslandCentre.x + extraX, currentIslandCentre.y + extraY, 1.0f, 1.0f);
+				//	Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, sourceRect);
+				//}
 			}
 		}
 	}
@@ -335,4 +286,76 @@ bool BiomeGeneration::IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPositio
 		return false;
 	}
 	return true;
+}
+
+IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int noiseIndex)
+{
+	float* noiseData = m_islandDirectionNoise->GetNoiseData();
+	float data = noiseData[noiseIndex];
+
+	if (data >= -1.0 && data <= -0.5)
+	{
+		return IslandSpawnDirection::North;
+	}
+	if (data > -0.5 && data <= -0.0)
+	{
+		return IslandSpawnDirection::East;
+	}
+	if (data >= 0.0f && data < 0.5f)
+	{
+		return IslandSpawnDirection::South;
+	}
+	if (data >= 0.5 && data <= 1)
+	{
+		return IslandSpawnDirection::West;
+	}
+}
+
+unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
+{
+	float* noiseData = m_islandShapeNoise->GetNoiseData();
+	float data = noiseData[perlinIndex];
+
+	if (data >= -1.0f && data <= 0.0f)
+	{
+		return 0;
+	}
+	if (data > 0.0f && data <= 0.5)
+	{
+		return 1;
+	}
+	if (data >= 0.5 && data <= 1.0f)
+	{
+		return 2;
+	}
+
+	return 0;
+}
+
+
+unsigned int BiomeGeneration::RandomBiomeIndex(unsigned int noiseIndex)
+{
+	float* noiseData = m_biomeNoise->GetNoiseData();
+	float data = noiseData[noiseIndex];
+
+	if (data >= -1.0 && data <= -0.6)
+	{
+		return 0;
+	}
+	if (data > -0.6 && data <= -0.2)
+	{
+		return 1;
+	}
+	if (data >= -0.2 && data < 0.2)
+	{
+		return 2;
+	}
+	if (data >= 0.2 && data < 0.6)
+	{
+		return 3;
+	}
+	if (data >= 0.6 && data <= 1.0)
+	{
+		return 4;
+	}
 }

@@ -25,21 +25,19 @@ public:
 
 	void DrawIslands();
 
-	unsigned int CalculateDistance(Firelight::Maths::Rectf rect1, Firelight::Maths::Rectf rect2);
-
 	void Draw();
 	void Render();
 
 private:
 
+	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
+	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
+
+	bool IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition);
+
 	IslandSpawnDirection CalculateNextIslandDirection(unsigned int noiseIndex);
 	unsigned int CalculateRandomIslandIndex();
 	unsigned int RandomBiomeIndex(unsigned int noiseIndex);
-	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
-	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
-	void FindNextIslandCentre();
-
-	bool IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition);
 
 	Noise* m_biomeNoise;
 	Noise* m_islandDirectionNoise;
