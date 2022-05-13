@@ -179,7 +179,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\Includes;$(SolutionDir)\FirelightEngine\Includes\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\Includes;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>

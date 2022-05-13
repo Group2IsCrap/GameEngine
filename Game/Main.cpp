@@ -19,6 +19,9 @@
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
 
+#include"Source/Inventory/InventoryManager.h"
+#include"Source/Inventory/InventoryWrapper.h"
+#include"Source/Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;
@@ -34,7 +37,8 @@ void BindDefaultKeys()
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
-	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F);
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
 }
 
 void SpawnItem0()
@@ -66,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
-
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
 		// Register KeyBindings
 		BindDefaultKeys();
 
@@ -96,6 +100,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//collider->radius = 4.25f;
 
 		// UI
+
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
@@ -104,7 +109,20 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupDebugUI();
 
 		// Load All Itemss
+
+		InventorySystem::UIParentID = canvas->GetEntityID();
+		InventoryWrapper* inv1 = new InventoryWrapper("PlayerInv", false, true, Keys::KEY_F);
+		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("equaitment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
+
+		//InventoryWrapper* inv2 = new InventoryWrapper();
+		InventoryWrapper* inv2 = new InventoryWrapper("PlayerInv2", false, true, Keys::KEY_J);
+		inv2->AddInventory("MainIven2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
+		inv2->AddInventory("equaitment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
+		// Load All Items
+
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+		InventorySystem::Global_Functions::AddItem("PlayerInv","equaitment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 
 		while (Engine::Instance().ProcessMessages())
 		{

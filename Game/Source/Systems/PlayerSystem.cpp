@@ -96,10 +96,17 @@ void PlayerSystem::MovePlayerRight()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 5.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
-		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
+		{
+			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
+			TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
+			audioComponent->soundPos = { transformComponent->position.x,  transformComponent->position.y,  transformComponent->position.z };
+			entitiesCollidedWith[0]->PlayAudioClip();
+		}
+		//playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 	}
 }
 

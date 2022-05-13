@@ -2,19 +2,30 @@
 #include"Inventory.h"
 #include"Source/ECS/EntityWrappers/UIButton.h"
 #include "Source/Graphics/AssetManager.h"
+#include"Source/Events/EventDispatcher.h"
+#include"InventoryEvents.h"
+
+#include<Source/ECS/Systems/System.h>
 
 typedef std::string GroupName;
-class InventoryManager
+inline ECS::EntityID ParentID;
+class InventoryManager:public Firelight::Events::Listener , public Firelight::ECS::System
 {
 public:
-	InventoryManager(ECS::Entity* parent);
+	InventoryManager();
 	~InventoryManager();
 	
+	void HandleEvents(const char* event, void* data);
+
+	void CreateInvetory();
+	void RemoveInvetory();
+
+
 	void ItemChangeInventory();
 
 	//creation
-	void CreatInventory(GroupName group,std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::Entity* parent);
-	void CreatInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::Entity* parent);
+	void CreatInventory(GroupName group,std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
+	void CreatInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
 
 	//render on screen
 	void LoadInventory(GroupName group, std::string name);
@@ -40,6 +51,7 @@ public:
 	//find Item
 	bool CheckInventory(ECS::EntityID ID,std::string InvName, GroupName Group = "Null");
 
+	
 private:
 
 	//resusable Entitys
@@ -48,6 +60,7 @@ private:
 
 	//inv list
 	std::map<GroupName, std::vector<Inventory*>> m_Inventory;
+
 };
 
-//TODO Change to templates
+

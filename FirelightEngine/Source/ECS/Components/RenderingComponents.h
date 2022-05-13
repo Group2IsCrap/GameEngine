@@ -175,17 +175,22 @@ namespace Firelight::ECS
 	struct TextComponent : BaseComponent
 	{
 		Firelight::Graphics::Text text;
-		int                       layer;
+		int                       layer = 32;
+		bool                      hidden = false;
 
 		void Serialise() override
 		{
 			Serialiser::Serialise("Text", text);
+			Serialiser::Serialise("Layer", layer);
+			Serialiser::Serialise("Hidden", hidden);
 		}
 
 		TextComponent* Clone() override
 		{
 			TextComponent* clone = new TextComponent();
 			clone->text = text;
+			clone->layer = layer;
+			clone->hidden = hidden;
 
 			return clone;
 		}
