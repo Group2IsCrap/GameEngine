@@ -133,67 +133,78 @@ void BiomeGeneration::DrawIslands()
 	Firelight::Maths::Rectf m_curIslandCentre = m_centre;
 	int m_layer = 32;
 	double m_rotation = 0.0;
-
 	size_t numberOfIslands = 6;
-
-	m_radius = 2;
+	m_radius = 6;
 
 	//for each island
 	Firelight::Maths::Rectf newDestRect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f);
-	for (size_t iterator = 0; iterator < numberOfIslands; ++iterator)
+	int iterator = 0;
+	IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
+	for (size_t index = 0; index < numberOfIslands; ++index)
 	{
+		DrawIslandCircles(newDestRect, m_initialSourceRect, m_curIslandCentre, index);
 
-		DrawIslandCircles(newDestRect, m_initialSourceRect, m_curIslandCentre, iterator);
+		if (index == numberOfIslands - 1)
+			continue;
 
-		//new island
-		bool hasIslandSpawned = false;
-		while (!hasIslandSpawned)
-		{ }
-		IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
-		DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-
-		Firelight::Maths::Vec2i tempVec2i = Firelight::Maths::Vec2i(0, 0);
-
-		switch (direction)
+		//find new island centre
+		bool isIslandPositionEmpty = false;
+		while (!isIslandPositionEmpty)
 		{
-		case IslandSpawnDirection::North:
-			tempVec2i = Firelight::Maths::Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
-			tempVec2i.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
-			if (IsIslandSpaceFree(tempVec2i))
-			{
-				m_curIslandCentre.y = tempVec2i.y;
-				hasIslandSpawned = true;
-			}
-
-			break;
-		case IslandSpawnDirection::East:
-			m_curIslandCentre.x = m_curIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
+			Firelight::Maths::Vec2i tempVec2i = Firelight::Maths::Vec2i(0, 0);
 
 			tempVec2i = Firelight::Maths::Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
-			tempVec2i.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
-			if (IsIslandSpaceFree(tempVec2i))
+			switch (direction)
 			{
-				m_curIslandCentre.y = tempVec2i.y;
-				hasIslandSpawned = true;
+			case IslandSpawnDirection::North:
+				tempVec2i.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
+				if (IsIslandSpaceFree(tempVec2i))
+				{
+					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
+					m_curIslandCentre.y = tempVec2i.y;
+					isIslandPositionEmpty = true;
+				}
+
+				break;
+			case IslandSpawnDirection::East:
+				tempVec2i.x = m_curIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
+				if (IsIslandSpaceFree(tempVec2i))
+				{
+					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
+					m_curIslandCentre.x = tempVec2i.x;
+					isIslandPositionEmpty = true;
+				}
+
+				break;
+
+			case IslandSpawnDirection::South:
+				tempVec2i.y = m_curIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
+				if (IsIslandSpaceFree(tempVec2i))
+				{
+					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
+					m_curIslandCentre.y = tempVec2i.y;
+					isIslandPositionEmpty = true;
+				}
+
+				break;
+
+			case IslandSpawnDirection::West:
+				tempVec2i.x = m_curIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
+				if (IsIslandSpaceFree(tempVec2i))
+				{
+					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
+					m_curIslandCentre.x = tempVec2i.x;
+					isIslandPositionEmpty = true;
+				}
+
+				break;
 			}
-
-			break;
-
-		case IslandSpawnDirection::South:
-			m_curIslandCentre.y = m_curIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
-			break;
-
-		case IslandSpawnDirection::West:
-			m_curIslandCentre.x = m_curIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
-			break;
-		}
-
-		if (!hasIslandSpawned)
-		{
-			iterator--;
+			iterator++;
+			direction = CalculateNextIslandDirection(iterator);
 		}
 	}
 
+	m_OccupiedIslandSpaces.clear();
 }
 
 unsigned int BiomeGeneration::CalculateDistance(Firelight::Maths::Rectf rect1, Firelight::Maths::Rectf rect2)
@@ -206,8 +217,6 @@ unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
 	float* noiseData = m_islandShapeNoise->GetNoiseData();
 	float data = noiseData[perlinIndex];
 
-
-
 	return 0;
 }
 
@@ -216,6 +225,8 @@ void BiomeGeneration::DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firel
 	//dont need these two once tile map is used.
 	int m_layer = 32;
 	double m_rotation = 0.0;
+
+	m_OccupiedIslandSpaces.push_back(Firelight::Maths::Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
 
 	for (int x = -m_radius; x <= m_radius; ++x)
 	{

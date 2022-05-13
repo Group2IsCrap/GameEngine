@@ -36,6 +36,7 @@ private:
 	unsigned int RandomBiomeIndex(unsigned int perlinIndex);
 	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
 	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
+	void FindNextIslandCentre();
 
 	bool IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition);
 
