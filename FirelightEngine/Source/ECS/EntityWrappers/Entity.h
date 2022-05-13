@@ -107,11 +107,11 @@ namespace Firelight::ECS
 		EntityID GetEntityID();
 		Signature GetSignature();
 		void PlayAudioClip();
-		void PlaySound_Internal(AudioComponent* audioComponent);
 	private:
 		Entity(const Entity&) = delete;
 		Entity& operator=(const Entity&) = delete;
 	protected:
+		void PlaySound_Internal(AudioComponent* audioComponent);
 		EntityID m_entityID;
 	};
 }
