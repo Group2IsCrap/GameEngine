@@ -16,7 +16,7 @@ namespace Firelight::ECS
 
 		std::vector<Entity*> GetEntities();
 
-		virtual void PhysicsUpdate(const Utils::Time& time);
+		virtual void FixedUpdate(const Utils::Time& time);
 		virtual void Update(const Utils::Time& time);
 		virtual void LateUpdate(const Utils::Time& time);
 

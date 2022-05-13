@@ -6,7 +6,6 @@ snowFallAudio::FModAudio::AudioEngine* snowFallAudio::FModAudio::AudioEngine::en
 
 snowFallAudio::FModAudio::AudioEngine::AudioEngine()
 {
-	std::cout << "Engine Init";
 	this->Initialise();
 }
 
@@ -18,23 +17,31 @@ snowFallAudio::FModAudio::AudioEngine::~AudioEngine()
 //Instance functions
 snowFallAudio::FModAudio::Instance::Instance()
 {
-	//Create and initialise the system
+	////Create and initialise the system
 	m_nextChannelId = 0;
-	fModStudioSystem = NULL;
+	//fModStudioSystem = NULL;
 	fmodSystem = NULL; 
 	AudioEngine::engine->ErrorCheck(FMOD::System_Create(&fmodSystem));
-	AudioEngine::engine->ErrorCheck(fmodSystem->init(4093, FMOD_INIT_3D_RIGHTHANDED, 0));
-	AudioEngine::engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
-	AudioEngine::engine->ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+	AudioEngine::engine->ErrorCheck(fmodSystem->init(512, FMOD_INIT_3D_RIGHTHANDED, 0));
+	//AudioEngine::engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem));
+	//AudioEngine::engine->ErrorCheck(fModStudioSystem->initialize(32, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+	/*fModStudioSystem = NULL;
+	if (AudioEngine::engine->ErrorCheck(FMOD::Studio::System::create(&fModStudioSystem)) == 2)
+	{
+		if (AudioEngine::engine->ErrorCheck(fModStudioSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0)) == 2)
+		{
+			std::cout << "No Errors" << std::endl;
+		}
+	}*/
 }
 
 snowFallAudio::FModAudio::Instance::~Instance()
 {
-
 	//Unload all assets
-	AudioEngine::engine->ErrorCheck(fModStudioSystem->unloadAll());
+	//AudioEngine::engine->ErrorCheck(fModStudioSystem->unloadAll());
 	//Shutdown the FMod system
-	AudioEngine::engine->ErrorCheck(fModStudioSystem->release());
+	//AudioEngine::engine->ErrorCheck(fModStudioSystem->release());
+
 	AudioEngine::engine->ErrorCheck(fmodSystem->release());
 
 	AudioEngine::engine->Shutdown();
@@ -64,7 +71,7 @@ void snowFallAudio::FModAudio::Instance::Update()
 	}
 	//Call the FMOD update
 	AudioEngine::engine->ErrorCheck(fmodSystem->update());
-	AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
+	//AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 	
 }
 
@@ -90,6 +97,7 @@ void snowFallAudio::FModAudio::AudioEngine::Initialise()
 {
 	//create new instance
 	fmodInstance = new Instance;
+	//Start update chain
 	AudioEngine::engine->Update();
 }
 
@@ -148,7 +156,7 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 	//Set the next channel
 	int nextChannelId = fmodInstance->m_nextChannelId++;
 
-	//Find if song is not loaded
+	//Find if sound is not loaded
 	auto soundFound = fmodInstance->m_sounds.find(newString);
 	if (soundFound == fmodInstance->m_sounds.end())
 	{
@@ -164,7 +172,7 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 
 	//Sound is loaded/found, define a new channel
 	FMOD::Channel* channel = nullptr;
-	//Define channel, sound, channel group and whether paused. Defined paused as true at first otherwise it could create sound control issues/mixing issues.
+	//Define  sound, channel group ,whether paused and channel. Defined paused as true at first otherwise it could create sound control issues/mixing issues.
 	engine->ErrorCheck(fmodInstance->fmodSystem->playSound(soundFound->second, nullptr, true, &channel));
 	//if channel now exists (after assigning the sound to play)
 	if (channel)
@@ -253,7 +261,7 @@ int snowFallAudio::FModAudio::AudioEngine::ErrorCheck(FMOD_RESULT result)
 	}
 
 	std::cout << "FMOD no errors" << std::endl;
-	return 1;
+	return 2;
 }
 
 void snowFallAudio::FModAudio::AudioEngine::Shutdown()

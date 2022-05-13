@@ -1,11 +1,16 @@
 #include "Serialiser.h"
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/document.h"
+
 #include "../ECS/EntityComponentSystem.h"
+#include "../Utils/ErrorManager.h"
 #include <fstream>
+#include <sstream>
 
 namespace Firelight::Serialisation
 {
 	rapidjson::PrettyWriter<rapidjson::StringBuffer>* Serialiser::Writer = nullptr;
+	rapidjson::Document* Serialiser::FileDocument = nullptr;
 
 	void Serialiser::StartArray(std::string key)
 	{
@@ -46,6 +51,47 @@ namespace Firelight::Serialisation
 		}
 
 		Writer->SetFormatOptions(options);
+	}
+
+	bool Serialiser::LoadFile(const char* fileName)
+	{
+		FileDocument = new rapidjson::Document();
+		std::ifstream fileObject(fileName);
+
+		ASSERT_RETURN(fileObject, std::string("File at ") + fileName + " did not exist", false);
+
+		std::stringstream buffer;
+		buffer << fileObject.rdbuf();
+		std::string fileString = buffer.str();
+
+		// Parse the data loaded from file using rapidjson
+		FileDocument->Parse(fileString.c_str());
+
+		if (FileDocument->HasParseError())
+		{
+			rapidjson::ParseErrorCode error = FileDocument->GetParseError();
+			int errorOffset = static_cast<int>(FileDocument->GetErrorOffset());
+
+			int errorStart = max(0, errorOffset - 20);
+			int errorEnd = min(static_cast<int>(strlen(fileName)), errorOffset + 20);
+
+			int beforeLen = errorOffset - errorStart;
+			int afterLen = errorEnd - errorOffset;
+
+			std::string fileString = fileName;
+			std::string errorString = fileString.substr(errorStart, beforeLen) + "[HERE]" + fileString.substr(errorOffset, afterLen);
+			errorString.erase(std::remove(errorString.begin(), errorString.end(), '\n'), errorString.end());
+			errorString.erase(std::remove(errorString.begin(), errorString.end(), '\t'), errorString.end());
+
+			int lineNumber = Utils::StringHelpers::GetLineNumberFromOffset(fileString, errorOffset);
+
+			std::string finalErrorString = "Parsing Scene JSON\nCode: '" + std::to_string(error) + "'\nLine Num: '" + std::to_string(lineNumber) + "'\nError String: '" + errorString + "'\n";
+
+			ERROR_STANDARD(finalErrorString);
+			return false;
+		}
+
+		return true;
 	}
 
 	void Serialiser::EndObject()
@@ -158,7 +204,7 @@ namespace Firelight::Serialisation
 		Writer->Uint(value);
 	}
 
-	void Serialiser::Serialise(std::string name, std::string value)
+	void Serialiser::Serialise(std::string name, const std::string& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -184,7 +230,7 @@ namespace Firelight::Serialisation
 
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Vec3f value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Vec3f& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -202,7 +248,7 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Vec2f value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Vec2f& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -218,7 +264,7 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Maths::Rectf value)
+	void Serialiser::Serialise(std::string name, const Firelight::Maths::Rectf& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -260,7 +306,7 @@ namespace Firelight::Serialisation
 		Writer->String("INSERT ANIMATION HERE");
 	}
 
-	void Serialiser::Serialise(std::string name, Firelight::Graphics::Colour::RGBA value)
+	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Colour::RGBA& value)
 	{
 		if (!IsWriterValid())
 		{
@@ -280,5 +326,48 @@ namespace Firelight::Serialisation
 		EndObject();
 	}
 
+	void Serialiser::Serialise(std::string name, const Firelight::Graphics::Text& value)
+	{
+		if (!IsWriterValid())
+		{
+			return;
+		}
+
+		WriteKey(name);
+		Writer->String("INSERT TEXT DATA HERE");
+	}
+
+	void Serialiser::Deserialize(std::string name, int& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetInt();
+		}
+
+	}
+
+	void Serialiser::Deserialize(std::string name, float& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetFloat();
+		}
+	}
+
+	void Serialiser::Deserialize(std::string name, std::string& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetString();
+		}
+	}
+
 	
+	void Serialiser::Deserialize(std::string name, bool& value)
+	{
+		if (FileDocument->HasMember(name.c_str()))
+		{
+			value = (*FileDocument)[name.c_str()].GetBool();
+		}
+	}
 }

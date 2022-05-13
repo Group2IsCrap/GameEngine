@@ -298,7 +298,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 		if (slot->IsUsed == true) {
 			//not free slot
 			if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(item.UITexID)->parentID == slot->SlotID && useSlotPlacement) {
-				AddItem(item, false);
+				isFail = AddItem(item, false);;
 				break;
 			}
 			continue;

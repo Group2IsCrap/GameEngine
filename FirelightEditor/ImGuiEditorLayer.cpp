@@ -89,7 +89,7 @@ void ImGuiEditorLayer::Render()
 	m_inspectorPanel->Draw();
 	m_viewportPanel->Draw();
 
-	if (m_drawAnimationWindow)
+	if (m_animationWindow->m_isOpen)
 		m_animationWindow->Draw();
 
 	ImGui::End();
@@ -123,7 +123,10 @@ void ImGuiEditorLayer::RenderMenuBar()
 		}
 		if (ImGui::BeginMenu("Window"))
 		{
-			ImGui::MenuItem("Animation", NULL, &m_drawAnimationWindow);
+			if (ImGui::MenuItem("Animation"))
+			{
+				m_animationWindow->m_isOpen = true;
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Help"))

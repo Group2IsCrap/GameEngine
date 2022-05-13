@@ -17,8 +17,7 @@ namespace InventorySystem {
         Events::EventDispatcher::SubscribeFunction<Events::Inv::UPDATEINV>(std::bind(&InventoryManager::ItemChangeInventory, this));
         Events::EventDispatcher::SubscribeFunction<Events::Inv::ADD_NEW_INV>(std::bind(&InventoryManager::CreateInvetory, this));
 
-        //Events::EventDispatcher::AddListener<Events::Inv::LOAD_INVENTORY_GROUP>(this);
-        //Events::EventDispatcher::AddListener<Events::Inv::UNLOAD_INVENTORY_GROUP>(this);
+       
         Events::EventDispatcher::AddListener<Events::Inv::REMOVE_ITEM_TYPE>(this);
         Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE>(this);
         Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE_NUMBER>(this);
@@ -31,18 +30,9 @@ namespace InventorySystem {
 
     void InventoryManager::HandleEvents(const char* event, void* data)
     {
-        if (event == Events::Inv::LOAD_INVENTORY_GROUP::sm_descriptor) {
-            const char* ab = (const char*)data;
-
-            LoadInventoryGroup(ab);
-        }
-        else if (event == Events::Inv::UNLOAD_INVENTORY_GROUP::sm_descriptor)
-        {
-            const char* ab = (const char*)data;
-            UnloadInventoryGroup(ab);
-        }
+      
         //item controll
-        else if (event == Events::Inv::ADD_ITEM::sm_descriptor)
+        if (event == Events::Inv::ADD_ITEM::sm_descriptor)
         {
             Global_Functions::AddOrRemoveStruct* Data = (Global_Functions::AddOrRemoveStruct*)data;
 
@@ -77,6 +67,9 @@ namespace InventorySystem {
             Global_Functions::SpecilaItemSlotData* Data = (Global_Functions::SpecilaItemSlotData*)data;
 
             Data->ReturnData = GetSpecialSlot(Data->groupName, Data->InventoryName, Data->SlotName);
+        }
+        else if (event == Events::Inv::REMOVE_INV::sm_descriptor)
+        {
         }
     }
     void InventoryManager::GroupLoadOrUnload(std::string group)
@@ -132,11 +125,27 @@ namespace InventorySystem {
         
     }
 
-    void InventoryManager::RemoveInvetory()
+    void InventoryManager::RemoveInvetory(std::string groupName,std::string invName)
     {
-            
-            
-            
+        int index = 0;
+        for (auto& In : m_Inventory[groupName]) {
+            if (In->GetName() != invName) {
+                index++;
+                continue;
+            }
+                delete In;
+                In = nullptr;
+                m_Inventory[groupName].erase(m_Inventory[groupName].begin() + index);
+                break;
+        }
+
+
+            //remove group
+        if (m_Inventory[groupName].size() == 0) {
+            //TODO Remove
+            //Events::EventDispatcher::UnsubscribeFunction(b->Group.c_str());
+            //Firelight::Engine::Instance().GetKeyBinder().unv(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
+        }
         
 
     }
@@ -149,10 +158,10 @@ namespace InventorySystem {
         for (auto In : m_Inventory) {
             for (auto inv : In.second)
             {
-                if (inv->GetNullSlotData().size() == 0) {
+                if (inv->GetNullSlotData()->size() == 0) {
                     continue;
                 }
-                for (auto Slot : inv->GetNullSlotData()) {
+                for (auto Slot : *inv->GetNullSlotData()) {
                     //find
                     for (auto In2 : m_Inventory) {
                         for (auto inv2 : In2.second)
@@ -163,7 +172,7 @@ namespace InventorySystem {
                                 if (inv2->GetName() == ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(Slot.UITexID)->parentID)->buttonText) {
                                     toDrop = inv2->AddItem(Slot, false);
                                     if (!toDrop) {
-                                        inv->GetNullSlotData().clear();
+                                        inv->GetNullSlotData()->clear();
                                         return;
                                     }
                                 }
@@ -172,25 +181,28 @@ namespace InventorySystem {
                             else if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(Slot.UITexID)->parentID)->parentID == inv2->GetInventorySpace()->GetEntityID()) {
                                 toDrop = inv2->AddItem(Slot, true);
                                 if (!toDrop) {
-                                    inv->GetNullSlotData().clear();
+                                    inv->GetNullSlotData()->clear();
                                     return;
                                 }
-                            }
+                                if (toDrop) {
+                                    //drop code here
+                                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inv->GetEntityData(), inv->GetInvetorNumber());
 
+                                    if (data) {
+                                        for (auto& out : data->OutputCommand) {
+                                            out();
+                                        }
+                                    }
+                                    inv->GetNullSlotData()->clear();
+                                    return;
+                                }
+                                
+                            }
+                           
                         }
                     }
                 }
-                inv->GetNullSlotData().clear();
-                if (toDrop) {
-                    //drop code here
-                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inv->GetEntityData(),inv->GetInvetorNumber());
-                   
-                    if (data) {
-                        for (auto& out : data->OutputCommand) {
-                            out();
-                        }
-                    }
-                }
+                
 
             }
         }

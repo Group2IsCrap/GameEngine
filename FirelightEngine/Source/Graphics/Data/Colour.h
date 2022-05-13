@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Maths/Vec3.h"
 #include "../../Maths/Vec4.h"
 
 namespace Firelight::Graphics
@@ -39,8 +40,10 @@ namespace Firelight::Graphics
 			void         SetA(BYTE a);
 
 			unsigned int GetUnsignedInt() const;
-			Maths::Vec4f GetAsNormalisedVec4() const;
 
+			Maths::Vec3f GetAsNormalisedVec3() const;
+			Maths::Vec4f GetAsNormalisedVec4() const;
+			
 			static RGBA  GetRandom();
 
 			static RGBA MakeFromHSLA(const HSLA& hsl);

@@ -53,7 +53,7 @@ public:
 	ECS::EntityID GetSpecialSlot(std::string Name);
 
 
-	std::vector <InventoryStoreData> GetNullSlotData() { return NullSlotData; }
+	std::vector <InventoryStoreData>* GetNullSlotData() { return &NullSlotData; }
 	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
 	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->Name; }
 	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->isDisplay; }

@@ -39,11 +39,20 @@ namespace Firelight::UI {
 				{
 					AnchorSettings(m_dragEntity);
 				}
-				//AnchorSettings();
+				AnchorSettings();
 			}
 		}
 
 		//leave check
+		POINT currMousePos;
+		GetCursorPos(&currMousePos);
+		ScreenToClient(Engine::Instance().GetWindowHandle(), &currMousePos);
+		ECS::UIBaseWidgetComponent* UIComponentCanvas = m_Canvas->GetComponent<ECS::UIBaseWidgetComponent>();
+		ECS::TransformComponent* UITransformComponentCanvas = m_Canvas->GetComponent<ECS::TransformComponent>();
+		if (IsHit(currMousePos.x, currMousePos.y, UIComponentCanvas, UITransformComponentCanvas))
+		{
+			return;
+		}
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
 			//checks
@@ -348,7 +357,7 @@ namespace Firelight::UI {
 				m_isDragging = false;
 				m_dragTimerActive = false;
 
-				//AnchorSettings();
+				AnchorSettings();
 			}
 
 

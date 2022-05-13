@@ -5,12 +5,6 @@
 
 #include "../Core/CharacterEntity.h"
 
-namespace Firelight::Events
-{
-	NEW_EVENT(PlayerHealthChanged);
-	NEW_EVENT(PlayerDied);
-}
-
 class PlayerEntity : public CharacterEntity
 {
 public:

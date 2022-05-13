@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
@@ -162,8 +163,12 @@
     <ClCompile Include="Source\Systems\PlayerSystem.cpp" />
     <ClCompile Include="Source\UI\DeathMenu.cpp" />
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
+    <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Core\Layers.h" />
+    <ClInclude Include="Source\Events\PlayerEvents.h" />
+    <ClInclude Include="Source\ImGuiPlayerLayer.h" />
     <ClInclude Include="Source\Core\CharacterEntity.h" />
     <ClInclude Include="Source\Events\InputEvents.h" />
     <ClInclude Include="Source\ImGuiDebugLayer.h" />
@@ -181,6 +186,7 @@
     <ClInclude Include="Source\Systems\PlayerSystem.h" />
     <ClInclude Include="Source\UI\DeathMenu.h" />
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
+    <ClInclude Include="Source\Core\WorldEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">

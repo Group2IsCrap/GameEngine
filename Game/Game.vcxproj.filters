@@ -39,6 +39,7 @@
     <ClCompile Include="Source\ImGuiDebugLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+
     <ClCompile Include="Source\Inventory\Inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,6 +47,11 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Inventory\InventoryWrapper.cpp">
+    <ClCompile Include="Source\ImGuiPlayerLayer.cpp">
+
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\WorldEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,6 +105,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h">
+    <ClInclude Include="Source\ImGuiPlayerLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\WorldEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\PlayerEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Layers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

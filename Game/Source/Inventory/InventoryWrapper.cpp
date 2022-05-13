@@ -60,3 +60,22 @@ void InventoryWrapper::AddInventory(std::string Name, int RowCount, int ColoumCo
     //add inv
     Firelight::Events::EventDispatcher::InvokeFunctions <Firelight::Events::Inv::ADD_NEW_INV>();
 }
+
+void InventoryWrapper::RemoveInventory(std::string Name)
+{
+    for (size_t i = 0; i < GetInvGroup()->NumberOfInvetorys; i++)
+    {
+        if (GetInvComp(i)->Name != Name) {
+            continue;
+        }
+
+        this->RemoveComponent<InventoryComponent>(i);
+        this->RemoveComponent<InventoryComponentButtonLayout>(i);
+    }
+
+    std::vector<std::string> Data;
+    Data.push_back(GetInvGroup()->Group);
+    Data.push_back(Name);
+    Firelight::Events::EventDispatcher::InvokeListeners <Firelight::Events::Inv::REMOVE_INV>((void*)&Data);
+
+}

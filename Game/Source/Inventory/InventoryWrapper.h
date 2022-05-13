@@ -10,7 +10,7 @@ public:
     ~InventoryWrapper();
 
     void AddInventory(std::string Name, int RowCount, int ColoumCount, Firelight::Maths::Vec2f Size, Firelight::Maths::Vec2f OffSet, Firelight::ECS::e_AnchorSettings UIAnchor);
-
+    void RemoveInventory(std::string Name);
     void AddInputCommands();
     void AddOutputCommands();
 

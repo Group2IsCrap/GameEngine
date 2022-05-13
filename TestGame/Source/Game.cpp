@@ -7,6 +7,7 @@
 #include "Source/ECS/EntityComponentSystem.h"
 #include "Source/ECS/Components/BasicComponents.h"
 #include "Source/ECS/Components/AnimationComponent.h"
+#include "Source/ECS/Components/RenderingComponents.h"
 #include "Source/ECS/Components/PhysicsComponents.h"
 #include "Source/Graphics/AssetManager.h"
 #include "Source/ECS/Systems/System.h"
@@ -158,7 +159,7 @@ void CreatUITest() {
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
-	
+
 }
 InventoryManager* invTestA;
 void SpawnItem0()
@@ -213,55 +214,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 
 		CreatUITest();
 
 		SetupDebugUI();
 
-		 ParentID = s_uiCanvas->GetEntityID();
-		//invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas, Maths::Vec2f(100,0));
-		//invTestA->CreatInventory("PlayerInv", "MainIven2", Maths::Vec2f(100, 720), Maths::Vec2f(3, 5), s_uiCanvas, Maths::Vec2f(100, 0));
-		
-		 InventoryComponentGroupID group1;
-		 group1.Group = "PlayerInv";
-		 group1.isDisplayAll = true;
+		invTestA = new InventoryManager(s_uiCanvas);
+		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
-		InventoryWrapper* inv1 = new InventoryWrapper();
-		inv1->SetGroup(group1);
-		inv1->GetInvComp()->Name = "MainIven";
-		inv1->GetInvComp()->offset = Maths::Vec2f(0, 0);
-		inv1->GetInvComp()->Size = Maths::Vec2f(200, 720 / 2);
-		inv1->GetInvComp()->RowCount = 10;
-		inv1->GetInvComp()->ColoumCount = 3;
-		inv1->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
+		// Temporary text test
+		GameEntity* text = new GameEntity();
+		text->AddComponent<TextComponent>();
+		text->GetComponent<TextComponent>()->text.SetString("Epic String");
+		text->GetComponent<TextComponent>()->text.SetTextHeight(50.0f);
+		text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
+		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 300.0f, 0.0f);
 
-
-		InventoryWrapper* inv2 = new InventoryWrapper();
-		inv2->SetGroup(group1);
-		inv2->GetInvComp()->Name = "equaitment";
-		inv2->GetInvComp()->Size = Maths::Vec2f(200, 720 / 2);
-		inv2->GetInvComp()->RowCount = 10;
-		inv2->GetInvComp()->ColoumCount = 3;
-		inv2->GetInvComp()->offset = Maths::Vec2f(0,720/2);
-		inv2->GetInvComp()->AnchorSettings = ECS::e_AnchorSettings::TopRight;
-
-		Firelight::Events::EventDispatcher::InvokeFunctions<Events::Inv::ADD_NEW_INV>();
-		Firelight::Events::EventDispatcher::InvokeListeners<Events::Inv::LOAD_INVENTORY_GROUP>((void*)"PlayerInv");
-
-		//SpriteEntity* barn = new SpriteEntity();
-		//barn->GetComponent<TransformComponent>()->position.x = 7.0f;
-		//barn->GetComponent<TransformComponent>()->position.y = 5.0f;
-		//barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		//barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		//barn->GetComponent<SpriteComponent>()->layer = 33;
-		//barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
-		//barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
-		//barn->GetComponent<StaticComponent>()->isStatic = true;
+		/*SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 5.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->GetComponent<SpriteComponent>()->flipY = true;
+		barn->AddComponent<ColliderComponent>(new BoxColliderComponent());
+		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 8.0f, 7.0f);
+		barn->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
+		barn->GetComponent<StaticComponent>()->isStatic = true;*/
 
 		//SpriteEntity* circle = new SpriteEntity();
 		//circle->GetComponent<TransformComponent>()->position.x = -7.0f;
