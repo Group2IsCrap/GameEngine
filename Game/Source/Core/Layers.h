@@ -5,7 +5,7 @@ enum class GameLayer : int
 {
 	Player = 0,
 	Items = 1,
-	Enemies = 2
+	Enemy = 2
 };
 
 // The layer of which the entity should render on

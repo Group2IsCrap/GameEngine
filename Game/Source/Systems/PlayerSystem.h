@@ -2,6 +2,7 @@
 
 #include <Source/ECS/Systems/System.h>
 #include <Source/ECS/Components/UIComponents.h>
+#include <Source/Maths/Vec3.h>
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
@@ -15,6 +16,7 @@ public:
 	~PlayerSystem();
 	void CheckForPlayer();
 	void Update(const Firelight::Utils::Time& time) override;
+	void FixedUpdate(const Firelight::Utils::Time& time) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -26,7 +28,13 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_removeHealthEventIndex;
   
+	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* playerEntity;
+
+	bool m_moveUp;
+	bool m_moveDown;
+	bool m_moveLeft;
+	bool m_moveRight;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();

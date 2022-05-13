@@ -58,6 +58,11 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	}
 }
 
+void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
+{
+	playerEntity->GetRigidBodyComponent()->velocity += m_velocity;
+}
+
 void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 {
 	if (event == Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor)
@@ -71,21 +76,26 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 
 void PlayerSystem::MovePlayerUp()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_moveUp = true;
+	//m_velocity.y += playerEntity->GetComponent<PlayerComponent>()->speed;
+	//playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 }
 void PlayerSystem::MovePlayerLeft()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_velocity.x -= playerEntity->GetComponent<PlayerComponent>()->speed;
+	//playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 void PlayerSystem::MovePlayerDown()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_velocity.y -= playerEntity->GetComponent<PlayerComponent>()->speed;
+	//playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 void PlayerSystem::MovePlayerRight()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_velocity.x += playerEntity->GetComponent<PlayerComponent>()->speed;
+	//playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 

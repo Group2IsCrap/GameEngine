@@ -10,7 +10,7 @@ using namespace Firelight::Serialisation;
 struct PlayerComponent : Firelight::ECS::BaseComponent
 {
 	std::string name = "";
-	float speed = 2;
+	float speed = 1.5f;
 
 	void Serialise() override
 	{

@@ -5,29 +5,41 @@
 using namespace Firelight::Serialisation;
 using namespace Firelight::ECS;
 
+enum class AIType
+{
+	Passive,
+	Neutral,
+	Aggresive
+};
+
+enum class AIState
+{
+	Idle,
+	Wandering,
+	Fleeing,
+	Attacking
+};
+
 struct AIComponent : Firelight::ECS::BaseComponent
 {
-	int state; //Idle = 1, Flee = 2, Attack = 3
-	int hostility; //Passive = 1, Neutral = 2, Hostile = 3
-	
-	//Target
-	Entity* target;
+public:
 
+	AIType m_Type;
+	AIState m_State;
 
-	void Serialise() override
-	{
-		Serialiser::Serialise("State", state);
-		Serialiser::Serialise("hostility", hostility);
-		Serialiser::Serialise("target", target);
-	}
+	Entity* m_Target;
+	float m_SearchRadius;
+
+public:
 
 	AIComponent* Clone() override
 	{
 		AIComponent* clone = new AIComponent();
-		clone->state = state;
-		clone->hostility = hostility;
-		clone->target = target;
+		clone->m_Type = m_Type;
+		clone->m_State = m_State;
+		clone->m_Target = m_Target;
 
 		return clone;
 	}
+	
 };
