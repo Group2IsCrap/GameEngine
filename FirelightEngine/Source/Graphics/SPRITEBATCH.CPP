@@ -163,7 +163,7 @@ namespace Firelight::Graphics
                 {
                     if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                     {
-                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                         {
                             return quadX->m_texture < quadY->m_texture;
                         }
@@ -182,7 +182,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
@@ -206,7 +206,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
@@ -288,6 +288,12 @@ namespace Firelight::Graphics
             }
             else if (auto* textEntity = dynamic_cast<TextEntity*>(entity))
             {
+                // If not the first quad
+                if (batchTexture != nullptr)
+                {
+                    drawCurrentBatch();
+                }
+
                 deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
                 deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Text")->GetShader(), NULL, 0);
 

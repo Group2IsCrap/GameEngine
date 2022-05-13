@@ -55,39 +55,31 @@ using namespace snowFallAudio::FModAudio;
 
 static UICanvas* s_uiCanvas;
 
-void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, float volumedB)
-{
-	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
-}
 
-float vol = 1.0f;
-float newVol = 100.f;
+
+void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, bool looping, bool is3d, bool streaming, AudioChannel channel)
+{
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, channel, looping, is3d, streaming);
+}
 
 void PlayBeuu()
 {
-	vol = 80.0f;
-	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), vol);
+	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), false, false, false, AudioEngine::engine->getChannel("UI"));
 }
 
 void PlayMusic()
 {
-	vol = 50.0f;
-	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f),vol);
+	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f), true, false, true, AudioEngine::engine->getChannel("Background"));
 }
 
 void VolUp()
 {
-	newVol += 50.0f;
-	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
+	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(10.0f);
 }
 
 void VolDown()
 {
-	if (newVol > 0.0f)
-	{
-		newVol -= 50.f;
-		snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
-	}
+	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(-10.0f);
 }
 
 void StopSounds()
@@ -231,8 +223,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		text->AddComponent<TextComponent>();
 		text->GetComponent<TextComponent>()->text.SetString("Epic String");
 		text->GetComponent<TextComponent>()->text.SetTextHeight(50.0f);
+		text->GetComponent<TextComponent>()->layer = 128;
 		text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 300.0f, 0.0f);
+		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(1100.0f, 300.0f, 0.0f);
 
 		/*SpriteEntity* barn = new SpriteEntity();
 		barn->GetComponent<TransformComponent>()->position.x = 7.0f;

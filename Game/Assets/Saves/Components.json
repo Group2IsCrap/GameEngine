@@ -86,8 +86,170 @@
                         "Name": ""
                     },
                     {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    }
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "Components": [
+                    {
                         "Name": ""
                     },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -6.123194217681885,
+                            "Y": 2.1300742626190186,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 640.0,
+                            "Y": 150.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.0896763801574707,
+                            "Y": 1.0896763801574707,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.1903070211410522,
+                            "Y": 1.1903070211410522,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.390044093132019,
+                            "Y": 1.390044093132019,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.5251442193984985,
+                            "Y": 1.5251442193984985,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.6420279741287231,
+                            "Y": 1.6420279741287231,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "Components": [
                     {
                         "Name": ""
                     },
@@ -128,8 +290,28 @@
                         "Name": ""
                     },
                     {
-                        "Name": ""
+                        "Layer": 0
                     },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    }
+                ]
+            },
+            {
+                "ComponentID": 12,
+                "Components": [
                     {
                         "Name": ""
                     },
@@ -140,62 +322,233 @@
                         "Name": ""
                     },
                     {
-                        "Name": ""
+                        "Layer": 0,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 20.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
                     },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    }
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "Components": [
+                    {
+                        "CurrentHealth": 5,
+                        "MaxHealth": 5
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "Components": [
                     {
                         "Name": ""
                     },
                     {
-                        "Name": ""
+                        "Velocity": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "LastPos": {
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
+                            "Z": 0.0
+                        },
+                        "NextPos": {
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
+                            "Z": 0.0
+                        },
+                        "Layer": 0,
+                        "Interpolate": true,
+                        "InterpolationTime": 0.03150099888443947
+                    }
+                ]
+            },
+            {
+                "ComponentID": 8,
+                "Components": [
+                    {
+                        "Rect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": 1.0,
+                            "Height": 2.0
+                        }
                     },
                     {
-                        "Name": ""
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
                     },
                     {
-                        "Name": ""
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
                     },
                     {
-                        "Name": ""
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
                     },
                     {
-                        "Name": ""
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
                     },
                     {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    }
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "Components": [
                     {
                         "Name": ""
                     },
@@ -14269,33 +14622,152 @@
                         "Indices": [118]
                     },
                     {
-                        "EntityID": 126,
-                        "Indices": [119]
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true,
+                        "FlipX": false,
+                        "FlipY": false
                     },
                     {
-                        "EntityID": 127,
-                        "Indices": [120]
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true,
+                        "FlipX": false,
+                        "FlipY": false
                     },
                     {
-                        "EntityID": 128,
-                        "Indices": [121]
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true,
+                        "FlipX": false,
+                        "FlipY": false
                     },
                     {
-                        "EntityID": 129,
-                        "Indices": [122]
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true,
+                        "FlipX": false,
+                        "FlipY": false
                     },
                     {
-                        "EntityID": 130,
-                        "Indices": [123]
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": true,
+                        "FlipX": false,
+                        "FlipY": false
                     },
                     {
                         "EntityID": 131,
                         "Indices": [124]
                     },
                     {
-                        "EntityID": 132,
-                        "Indices": [125]
-                    },
+                        "Layer": 1001,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "ToDraw": false,
+                        "FlipX": false,
+                        "FlipY": false
+                    }
+                ]
+            },
+            {
+                "ComponentID": 15,
+                "Components": [
                     {
                         "EntityID": 133,
                         "Indices": [126]
@@ -14340,7 +14812,59 @@
                 ]
             },
             {
-                "ComponentID": 17,
+                "ComponentID": 5,
+                "Components": [
+                    {
+                        "Text": "INSERT TEXT DATA HERE",
+                        "Layer": 100000,
+                        "Hidden": true
+                    }
+                ]
+            },
+            {
+                "ComponentID": 20,
+                "Components": [
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    }
+                ]
+            }
+        ],
+        "ComponentMap": [
+            {
+                "ComponentID": 10,
                 "EntityIDs": [
                     {
                         "EntityID": 69,
@@ -14467,9 +14991,34 @@
                         "Indices": [26]
                     },
                     {
-                        "EntityID": 36,
-                        "Indices": [27]
+                        "EntityID": 13,
+                        "Indices": [13]
                     },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 3,
+                "EntityIDs": [
                     {
                         "EntityID": 37,
                         "Indices": [28]
@@ -14707,9 +15256,34 @@
                         "Indices": [90]
                     },
                     {
-                        "EntityID": 100,
-                        "Indices": [91]
+                        "EntityID": 13,
+                        "Indices": [13]
                     },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
+                "EntityIDs": [
                     {
                         "EntityID": 101,
                         "Indices": [92]
@@ -14763,9 +15337,34 @@
                         "Indices": [104]
                     },
                     {
-                        "EntityID": 114,
-                        "Indices": [105]
+                        "EntityID": 13,
+                        "Indices": [13]
                     },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 12,
+                "EntityIDs": [
                     {
                         "EntityID": 115,
                         "Indices": [106]
@@ -14775,13 +15374,38 @@
                         "Indices": [107]
                     },
                     {
-                        "EntityID": 117,
-                        "Indices": [108]
+                        "EntityID": 18,
+                        "Indices": [6]
                     },
                     {
-                        "EntityID": 118,
-                        "Indices": [109]
+                        "EntityID": 2,
+                        "Indices": [0]
                     },
+                    {
+                        "EntityID": 3,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [5]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 14,
+                "EntityIDs": [
                     {
                         "EntityID": 119,
                         "Indices": [110]
@@ -14795,9 +15419,34 @@
                         "Indices": [112]
                     },
                     {
-                        "EntityID": 122,
-                        "Indices": [113]
+                        "EntityID": 18,
+                        "Indices": [5]
                     },
+                    {
+                        "EntityID": 2,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [4]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 6,
+                "EntityIDs": [
                     {
                         "EntityID": 123,
                         "Indices": [114]
@@ -14968,15 +15617,36 @@
                 ]
             },
             {
-                "ComponentID": 24,
+                "ComponentID": 5,
+                "EntityIDs": [
+                    {
+                        "EntityID": 13,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 20,
                 "EntityIDs": [
                     {
                         "EntityID": 14,
-                        "Indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [2]
                     },
                     {
                         "EntityID": 17,
-                        "Indices": [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [4]
                     }
                 ]
             }
