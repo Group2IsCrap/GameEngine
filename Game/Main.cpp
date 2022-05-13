@@ -15,6 +15,7 @@
 #include "Source/Items/ItemDatabase.h"
 #include "Source/Core//WorldEntity.h"
 
+#include "Source/ImGuiDebugLayer.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
 
@@ -34,6 +35,25 @@ void BindDefaultKeys()
 	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
 	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F);
+}
+
+void SpawnItem0()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+}
+
+void SpawnItem1()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+}
+
+void SetupDebugUI()
+{
+	// ImGui Test code
+	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
+	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -60,12 +80,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// World
 		WorldEntity* world = new WorldEntity();
 
+		SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->AddComponent<RigidBodyComponent>();
+		barn->GetComponent<StaticComponent>()->isStatic = true;
+		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
+		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
+		boxCollider->drawCollider = true;
+		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
+		//collider->drawCollider = true;
+		//collider->radius = 4.25f;
+
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
-		// Load All Items
+		// Debug UI
+		SetupDebugUI();
+
+		// Load All Itemss
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
 		while (Engine::Instance().ProcessMessages())

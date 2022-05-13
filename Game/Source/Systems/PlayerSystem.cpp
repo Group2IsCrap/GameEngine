@@ -4,6 +4,7 @@
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
+#include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
@@ -28,6 +29,9 @@ PlayerSystem::PlayerSystem()
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
+
+	imguiLayer = new ImGuiPlayerLayer();
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -47,6 +51,7 @@ void PlayerSystem::CheckForPlayer()
 	if (playerEntity == nullptr && m_entities.size() > 0)
 	{
 		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
+		imguiLayer->SetPlayer(playerEntity);
 	}
 }
 

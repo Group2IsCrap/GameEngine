@@ -45,6 +45,9 @@
                     },
                     {
                         "Name": ""
+                    },
+                    {
+                        "Name": ""
                     }
                 ]
             },
@@ -62,6 +65,9 @@
                     },
                     {
                         "IsStatic": false
+                    },
+                    {
+                        "IsStatic": true
                     },
                     {
                         "IsStatic": false
@@ -114,8 +120,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -4.392319202423096,
-                            "Y": 28.76017189025879,
+                            "X": -1.0279972553253174,
+                            "Y": 16.294111251831055,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -127,8 +133,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -4.403495788574219,
-                            "Y": 28.78577995300293,
+                            "X": -1.0279977321624756,
+                            "Y": 16.294118881225586,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -142,6 +148,19 @@
                         "Position": {
                             "X": 0.0,
                             "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 10.0,
+                            "Y": 10.0,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -270,8 +289,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": 640.0,
-                            "Y": 150.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -285,6 +304,9 @@
             {
                 "ComponentID": 11,
                 "Components": [
+                    {
+                        "Layer": 0
+                    },
                     {
                         "Layer": 0
                     },
@@ -388,6 +410,29 @@
                         },
                         "FlipX": false,
                         "FlipY": false
+                    },
+                    {
+                        "Layer": 33,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
                     }
                 ]
             },
@@ -395,7 +440,7 @@
                 "ComponentID": 14,
                 "Components": [
                     {
-                        "CurrentHealth": 0,
+                        "CurrentHealth": 5,
                         "MaxHealth": 5
                     }
                 ]
@@ -419,17 +464,37 @@
                             "Z": 0.0
                         },
                         "LastPos": {
-                            "X": -4.403594970703125,
-                            "Y": 28.7862606048584,
+                            "X": -1.0279977321624756,
+                            "Y": 16.294118881225586,
                             "Z": 0.0
                         },
                         "NextPos": {
-                            "X": -4.403812408447266,
-                            "Y": 28.787311553955078,
+                            "X": -1.0279977321624756,
+                            "Y": 16.294118881225586,
                             "Z": 0.0
                         },
                         "Layer": 0,
                         "Interpolate": true,
+                        "InterpolationTime": 0.03338000178337097
+                    },
+                    {
+                        "Velocity": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        },
+                        "LastPos": {
+                            "X": 10.0,
+                            "Y": 10.0,
+                            "Z": 0.0
+                        },
+                        "NextPos": {
+                            "X": 10.0,
+                            "Y": 10.0,
+                            "Z": 0.0
+                        },
+                        "Layer": 0,
+                        "Interpolate": false,
                         "InterpolationTime": 0.0
                     }
                 ]
@@ -443,6 +508,14 @@
                             "Y": 0.0,
                             "Width": 1.0,
                             "Height": 2.0
+                        }
+                    },
+                    {
+                        "Rect": {
+                            "X": -0.20000000298023224,
+                            "Y": -1.0,
+                            "Width": 6.400000095367432,
+                            "Height": 5.0
                         }
                     }
                 ]
@@ -481,7 +554,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 9,
@@ -511,7 +584,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -541,7 +614,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -571,7 +644,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -601,7 +674,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -631,7 +704,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 4,
@@ -661,7 +734,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 6,
@@ -691,7 +764,7 @@
                         }
                     },
                     {
-                        "ParentID": 4,
+                        "ParentID": 5,
                         "HasParent": true,
                         "Index": 10,
                         "AnchorSettings": 7,
@@ -790,7 +863,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -813,7 +886,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -836,7 +909,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -859,7 +932,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -882,7 +955,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -917,9 +990,9 @@
                             "Y": 0.0
                         },
                         "Colour": {
-                            "R": 0.0,
-                            "G": 0.0,
-                            "B": 0.0,
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
                             "A": 255.0
                         },
                         "SourceRect": {
@@ -999,10 +1072,6 @@
                         "RectsOfButton": []
                     }
                 ]
-            },
-            {
-                "ComponentID": 5,
-                "Components": []
             }
         ],
         "ComponentMap": [
@@ -1064,6 +1133,10 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
                     }
                 ]
             },
@@ -1125,6 +1198,10 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
                     }
                 ]
             },
@@ -1186,6 +1263,10 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
                     }
                 ]
             },
@@ -1247,6 +1328,10 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
                     }
                 ]
             },
@@ -1273,6 +1358,10 @@
                     {
                         "EntityID": 3,
                         "Indices": [1]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [2]
                     }
                 ]
             },
@@ -1300,6 +1389,10 @@
                     {
                         "EntityID": 2,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
                     }
                 ]
             },
@@ -1309,6 +1402,10 @@
                     {
                         "EntityID": 2,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [1]
                     }
                 ]
             },
@@ -1316,39 +1413,39 @@
                 "ComponentID": 6,
                 "EntityIDs": [
                     {
-                        "EntityID": 4,
+                        "EntityID": 5,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 6,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 7,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [4]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [5]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [6]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 12,
                         "Indices": [7]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 13,
                         "Indices": [8]
                     }
                 ]
@@ -1357,39 +1454,39 @@
                 "ComponentID": 2,
                 "EntityIDs": [
                     {
-                        "EntityID": 4,
+                        "EntityID": 5,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 5,
+                        "EntityID": 6,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 7,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [4]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [5]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [6]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 12,
                         "Indices": [7]
                     },
                     {
-                        "EntityID": 12,
+                        "EntityID": 13,
                         "Indices": [8]
                     }
                 ]
@@ -1398,7 +1495,7 @@
                 "ComponentID": 15,
                 "EntityIDs": [
                     {
-                        "EntityID": 4,
+                        "EntityID": 5,
                         "Indices": [0]
                     }
                 ]
@@ -1407,31 +1504,31 @@
                 "ComponentID": 16,
                 "EntityIDs": [
                     {
-                        "EntityID": 5,
+                        "EntityID": 6,
                         "Indices": [0]
                     },
                     {
-                        "EntityID": 6,
+                        "EntityID": 7,
                         "Indices": [1]
                     },
                     {
-                        "EntityID": 7,
+                        "EntityID": 8,
                         "Indices": [2]
                     },
                     {
-                        "EntityID": 8,
+                        "EntityID": 9,
                         "Indices": [3]
                     },
                     {
-                        "EntityID": 9,
+                        "EntityID": 10,
                         "Indices": [4]
                     },
                     {
-                        "EntityID": 10,
+                        "EntityID": 11,
                         "Indices": [5]
                     },
                     {
-                        "EntityID": 11,
+                        "EntityID": 12,
                         "Indices": [6]
                     }
                 ]
@@ -1440,7 +1537,7 @@
                 "ComponentID": 17,
                 "EntityIDs": [
                     {
-                        "EntityID": 12,
+                        "EntityID": 13,
                         "Indices": [0]
                     }
                 ]
@@ -1449,7 +1546,7 @@
                 "ComponentID": 18,
                 "EntityIDs": [
                     {
-                        "EntityID": 12,
+                        "EntityID": 13,
                         "Indices": [0]
                     }
                 ]
@@ -1458,7 +1555,7 @@
                 "ComponentID": 19,
                 "EntityIDs": [
                     {
-                        "EntityID": 12,
+                        "EntityID": 13,
                         "Indices": [0]
                     }
                 ]
