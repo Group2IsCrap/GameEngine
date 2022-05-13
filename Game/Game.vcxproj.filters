@@ -39,6 +39,9 @@
     <ClCompile Include="Source\ImGuiDebugLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Combat\CombatFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CoreComponents\HealthComponent.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Combat\CombatComponant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Combat\CombatFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
