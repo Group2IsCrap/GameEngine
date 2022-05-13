@@ -12,44 +12,30 @@
 #include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
-#include "Source/ImGuiDebugLayer.h"
+#include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
 #include "Source/CoreComponents/AIComponent.h"
+#include "Source/Core//WorldEntity.h"
 
 #include "Source/Events/InputEvents.h"
+#include "Source/Core/Layers.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
+using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
-
-void SpawnItem0()
-{
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
-}
-
-void SpawnItem1()
-{
-	ItemDatabase::Instance()->CreateInstanceOfItem(1);
-}
-
-void SetupDebugUI()
-{
-	// ImGui Test code
-	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
-	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
-	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
-}
 
 void BindDefaultKeys()
 {
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, ControllerButtons::A, ControllerEventType::ButtonPressSingle);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
+	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
+
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F);
 }
 
 void SetupEnemyTemplate()
@@ -105,18 +91,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
 		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
 		test2->GetSpriteComponent()->layer = 16;
+		// World
+		WorldEntity* world = new WorldEntity();
 
 		// UI
-		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0));
-		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas);
-
-		// Debug UI
-		SetupDebugUI();
+		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
+		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
-		while (Firelight::Engine::Instance().ProcessMessages())
+		while (Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
 
@@ -127,6 +113,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
+
+		Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

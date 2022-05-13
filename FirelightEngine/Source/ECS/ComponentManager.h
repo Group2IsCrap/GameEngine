@@ -73,7 +73,22 @@ namespace Firelight::ECS
 			ComponentTypeID typeID = sm_componentHashTypes[typeName];
 			if (m_componentMap[typeID].find(entity) != m_componentMap[typeID].end())
 			{
-				return dynamic_cast<T2*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
+				T2* ptr = dynamic_cast<T2*>(m_componentData[typeID][m_componentMap[typeID][entity][index]]);
+				if (ptr != nullptr)
+				{
+					return ptr;
+				}
+				else
+				{
+					for (int i = 0; i < m_componentMap[typeID][entity].size(); ++i)
+					{
+						T2* ptr = dynamic_cast<T2*>(m_componentData[typeID][m_componentMap[typeID][entity][i]]);
+						if (ptr != nullptr)
+						{
+							return ptr;
+						}
+					}
+				}
 			}
 			return nullptr;
 		}

@@ -40,6 +40,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Systems\AISystem.cpp">
+    <ClCompile Include="Source\ImGuiPlayerLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\WorldEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +85,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\AISystem.h">
+    <ClInclude Include="Source\ImGuiPlayerLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\WorldEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\PlayerEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\Layers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
