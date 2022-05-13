@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Combat\CombatFunctions.cpp" />
+    <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -164,7 +164,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Combat\CombatFunctions.h" />
+    <ClInclude Include="Source\Combat\CombatCalculations.h" />
     <ClInclude Include="Source\Combat\CombatComponant.h" />
     <ClInclude Include="Source\Core\Layers.h" />
     <ClInclude Include="Source\Events\PlayerEvents.h" />
