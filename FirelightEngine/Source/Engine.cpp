@@ -180,7 +180,7 @@ namespace Firelight
         // Do as many physics updates as are neccessary this frame
         for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
         {
-            m_systemManager.PhysicsUpdate(m_time); 
+            m_systemManager.FixedUpdate(m_time); 
             Input::ProcessInput::Instance()->TestInput();
         }
 
