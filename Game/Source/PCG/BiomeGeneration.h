@@ -4,6 +4,14 @@
 #include "..\FirelightEngine\Source\Maths\Rect.h"
 #include <map>
 
+enum class IslandSpawnDirection
+{
+	North,
+	East,
+	South,
+	West
+};
+
 class BiomeGeneration
 {
 public:
@@ -13,26 +21,38 @@ public:
 	void Initialise();
 	void Uninitialise();
 
-	size_t RandomBiomeIndex(unsigned int perlinIndex);
-	size_t CalculateIslandShape(int perlinIndex);
+	unsigned int CalculateIslandShape(int perlinIndex);
 
-	void DrawCircles();
+	void DrawIslands();
 
-	size_t CalculateDistance(Firelight::Maths::Rectf rect1, Firelight::Maths::Rectf rect2);
+	unsigned int CalculateDistance(Firelight::Maths::Rectf rect1, Firelight::Maths::Rectf rect2);
 
 	void Draw();
 	void Render();
 
 private:
 
+	IslandSpawnDirection CalculateNextIslandDirection(unsigned int noiseIndex);
+	unsigned int RandomBiomeIndex(unsigned int perlinIndex);
+	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
+	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
+
+	bool IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition);
+
 	Noise* m_biomeNoise;
+	Noise* m_islandDirectionNoise;
 	Noise* m_islandShapeNoise;
 
 	static BiomeGeneration* sm_instance;
 	static unsigned int mapSeed;
 
+	std::vector< Firelight::Maths::Vec2i > m_OccupiedIslandSpaces;
 	std::vector< Firelight::Graphics::Texture*> sm_biomeMap;
 	Biome m_biome;
 
+	unsigned int m_bridgeWidth;
+	unsigned int m_bridgeLength;
+
 	int m_radius;
+
 };
