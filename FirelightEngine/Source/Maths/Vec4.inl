@@ -2,6 +2,8 @@
 
 #include "Vec4.h"
 
+#include "../Utils/ErrorManager.h"
+
 namespace Firelight::Maths
 {
     template<typename T>
@@ -34,6 +36,25 @@ namespace Firelight::Maths
     template<typename T>
     inline Vec4<T>::~Vec4()
     {
+    }
+
+    template<typename T>
+    inline T& Vec4<T>::operator[](int index)
+    {
+        switch (index)
+        {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        case 3:
+            return w;
+        }
+
+        ERROR_STANDARD("Index out of range for vector 4");
+        return x;
     }
 
     template<typename T>

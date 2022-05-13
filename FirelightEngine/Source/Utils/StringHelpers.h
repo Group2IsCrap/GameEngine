@@ -135,4 +135,21 @@ namespace Firelight::Utils::StringHelpers
 		return lineNumber;
 	}
 
+	static std::vector<int> IntVectorFromCommaSeparatedValues(std::string commaSeparatedValues)
+	{
+		std::vector<int> returnVector;
+		int lastComma = -1;
+		for (int charIndex = 0; charIndex < commaSeparatedValues.size(); ++charIndex)
+		{
+			if (commaSeparatedValues[charIndex] == ',')
+			{
+				returnVector.push_back(std::atoi(commaSeparatedValues.substr((lastComma + 1), charIndex - lastComma).c_str()));
+				lastComma = charIndex;
+			}
+		}
+
+		returnVector.push_back(std::atoi(commaSeparatedValues.substr((lastComma + 1)).c_str()));
+
+		return returnVector;
+	}
 }

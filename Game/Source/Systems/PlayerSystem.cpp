@@ -4,42 +4,42 @@
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
-#include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
+#include "../Core/Layers.h"
 
-static bool s_triggered = false;
+using namespace Firelight::Events;
+using namespace Firelight::Events::InputEvents;
 
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
 	playerEntity = nullptr;
 
-	m_playerEntityAddedCheckIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
-	m_playerMoveUpIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveUpEvent>(std::bind(&PlayerSystem::MovePlayerUp, this));
-	m_playerMoveLeftIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
-	m_playerMoveRightIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
-	m_playerMoveDownIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
-	m_interactionEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
-	m_spawnItemEventIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
+	m_playerEntityAddedCheckIndex = EventDispatcher::SubscribeFunction<ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
+	m_playerMoveUpIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEvent>(std::bind(&PlayerSystem::MovePlayerUp, this));
+	m_playerMoveLeftIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
+	m_playerMoveRightIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
+	m_playerMoveDownIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
+	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
+	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
+	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
-
-	imguiLayer = new ImGuiPlayerLayer();
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
 {
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(m_playerEntityAddedCheckIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveUpEvent>(m_playerMoveUpIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::OnInteractEvent>(m_interactionEventIndex);
-	Firelight::Events::EventDispatcher::UnsubscribeFunction<Firelight::Events::InputEvents::SpawnItemEvent>(m_spawnItemEventIndex);
+	EventDispatcher::UnsubscribeFunction<ECS::OnEntityCreatedEvent>(m_playerEntityAddedCheckIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveUpEvent>(m_playerMoveUpIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
+	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
+	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
+	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -47,7 +47,6 @@ void PlayerSystem::CheckForPlayer()
 	if (playerEntity == nullptr && m_entities.size() > 0)
 	{
 		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
-		imguiLayer->SetPlayer(playerEntity);
 	}
 }
 
@@ -56,11 +55,6 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	if (playerEntity == nullptr)
 	{
 		return;
-	}
-	if (Firelight::Input::InputGet.KeyIsPress('K') && !s_triggered)
-	{
-		s_triggered = true;
-		playerEntity->RemoveHealth(1);
 	}
 }
 
@@ -97,7 +91,7 @@ void PlayerSystem::MovePlayerRight()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, 1);
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
 		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
@@ -108,5 +102,10 @@ void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+}
+
+void PlayerSystem::RemoveHealth()
+{
+	playerEntity->RemoveHealth(1);
 }
 

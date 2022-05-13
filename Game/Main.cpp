@@ -11,48 +11,32 @@
 #include "Source/Systems/PlayerSystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
-#include "Source/ImGuiDebugLayer.h"
+#include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/Core//WorldEntity.h"
 
 #include "Source/Events/InputEvents.h"
+#include "Source/Core/Layers.h"
 
 #include"Source/Inventory/InventoryManager.h"
 #include"Source/Inventory/InventoryWrapper.h"
 #include"Source/Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
+using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
-
-void SpawnItem0()
-{
-	InventorySystem::Global_Functions::AddItem("PlayerInv", "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(0));
-}
-
-void SpawnItem1()
-{
-	InventorySystem::Global_Functions::AddItem("PlayerInv", "equaitment",ItemDatabase::Instance()->CreateInstanceOfItem(1));
-}
-
-void SetupDebugUI()
-{
-	// ImGui Test code
-	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
-	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
-	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
-}
 
 void BindDefaultKeys()
 {
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerActionEvent(Firelight::Events::InputEvents::SpawnItemEvent::sm_descriptor, ControllerButtons::A, ControllerEventType::ButtonPressSingle);
-	Firelight::Engine::Instance().GetKeyBinder().BindControllerAxisEvent(Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
+	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
-	Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(Firelight::Events::InputEvents::OnInteractEvent::sm_descriptor, Firelight::Keys::KEY_F);
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F);
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -76,26 +60,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Player
 		PlayerEntity* player = new PlayerEntity();
 
-		// Grass
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
-
-		SpriteEntity* barn = new SpriteEntity();
-		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
-		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
-		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		barn->GetComponent<SpriteComponent>()->layer = 33;
-		barn->AddComponent<RigidBodyComponent>();
-		barn->GetComponent<StaticComponent>()->isStatic = true;
-		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
-		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
-		boxCollider->drawCollider = true;	
-		CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
-		collider->drawCollider = true;
-		collider->radius = 4.25f;
+		// World
+		WorldEntity* world = new WorldEntity();
 
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0));
@@ -116,19 +82,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 
 		
-		Firelight::Events::EventDispatcher::InvokeFunctions<Events::Inv::ADD_NEW_INV>();
+		
 		
 
-
-
-
-		// Debug UI
-		SetupDebugUI();
+		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
+		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 
-		while (Firelight::Engine::Instance().ProcessMessages())
+		while (Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
 
@@ -139,6 +103,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
+
+		Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

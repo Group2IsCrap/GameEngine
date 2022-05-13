@@ -17,7 +17,7 @@ namespace Firelight::Graphics
 		ID3D11Buffer*        Get() const;
 		ID3D11Buffer* const* GetAddressOf() const;
 
-		bool MapToGPU();
+		bool MapToGPU() const;
 
 	private:
 		ConstantBuffer(const ConstantBuffer<T>& rhs);

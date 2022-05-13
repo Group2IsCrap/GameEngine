@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Maths/Vec4.h"
+
 #include <DirectXMath.h>
 
 namespace Firelight::Graphics
@@ -81,5 +83,19 @@ namespace Firelight::Graphics
 	struct PerObjectCB
 	{
 		DirectX::XMMATRIX m_modelMatrix;
+	};
+
+	struct TextCB
+	{
+		Maths::Vec2f      m_positionOffset;
+		Maths::Vec2f      m_scale;
+
+		float             m_antiAliasDistanceRange; // ? -> ? | Calculated by text code
+		float             m_thickness; // 0 -> 1 | Set via text code
+		int               m_hasOutline;
+		float             m_outlineWidth;
+
+		Maths::Vec4f      m_colour;
+		Maths::Vec4f      m_outlineColour;
 	};
 }

@@ -15,6 +15,8 @@ namespace Firelight::Maths
         Vec4(const T& _x, const T& _y, const T& _z, const T& _w);
         ~Vec4();
 
+        T& operator[](int index);
+
         // XMVECTOR
         DirectX::XMVECTOR GetAsXMVECTOR() const;
         DirectX::XMFLOAT4 GetAsXMFLOAT4() const;
