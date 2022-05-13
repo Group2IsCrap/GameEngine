@@ -20,7 +20,13 @@ namespace Firelight::UI {
 	}
 	void UISystem::Update(const Utils::Time& time)
 	{
-		UNREFERENCED_PARAMETER(time);
+
+		m_updateTime += time.GetDeltaTime();
+
+		if (m_dragTimerActive)
+		{
+			m_clickTime += time.GetDeltaTime();
+		}
 
 		if (m_dragWidget != nullptr) 
 		{
@@ -139,37 +145,45 @@ namespace Firelight::UI {
 
 			}
 
-			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
+			if (m_updateTime > 0.1 || m_clickTime > 0.1f || (eventMouse->GetType() != Events::Input::e_MouseEventType::Move && eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove))
 			{
-				ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
-
-				if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
-					continue;
-				}
-
-				if (eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove)
+				if(eventMouse->GetType() == Events::Input::e_MouseEventType::Move || eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove)
 				{
-					if (m_dragWidget == nullptr) {
-						if (eventMouse->GetType() != Events::Input::e_MouseEventType::Move) 
+					m_updateTime = 0;
+				}
+				for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
+				{
+					ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
+
+					if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
+						continue;
+					}
+
+					if (eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove)
+					{
+						if (m_dragWidget == nullptr) 
 						{
-							if (m_entities[entityIndex]->HasComponent<ECS::UIPressableComponent>()) 
+							if (eventMouse->GetType() != Events::Input::e_MouseEventType::Move)
 							{
-								OnPress(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
+								if (m_entities[entityIndex]->HasComponent<ECS::UIPressableComponent>())
+								{
+									OnPress(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
+								}
+							}
+							if (m_entities[entityIndex]->HasComponent<ECS::UIHoverableComponent>())
+							{
+								OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 							}
 						}
-						if (m_entities[entityIndex]->HasComponent<ECS::UIHoverableComponent>())
+						if (m_entities[entityIndex]->HasComponent<ECS::UIDraggableComponent>())
 						{
-							OnHover(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
+							OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
 						}
 					}
-					if (m_entities[entityIndex]->HasComponent<ECS::UIDraggableComponent>())
+					if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move && m_focusedWidget == UIComponent)
 					{
-						OnDrag(eventMouse->GetMouseX(), eventMouse->GetMouseY(), eventMouse->GetType(), m_entities[entityIndex]);
+						OnLeave(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 					}
-				}
-				if (eventMouse->GetType() == Events::Input::e_MouseEventType::Move && m_focusedWidget == UIComponent)
-				{
-					OnLeave(eventMouse->GetMouseX(), eventMouse->GetMouseY(), m_entities[entityIndex]);
 				}
 			}
 		}
@@ -304,7 +318,7 @@ namespace Firelight::UI {
 		ECS::TransformComponent* UITransformComponent = entity->GetComponent<ECS::TransformComponent>();
 		ECS::PixelSpriteComponent* UISpriteComponent = entity->GetComponent<ECS::PixelSpriteComponent>();
 
-		m_ClickTimer.Stop();
+
 		if (IsHit(x, y, UIComponent, UITransformComponent))
 		{
 
@@ -312,8 +326,9 @@ namespace Firelight::UI {
 
 				//say item is being draged
 
-				m_ClickTimer.Start();
+				m_clickTime = 0;
 				m_dragButtonIsPressed = true;
+				m_dragTimerActive = true;
 
 			}
 			if (mouseEvent == Firelight::Events::Input::e_MouseEventType::LRelease)
@@ -329,12 +344,15 @@ namespace Firelight::UI {
 				}
 
 				m_dragButtonIsPressed = false;
+				m_clickTime = 0;
 				m_isDragging = false;
+				m_dragTimerActive = false;
 
 				//AnchorSettings();
 			}
 
-			if (m_dragButtonIsPressed && m_ClickTimer.GetDurationSeconds() > 0.1f) 
+
+			if (m_dragButtonIsPressed && m_clickTime > 0.1f)
 			{
 				auto parentComponent = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(UIComponent->parentID);
 				if (UIComponent->hasParent && parentComponent != nullptr && m_dragWidget == parentComponent && !m_isDragging)
@@ -411,7 +429,12 @@ namespace Firelight::UI {
 			
 		}
 		
-	
+
+		if (m_clickTime > 0.1f)
+		{
+			m_dragTimerActive = false;
+			m_clickTime = 0.0f;
+		}
 	}
 
 	void UISystem::OnNavigate()
