@@ -288,6 +288,12 @@ namespace Firelight::Graphics
             }
             else if (auto* textEntity = dynamic_cast<TextEntity*>(entity))
             {
+                // If not the first quad
+                if (batchTexture != nullptr)
+                {
+                    drawCurrentBatch();
+                }
+
                 deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
                 deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Text")->GetShader(), NULL, 0);
 
