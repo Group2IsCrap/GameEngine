@@ -88,13 +88,16 @@ namespace Firelight::Input
 
     void MouseInput::OnMouseMove(int x, int y)
     {
-        m_MousePosX = x;
-        m_MousePosY = y;
-        Maths::Vec2f Pos = Maths::Vec2f((float)m_MousePosX, (float)m_MousePosY);
+        if (m_MousePosX != x || m_MousePosY != y)
+        {
+            m_MousePosX = x;
+            m_MousePosY = y;
+            Maths::Vec2f Pos = Maths::Vec2f((float)m_MousePosX, (float)m_MousePosY);
 
-       
-        Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::Move, x, y);
-        Events::EventDispatcher::InvokeListeners<Events::Input::MouseMoveEvent>((void*)&Event);
+
+            Events::Input::MouseEvent Event = Events::Input::MouseEvent(Events::Input::e_MouseEventType::Move, x, y);
+            Events::EventDispatcher::InvokeListeners<Events::Input::MouseMoveEvent>((void*)&Event);
+        }
        
     }
 

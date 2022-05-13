@@ -37,12 +37,16 @@
 #include "Source/Serialisation/Serialiser.h"
 #include"Source/Input/GetInput.h"
 
+
+
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
+
 #include"Inventory/InventoryManager.h"
+#include"Inventory/InventoryWrapper.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Serialisation;
@@ -88,6 +92,7 @@ void CreatUITest() {
 	s_uiCanvas = new UICanvas();
 	s_uiCanvas->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/CanvasTest.png");
 	s_uiCanvas->GetSpriteComponent()->toDraw = false;
+	s_uiCanvas->GetWidgetComponent()->hasParent = false;
 	s_uiCanvas->SetAnchorSettings(ECS::e_AnchorSettings::Center);
 	s_uiCanvas->GetCanvasComponent()->XScreenSize = Engine::Instance().GetWindowDimensionsFloat().x;
 	s_uiCanvas->GetCanvasComponent()->YScreenSize = Engine::Instance().GetWindowDimensionsFloat().y;
@@ -98,7 +103,7 @@ void CreatUITest() {
 
 	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 
-	UIPanel* panelSound = new UIPanel();
+	/*UIPanel* panelSound = new UIPanel();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
@@ -142,11 +147,11 @@ void CreatUITest() {
 	buttonStopPlay->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
 	buttonStopPlay->SetOffset(Maths::Vec2f(0.0f, 330.0f));
 	buttonStopPlay->BindOnLeftPressed(std::bind(StopSounds));
-	buttonStopPlay->SetParent(panelSound->GetEntityID());
+	buttonStopPlay->SetParent(panelSound->GetEntityID());*/
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
-	
+
 }
 InventoryManager* invTestA;
 void SpawnItem0()
@@ -159,15 +164,15 @@ void SpawnItem1()
 }
 void SpawnItem2()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+	invTestA->AddItem("PlayerInv", "MainIven2", ItemDatabase::Instance()->CreateInstanceOfItem(2));
 }
 void SpawnItem3()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+	invTestA->AddItem("PlayerInv2", "MainIven3", ItemDatabase::Instance()->CreateInstanceOfItem(3));
 }
 void SpawnItem4()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(4);
+	invTestA->AddItem("PlayerInv2", "MainIven4", ItemDatabase::Instance()->CreateInstanceOfItem(4));
 }
 
 void SetupDebugUI()
@@ -192,7 +197,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
-
+		Engine::Instance().GetSystemManager().RegisterGameSystem<InventoryManager>();
 		// Player Character
 		float playerSpeed = 10.0f;
 		PlayerEntity* player = new PlayerEntity(playerSpeed);
@@ -209,7 +214,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		CreatUITest();
 
 		SetupDebugUI();
-    
+
 		invTestA = new InventoryManager(s_uiCanvas);
 		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
@@ -253,16 +258,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 
-			// get input onece
-			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
-				invTestA->LoadInventoryGroup("PlayerInv");
-			}
-			if (Input::InputGet.KeyIsPressNonRepeat('G')) {
-				invTestA->UnloadInventoryGroup("PlayerInv");
-			}
-			if (Input::InputGet.KeyIsPressNonRepeat('P')) {
-				invTestA->RemoveItem("PlayerInv", "MainIven",1,10);
-			}
 		}
 
 		Serialiser::SaveSceneJSON();

@@ -116,6 +116,7 @@ namespace Firelight
 		KEY_NUMPAD_MINUS,
 		KEY_NUMPAD_MULTIPLY,
 		KEY_NUMPAD_DIVIDE,
+		KEY_INVALID,
 	};
 
 	enum class KeyEventType
