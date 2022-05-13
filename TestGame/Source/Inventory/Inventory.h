@@ -33,11 +33,11 @@ public:
 	Inventory(std::string Name);
 	~Inventory();
 
-	void SetEntityData(ECS::EntityID ID) { IveID = ID; }
-	ECS::EntityID GetEntityData() { return IveID; }
+	void SetEntityData(ECS::EntityID ID) { m_InventoryEntityID = ID; }
+	ECS::EntityID GetEntityData() { return m_InventoryEntityID; }
 
-	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
-	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 
 	//display controlls
 	void LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit);
@@ -66,8 +66,8 @@ public:
 	void Place(SlotData* slotData);
 
 
-	std::vector <SlotData*>* GetNullSlotData() { return &NullSlotData; }
-	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
+	std::vector <SlotData*>* GetNullSlotData() { return &m_OutOfInventoryData; }
+	ECS::UIPanel* GetInventorySpace() { return m_InventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }
 private:
@@ -77,7 +77,7 @@ private:
 private:
 
 	//pannle created by this 
-	ECS::UIPanel* InventorySpace;
+	ECS::UIPanel* m_InventorySpace;
 
 
 	//data to remove
@@ -97,9 +97,9 @@ private:
 	std::vector<std::pair<SlotInfo, SlotData*>> Grid;
 
 	//invetory entity
-	ECS::EntityID IveID;
+	ECS::EntityID m_InventoryEntityID;
 
 	//slots to remove
-	std::vector <SlotData*> NullSlotData;
+	std::vector <SlotData*> m_OutOfInventoryData;
 };
 

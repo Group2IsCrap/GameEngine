@@ -11,7 +11,7 @@
 namespace InventorySystem {
 
 	typedef std::string GroupName;
-	inline ECS::EntityID ParentID;
+	inline ECS::EntityID UIParentID;
 	class InventoryManager :public Firelight::Events::Listener, public Firelight::ECS::System
 	{
 	public:
@@ -27,8 +27,8 @@ namespace InventorySystem {
 		void ItemChangeInventory();
 
 		//creation
-		void CreatInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
-		void CreatInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
+		void CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
+		void CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCount, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
 
 		void GroupLoadOrUnload(std::string group);
 		//render on screen
@@ -46,7 +46,6 @@ namespace InventorySystem {
 		//remove From Inventory
 		bool RemoveItem(GroupName group, std::string Name, Firelight::ECS::Entity* item);
 		bool RemoveItem(GroupName group, std::string Name, Firelight::ECS::EntityID item);
-
 		bool RemoveItem(GroupName group, std::string Name, int item, int howMany);
 
 		//Get item
@@ -60,8 +59,8 @@ namespace InventorySystem {
 	private:
 
 		//resusable Entitys
-		std::vector<ECS::UIPanel*> EntityIDPannlSlot;
-		std::vector<ECS::EntityID> EntityIDButtion;
+		std::vector<ECS::UIPanel*> m_EntityIDPannlSlot;
+		std::vector<ECS::EntityID> m_EntityIDButton;
 
 		//inv list
 		std::map<GroupName, std::vector<Inventory*>> m_Inventory;

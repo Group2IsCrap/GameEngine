@@ -17,17 +17,17 @@ Inventory::~Inventory()
 		delete Slot.second;
 	}
 	Grid.clear();
-	ECS::EntityComponentSystem::Instance()->RemoveEntity(InventorySpace->GetEntityID());
+	ECS::EntityComponentSystem::Instance()->RemoveEntity(m_InventorySpace->GetEntityID());
 }
-void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
+void Inventory::CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
-	InventorySpace = new ECS::UIPanel();
-	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
-	InventorySpace->GetSpriteComponent()->toDraw = false;
-	InventorySpace->SetAnchorSettings(Anchor);
-	InventorySpace->SetParent(parent);
-	InventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
-	InventorySpace->SetOffset(OffSet);
+	m_InventorySpace = new ECS::UIPanel();
+	m_InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+	m_InventorySpace->GetSpriteComponent()->toDraw = false;
+	m_InventorySpace->SetAnchorSettings(Anchor);
+	m_InventorySpace->SetParent(parent);
+	m_InventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
+	m_InventorySpace->SetOffset(OffSet);
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 	
 	SlotCount = slotCount;
@@ -61,15 +61,15 @@ void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 }
-void Inventory::CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
+void Inventory::CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
-	InventorySpace = new ECS::UIPanel();
-	InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
-	InventorySpace->GetSpriteComponent()->toDraw = false;
-	InventorySpace->SetAnchorSettings(Anchor);
-	InventorySpace->SetParent(parent);
-	InventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
-	InventorySpace->SetOffset(OffSet);
+	m_InventorySpace = new ECS::UIPanel();
+	m_InventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
+	m_InventorySpace->GetSpriteComponent()->toDraw = false;
+	m_InventorySpace->SetAnchorSettings(Anchor);
+	m_InventorySpace->SetParent(parent);
+	m_InventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
+	m_InventorySpace->SetOffset(OffSet);
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
 	RowCount = rows.y;
@@ -100,22 +100,22 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 		return;
 	}
 	isDisplay = true;
-	InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
+	m_InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
 	
 
 
 	
 	if (ToFit) {
 		//number of slots per row
-		float ColoumCount = InventorySpace->GetWidgetComponent()->defaultDimensions.x / SlotCount;
+		float ColoumCount = m_InventorySpace->GetWidgetComponent()->defaultDimensions.x / SlotCount;
 		if (ColoumCount == SlotCount) {
 			ColoumCount = 1.0f;
 		}
 		//number of rows
 		float RowCount = SlotCount / ColoumCount;
 	}
-	float sizeY = InventorySpace->GetWidgetComponent()->defaultDimensions.y / RowCount;
-	float sizeX = InventorySpace->GetWidgetComponent()->defaultDimensions.x / ColoumCount;
+	float sizeY = m_InventorySpace->GetWidgetComponent()->defaultDimensions.y / RowCount;
+	float sizeX = m_InventorySpace->GetWidgetComponent()->defaultDimensions.x / ColoumCount;
 
 	
 
@@ -145,8 +145,8 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 				Slot = PannleToUse->at(nextFreePannle);
 				Slot->GetSpriteComponent()->texture=Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
 				Slot->GetSpriteComponent()->toDraw = isDisplay;
-				Slot->SetParent(InventorySpace->GetEntityID());
-				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / InventorySpace->GetWidgetComponent()->currentScale.y, 0));
+				Slot->SetParent(m_InventorySpace->GetEntityID());
+				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / m_InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / m_InventorySpace->GetWidgetComponent()->currentScale.y, 0));
 				Slot->SetOffset(Maths::Vec2f(currX, currY));
 
 				//find next non drawn pannle
@@ -166,8 +166,8 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFi
 				Slot = new ECS::UIPanel();
 				Slot->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
 				Slot->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
-				Slot->SetParent(InventorySpace->GetEntityID());
-				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / InventorySpace->GetWidgetComponent()->currentScale.y, 0));
+				Slot->SetParent(m_InventorySpace->GetEntityID());
+				Slot->SetDefaultDimensions(Maths::Vec3f(sizeX / m_InventorySpace->GetWidgetComponent()->currentScale.x, sizeY / m_InventorySpace->GetWidgetComponent()->currentScale.y, 0));
 				Slot->SetOffset(Maths::Vec2f(currX, currY));
 				PannleToUse->push_back(Slot);
 			}
@@ -205,7 +205,7 @@ void Inventory::UnloadInventory()
 		return;
 	}
 	isDisplay = false;
-	InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
+	m_InventorySpace->GetSpriteComponent()->toDraw = isDisplay;
 	for (auto& Slot : Grid)
 	{
 		if (ECS::PixelSpriteComponent* sprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(Slot.first.SlotID)) {
@@ -476,7 +476,7 @@ void Inventory::Place(SlotData* slotData)
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Absolute;
 
 	//to be used some were else
-	NullSlotData.push_back(slotData);
+	m_OutOfInventoryData.push_back(slotData);
 
 	Events::EventDispatcher::InvokeFunctions<Events::Inv::UPDATEINV>();
 

@@ -24,10 +24,10 @@ public:
 	void SetEntityData(ECS::EntityID ID, int InvListPos=0);
 	
 	
-	ECS::EntityID GetEntityData() { return IveID; }
-	int GetInvetorNumber() { return invetoryPos; }
-	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
-	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	ECS::EntityID GetEntityData() { return m_InventoryEntityID; }
+	int GetInvetorNumber() { return m_GroupInventoryID; }
+	void CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 
 	//display controlls
 	void LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit);
@@ -53,10 +53,10 @@ public:
 	ECS::EntityID GetSpecialSlot(std::string Name);
 
 
-	std::vector <InventoryStoreData>* GetNullSlotData() { return &NullSlotData; }
-	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
-	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->Name; }
-	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(IveID, invetoryPos)->isDisplay; }
+	std::vector <InventoryStoreData>* GetNullSlotData() { return &m_OutOfInventoryData; }
+	ECS::UIPanel* GetInventorySpace() { return m_InventorySpace; }
+	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_InventoryEntityID, m_GroupInventoryID)->Name; }
+	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_InventoryEntityID, m_GroupInventoryID)->isDisplay; }
 private:
 
 
@@ -64,13 +64,13 @@ private:
 private:
 
 	//pannle created by this 
-	ECS::UIPanel* InventorySpace;
+	ECS::UIPanel* m_InventorySpace;
 
 	//invetory entity
-	ECS::EntityID IveID;
-	int invetoryPos = 0;
+	ECS::EntityID m_InventoryEntityID;
+	int m_GroupInventoryID = 0;
 
 	//slots to remove
-	std::vector <InventoryStoreData> NullSlotData;
+	std::vector <InventoryStoreData> m_OutOfInventoryData;
 };
 
