@@ -10,5 +10,6 @@ namespace Firelight::Events::InputEvents
 	NEW_EVENT(OnPlayerMoveLeftEvent);
 	NEW_EVENT(OnPlayerMoveDownEvent);
 	NEW_EVENT(OnInteractEvent);
-	NEW_EVENT(SpawnItemEvent)
+	NEW_EVENT(SpawnItemEvent);
+	NEW_EVENT(RemoveHealthEvent);
 }
