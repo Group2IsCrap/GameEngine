@@ -43,12 +43,12 @@ BiomeGeneration* BiomeGeneration::Instance()
 void BiomeGeneration::Initialise()
 {
 	m_biomeNoise = new Noise();
-	m_biomeNoise->SetSeed(3007);
+	m_biomeNoise->SetSeed(3207);
 	m_biomeNoise->SetNoiseScale(250.0f);
 	m_biomeNoise->CreateNoise();
 
 	m_islandDirectionNoise = new Noise();
-	m_islandDirectionNoise->SetSeed(3007);
+	m_islandDirectionNoise->SetSeed(3207);
 	m_islandDirectionNoise->SetNoiseScale(250.0f);
 	m_islandDirectionNoise->CreateNoise();
 
@@ -96,6 +96,12 @@ void BiomeGeneration::Draw()
 	//TILE MAP DRAWS SO THIS FUNCTION SHOULDNT EXIST
 
 	DrawIslands();
+}
+
+unsigned int BiomeGeneration::CalculateRandomIslandIndex()
+{
+	srand(m_biomeNoise->GetSeed());
+	return rand() % m_OccupiedIslandSpaces.size();
 }
 
 unsigned int BiomeGeneration::RandomBiomeIndex(unsigned int noiseIndex)
@@ -146,6 +152,11 @@ void BiomeGeneration::DrawIslands()
 
 		if (index == numberOfIslands - 1)
 			continue;
+
+		//randomly pick an island centre from occupied islands
+		int randomIndex = CalculateRandomIslandIndex();
+		m_curIslandCentre.x = m_OccupiedIslandSpaces[randomIndex].x;
+		m_curIslandCentre.y = m_OccupiedIslandSpaces[randomIndex].y;
 
 		//find new island centre
 		bool isIslandPositionEmpty = false;

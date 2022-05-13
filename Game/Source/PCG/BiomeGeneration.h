@@ -33,7 +33,8 @@ public:
 private:
 
 	IslandSpawnDirection CalculateNextIslandDirection(unsigned int noiseIndex);
-	unsigned int RandomBiomeIndex(unsigned int perlinIndex);
+	unsigned int CalculateRandomIslandIndex();
+	unsigned int RandomBiomeIndex(unsigned int noiseIndex);
 	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
 	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
 	void FindNextIslandCentre();
