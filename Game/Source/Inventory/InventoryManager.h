@@ -21,7 +21,7 @@ namespace InventorySystem {
 		void HandleEvents(const char* event, void* data);
 
 		void CreateInvetory();
-		void RemoveInvetory();
+		void RemoveInvetory(std::string groupName, std::string invName);
 
 
 		void ItemChangeInventory();
