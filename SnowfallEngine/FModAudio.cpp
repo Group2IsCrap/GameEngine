@@ -77,6 +77,7 @@ void Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
+	AudioEngine::engine->Ducking();
 	AudioEngine::engine->ErrorCheck(fmodSystem->update());
 	//AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 	
@@ -176,7 +177,7 @@ void AudioEngine::UnLoadSound(const std::string& soundName)
 	fmodInstance->m_sounds.erase(soundFound);
 }
 
-int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volume, AudioChannel audioChannel, bool looping, bool is3d, bool streaming)
+int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, AudioChannel audioChannel, bool looping, bool is3d, bool streaming)
 {
 	newString = audioFolder + soundName;
 	//Set the next channel
@@ -200,6 +201,8 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 	FMOD::Channel* channel = nullptr;
 	//Define  sound, channel group ,whether paused and channel. Defined paused as true at first otherwise it could create sound control issues/mixing issues.
 	engine->ErrorCheck(fmodInstance->fmodSystem->playSound(soundFound->second, nullptr, true, &channel));
+
+	
 	//if channel now exists (after assigning the sound to play)
 	if (channel)
 	{
@@ -222,13 +225,14 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 		{
 			engine->ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
 		}*/
-		//set volume
-		engine->ErrorCheck(channel->setVolume(VolumeTodB(volume * audioChannel.channelVol)));
+
+		Ducking();
+
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
 
 		//add the previous channel
-		fmodInstance->m_volumes[channel] = VolumeTodB(volume);
+		fmodInstance->m_volumes[channel] = VolumeTodB(audioChannel.channelVol);
 		fmodInstance->m_channels[nextChannelId] = channel;
 	}
 	return nextChannelId;
@@ -327,6 +331,123 @@ void AudioEngine::UnLoadAllSounds()
 
 void AudioEngine::Ducking()
 {
+	std::map<int, FMOD::Channel*> channelByPriority;
+	int oneCount = 0;
+	int twoCount = 0;
+	int threeCount = 0;
+	for (auto it : fmodInstance->m_listOfChannels)
+	{
+		channelByPriority.insert(std::pair<int, FMOD::Channel*>(it.second.channelPriority, it.first));
+		switch (it.second.channelPriority)
+		{
+		case 1:
+			oneCount++;
+			break;
+		case 2:
+			twoCount++;
+			break;
+		case 3:
+			threeCount++;
+			break;
+		}
+	}
+	if (oneCount > 0)
+	{
+		if (twoCount > 0)
+		{
+			if (threeCount > 0)
+			{
+				for (auto it : channelByPriority)
+				{
+					switch (it.first)
+					{
+					case 1:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						break;
+					case 2:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						break;
+					case 3:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6);
+						break;
+					}
+				}
+			}
+			else
+			{
+				for (auto it : channelByPriority)
+				{
+					switch (it.first)
+					{
+					case 1:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						break;
+					case 2:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						break;
+					}
+				}
+			}
+
+			
+		}
+		else if (threeCount > 0)
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 1:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+				case 3:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					break;
+				}
+			}
+		}
+		for (auto it : channelByPriority)
+		{
+			switch (it.first)
+			{
+			case 2:
+				it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+				break;
+
+			}
+		}
+	}
+	else if (twoCount > 0)
+	{
+		if (threeCount > 0)
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 2:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+				case 3:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 2:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+
+				}
+			}
+		}
+	}
 }
 
 void AudioEngine::StopChannel(int channelId)

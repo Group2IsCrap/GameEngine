@@ -53,22 +53,19 @@ static UICanvas* s_uiCanvas;
 
 
 
-void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, float volumedB, bool looping, bool is3d, bool streaming, AudioChannel channel)
+void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, bool looping, bool is3d, bool streaming, AudioChannel channel)
 {
-	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB, channel, looping, is3d, streaming);
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, channel, looping, is3d, streaming);
 }
-
-float vol = 1.0f;
-float newVol = 100.f;
 
 void PlayBeuu()
 {
-	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), newVol, false, false, false, AudioEngine::engine->getChannel("UI"));
+	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), false, false, false, AudioEngine::engine->getChannel("UI"));
 }
 
 void PlayMusic()
 {
-	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f),newVol, true, false, true, AudioEngine::engine->getChannel("Background"));
+	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f), true, false, true, AudioEngine::engine->getChannel("Background"));
 }
 
 void VolUp()

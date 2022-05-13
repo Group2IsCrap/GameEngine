@@ -43,11 +43,13 @@ namespace snowFallAudio
 			typedef std::map<int, FMOD::Channel*> channelMap;
 			typedef std::map<FMOD::Channel*, float> volumeMap;
 			typedef std::map<std::string, AudioChannel*> channelList;
+			typedef std::map<FMOD::Channel*, AudioChannel> listOfChannels;
 
 			soundMap m_sounds;
 			channelMap m_channels;
 			volumeMap m_volumes;
 			channelList m_channelList;
+			listOfChannels m_listOfChannels;
 			
 		};
 
@@ -66,7 +68,7 @@ namespace snowFallAudio
 
 			void LoadSound(const std::string& soundName, bool b3d = true, bool bLooping = false, bool bStream = false);
 			void UnLoadSound(const std::string& soundName);
-			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volume, AudioChannel audioChannel, bool looping, bool is3d, bool streaming);
+			int PlayfModSound(const std::string& soundName, const Vector3D& soundPos, AudioChannel audioChannel, bool looping, bool is3d, bool streaming);
 			void StopChannel(int channelId);
 			void StopAllChannels();
 			void SetChannelPos(int channelId, const Vector3D& channelPos);
