@@ -20,6 +20,7 @@ namespace snowFallAudio
 	{
 		struct AudioChannel
 		{
+			AudioChannel();
 			AudioChannel(std::string name, int priority, float volume);
 			~AudioChannel();
 

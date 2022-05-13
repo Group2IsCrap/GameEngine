@@ -92,6 +92,21 @@
                     },
                     {
                         "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
                     }
                 ]
             },
@@ -114,8 +129,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -4.392319202423096,
-                            "Y": 28.76017189025879,
+                            "X": -6.123194217681885,
+                            "Y": 2.1300742626190186,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -127,8 +142,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -4.403495788574219,
-                            "Y": 28.78577995300293,
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -279,6 +294,71 @@
                             "Y": 0.0,
                             "Z": 0.0
                         }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.0896763801574707,
+                            "Y": 1.0896763801574707,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.1903070211410522,
+                            "Y": 1.1903070211410522,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.390044093132019,
+                            "Y": 1.390044093132019,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.5251442193984985,
+                            "Y": 1.5251442193984985,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -1.6420279741287231,
+                            "Y": 1.6420279741287231,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
                     }
                 ]
             },
@@ -326,6 +406,21 @@
                     },
                     {
                         "Layer": 0
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
                     }
                 ]
             },
@@ -388,6 +483,121 @@
                         },
                         "FlipX": false,
                         "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
                     }
                 ]
             },
@@ -395,7 +605,7 @@
                 "ComponentID": 14,
                 "Components": [
                     {
-                        "CurrentHealth": 0,
+                        "CurrentHealth": 5,
                         "MaxHealth": 5
                     }
                 ]
@@ -419,18 +629,18 @@
                             "Z": 0.0
                         },
                         "LastPos": {
-                            "X": -4.403594970703125,
-                            "Y": 28.7862606048584,
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
                             "Z": 0.0
                         },
                         "NextPos": {
-                            "X": -4.403812408447266,
-                            "Y": 28.787311553955078,
+                            "X": -6.123641490936279,
+                            "Y": 2.128265142440796,
                             "Z": 0.0
                         },
                         "Layer": 0,
                         "Interpolate": true,
-                        "InterpolationTime": 0.0
+                        "InterpolationTime": 0.03150099888443947
                     }
                 ]
             },
@@ -443,6 +653,41 @@
                             "Y": 0.0,
                             "Width": 1.0,
                             "Height": 2.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
                         }
                     }
                 ]
@@ -790,7 +1035,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -813,7 +1058,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -836,7 +1081,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -859,7 +1104,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -882,7 +1127,7 @@
                             "Width": -1.0,
                             "Height": -1.0
                         },
-                        "ToDraw": false,
+                        "ToDraw": true,
                         "FlipX": false,
                         "FlipY": false
                     },
@@ -917,9 +1162,9 @@
                             "Y": 0.0
                         },
                         "Colour": {
-                            "R": 0.0,
-                            "G": 0.0,
-                            "B": 0.0,
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
                             "A": 255.0
                         },
                         "SourceRect": {
@@ -1002,7 +1247,53 @@
             },
             {
                 "ComponentID": 5,
-                "Components": []
+                "Components": [
+                    {
+                        "Text": "INSERT TEXT DATA HERE",
+                        "Layer": 100000,
+                        "Hidden": true
+                    }
+                ]
+            },
+            {
+                "ComponentID": 20,
+                "Components": [
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    }
+                ]
             }
         ],
         "ComponentMap": [
@@ -1125,6 +1416,26 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
                     }
                 ]
             },
@@ -1186,6 +1497,26 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
                     }
                 ]
             },
@@ -1247,6 +1578,26 @@
                     {
                         "EntityID": 13,
                         "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [18]
                     }
                 ]
             },
@@ -1267,12 +1618,32 @@
                 "ComponentID": 0,
                 "EntityIDs": [
                     {
+                        "EntityID": 18,
+                        "Indices": [6]
+                    },
+                    {
                         "EntityID": 2,
                         "Indices": [0]
                     },
                     {
                         "EntityID": 3,
                         "Indices": [1]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [5]
                     }
                 ]
             },
@@ -1307,8 +1678,28 @@
                 "ComponentID": 8,
                 "EntityIDs": [
                     {
+                        "EntityID": 18,
+                        "Indices": [5]
+                    },
+                    {
                         "EntityID": 2,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [4]
                     }
                 ]
             },
@@ -1465,7 +1856,37 @@
             },
             {
                 "ComponentID": 5,
-                "EntityIDs": []
+                "EntityIDs": [
+                    {
+                        "EntityID": 13,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 20,
+                "EntityIDs": [
+                    {
+                        "EntityID": 14,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 15,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [4]
+                    }
+                ]
             }
         ],
         "ComponentTypeReference": [
