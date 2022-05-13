@@ -5,6 +5,7 @@
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
+#include <Source/ECS/Components/AudioComponents.h>
 #include <Source/Graphics/AssetManager.h>
 #include "../Core/Layers.h"
 
@@ -69,6 +70,15 @@ void ItemDatabase::LoadItems(std::string filepath)
 		itemTemplate->AddComponent<Firelight::ECS::ColliderComponent>(circleCollider);
 		LayerComponent* layerComponent = itemTemplate->AddComponent<LayerComponent>();
 		layerComponent->layer = static_cast<int>(GameLayer::Items);
+		AudioComponent* audioComponent = new AudioComponent();
+		itemTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
+		audioComponent->soundName = "beeuuuuu.mp3";
+		audioComponent->soundPos = Vector3D(0, 0, 0);
+		audioComponent->looping = false;
+		audioComponent->is3d = false;
+		audioComponent->streaming = false;
+		audioComponent->channel = "UI";
+
 
 		itemTemplates.insert(std::make_pair(itemComponent->itemID, itemTemplate));
 	}

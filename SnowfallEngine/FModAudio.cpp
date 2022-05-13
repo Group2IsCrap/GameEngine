@@ -88,6 +88,11 @@ Instance* fmodInstance = nullptr;
 //End Of Instance Functions
 
 
+AudioChannel::AudioChannel()
+{
+
+}
+
 AudioChannel::AudioChannel(std::string name, int priority, float volume)
 {
 	this->channelPriority = priority;
