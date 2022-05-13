@@ -45,6 +45,9 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Items\CraftingRecipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CoreComponents\HealthComponent.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Layers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Items\CraftingRecipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
