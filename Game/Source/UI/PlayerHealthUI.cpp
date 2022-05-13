@@ -3,6 +3,7 @@
 #include <Source/Events/Event.h>
 #include "../Events/PlayerEvents.h"
 #include <Source/Graphics/AssetManager.h>
+#include "../Core/Layers.h"
 
 #include "../Player/PlayerEntity.h"
 

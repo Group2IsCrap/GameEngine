@@ -16,6 +16,7 @@
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/Events/InputEvents.h"
+#include "Source/Core/Layers.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -60,7 +61,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		WorldEntity* world = new WorldEntity();
 
 		// UI
-		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0));
+		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 

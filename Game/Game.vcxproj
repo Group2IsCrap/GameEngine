@@ -163,6 +163,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Core\Layers.h" />
     <ClInclude Include="Source\Events\PlayerEvents.h" />
     <ClInclude Include="Source\ImGuiPlayerLayer.h" />
     <ClInclude Include="Source\Core\CharacterEntity.h" />

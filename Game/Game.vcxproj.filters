@@ -89,5 +89,8 @@
     <ClInclude Include="Source\Events\PlayerEvents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\Layers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

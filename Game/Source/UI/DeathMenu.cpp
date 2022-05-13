@@ -4,6 +4,7 @@
 #include <Source/Events/UIEvents.h>
 #include "../Player/PlayerEntity.h"
 #include "../Events/PlayerEvents.h"
+#include "../Core/Layers.h"
 
 #include <Source/Graphics/AssetManager.h>
 

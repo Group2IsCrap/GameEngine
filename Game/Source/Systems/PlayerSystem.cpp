@@ -8,6 +8,7 @@
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
+#include "../Core/Layers.h"
 
 
 PlayerSystem::PlayerSystem()
@@ -88,10 +89,12 @@ void PlayerSystem::MovePlayerRight()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, 1);
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
 		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+		Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
+		itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 	}
 }
 
@@ -104,5 +107,7 @@ void PlayerSystem::SpawnItem()
 void PlayerSystem::RemoveHealth()
 {
 	playerEntity->RemoveHealth(1);
+	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 }
 

@@ -4,6 +4,7 @@
 #include <Source/Events/EventDispatcher.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
 #include "../Events/PlayerEvents.h"
+#include "../Core/Layers.h"
 
 #include "PlayerComponent.h"
 
@@ -12,7 +13,8 @@ PlayerEntity::PlayerEntity()
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
 	AddComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
-	GetSpriteComponent()->layer = 60;
+	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player);
+	GetLayerComponent()->layer = static_cast<int>(GameLayer::Player);
 
 	GetHealthComponent()->maxHealth = 5;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
@@ -34,8 +36,7 @@ void PlayerEntity::HealthBelowZero()
 void PlayerEntity::RemoveHealth(int amount)
 {
 	CharacterEntity::RemoveHealth(amount);
-	int health = GetHealth();
-	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)health);
+	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)GetHealth());
 }
 
 void PlayerEntity::PlayerHealthUpdated()
