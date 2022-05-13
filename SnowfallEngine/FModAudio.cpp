@@ -1,21 +1,28 @@
 #include "FModAudio.h"
 #include <io.h>
 #include <Windows.h>
+using namespace snowFallAudio::FModAudio;
 
-snowFallAudio::FModAudio::AudioEngine* snowFallAudio::FModAudio::AudioEngine::engine = new snowFallAudio::FModAudio::AudioEngine;
 
-snowFallAudio::FModAudio::AudioEngine::AudioEngine()
+
+
+
+AudioEngine* AudioEngine::engine = new AudioEngine;
+
+AudioEngine::AudioEngine()
 {
 	this->Initialise();
 }
 
-snowFallAudio::FModAudio::AudioEngine::~AudioEngine()
+AudioEngine::~AudioEngine()
 {
 	delete engine;
 }
 
+
+
 //Instance functions
-snowFallAudio::FModAudio::Instance::Instance()
+Instance::Instance()
 {
 	////Create and initialise the system
 	m_nextChannelId = 0;
@@ -35,7 +42,7 @@ snowFallAudio::FModAudio::Instance::Instance()
 	}*/
 }
 
-snowFallAudio::FModAudio::Instance::~Instance()
+Instance::~Instance()
 {
 	//Unload all assets
 	//AudioEngine::engine->ErrorCheck(fModStudioSystem->unloadAll());
@@ -47,7 +54,7 @@ snowFallAudio::FModAudio::Instance::~Instance()
 	AudioEngine::engine->Shutdown();
 }
 
-void snowFallAudio::FModAudio::Instance::Update()
+void Instance::Update()
 {
 	std::vector<channelMap::iterator> stoppedChannels;
 
@@ -70,44 +77,64 @@ void snowFallAudio::FModAudio::Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
+	AudioEngine::engine->Ducking();
 	AudioEngine::engine->ErrorCheck(fmodSystem->update());
 	//AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 	
 }
 
-snowFallAudio::FModAudio::Instance* fmodInstance = nullptr;
+Instance* fmodInstance = nullptr;
 
 //End Of Instance Functions
 
 
+AudioChannel::AudioChannel(std::string name, int priority, float volume)
+{
+	this->channelPriority = priority;
+	this->channelVol = volume;
 
+	fmodInstance->m_channelList[name] = this;
+}
+
+AudioChannel::~AudioChannel()
+{
+
+}
 
 //Just conversion functions
-float snowFallAudio::FModAudio::AudioEngine::dBToVolume(float dB)
+float AudioEngine::dBToVolume(float dB)
 {
 	return powf(10.0f, 0.05f * dB);
 }
 
-float snowFallAudio::FModAudio::AudioEngine::VolumeTodB(float Volume)
+float AudioEngine::VolumeTodB(float Volume)
 {
 	return 20.0f * log10f(Volume);
 }
 
-void snowFallAudio::FModAudio::AudioEngine::Initialise()
+void AudioEngine::Initialise()
 {
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
+	AudioChannel UIchannel("UI", 1, 100);
+	AudioChannel GameplayChannel("Game", 2, 100);
+	AudioChannel PlayerChannel("Player", 3, 100);
+	AudioChannel AmbienceChannel("Ambience", 2, 100);
+	AudioChannel backgroundMusicChannel("Background", 2, 100);
+	AudioChannel enemiesChannel("Enemies", 3, 100);
 	AudioEngine::engine->Update();
 }
 
-void snowFallAudio::FModAudio::AudioEngine::Update()
+
+
+void AudioEngine::Update()
 {
 	//update the current instance
 	fmodInstance->Update();
 }
 
-void snowFallAudio::FModAudio::AudioEngine::LoadSound(const std::string& soundName, bool b3d, bool bLooping, bool bStream)
+void AudioEngine::LoadSound(const std::string& soundName, bool b3d, bool bLooping, bool bStream)
 {
 	//Find if the sound is already loaded or not
 	auto soundFound = fmodInstance->m_sounds.find(soundName);
@@ -135,7 +162,7 @@ void snowFallAudio::FModAudio::AudioEngine::LoadSound(const std::string& soundNa
 	}
 }
 
-void snowFallAudio::FModAudio::AudioEngine::UnLoadSound(const std::string& soundName)
+void AudioEngine::UnLoadSound(const std::string& soundName)
 {
 	//Find if the sound isn't loaded
 	newString = audioFolder + soundName;
@@ -150,7 +177,7 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadSound(const std::string& sound
 	fmodInstance->m_sounds.erase(soundFound);
 }
 
-int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, float volumedB)
+int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& soundPos, AudioChannel audioChannel, bool looping, bool is3d, bool streaming)
 {
 	newString = audioFolder + soundName;
 	//Set the next channel
@@ -160,7 +187,7 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 	auto soundFound = fmodInstance->m_sounds.find(newString);
 	if (soundFound == fmodInstance->m_sounds.end())
 	{
-		engine->LoadSound(newString);
+		engine->LoadSound(newString, is3d, looping, streaming);
 		//Find the newly loaded sound
 		soundFound = fmodInstance->m_sounds.find(newString);
 		//If still not loaded
@@ -174,6 +201,8 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 	FMOD::Channel* channel = nullptr;
 	//Define  sound, channel group ,whether paused and channel. Defined paused as true at first otherwise it could create sound control issues/mixing issues.
 	engine->ErrorCheck(fmodInstance->fmodSystem->playSound(soundFound->second, nullptr, true, &channel));
+
+	
 	//if channel now exists (after assigning the sound to play)
 	if (channel)
 	{
@@ -192,19 +221,24 @@ int snowFallAudio::FModAudio::AudioEngine::PlayfModSound(const std::string& soun
 			//set the 3d position
 			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
 		}
-		//set volume
-		engine->ErrorCheck(channel->setVolume(volumedB/100));
+		/*if (currentMode & FMOD_LOOP_NORMAL)
+		{
+			engine->ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
+		}*/
+
+		Ducking();
+
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
 
 		//add the previous channel
-		fmodInstance->m_volumes[volumedB/100] = channel;
+		fmodInstance->m_volumes[channel] = VolumeTodB(audioChannel.channelVol);
 		fmodInstance->m_channels[nextChannelId] = channel;
 	}
 	return nextChannelId;
 }
 
-void snowFallAudio::FModAudio::AudioEngine::SetChannelPos(int channelId, const Vector3D& channelPos)
+void AudioEngine::SetChannelPos(int channelId, const Vector3D& channelPos)
 {
 	//find the channel
 	auto channelFound = fmodInstance->m_channels.find(channelId);
@@ -225,7 +259,7 @@ void snowFallAudio::FModAudio::AudioEngine::SetChannelPos(int channelId, const V
 	engine->ErrorCheck(channelFound->second->set3DAttributes(&position, NULL));
 }
 
-void snowFallAudio::FModAudio::AudioEngine::SetChannelVolume(int channelId, float volumedB)
+void AudioEngine::SetChannelVolume(int channelId, float volume)
 {
 	//Find channel
 	auto channelFound = fmodInstance->m_channels.find(channelId);
@@ -236,22 +270,38 @@ void snowFallAudio::FModAudio::AudioEngine::SetChannelVolume(int channelId, floa
 	}
 
 	//Set channel volume
-	engine->ErrorCheck(channelFound->second->setVolume(dBToVolume(volumedB)));
+	engine->ErrorCheck(channelFound->second->setVolume(VolumeTodB(volume)));
 }
 
-void snowFallAudio::FModAudio::AudioEngine::VolumeChange(float volume)
+void AudioEngine::VolumeChange(float volume)
 {
 	for (auto channel : fmodInstance->m_volumes)
 	{
-		float prevVol;
-		prevVol = channel.first;
-		prevVol = prevVol * 100;
-		channel.second->setVolume((prevVol * (volume/100))/100);
+		float newVol;
+		float currentVol = dBToVolume(channel.second);
+		if (currentVol < 100 && currentVol > 0)
+		{
+			if (currentVol > 95)
+			{
+				newVol = 100;
+			}
+			else if (currentVol < 5)
+			{
+				newVol = 0;
+			}
+			else
+			{
+				newVol = currentVol + volume;
+			}
+
+			channel.second = VolumeTodB(newVol);
+			channel.first->setVolume(VolumeTodB(newVol));
+		}
 	}
 }
 
 //Error checking function
-int snowFallAudio::FModAudio::AudioEngine::ErrorCheck(FMOD_RESULT result)
+int AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
 	if (result != FMOD_OK)
 	{
@@ -264,13 +314,13 @@ int snowFallAudio::FModAudio::AudioEngine::ErrorCheck(FMOD_RESULT result)
 	return 2;
 }
 
-void snowFallAudio::FModAudio::AudioEngine::Shutdown()
+void AudioEngine::Shutdown()
 {
 	engine->UnLoadAllSounds();
 	delete fmodInstance;
 }
 
-void snowFallAudio::FModAudio::AudioEngine::UnLoadAllSounds()
+void AudioEngine::UnLoadAllSounds()
 {
 	for (auto sound : fmodInstance->m_sounds)
 	{
@@ -279,7 +329,128 @@ void snowFallAudio::FModAudio::AudioEngine::UnLoadAllSounds()
 	}
 }
 
-void snowFallAudio::FModAudio::AudioEngine::StopChannel(int channelId)
+void AudioEngine::Ducking()
+{
+	std::map<int, FMOD::Channel*> channelByPriority;
+	int oneCount = 0;
+	int twoCount = 0;
+	int threeCount = 0;
+	for (auto it : fmodInstance->m_listOfChannels)
+	{
+		channelByPriority.insert(std::pair<int, FMOD::Channel*>(it.second.channelPriority, it.first));
+		switch (it.second.channelPriority)
+		{
+		case 1:
+			oneCount++;
+			break;
+		case 2:
+			twoCount++;
+			break;
+		case 3:
+			threeCount++;
+			break;
+		}
+	}
+	if (oneCount > 0)
+	{
+		if (twoCount > 0)
+		{
+			if (threeCount > 0)
+			{
+				for (auto it : channelByPriority)
+				{
+					switch (it.first)
+					{
+					case 1:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						break;
+					case 2:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						break;
+					case 3:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6);
+						break;
+					}
+				}
+			}
+			else
+			{
+				for (auto it : channelByPriority)
+				{
+					switch (it.first)
+					{
+					case 1:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						break;
+					case 2:
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						break;
+					}
+				}
+			}
+
+			
+		}
+		else if (threeCount > 0)
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 1:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+				case 3:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					break;
+				}
+			}
+		}
+		for (auto it : channelByPriority)
+		{
+			switch (it.first)
+			{
+			case 2:
+				it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+				break;
+
+			}
+		}
+	}
+	else if (twoCount > 0)
+	{
+		if (threeCount > 0)
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 2:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+				case 3:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (auto it : channelByPriority)
+			{
+				switch (it.first)
+				{
+				case 2:
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					break;
+
+				}
+			}
+		}
+	}
+}
+
+void AudioEngine::StopChannel(int channelId)
 {
 	auto channelFound = fmodInstance->m_channels.find(channelId);
 	if (channelFound != fmodInstance->m_channels.end())
@@ -289,10 +460,15 @@ void snowFallAudio::FModAudio::AudioEngine::StopChannel(int channelId)
 	}
 }
 
-void snowFallAudio::FModAudio::AudioEngine::StopAllChannels()
+void AudioEngine::StopAllChannels()
 {
 	for (auto channel : fmodInstance->m_channels)
 	{
 		StopChannel(channel.first);
 	}
+}
+
+AudioChannel AudioEngine::getChannel(std::string ChannelName)
+{
+	return *fmodInstance->m_channelList[ChannelName];
 }
