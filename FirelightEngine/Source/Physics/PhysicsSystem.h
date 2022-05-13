@@ -20,7 +20,7 @@ namespace Firelight::Physics
 
 		void Render();
 		void Update(const Utils::Time& time) override;
-		void PhysicsUpdate(const Utils::Time& time) override;
+		void FixedUpdate(const Utils::Time& time) override;
 
 		void ApplyForces(double fixedDeltaTime);
 		void Simulate(double fixedDeltaTime);
@@ -59,11 +59,12 @@ namespace Firelight::Physics
 
 		Firelight::Maths::Vec3f ComputeForce(Firelight::ECS::RigidBodyComponent* rigidbody);
 
-		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::BoxColliderComponent* boxCollider2);
-		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider2);
-		bool CheckCollision(Firelight::ECS::TransformComponent* transform, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::TransformComponent* transform2, Firelight::ECS::CircleColliderComponent* circleCollider);
+		bool CheckCollision(Firelight::ECS::RigidBodyComponent* rigidBody, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::RigidBodyComponent* rigidBody2, Firelight::ECS::BoxColliderComponent* boxCollider2);
+		bool CheckCollision(Firelight::ECS::RigidBodyComponent* rigidBody, Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::RigidBodyComponent* rigidBody2, Firelight::ECS::CircleColliderComponent* circleCollider2);
+		bool CheckCollision(Firelight::ECS::RigidBodyComponent* rigidBody, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::RigidBodyComponent* rigidBody2, Firelight::ECS::CircleColliderComponent* circleCollider);
 
 	private:
 		size_t m_onEarlyRenderSub;
+		float interpolationTime = 0.0f;
 	};
 }

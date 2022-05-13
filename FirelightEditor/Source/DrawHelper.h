@@ -9,6 +9,8 @@
 #include "Includes/imgui/imgui.h"
 #include "Includes/imgui/imgui_internal.h"
 
+#include <vector>
+
 namespace Firelight::Editor
 {
 	class DrawHelper
@@ -72,6 +74,8 @@ namespace Firelight::Editor
 		static void DrawVec3Control(const std::string& label, float& x, float& y, float& z, float columnWidth = 80.0f);
 
 		static void DrawVec2Control(const std::string& label, float& x, float& y, float columnWidth = 80.0f);
+
+		static void DrawEnumControl(const std::string& label, int* selectedItem, std::vector<std::string> values);
 
 		static void DrawImage(const std::string& label, Firelight::ECS::BaseComponent* component, const std::string& texturePath);
 

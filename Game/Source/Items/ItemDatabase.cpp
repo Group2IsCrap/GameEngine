@@ -4,7 +4,9 @@
 #include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/Components/BasicComponents.h>
+#include <Source/ECS/Components/PhysicsComponents.h>
 #include <Source/Graphics/AssetManager.h>
+#include "../Core/Layers.h"
 
 #include <fstream>
 #include <sstream>
@@ -59,10 +61,14 @@ void ItemDatabase::LoadItems(std::string filepath)
 		SpriteComponent* spriteComponent = itemTemplate->AddComponent<SpriteComponent>();
 		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(itemComponent->iconPath);
 		spriteComponent->pixelsPerUnit = 50;
-		spriteComponent->layer = 50;
+		spriteComponent->layer = static_cast<int>(RenderLayer::Items);
 		TransformComponent* transformComponent = itemTemplate->AddComponent<TransformComponent>();
-		transformComponent->position.x = 0.0f;
-		transformComponent->position.y = 0.0f;
+		StaticComponent* staticComponent = itemTemplate->AddComponent<StaticComponent>();
+		staticComponent->isStatic = false;
+		CircleColliderComponent* circleCollider = new CircleColliderComponent();
+		itemTemplate->AddComponent<Firelight::ECS::ColliderComponent>(circleCollider);
+		LayerComponent* layerComponent = itemTemplate->AddComponent<LayerComponent>();
+		layerComponent->layer = static_cast<int>(GameLayer::Items);
 
 		itemTemplates.insert(std::make_pair(itemComponent->itemID, itemTemplate));
 	}
@@ -73,6 +79,9 @@ Entity* ItemDatabase::CreateInstanceOfItem(int itemID)
 	Entity* entity = new Entity(true, itemTemplates[itemID]->GetTemplateID());		
 	entity->GetComponent<TransformComponent>()->position.x = (float)(rand() % 20) - 10.0f;
 	entity->GetComponent<TransformComponent>()->position.y = (float)(rand() % 20) - 10.0f;
+	entity->GetComponent<LayerComponent>()->layer = 1;
+	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->radius = 1.0f;
+	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->isTrigger = true;
 
 	return entity;
 }

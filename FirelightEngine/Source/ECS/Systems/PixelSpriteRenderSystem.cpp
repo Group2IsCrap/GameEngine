@@ -50,7 +50,7 @@ namespace Firelight::ECS
 				transformComponent->position.y- Hight * 0.5f,
 				width, Hight);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixelSpriteComponentItem->layer, transformComponent->rotation, pixelSpriteComponentItem->colour, pixelSpriteComponentItem->sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixelSpriteComponentItem->layer, transformComponent->rotation, pixelSpriteComponentItem->colour, pixelSpriteComponentItem->sourceRect, pixelSpriteComponentItem->flipX, pixelSpriteComponentItem->flipY);
 
 		}
 	}

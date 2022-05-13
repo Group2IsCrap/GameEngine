@@ -8,17 +8,18 @@
 #include "../Maths/Rect.h"
 #include "../Maths/Vec2.h"
 
+#include "Shaders/VertexShader.h"
+#include "Shaders/PixelShader.h"
+
 namespace Firelight::Graphics
 {
     SpriteBatch::SpriteBatch() :
-        m_queueLength(0),
         m_sortMode(SortMode::e_None)
     {
     }
 
     SpriteBatch::~SpriteBatch()
     {
-        DeleteQueueData();
     }
 
     void SpriteBatch::SetSortMode(SortMode sortMode)
@@ -26,21 +27,12 @@ namespace Firelight::Graphics
         m_sortMode = sortMode;
     }
 
-    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         // If there is already an entry in the queue overwrite the existing data,
         // otherwise create push back new data
-        Quad* quad = nullptr;
-        if (m_queueLength < m_quadQueue.size())
-        {
-            quad = m_quadQueue[m_queueLength];
-        }
-        else
-        {
-            quad = new Quad();
-            m_quadQueue.push_back(quad);
-        }
-        ++m_queueLength;
+        QuadEntity* quad = new QuadEntity();
+        m_entityQueue.push_back(quad);
         
         // Use a blank white texture if none is specified
         if (texture != nullptr)
@@ -70,6 +62,32 @@ namespace Firelight::Graphics
             quad->m_topRight.m_texCoord = Maths::Vec2f(1.0f, 0.0f);
             quad->m_bottomLeft.m_texCoord = Maths::Vec2f(0.0f, 1.0f);
             quad->m_bottomRight.m_texCoord = Maths::Vec2f(1.0f, 1.0f);
+        }
+
+        // Perform flips if necessary
+        if (flipX)
+        {
+            // Make copies of the original tex coords
+            Maths::Vec2f topLeftCoord = quad->m_topLeft.m_texCoord;
+            Maths::Vec2f botLeftCoord = quad->m_bottomLeft.m_texCoord;
+
+            // Do the actual flip
+            quad->m_topLeft.m_texCoord = quad->m_topRight.m_texCoord;
+            quad->m_topRight.m_texCoord = topLeftCoord;
+            quad->m_bottomLeft.m_texCoord = quad->m_bottomRight.m_texCoord;
+            quad->m_bottomRight.m_texCoord = botLeftCoord;
+        }
+        if (flipY)
+        {
+            // Make copies of the original tex coords
+            Maths::Vec2f topLeftCoord = quad->m_topLeft.m_texCoord;
+            Maths::Vec2f topRightCoord = quad->m_topRight.m_texCoord;
+
+            // Do the actual flip
+            quad->m_topLeft.m_texCoord = quad->m_bottomLeft.m_texCoord;
+            quad->m_topRight.m_texCoord = quad->m_bottomRight.m_texCoord;
+            quad->m_bottomLeft.m_texCoord = topLeftCoord;
+            quad->m_bottomRight.m_texCoord = topRightCoord;
         }
 
         // If we are given a rotation, rotate the points
@@ -108,18 +126,28 @@ namespace Firelight::Graphics
         quad->m_bottomRight.m_colour = floatColour;
     }
 
-    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::PixelDraw(const Maths::Rectf& destRectPixel, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         Maths::Rectf destRectNDC = destRectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
 
-        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect, flipX, flipY);
     }
 
-    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect)
+    void SpriteBatch::WorldDraw(const Maths::Rectf& destRectWorld, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
         Maths::Rectf destRectNDC = Maths::Rectf::CreateNDCRectInWorldRect(destRectWorld, Engine::Instance().GetActiveCamera2DRect());
  
-        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect);
+        NDCDraw(destRectNDC, texture, layer, rotation, colour, sourceRect, flipX, flipY);
+    }
+
+    void SpriteBatch::DrawTextStandard(Text* text, int layer)
+    {
+        TextEntity* textEntity = new TextEntity();
+        
+        textEntity->m_text = text;
+        textEntity->m_layer = layer;
+
+        m_entityQueue.push_back(textEntity);
     }
 
     void SpriteBatch::SortQuads()
@@ -130,21 +158,37 @@ namespace Firelight::Graphics
             break;
         case SortMode::e_JustTexture:
             // Sort by texture.
-            std::sort(m_quadQueue.begin(), m_quadQueue.begin() + m_queueLength,
-                [](Quad const* x, Quad const* y) noexcept -> bool
+            std::sort(m_entityQueue.begin(), m_entityQueue.begin() + m_entityQueue.size(),
+                [](LayerableEntity const* x, LayerableEntity const* y) noexcept -> bool
                 {
-                    return x->m_texture < y->m_texture;
+                    if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
+                    {
+                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                        {
+                            return quadX->m_texture < quadY->m_texture;
+                        }
+                    }
+
+                    return false;
                 });
             break;
 
         case SortMode::e_BackToFrontTexture:
             // Sort back to front.
-            std::sort(m_quadQueue.begin(), m_quadQueue.begin() + m_queueLength,
-                [](Quad const* x, Quad const* y) noexcept -> bool
+            std::sort(m_entityQueue.begin(), m_entityQueue.begin() + m_entityQueue.size(),
+                [](LayerableEntity const* x, LayerableEntity const* y) noexcept -> bool
                 {
                     if (x->m_layer == y->m_layer)
                     {
-                        return x->m_texture < y->m_texture;
+                        if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
+                        {
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            {
+                                return quadX->m_texture < quadY->m_texture;
+                            }
+                        }
+
+                        return false;
                     }
                     else
                     {
@@ -155,12 +199,20 @@ namespace Firelight::Graphics
 
         case SortMode::e_FrontToBackTexture:
             // Sort front to back.
-            std::sort(m_quadQueue.begin(), m_quadQueue.begin() + m_queueLength,
-                [](Quad const* x, Quad const* y) noexcept -> bool
+            std::sort(m_entityQueue.begin(), m_entityQueue.begin() + m_entityQueue.size(),
+                [](LayerableEntity const* x, LayerableEntity const* y) noexcept -> bool
                 {
                     if (x->m_layer == y->m_layer)
                     {
-                        return x->m_texture < y->m_texture;
+                        if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
+                        {
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            {
+                                return quadX->m_texture < quadY->m_texture;
+                            }
+                        }
+
+                        return false;
                     }
                     else
                     {
@@ -174,10 +226,10 @@ namespace Firelight::Graphics
         }
     }
 
-    // Creates a mesh for each texture batch
-    void SpriteBatch::CreateBatches()
+    // Creates a mesh for each texture batch and draw it
+    void SpriteBatch::CreateAndDrawBatches(bool bindPSData)
     {
-        m_spriteBatches.clear();
+        ID3D11DeviceContext* deviceContext = GraphicsHandler::Instance().GetDeviceContext();
 
         SortQuads();
 
@@ -185,65 +237,79 @@ namespace Firelight::Graphics
         std::vector<DWORD> indices;
         Texture* batchTexture = nullptr;
 
-        for (int quadIndex = 0; quadIndex < m_queueLength; ++quadIndex)
+        auto drawCurrentBatch = [&]()
         {
-            Quad* quad = m_quadQueue[quadIndex];
+            Mesh mesh = Mesh(vertices, indices, batchTexture);
 
-            // If the texture has changed, create a mesh for the
-            // last batch and add it to the batches list
-            if (batchTexture != quad->m_texture)
+            deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
+            deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
+
+            mesh.Draw(bindPSData);
+
+            vertices.clear();
+            indices.clear();
+        };
+
+        for (int entityIndex = 0; entityIndex < m_entityQueue.size(); ++entityIndex)
+        {
+            LayerableEntity* entity = m_entityQueue[entityIndex];
+
+            if (auto* quadEntity = dynamic_cast<QuadEntity*>(entity))
             {
-                // If not the first quad
-                if (batchTexture != nullptr)
+                // If the texture has changed, create a mesh for the
+                // last batch and add it to the batches list
+                if (batchTexture != quadEntity->m_texture)
                 {
-                    m_spriteBatches.push_back(Mesh(vertices, indices, batchTexture));
-                    vertices.clear();
-                    indices.clear();
+                    // If not the first quad
+                    if (batchTexture != nullptr)
+                    {
+                        drawCurrentBatch();
+                    }
+
+                    batchTexture = quadEntity->m_texture;
                 }
 
-                batchTexture = quad->m_texture;
+                // Get vertex count before we add this quad
+                DWORD vertexCount = (DWORD)vertices.size();
+
+                vertices.push_back(quadEntity->m_topLeft);
+                vertices.push_back(quadEntity->m_topRight);
+                vertices.push_back(quadEntity->m_bottomLeft);
+                vertices.push_back(quadEntity->m_bottomRight);
+
+                // Clockwise winding
+                indices.push_back(vertexCount);
+                indices.push_back(vertexCount + 1);
+                indices.push_back(vertexCount + 2);
+
+                indices.push_back(vertexCount + 2);
+                indices.push_back(vertexCount + 1);
+                indices.push_back(vertexCount + 3);
             }
+            else if (auto* textEntity = dynamic_cast<TextEntity*>(entity))
+            {
+                deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
+                deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Text")->GetShader(), NULL, 0);
 
-            // Get vertex count before we add this quad
-            DWORD vertexCount = (DWORD)vertices.size();
-
-            vertices.push_back(quad->m_topLeft);
-            vertices.push_back(quad->m_topRight);
-            vertices.push_back(quad->m_bottomLeft);
-            vertices.push_back(quad->m_bottomRight);
-
-            // Clockwise winding
-            indices.push_back(vertexCount);
-            indices.push_back(vertexCount + 1);
-            indices.push_back(vertexCount + 2);
-
-            indices.push_back(vertexCount + 2);
-            indices.push_back(vertexCount + 1);
-            indices.push_back(vertexCount + 3);
+                textEntity->m_text->Draw();
+            }
         }
+
+        DeleteQueueData();
 
         // Add the last batch
         if (indices.size() > 0)
         {
-            m_spriteBatches.push_back(Mesh(vertices, indices, batchTexture));
+            drawCurrentBatch();
         }
-
-        m_queueLength = 0;
-    }
-
-    const std::vector<Mesh>& SpriteBatch::GetBatches()
-    {
-        return m_spriteBatches;
     }
 
     void SpriteBatch::DeleteQueueData()
     {
-        for (int quadIndex = 0; quadIndex < m_quadQueue.size(); ++quadIndex)
+        for (int entityIndex = 0; entityIndex < m_entityQueue.size(); ++entityIndex)
         {
-            delete m_quadQueue[quadIndex];
+            delete m_entityQueue[entityIndex];
         }
-
-        m_quadQueue.clear();
-        m_queueLength = 0;
+        m_entityQueue.clear();
     }
 }

@@ -6,6 +6,7 @@
 
 #include "../../Graphics/Data/Texture.h"
 #include "../../Graphics/Data/Colour.h"
+#include "../../Graphics/Text/Text.h"
 
 #include "../../Maths/Rect.h"
 #include "../../Serialisation/Serialiser.h"
@@ -48,6 +49,8 @@ namespace Firelight::ECS
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+		bool                              flipX = false;
+		bool                              flipY = false;
 
 		void Serialise() override
 		{
@@ -57,6 +60,8 @@ namespace Firelight::ECS
 			Serialiser::Serialise("PixelsPerUnit", pixelsPerUnit);
 			Serialiser::Serialise("Colour", colour);
 			Serialiser::Serialise("SourceRect", sourceRect);
+			Serialiser::Serialise("FlipX", flipX);
+			Serialiser::Serialise("FlipY", flipY);
 		}
 
 		SpriteComponent* Clone() override
@@ -68,6 +73,8 @@ namespace Firelight::ECS
 			clone->pixelsPerUnit = pixelsPerUnit;
 			clone->colour = colour;
 			clone->sourceRect = sourceRect;
+			clone->flipX = flipX;
+			clone->flipY = flipY;
 
 			return clone;
 		}
@@ -87,6 +94,8 @@ namespace Firelight::ECS
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		Maths::Rectf                      descRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+		bool                              flipX = false;
+		bool                              flipY = false;
 
 		void Serialise() override
 		{
@@ -96,6 +105,8 @@ namespace Firelight::ECS
 			Serialiser::Serialise("Colour", colour);
 			Serialiser::Serialise("SourceRect", sourceRect);
 			Serialiser::Serialise("DestRect", descRect);
+			Serialiser::Serialise("FlipX", flipX);
+			Serialiser::Serialise("FlipY", flipY);
 		}
 
 		NDCSpriteComponent* Clone() override
@@ -107,6 +118,8 @@ namespace Firelight::ECS
 			clone->descRect = descRect;
 			clone->colour = colour;
 			clone->sourceRect = sourceRect;
+			clone->flipX = flipX;
+			clone->flipY = flipY;
 
 			return clone;
 		}
@@ -125,6 +138,8 @@ namespace Firelight::ECS
 		Firelight::Graphics::Colour::RGBA	colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf						sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		bool								toDraw = true;
+		bool                                flipX = false;
+		bool                                flipY = false;
 
 		void Serialise() override
 		{
@@ -134,6 +149,8 @@ namespace Firelight::ECS
 			Serialiser::Serialise("Colour", colour);
 			Serialiser::Serialise("SourceRect", sourceRect);
 			Serialiser::Serialise("ToDraw", toDraw);
+			Serialiser::Serialise("FlipX", flipX);
+			Serialiser::Serialise("FlipY", flipY);
 		}
 
 		PixelSpriteComponent* Clone() override
@@ -145,6 +162,30 @@ namespace Firelight::ECS
 			clone->colour = colour;
 			clone->sourceRect = sourceRect;
 			clone->toDraw = toDraw;
+			clone->flipX = flipX;
+			clone->flipY = flipY;
+
+			return clone;
+		}
+	};
+
+	/// <summary>
+	/// Contains a text object
+	/// </summary>
+	struct TextComponent : BaseComponent
+	{
+		Firelight::Graphics::Text text;
+		int                       layer;
+
+		void Serialise() override
+		{
+			Serialiser::Serialise("Text", text);
+		}
+
+		TextComponent* Clone() override
+		{
+			TextComponent* clone = new TextComponent();
+			clone->text = text;
 
 			return clone;
 		}
