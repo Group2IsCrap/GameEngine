@@ -31,7 +31,7 @@ AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) :
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
 
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(1.0f, 1.0f, 1.0f);
-	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours.insert(std::pair<AIState, AIStateBehaviour*>(AIState::Wandering, wanderBehaviour));
+	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 
 	std::map<AIState, std::function<bool()>> idleTransitions;
 	idleTransitions[AIState::Wandering] = std::bind(&AITransitionBehaviour::IdleToWander, aiBehaviourComponent->m_CurrentTransitions);
