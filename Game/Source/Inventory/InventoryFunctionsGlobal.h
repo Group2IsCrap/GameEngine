@@ -7,7 +7,7 @@
 #include"InventoryEvents.h"
 
 #include<string>
-namespace InventorySystem::Global_Functions {
+namespace InventorySystem::GlobalFunctions {
 
       /// <summary>
       /// control Inventory
@@ -15,41 +15,46 @@ namespace InventorySystem::Global_Functions {
       /// true = bad
       /// </summary>
 
-      struct AddOrRemoveStruct
+    struct AddOrRemoveStruct
     {
         std::string groupName;
-        std::string InventoryName;
+        std::string inventoryName;
         Firelight::ECS::EntityID itemID;
         bool returnData;
     };
 
-    inline bool AddItem(std::string group, std::string Name,Firelight::ECS::EntityID item) {
-        AddOrRemoveStruct AddItemData;
-        AddItemData.groupName = group;
-        AddItemData.InventoryName = Name;
-        AddItemData.itemID = item;
+    inline bool AddItem(std::string group, std::string name,Firelight::ECS::EntityID item) 
+    {
+        AddOrRemoveStruct addItemData;
+        addItemData.groupName = group;
+        addItemData.inventoryName = name;
+        addItemData.itemID = item;
 
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::ADD_ITEM::sm_descriptor, &AddItemData);
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::AddItem::sm_descriptor, &addItemData);
 
-        return AddItemData.returnData;
+        return addItemData.returnData;
     }
-    inline bool AddItem(std::string group, std::string Name,Firelight::ECS::Entity* item) {
-        return AddItem(group,Name,item->GetEntityID());
+    inline bool AddItem(std::string group, std::string name,Firelight::ECS::Entity* item) 
+    {
+        return AddItem(group,name,item->GetEntityID());
     }
    
 
-     inline bool RemoveItem(std::string group, std::string Name, Firelight::ECS::EntityID item) {
-        AddOrRemoveStruct RemoveItemData;
-        RemoveItemData.groupName = group;
-        RemoveItemData.InventoryName = Name;
-        RemoveItemData.itemID = item;
+    inline bool RemoveItem(std::string group, std::string name, Firelight::ECS::EntityID item) 
+    {
+        AddOrRemoveStruct removeItemData;
+        removeItemData.groupName = group;
+        removeItemData.inventoryName = name;
+        removeItemData.itemID = item;
 
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::REMOVE_ITEM::sm_descriptor, &RemoveItemData);
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::RemoveItem::sm_descriptor, &removeItemData);
 
-        return RemoveItemData.returnData;
+        return removeItemData.returnData;
     }
-    inline bool RemoveItem(std::string group, std::string Name, Firelight::ECS::Entity* item) {
-        return RemoveItem(group, Name, item->GetEntityID());
+
+    inline bool RemoveItem(std::string group, std::string name, Firelight::ECS::Entity* item) 
+    {
+        return RemoveItem(group, name, item->GetEntityID());
     }
 
 
@@ -57,81 +62,85 @@ namespace InventorySystem::Global_Functions {
     struct RemoveItemTypeData
     {
         std::string groupName;
-        std::string InventoryName;
+        std::string inventoryName;
         int Number;
         int Type;
         bool returnData;
     };
-    inline bool RemoveItemType(std::string group, std::string Name,int howMany, int type) {
-        RemoveItemTypeData RemoveItemTypeData;
-        RemoveItemTypeData.groupName = group;
-        RemoveItemTypeData.InventoryName = Name;
-        RemoveItemTypeData.Number = howMany;
-        RemoveItemTypeData.Type = type;
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::REMOVE_ITEM_TYPE::sm_descriptor, &RemoveItemTypeData);
 
-        return RemoveItemTypeData.returnData;
+    inline bool RemoveItemType(std::string group, std::string name,int howMany, int type) 
+    {
+        RemoveItemTypeData removeItemTypeData;
+        removeItemTypeData.groupName = group;
+        removeItemTypeData.inventoryName = name;
+        removeItemTypeData.Number = howMany;
+        removeItemTypeData.Type = type;
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::RemoveItemType::sm_descriptor, &removeItemTypeData);
+
+        return removeItemTypeData.returnData;
     }
     
     struct GetItemTypeData
     {
         std::string groupName;
-        std::string InventoryName;
+        std::string inventoryName;
         int Number;
         int Type;
         bool isRemoveData;
         std::vector<Firelight::ECS::EntityID> returnData;
     };
 
-    inline std::vector<Firelight::ECS::EntityID> GetItemType(std::string group, std::string Name,int howMany, int type) {
-        GetItemTypeData GetItemTypeData;
-        GetItemTypeData.groupName = group;
-        GetItemTypeData.InventoryName = Name;
-        GetItemTypeData.Number = howMany;
-        GetItemTypeData.Type = type;
+    inline std::vector<Firelight::ECS::EntityID> GetItemType(std::string group, std::string name,int howMany, int type) 
+    {
+        GetItemTypeData getItemTypeData;
+        getItemTypeData.groupName = group;
+        getItemTypeData.inventoryName = name;
+        getItemTypeData.Number = howMany;
+        getItemTypeData.Type = type;
 
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::GET_ITEM_TYPE::sm_descriptor, &GetItemTypeData);
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::GetItemType::sm_descriptor, &getItemTypeData);
 
-        return GetItemTypeData.returnData;
+        return getItemTypeData.returnData;
     }
 
     struct ItemTotalData
     {
         std::string groupName;
-        std::string InventoryName; 
+        std::string inventoryName; 
         int type;
 
-        int ReturnData;
+        int returnData;
     };
 
-    inline int GetItemTypeTotal(std::string group, std::string Name,int type) {
+    inline int GetItemTypeTotal(std::string group, std::string name,int type) 
+    {
+        ItemTotalData itemTotalData;
+        itemTotalData.groupName = group;
+        itemTotalData.inventoryName = name;
+        itemTotalData.type = type;
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::GetItemTypeNumber::sm_descriptor, &itemTotalData);
 
-
-        ItemTotalData ItemTotalData;
-        ItemTotalData.groupName = group;
-        ItemTotalData.InventoryName = Name;
-        ItemTotalData.type = type;
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::GET_ITEM_TYPE_NUMBER::sm_descriptor, &ItemTotalData);
-
-        return ItemTotalData.ReturnData;
+        return itemTotalData.returnData;
     }
 
     struct SpecilaItemSlotData
     {
         std::string groupName;
-        std::string InventoryName;
-        std::string SlotName;
+        std::string inventoryName;
+        std::string slotName;
 
-        Firelight::ECS::EntityID ReturnData;
+        Firelight::ECS::EntityID returnData;
     };
-    inline Firelight::ECS::EntityID GetSpecilaSlotEntity(std::string group, std::string Name, std::string SlotName) {
-        SpecilaItemSlotData SpecilaItemSlotData;
-        SpecilaItemSlotData.groupName = group;
-        SpecilaItemSlotData.InventoryName = Name;
-        SpecilaItemSlotData.SlotName = SlotName;
-        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inv::GET_SPECIAL_SLOT::sm_descriptor, &SpecilaItemSlotData);
 
-        return SpecilaItemSlotData.ReturnData;
+    inline Firelight::ECS::EntityID GetSpecilaSlotEntity(std::string group, std::string name, std::string slotName)
+    {
+        SpecilaItemSlotData specialItemSlotData;
+        specialItemSlotData.groupName = group;
+        specialItemSlotData.inventoryName = name;
+        specialItemSlotData.slotName = slotName;
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::GetSpecialSlot::sm_descriptor, &specialItemSlotData);
+
+        return specialItemSlotData.returnData;
     }
 
 

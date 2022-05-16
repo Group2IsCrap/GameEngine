@@ -12,18 +12,18 @@ using CallbackFunctionTypeBool = std::function< bool() >;
 struct InventoryComponent : Firelight::ECS::BaseComponent
 {
 	//all
-	std::string Name;
-	Firelight::Maths::Vec2f Size;
+	std::string name;
+	Firelight::Maths::Vec2f size;
 	Firelight::Maths::Vec2f offset;
 	
-	UINT SlotCount = 0;
-	int RowCount;
-	int ColoumCount;
+	UINT slotCount = 0;
+	int rowCount;
+	int columnCount;
 	std::string SlotTextuer;
 	bool isDisplay = false;
 	bool isSwap= true;
 
-	Firelight::ECS::e_AnchorSettings AnchorSettings;
+	Firelight::ECS::e_AnchorSettings anchorSettings;
 
 	//stored items
 	std::vector<Firelight::ECS::EntityID> StoredItems;
@@ -46,12 +46,12 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 
 struct InventoryComponentGroupID : Firelight::ECS::BaseComponent
 {
-	std::string Group="NULL";
-	bool isDisplayButtions = false;
+	std::string group="NULL";
+	bool isDisplayButtons = false;
 	bool isDisplayAll = false;
 
 	//key to activate
-	int keyToAcvate = 0;
+	int keyToActivate = 0;
 
 
 	void Serialise() override
@@ -63,8 +63,8 @@ struct InventoryComponentGroupID : Firelight::ECS::BaseComponent
 	{
 		InventoryComponentGroupID* clone = new InventoryComponentGroupID();
 
-		clone->Group = Group;
-		clone->isDisplayButtions = isDisplayButtions;
+		clone->group = group;
+		clone->isDisplayButtons = isDisplayButtons;
 
 		return clone;
 	}
@@ -76,7 +76,7 @@ struct InventoryComponentOutPut: Firelight::ECS::BaseComponent
 {
 	//special output code
 	//eg item to be sold
-	std::vector<CallbackFunctionType> OutputCommand;
+	std::vector<CallbackFunctionType> outputCommand;
 	bool isOutput;
 	
 	void Serialise() override
@@ -88,7 +88,7 @@ struct InventoryComponentOutPut: Firelight::ECS::BaseComponent
 struct InventoryComponentInPut : Firelight::ECS::BaseComponent
 {
 	//special input code
-	std::vector<CallbackFunctionType> InputCommand;
+	std::vector<CallbackFunctionType> inputCommand;
 	bool isInput;
 
 	void Serialise() override
@@ -100,9 +100,9 @@ struct InventoryComponentInPut : Firelight::ECS::BaseComponent
 
 struct InventoryComponentEqutmentSlot : Firelight::ECS::BaseComponent
 {
-	std::string SlotName;
-	Firelight::Maths::Vec2f OffSet;
-	Firelight::ECS::e_AnchorSettings AnchorSettings;
+	std::string slotName;
+	Firelight::Maths::Vec2f offset;
+	Firelight::ECS::e_AnchorSettings anchorSettings;
 };
 
 

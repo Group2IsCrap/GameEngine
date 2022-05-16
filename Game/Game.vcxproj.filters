@@ -1,121 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
+    <ClCompile Include="Source\Core\CharacterEntity.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
+    <ClCompile Include="Source\Inventory\Inventory.cpp" />
+    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
+    <ClCompile Include="Source\Inventory\InventoryEntity.cpp" />
+    <ClCompile Include="Source\Items\ItemDatabase.cpp" />
+    <ClCompile Include="Source\Player\PlayerEntity.cpp" />
+    <ClCompile Include="Source\Systems\PlayerSystem.cpp" />
+    <ClCompile Include="Source\UI\DeathMenu.cpp" />
+    <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
+    <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player\PlayerEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\CharacterEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Systems\PlayerSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UI\DeathMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UI\PlayerHealthUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Items\ItemDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ImGuiDebugLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-
-    <ClCompile Include="Source\Inventory\Inventory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Inventory\InventoryManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Inventory\InventoryWrapper.cpp">
-    <ClCompile Include="Source\ImGuiPlayerLayer.cpp">
-
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\WorldEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\CoreComponents\HealthComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\CoreComponents\HungerComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player\PlayerComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player\PlayerEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\CharacterEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Systems\PlayerSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UI\DeathMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UI\PlayerHealthUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Items\ItemDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ImGuiDebugLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Events\InputEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\Inventory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\InventoryComponents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\InventoryEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\InventoryManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\InventoryWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h">
-    <ClInclude Include="Source\ImGuiPlayerLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\WorldEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Events\PlayerEvents.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Layers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="Source\Core\Layers.h" />
+    <ClInclude Include="Source\Events\PlayerEvents.h" />
+    <ClInclude Include="Source\ImGuiPlayerLayer.h" />
+    <ClInclude Include="Source\Core\CharacterEntity.h" />
+    <ClInclude Include="Source\Events\InputEvents.h" />
+    <ClInclude Include="Source\ImGuiDebugLayer.h" />
+    <ClInclude Include="Source\Inventory\Inventory.h" />
+    <ClInclude Include="Source\Inventory\InventoryComponents.h" />
+    <ClInclude Include="Source\Inventory\InventoryEvents.h" />
+    <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h" />
+    <ClInclude Include="Source\Inventory\InventoryManager.h" />
+    <ClInclude Include="Source\Inventory\InventoryEntity.h" />
+    <ClInclude Include="Source\Items\ItemDatabase.h" />
+    <ClInclude Include="Source\Player\PlayerEntity.h" />
+    <ClInclude Include="Source\CoreComponents\HealthComponent.h" />
+    <ClInclude Include="Source\CoreComponents\HungerComponent.h" />
+    <ClInclude Include="Source\Player\PlayerComponent.h" />
+    <ClInclude Include="Source\Systems\PlayerSystem.h" />
+    <ClInclude Include="Source\UI\DeathMenu.h" />
+    <ClInclude Include="Source\UI\PlayerHealthUI.h" />
+    <ClInclude Include="Source\Core\WorldEntity.h" />
   </ItemGroup>
 </Project>

@@ -7,21 +7,22 @@
 #include"InventoryFunctionsGlobal.h"
 
 
-namespace InventorySystem {
+namespace InventorySystem 
+{
     InventoryManager::InventoryManager()
     {
         //AddWhitelistComponent<InventoryComponent>();
         AddWhitelistComponent<InventoryComponentGroupID>();
 
         //sub to this event
-        Events::EventDispatcher::SubscribeFunction<Events::Inv::UPDATEINV>(std::bind(&InventoryManager::ItemChangeInventory, this));
-        Events::EventDispatcher::SubscribeFunction<Events::Inv::ADD_NEW_INV>(std::bind(&InventoryManager::CreateInvetory, this));
+        Events::EventDispatcher::SubscribeFunction<Events::Inventory::UpdateInventory>(std::bind(&InventoryManager::ItemChangeInventory, this));
+        Events::EventDispatcher::SubscribeFunction<Events::Inventory::AddNewInventory>(std::bind(&InventoryManager::CreateNewInventory, this));
 
        
-        Events::EventDispatcher::AddListener<Events::Inv::REMOVE_ITEM_TYPE>(this);
-        Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE>(this);
-        Events::EventDispatcher::AddListener<Events::Inv::GET_ITEM_TYPE_NUMBER>(this);
-        Events::EventDispatcher::AddListener<Events::Inv::ADD_ITEM>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::RemoveItemType>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::GetItemType>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::GetItemTypeNumber>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::AddItem>(this);
 
        
     }
@@ -30,78 +31,79 @@ namespace InventorySystem {
     {
     }
 
-    void InventoryManager::HandleEvents(const char* event, void* data)
+    void InventoryManager::HandleEvents(const char* event, void* eventData)
     {
       
-        //item controll
-        if (event == Events::Inv::ADD_ITEM::sm_descriptor)
+        //item control
+        if (event == Events::Inventory::AddItem::sm_descriptor)
         {
-            Global_Functions::AddOrRemoveStruct* Data = (Global_Functions::AddOrRemoveStruct*)data;
+            GlobalFunctions::AddOrRemoveStruct* data = (GlobalFunctions::AddOrRemoveStruct*)eventData;
 
-            Data->returnData = AddItem(Data->groupName, Data->InventoryName, Data->itemID);
+            data->returnData = AddItem(data->groupName, data->inventoryName, data->itemID);
         }
-        else if (event == Events::Inv::REMOVE_ITEM::sm_descriptor)
+        else if (event == Events::Inventory::RemoveItem::sm_descriptor)
         {
-            Global_Functions::AddOrRemoveStruct* Data = (Global_Functions::AddOrRemoveStruct*)data;
+            GlobalFunctions::AddOrRemoveStruct* data = (GlobalFunctions::AddOrRemoveStruct*)eventData;
 
-            Data->returnData = RemoveItem(Data->groupName, Data->InventoryName, Data->itemID);
+            data->returnData = RemoveItem(data->groupName, data->inventoryName, data->itemID);
         }
-        else if (event == Events::Inv::REMOVE_ITEM_TYPE::sm_descriptor)
+        else if (event == Events::Inventory::RemoveItemType::sm_descriptor)
         {
-            Global_Functions::RemoveItemTypeData* Data = (Global_Functions::RemoveItemTypeData*)data;
+            GlobalFunctions::RemoveItemTypeData* data = (GlobalFunctions::RemoveItemTypeData*)eventData;
 
-            Data->returnData = RemoveItem(Data->groupName, Data->InventoryName, Data->Type,Data->Number);
+            data->returnData = RemoveItem(data->groupName, data->inventoryName, data->Type,data->Number);
         }
-        else if (event == Events::Inv::GET_ITEM_TYPE::sm_descriptor)
+        else if (event == Events::Inventory::GetItemType::sm_descriptor)
         {
-            Global_Functions::GetItemTypeData* Data = (Global_Functions::GetItemTypeData*)data;
+            GlobalFunctions::GetItemTypeData* data = (GlobalFunctions::GetItemTypeData*)eventData;
 
-            Data->returnData = GetItems(Data->groupName, Data->InventoryName, Data->Type, Data->Number);
+            data->returnData = GetItems(data->groupName, data->inventoryName, data->Type, data->Number);
         }
-        else if (event == Events::Inv::GET_ITEM_TYPE_NUMBER::sm_descriptor)
+        else if (event == Events::Inventory::GetItemTypeNumber::sm_descriptor)
         {
-            Global_Functions::ItemTotalData* Data = (Global_Functions::ItemTotalData*)data;
+            GlobalFunctions::ItemTotalData* data = (GlobalFunctions::ItemTotalData*)eventData;
 
-            Data->ReturnData = GetNumberOfItemInInvetory(Data->groupName, Data->InventoryName, Data->type);
+            data->returnData = GetNumberOfItemInInventory(data->groupName, data->inventoryName, data->type);
         }
-        else if (event == Events::Inv::GET_SPECIAL_SLOT::sm_descriptor)
+        else if (event == Events::Inventory::GetSpecialSlot::sm_descriptor)
         {
-            Global_Functions::SpecilaItemSlotData* Data = (Global_Functions::SpecilaItemSlotData*)data;
+            GlobalFunctions::SpecilaItemSlotData* data = (GlobalFunctions::SpecilaItemSlotData*)eventData;
 
-            Data->ReturnData = GetSpecialSlot(Data->groupName, Data->InventoryName, Data->SlotName);
+            data->returnData = GetSpecialSlot(data->groupName, data->inventoryName, data->slotName);
         }
-        else if (event == Events::Inv::REMOVE_INV::sm_descriptor)
+        else if (event == Events::Inventory::RemoveInventory::sm_descriptor)
         {
         }
     }
     void InventoryManager::GroupLoadOrUnload(std::string group)
     {
-        if (!m_InventoryLoaded[group]) {
+        if (!m_inventoryLoaded[group]) 
+        {
             LoadInventoryGroup(group);
-            m_InventoryLoaded[group] = true;
+            m_inventoryLoaded[group] = true;
         }
-        else {
+        else 
+        {
             UnloadInventoryGroup(group);
-            m_InventoryLoaded[group] = false;
+            m_inventoryLoaded[group] = false;
         }
 
     }
 
-
-
-    void InventoryManager::CreateInvetory()
+    void InventoryManager::CreateNewInventory()
     {
         for (size_t i = 0; i < m_entities.size(); i++)
         {
             ECS::EntityID entityID = m_entities[i]->GetEntityID(); 
             InventoryComponentGroupID* inventoryGroupData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(entityID);
-            if (!m_Inventory.contains(inventoryGroupData->Group)) {
-                m_Inventory[inventoryGroupData->Group]; 
-                if (m_Inventory[inventoryGroupData->Group].size() == 0 && inventoryGroupData->keyToAcvate != Keys::KEY_INVALID)
+            if (!m_inventory.contains(inventoryGroupData->group)) 
+            {
+                m_inventory[inventoryGroupData->group]; 
+                if (m_inventory[inventoryGroupData->group].size() == 0 && inventoryGroupData->keyToActivate != Keys::KEY_INVALID)
                 {
                  
-                    Events::EventDispatcher::SubscribeFunction(inventoryGroupData->Group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, inventoryGroupData->Group));
-                    Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(inventoryGroupData->Group.c_str(), inventoryGroupData->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
+                    Events::EventDispatcher::SubscribeFunction(inventoryGroupData->group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, inventoryGroupData->group));
+                    Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(inventoryGroupData->group.c_str(), inventoryGroupData->keyToActivate, Firelight::KeyEventType::KeyPressSingle);
                 
                 }
             }
@@ -111,15 +113,18 @@ namespace InventorySystem {
             for (size_t i = 0; i < inventoryData.size(); i++)
             {
                 bool toAdd = true;
-                for (size_t j = 0; j < m_Inventory[inventoryGroupData->Group].size(); j++) {
-                    if (m_Inventory[inventoryGroupData->Group][j]->GetInvetorNumber() == i) {
+                for (size_t j = 0; j < m_inventory[inventoryGroupData->group].size(); j++) 
+                {
+                    if (m_inventory[inventoryGroupData->group][j]->GetInventoryNumber() == i) 
+                    {
                         toAdd = false;
                         break;
                     }
                 }
-                if (toAdd) {
-                    CreateInventory(inventoryGroupData->Group, inventoryData[i]->Name, inventoryData[i]->Size, Maths::Vec2f(inventoryData[i]->ColoumCount, inventoryData[i]->RowCount), UIParentID, inventoryData[i]->offset, inventoryData[i]->AnchorSettings);
-                    m_Inventory[inventoryGroupData->Group].back()->SetEntityData(m_entities.back()->GetEntityID(),i);
+                if (toAdd) 
+                {
+                    CreateInventory(inventoryGroupData->group, inventoryData[i]->name, inventoryData[i]->size, Maths::Vec2f(inventoryData[i]->columnCount, inventoryData[i]->rowCount), UIParentID, inventoryData[i]->offset, inventoryData[i]->anchorSettings);
+                    m_inventory[inventoryGroupData->group].back()->SetEntityData(m_entities.back()->GetEntityID(),i);
                 }
             }
 
@@ -127,23 +132,27 @@ namespace InventorySystem {
         
     }
 
-    void InventoryManager::RemoveInvetory(std::string groupName,std::string invName)
+    void InventoryManager::RemoveInventory(std::string groupName,std::string inventoryName)
     {
         int index = 0;
-        for (auto& inventoryData : m_Inventory[groupName]) {
-            if (inventoryData->GetName() != invName) {
+        for (auto& inventoryData : m_inventory[groupName]) 
+        {
+            if (inventoryData->GetName() != inventoryName) 
+            {
                 index++;
                 continue;
             }
-                delete inventoryData;
-                inventoryData = nullptr;
-                m_Inventory[groupName].erase(m_Inventory[groupName].begin() + index);
-                break;
+
+            delete inventoryData;
+            inventoryData = nullptr;
+            m_inventory[groupName].erase(m_inventory[groupName].begin() + index);
+            break;
         }
 
 
             //remove group
-        if (m_Inventory[groupName].size() == 0) {
+        if (m_inventory[groupName].size() == 0) 
+        {
             //TODO Remove
             //Events::EventDispatcher::UnsubscribeFunction(b->Group.c_str());
             //Firelight::Engine::Instance().GetKeyBinder().unv(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
@@ -157,22 +166,28 @@ namespace InventorySystem {
         //change inventorys
         bool toDrop = true;
         //find unplaced slots in all invetorys
-        for (auto inventoryGroup : m_Inventory) {
-            for (auto inventory : inventoryGroup.second)
+        for (auto& inventoryGroup : m_inventory) 
+        {
+            for (auto& inventory : inventoryGroup.second)
             {
-                if (inventory->GetNullSlotData()->size() == 0) {
+                if (inventory->GetNullSlotData()->size() == 0)
+                {
                     continue;
                 }
-                for (auto Slot : *inventory->GetNullSlotData()) {
+                for (auto& slot : *inventory->GetNullSlotData()) 
+                {
                     //find
-                    for (auto In2 : m_Inventory) {
-                        for (auto inv2 : In2.second)
+                    for (auto& inventoryGroup2 : m_inventory)
+                    {
+                        for (auto& inventory2 : inventoryGroup2.second)
                         {
                             //move to new invetory
                             //via buttion text
-                            if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(Slot.UITexID)->parentID)) {
-                                if (inv2->GetName() == ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(Slot.UITexID)->parentID)->buttonText) {
-                                    toDrop = inv2->AddItem(Slot, false);
+                            if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot.UITexID)->parentID)) 
+                            {
+                                if (inventory2->GetName() == ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot.UITexID)->parentID)->buttonText) 
+                                {
+                                    toDrop = inventory2->AddItem(slot, false);
                                     if (!toDrop) {
                                         inventory->GetNullSlotData()->clear();
                                         return;
@@ -180,18 +195,22 @@ namespace InventorySystem {
                                 }
                             }
                             //via parent ids from ECS
-                            else if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(Slot.UITexID)->parentID)->parentID == inv2->GetInventorySpace()->GetEntityID()) {
-                                toDrop = inv2->AddItem(Slot, true);
-                                if (!toDrop) {
+                            else if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot.UITexID)->parentID)->parentID == inventory2->GetInventorySpace()->GetEntityID()) 
+                            {
+                                toDrop = inventory2->AddItem(slot, true);
+                                if (!toDrop) 
+                                {
                                     inventory->GetNullSlotData()->clear();
                                     return;
                                 }
-                                if (toDrop) {
+                                if (toDrop) 
+                                {
                                     //drop code here
-                                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInvetorNumber());
+                                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInventoryNumber());
 
                                     if (data) {
-                                        for (auto& out : data->OutputCommand) {
+                                        for (auto& out : data->outputCommand) 
+                                        {
                                             out();
                                         }
                                     }
@@ -216,23 +235,23 @@ namespace InventorySystem {
     void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventoryNoPannel(size, columnRows, parent, anc, offSet);
-        m_Inventory[group].emplace_back(newInventory);
+        newInventory->CreateInventoryNoPanel(size, columnRows, parent, anc, offSet);
+        m_inventory[group].emplace_back(newInventory);
     }
 
     void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventoryNoPannel(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
-        m_Inventory[group].emplace_back(newInventory);
+        newInventory->CreateInventoryNoPanel(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
+        m_inventory[group].emplace_back(newInventory);
     }
 
     void InventoryManager::LoadInventory(GroupName group, std::string name)
     {
         //create Group
-        for (auto Inventory : m_Inventory[group]) {
+        for (auto Inventory : m_inventory[group]) {
             if (!Inventory->GetIsDisplay() && Inventory->GetName() == name) {
-                Inventory->LoadInventory(&m_EntityIDPannlSlot, false);
+                Inventory->LoadInventory(&m_entityIDPanelSlot, false);
             }
         }
 
@@ -243,14 +262,16 @@ namespace InventorySystem {
         //create Group
         int index = 0;
         //find free buttion
-        for (auto button : m_EntityIDButton)
+        for (auto button : m_entityIDButton)
         {
-            if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(button)->buttonText == "null") {
-                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->parentID = UIParentID;
-                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->hasParent = true;
+            if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(button)->buttonText == "null") 
+            {
+                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->parentID = UIParentID;
+                ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->hasParent = true;
                 break;
             }
-            if (index == m_EntityIDButton.size()) {
+            if (index == m_entityIDButton.size()) 
+            {
                 //create new buttion
                 ECS::UIButton* button = new ECS::UIButton();
                 button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
@@ -261,13 +282,14 @@ namespace InventorySystem {
                 button->GetSpriteComponent()->toDraw = false;
                 button->AddComponent<ECS::UIContainerComponent>();
                 button->GetButtonComponent()->buttonText = "null";
-                m_EntityIDButton.push_back(button->GetEntityID());
+                m_entityIDButton.push_back(button->GetEntityID());
                 break;
             }
             index++;
         }
 
-        if (m_EntityIDButton.size() == 0) {
+        if (m_entityIDButton.size() == 0) 
+        {
             ECS::UIButton* button = new ECS::UIButton();
             button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
             button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
@@ -277,51 +299,58 @@ namespace InventorySystem {
             button->GetSpriteComponent()->toDraw = false;
             button->AddComponent<ECS::UIContainerComponent>();
             button->GetButtonComponent()->buttonText = "null";
-            m_EntityIDButton.push_back(button->GetEntityID());
+            m_entityIDButton.push_back(button->GetEntityID());
         }
 
         int groupIndex = 0;
-        for (auto* Inventory : m_Inventory[group]) {
-            if (!Inventory->GetIsDisplay()) {
+        for (auto* Inventory : m_inventory[group]) 
+        {
+            if (!Inventory->GetIsDisplay())
+            {
 
                 //buttion creation / des
-                if (!ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(Inventory->GetEntityData())->isDisplayAll) {
-                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(m_EntityIDButton[index])->buttonText = Inventory->GetName();
-                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(m_EntityIDButton[index])->toDraw = true;
+                if (!ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(Inventory->GetEntityData())->isDisplayAll) 
+                {
+                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(m_entityIDButton[index])->buttonText = Inventory->GetName();
+                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(m_entityIDButton[index])->toDraw = true;
                     
                     //set from invetory buttion componect 
                     InventoryComponentButtonLayout* buttionLayout = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentButtonLayout>(Inventory->GetEntityData());
-                    if (buttionLayout && buttionLayout->ToUse) {
-                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->anchorSettings = buttionLayout->AnchorSettings;
-                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->offSet = buttionLayout->OffSet;
+                    if (buttionLayout && buttionLayout->toUse) 
+                    {
+                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->anchorSettings = buttionLayout->anchorSettings;
+                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->offSet = buttionLayout->offset;
                     }
                     else
                     {
-                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->anchorSettings = Inventory->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->anchorSettings;
-                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->offSet = Maths::Vec2f(-Inventory->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->defaultDimensions.x, 120.0f * groupIndex);
+                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->anchorSettings = Inventory->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->anchorSettings;
+                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->offSet = Maths::Vec2f(-Inventory->GetInventorySpace()->GetComponent<ECS::UIBaseWidgetComponent>()->defaultDimensions.x, 120.0f * groupIndex);
                     }
                     
                    
-                    for (size_t i = 0; i < m_Inventory[group].size(); i++)
+                    for (size_t i = 0; i < m_inventory[group].size(); i++)
                     {
-                        if (i == groupIndex) {
+                        if (i == groupIndex) 
+                        {
                             continue;
                         }
-                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(m_EntityIDButton[index])->onLeftPressFunctions.push_back(std::bind(&Inventory::UnloadInventory, m_Inventory[group][i]));
+                        ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(m_entityIDButton[index])->onLeftPressFunctions.push_back(std::bind(&Inventory::UnloadInventory, m_inventory[group][i]));
                     }
-                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(m_EntityIDButton[index])->onLeftPressFunctions.push_back(std::bind(&Inventory::LoadInventory, Inventory, &m_EntityIDPannlSlot, false));
+                    ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(m_entityIDButton[index])->onLeftPressFunctions.push_back(std::bind(&Inventory::LoadInventory, Inventory, &m_entityIDPanelSlot, false));
 
                     
                     //find next free buttion
                     index = 0;
-                    for (auto buttion : m_EntityIDButton)
+                    for (auto buttion : m_entityIDButton)
                     {
-                        if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText == "null") {
-                            ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->parentID = UIParentID;
-                            ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_EntityIDButton[index])->hasParent = true;
+                        if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText == "null") 
+                        {
+                            ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->parentID = UIParentID;
+                            ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(m_entityIDButton[index])->hasParent = true;
                             break;
                         }
-                        if (index == m_EntityIDButton.size() - 1) {
+                        if (index == m_entityIDButton.size() - 1) 
+                        {
                             //create new buttion
                             index++;
                             ECS::UIButton* button = new ECS::UIButton();
@@ -333,7 +362,7 @@ namespace InventorySystem {
                             button->GetSpriteComponent()->toDraw = false;
                             button->AddComponent<ECS::UIContainerComponent>();
                             button->GetButtonComponent()->buttonText = "null";
-                            m_EntityIDButton.push_back(button->GetEntityID());
+                            m_entityIDButton.push_back(button->GetEntityID());
 
                             break;
                         }
@@ -344,11 +373,13 @@ namespace InventorySystem {
 
 
 
-                if (ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(Inventory->GetEntityData())->isDisplayAll) {
-                    Inventory->LoadInventory(&m_EntityIDPannlSlot, false);
+                if (ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentGroupID>(Inventory->GetEntityData())->isDisplayAll) 
+                {
+                    Inventory->LoadInventory(&m_entityIDPanelSlot, false);
                 }
-                else if (groupIndex == 0) {
-                    Inventory->LoadInventory(&m_EntityIDPannlSlot, false);
+                else if (groupIndex == 0) 
+                {
+                    Inventory->LoadInventory(&m_entityIDPanelSlot, false);
                 }
 
 
@@ -364,8 +395,10 @@ namespace InventorySystem {
     void InventoryManager::UnloadInventory(GroupName group, std::string name)
     {
         //unloade Group
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetIsDisplay() && inventory->GetName() == name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetIsDisplay() && inventory->GetName() == name)
+            {
                 inventory->UnloadInventory();
             }
         }
@@ -375,10 +408,12 @@ namespace InventorySystem {
     {
         //unloade Group
         int index = 0;
-        for (auto inventory : m_Inventory[group]) {
-            for (auto buttion : m_EntityIDButton)
+        for (auto inventory : m_inventory[group])
+        {
+            for (auto buttion : m_entityIDButton)
             {
-                if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText == inventory->GetName()) {
+                if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText == inventory->GetName()) 
+                {
                     ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(buttion)->buttonText = "null";
                     ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIPressableComponent>(buttion)->onLeftPressFunctions.clear();
                     ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(buttion)->toDraw = false;
@@ -392,72 +427,86 @@ namespace InventorySystem {
 
 
     //item data controll
-    void InventoryManager::AddItem(GroupName group, std::string Name, Firelight::ECS::Entity* item)
+    void InventoryManager::AddItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
     {
         //Add Item
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 inventory->AddItem(item);
                 break;
             }
         }
     }
 
-    bool InventoryManager::AddItem(GroupName group, std::string Name, Firelight::ECS::EntityID item)
+    bool InventoryManager::AddItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
     {
         //Add Item
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name)
+            {
                 return inventory->AddItem(item);
                 break;
             }
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string Name, Firelight::ECS::Entity* item)
+    bool InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->RemoveItem(item);
                 break;
             }
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string Name, Firelight::ECS::EntityID item)
+    bool InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->RemoveItem(item);
                 break;
             }
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string Name, int item, int howMany)
+    bool InventoryManager::RemoveItem(GroupName group, std::string name, int item, int howMany)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->RemoveItemType(howMany, item);
                 break;
             }
         }
     }
 
-    std::vector<ECS::EntityID> InventoryManager::GetItems(GroupName group, std::string Name, int item, int howMany)
+    std::vector<ECS::EntityID> InventoryManager::GetItems(GroupName group, std::string name, int item, int howMany)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->GetItemType(howMany, item);
             }
         }
     }
 
-    bool InventoryManager::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName Group)
+    bool InventoryManager::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
     {
         
-        for (auto inventory : m_Inventory[Group]) {
-            if (inventory->GetName() == InvName) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == InvName) 
+            {
                 return inventory->FindItem(ID);
                 break;
             }
@@ -465,19 +514,23 @@ namespace InventorySystem {
         
     }
 
-    int InventoryManager::GetNumberOfItemInInvetory(GroupName group, std::string Name, int item)
+    int InventoryManager::GetNumberOfItemInInventory(GroupName group, std::string name, int item)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->GetItemTypeTotal(item);
             }
         }
     }
 
-    ECS::EntityID InventoryManager::GetSpecialSlot(GroupName group, std::string Name, std::string slotName)
+    ECS::EntityID InventoryManager::GetSpecialSlot(GroupName group, std::string name, std::string slotName)
     {
-        for (auto inventory : m_Inventory[group]) {
-            if (inventory->GetName() == Name) {
+        for (auto inventory : m_inventory[group]) 
+        {
+            if (inventory->GetName() == name) 
+            {
                 return inventory->GetSpecialSlot(slotName);
             }
         }
