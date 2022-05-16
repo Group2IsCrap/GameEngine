@@ -96,9 +96,6 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	if (event == Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor)
 	{
 		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
-
-		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
-		playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
 	}
 }
 

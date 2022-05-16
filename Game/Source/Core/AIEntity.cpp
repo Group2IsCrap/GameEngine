@@ -23,11 +23,6 @@ AIComponent* AIEntity::GetAIComponent()
 	return m_AIComponent;
 }
 
-AIState AIEntity::GetState()
-{
-	return m_AIComponent->m_State;
-}
-
 AIType AIEntity::GetType()
 {
 	return m_AIComponent->m_Type;

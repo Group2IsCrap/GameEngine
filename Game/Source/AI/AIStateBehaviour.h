@@ -2,13 +2,13 @@
 
 #include <Source/Utils/Time.h>
 
+/// <summary>
+/// Base class for AI state behaviour
+/// </summary>
 class AIStateBehaviour
 {
 public:
-	AIStateBehaviour(class AIEntity* aiEntity);
+	AIStateBehaviour();
 
-	virtual void Update(const Firelight::Utils::Time& time);
-
-private:
-	class AIEntity* m_AIEntity;
+	virtual void HandleState(const Firelight::Utils::Time& time);
 };

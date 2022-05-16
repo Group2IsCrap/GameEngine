@@ -13,7 +13,6 @@ public:
 
 	AIComponent* GetAIComponent();
 
-	AIState GetState();
 	AIType GetType();
 
 	float GetSearchRadius();

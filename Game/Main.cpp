@@ -23,6 +23,7 @@
 #include "Source/Core/AIEntity.h"
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/AIBehaviourComponent.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -59,6 +60,7 @@ void SetupEnemyTemplate()
 	spriteComponent->pixelsPerUnit = 50;
 	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
 	enemyTemplate->AddComponent<RigidBodyComponent>();
+	enemyTemplate->AddComponent<AIBehaviourComponent>();
 
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());

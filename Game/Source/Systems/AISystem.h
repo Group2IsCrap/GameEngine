@@ -13,10 +13,5 @@ public:
 	~AISystem();
 
 	void Update(const Firelight::Utils::Time& time) override;
-
-	/// <summary>
-	/// Handles the switching of states of an AI entity.
-	/// </summary>
-	void HandleState(class AIEntity* aiEntity);
 };
 
