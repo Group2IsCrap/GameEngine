@@ -18,12 +18,22 @@ public:
 	void Update(const Firelight::Utils::Time& time) override;
 	void FixedUpdate(const Firelight::Utils::Time& time) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
+
+private:
+	float GetSpeed();
+
 private:
 	size_t m_playerEntityAddedCheckIndex;
+
 	size_t m_playerMoveUpIndex;
 	size_t m_playerMoveLeftIndex;
 	size_t m_playerMoveDownIndex;
 	size_t m_playerMoveRightIndex;
+	size_t m_playerMoveUpReleaseIndex;
+	size_t m_playerMoveLeftReleaseIndex;
+	size_t m_playerMoveDownReleaseIndex;
+	size_t m_playerMoveRightReleaseIndex;
+
 	size_t m_interactionEventIndex;
 	size_t m_spawnItemEventIndex;
 	size_t m_removeHealthEventIndex;
@@ -40,6 +50,12 @@ private:
 	void MovePlayerLeft();
 	void MovePlayerDown();
 	void MovePlayerRight();
+
+	void MovePlayerUpRelease();
+	void MovePlayerLeftRelease();
+	void MovePlayerDownRelease();
+	void MovePlayerRightRelease();
+
 	void Interact();
 	void SpawnItem();
 	void RemoveHealth();
