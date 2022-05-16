@@ -15,6 +15,7 @@
 #include "Source/Items/ItemDatabase.h"
 #include "Source/Core//WorldEntity.h"
 
+#include "Source/ImGuiDebugLayer.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
 
@@ -41,6 +42,25 @@ void BindDefaultKeys()
 	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
 }
 
+void SpawnItem0()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+}
+
+void SpawnItem1()
+{
+	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+}
+
+void SetupDebugUI()
+{
+	// ImGui Test code
+	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
+	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -65,10 +85,31 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// World
 		WorldEntity* world = new WorldEntity();
 
+		SpriteEntity* barn = new SpriteEntity();
+		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
+		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
+		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
+		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
+		barn->GetComponent<SpriteComponent>()->layer = 33;
+		barn->AddComponent<RigidBodyComponent>();
+		barn->GetComponent<StaticComponent>()->isStatic = true;
+		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
+		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
+		boxCollider->drawCollider = true;
+		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
+		//collider->drawCollider = true;
+		//collider->radius = 4.25f;
+
+		// UI
 
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
+
+		// Debug UI
+		SetupDebugUI();
+
+		// Load All Itemss
 
 		InventorySystem::UIParentID = canvas->GetEntityID();
 		InventoryEntity* inv1 = new InventoryEntity("PlayerInv", false, true, Keys::KEY_F);
@@ -80,6 +121,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv2->AddInventory("MainIven2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
 		inv2->AddInventory("Equipment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
 		// Load All Items
+
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		InventorySystem::GlobalFunctions::AddItem("PlayerInv","MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 

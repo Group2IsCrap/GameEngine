@@ -5,6 +5,7 @@
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
+#include "../ImGuiPlayerLayer.h"
 
 using DescriptorType = const char*;
 
@@ -27,6 +28,8 @@ private:
 	size_t m_removeHealthEventIndex;
   
 	PlayerEntity* playerEntity;
+
+	ImGuiPlayerLayer* imguiLayer = nullptr;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();
