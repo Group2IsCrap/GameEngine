@@ -38,6 +38,7 @@ namespace Firelight::ECS
 	{
 		EntityID parentID = 0;
 		bool hasParent = false;
+		bool isActive = true;
 
 		UINT index = 10;
 

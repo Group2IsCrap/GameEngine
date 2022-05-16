@@ -24,7 +24,15 @@ namespace InventorySystem
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemTypeNumber>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::AddItem>(this);
 
-       
+        ECS::UIPanel* Slot;
+        for (size_t i = 0; i < 100; i++)
+        {
+            Slot = new ECS::UIPanel();
+            Slot->GetWidgetComponent()->hasParent = false;
+            Slot->GetSpriteComponent()->toDraw = false;
+            Slot->GetWidgetComponent()->isActive = false;
+            m_entityIDPanelSlot.push_back(Slot);
+        }
     }
 
     InventoryManager::~InventoryManager()
@@ -203,31 +211,31 @@ namespace InventorySystem
                                     inventory->GetNullSlotData()->clear();
                                     return;
                                 }
-                                if (toDrop) 
-                                {
-                                    //drop code here
-                                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInventoryNumber());
-
-                                    if (data) {
-                                        for (auto& out : data->outputCommand) 
-                                        {
-                                            out();
-                                        }
-                                    }
-                                    inventory->GetNullSlotData()->clear();
-                                    return;
-                                }
-                                
                             }
                            
                         }
                     }
+
+
                 }
-                
+                 if (toDrop)
+                 {
+                    //drop code here
+                        InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInventoryNumber());
+
+                    if (data) {
+                        for (auto& out : data->outputCommand)
+                        {
+                            out();
+                        }
+                    }
+                    inventory->GetNullSlotData()->clear();
+                    //return;
+                }
 
             }
         }
-
+       
 
 
     }

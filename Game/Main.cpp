@@ -81,7 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv2->AddInventory("Equipment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		InventorySystem::GlobalFunctions::AddItem("PlayerInv","Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
+		InventorySystem::GlobalFunctions::AddItem("PlayerInv","MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 
 		while (Engine::Instance().ProcessMessages())
 		{

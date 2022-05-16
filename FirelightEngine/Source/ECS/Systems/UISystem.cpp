@@ -163,7 +163,9 @@ namespace Firelight::UI {
 				for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 				{
 					ECS::UIBaseWidgetComponent* UIComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
-
+					if (!UIComponent->isActive) {
+						continue;
+					}
 					if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
 						continue;
 					}
@@ -502,7 +504,9 @@ namespace Firelight::UI {
 		{
 			currCanvas = m_Canvas->GetComponent<ECS::UICanvasComponent>();
 		}
-
+		if (!UIComponent->isActive) {
+			return;
+		}
 		ECS::UICanvasComponent* UICanvas = entity->GetComponent<ECS::UICanvasComponent>();
 		
 		
@@ -648,26 +652,23 @@ namespace Firelight::UI {
 						//checks
 						ECS::UICanvasComponent* UICanvas = m_entities[entityIndex]->GetComponent<ECS::UICanvasComponent>();
 						ECS::UIContainerComponent* UIPanel = m_entities[entityIndex]->GetComponent<ECS::UIContainerComponent>();
-
+					
 						if (UICanvas == nullptr && UIPanel==nullptr) 
 						{
 							continue;
 						}
 						else if (UIPanel == nullptr) 
 						{
-							/*if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
-								continue;
-							}*/
+							//could do something??
+							//current throught is it is ment for the canvas but it does not do this
 							if (IsHit(UIComponent->defaultPosition.x, UIComponent->defaultPosition.y, UIComponent, UITransformComponent))
 							{								
-								currentParent = m_entities[entityIndex];
+								//currentParent = m_entities[entityIndex];
 							}
 						}
 						else if(currentParent!= nullptr)
 						{
-							/*if (!m_entities[entityIndex]->GetComponent<ECS::PixelSpriteComponent>()->toDraw) {
-								continue;
-							}*/
+							
 							ECS::UIBaseWidgetComponent* UIContainerComponent = m_entities[entityIndex]->GetComponent<ECS::UIBaseWidgetComponent>();
 							ECS::TransformComponent* UIPanelTansformComponent = m_entities[entityIndex]->GetComponent<ECS::TransformComponent>();
 							if (m_entities[entityIndex] != entity) 
