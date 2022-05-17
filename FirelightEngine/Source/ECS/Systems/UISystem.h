@@ -61,7 +61,6 @@ namespace Firelight::UI {
 
 		Maths::Vec3f m_MousePosDrag;
 		Maths::Vec2f m_MouseRawCurr;
-		Utils::Timer m_ClickTimer;
 
 		bool m_dragButtonIsPressed = false;
 		bool m_isDragging = false;
@@ -71,6 +70,10 @@ namespace Firelight::UI {
 		Firelight::Events::Input::ControllerState m_PrevEventController;
 		ECS::Entity* m_Canvas = nullptr;
 		float m_CanvasLayer;
+
+		float m_updateTime = 0.0f;
+		float m_clickTime = 0.0f;
+		bool m_dragTimerActive = false;
 	};
 
 

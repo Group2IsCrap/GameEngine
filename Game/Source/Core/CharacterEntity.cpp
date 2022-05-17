@@ -10,6 +10,8 @@ CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight:
 
 }
 
+
+
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
 	return GetComponent<HealthComponent>();

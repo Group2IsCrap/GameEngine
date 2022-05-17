@@ -5,6 +5,7 @@
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
+#include <Source/ECS/Components/AudioComponents.h>
 #include <Source/Graphics/AssetManager.h>
 #include "../Core/Layers.h"
 
@@ -58,6 +59,7 @@ void ItemDatabase::LoadItems(std::string filepath)
 		itemComponent->description = itemData[i][2];
 		itemComponent->iconPath = itemData[i][3];
 		itemComponent->stackSize = std::stoi(itemData[i][4]);
+		itemComponent->tags = GetTagList(itemData[i][5]);
 		SpriteComponent* spriteComponent = itemTemplate->AddComponent<SpriteComponent>();
 		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(itemComponent->iconPath);
 		spriteComponent->pixelsPerUnit = 50;
@@ -69,9 +71,39 @@ void ItemDatabase::LoadItems(std::string filepath)
 		itemTemplate->AddComponent<Firelight::ECS::ColliderComponent>(circleCollider);
 		LayerComponent* layerComponent = itemTemplate->AddComponent<LayerComponent>();
 		layerComponent->layer = static_cast<int>(GameLayer::Items);
+		AudioComponent* audioComponent = new AudioComponent();
+		itemTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
+		audioComponent->soundName = "beeuuuuu.mp3";
+		audioComponent->soundPos = Vector3D(0, 0, 0);
+		audioComponent->looping = false;
+		audioComponent->is3d = false;
+		audioComponent->streaming = false;
+		audioComponent->channel = "UI";
+
 
 		itemTemplates.insert(std::make_pair(itemComponent->itemID, itemTemplate));
 	}
+}
+
+std::vector<std::string> ItemDatabase::GetTagList(std::string stream)
+{
+	std::vector<std::string> tagList;
+
+	if (stream.length() > 0)
+	{
+		while (stream.find(";") != std::string::npos)
+		{
+			std::string left = stream.substr(0, stream.find_first_of(";"));
+			std::string right = stream.substr(stream.find_first_of(";") + 1);
+
+			tagList.push_back(left);
+			stream = right;
+		}
+		tagList.push_back(stream);
+	}
+
+	return tagList;
+		
 }
 
 Entity* ItemDatabase::CreateInstanceOfItem(int itemID)

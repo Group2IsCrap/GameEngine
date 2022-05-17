@@ -4,13 +4,14 @@
 #include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../CoreComponents/HealthComponent.h"
-
+#include "../Inventory/InventoryEntity.h"
 class CharacterEntity : public Firelight::ECS::SpriteEntity
 {
 public:
 
 	CharacterEntity();
 	CharacterEntity(Firelight::ECS::EntityID entityID);
+	
 
 	HealthComponent* GetHealthComponent();
 	Firelight::ECS::RigidBodyComponent* GetRigidBodyComponent();
