@@ -12,6 +12,10 @@
     <ClCompile Include="Source\UI\DeathMenu.cpp" />
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
+    <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Combat\CombatComponent.h" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
@@ -38,6 +42,7 @@
     <ClInclude Include="Source\UI\DeathMenu.h" />
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
     <ClInclude Include="Source\Core\WorldEntity.h" />
+    <ClInclude Include="Source\Combat\CombatCalculations.h" />
     <ClInclude Include="Source\Core\AIEntity.h" />
     <ClInclude Include="Source\AI\AIStateBehaviour.h" />
     <ClInclude Include="Source\AI\AISpawner.h" />

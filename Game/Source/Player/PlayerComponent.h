@@ -7,10 +7,20 @@
 
 using namespace Firelight::Serialisation;
 
+
+enum class Facing
+{
+	Left,
+	Right,
+	Up,
+	Down
+};
+
 struct PlayerComponent : Firelight::ECS::BaseComponent
 {
 	std::string name = "";
 	float speed = 1.5f;
+	Facing facing;
 
 	void Serialise() override
 	{

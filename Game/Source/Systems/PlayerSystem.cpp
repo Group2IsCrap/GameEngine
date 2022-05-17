@@ -9,9 +9,12 @@
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
 #include "../Core/Layers.h"
+#include "../Core/CharacterEntity.h"
+#include "../Combat/CombatCalculations.h"
 
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
+
 
 PlayerSystem::PlayerSystem()
 {
@@ -33,6 +36,7 @@ PlayerSystem::PlayerSystem()
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
+	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::Attack, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 }
@@ -53,6 +57,7 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
+	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -68,6 +73,22 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	if (playerEntity == nullptr)
 	{
 		return;
+	}
+	if (m_moveUp)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Up;
+	}
+	else if (m_moveDown)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Down;
+	}
+	else if (m_moveLeft)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Left;
+	}
+	else if (m_moveRight)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
 	}
 }
 
@@ -151,6 +172,11 @@ void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+}
+
+void PlayerSystem::Attack()
+{
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, 0.5f);
 }
 
 void PlayerSystem::RemoveHealth()

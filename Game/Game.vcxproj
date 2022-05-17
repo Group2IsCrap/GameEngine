@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
@@ -171,6 +172,8 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Combat\CombatCalculations.h" />
+    <ClInclude Include="Source\Combat\CombatComponent.h" />
     <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
     <ClInclude Include="Source\AI\AISpawner.h" />
     <ClInclude Include="Source\AI\AIStateBehaviour.h" />

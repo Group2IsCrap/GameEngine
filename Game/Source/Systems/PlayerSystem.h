@@ -36,6 +36,7 @@ private:
 
 	size_t m_interactionEventIndex;
 	size_t m_spawnItemEventIndex;
+	size_t m_attackIndex;
 	size_t m_removeHealthEventIndex;
   
 	Firelight::Maths::Vec3f m_velocity;
@@ -58,5 +59,6 @@ private:
 
 	void Interact();
 	void SpawnItem();
+	void Attack();
 	void RemoveHealth();
 };
