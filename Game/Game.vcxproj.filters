@@ -48,6 +48,9 @@
     <ClCompile Include="Source\Items\CraftingRecipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CoreComponents\HealthComponent.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Items\CraftingRecipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Items\CraftingRecipeDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

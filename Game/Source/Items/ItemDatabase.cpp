@@ -86,6 +86,23 @@ Entity* ItemDatabase::CreateInstanceOfItem(int itemID)
 	return entity;
 }
 
+// Bad, should probably be optimised in some way
+int ItemDatabase::GetItemIdFromName(const std::string& name)
+{
+	for (auto& mapIter : itemTemplates)
+	{
+		if (ItemComponent* itemComponent = mapIter.second->GetComponent<ItemComponent>())
+		{
+			if (itemComponent->name == name)
+			{
+				return itemComponent->itemID;
+			}
+		}
+	}
+
+	return -1;
+}
+
 ItemDatabase::ItemDatabase()
 {
 	itemTemplates = std::unordered_map<int, Template*>();

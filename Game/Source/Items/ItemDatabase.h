@@ -16,6 +16,9 @@ public:
 
 	Entity* CreateInstanceOfItem(int itemID);
 
+	// Bad, should probably be optimised in some way
+	int GetItemIdFromName(const std::string& name);
+
 private:
 	ItemDatabase();
 	~ItemDatabase();
