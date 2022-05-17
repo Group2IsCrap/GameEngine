@@ -11,6 +11,11 @@ CraftingRecipeDatabase::CraftingRecipeDatabase()
 
 CraftingRecipeDatabase::~CraftingRecipeDatabase()
 {
+	for (auto* recipe : m_recipes)
+	{
+		delete recipe;
+	}
+	m_recipes.clear();
 }
 
 CraftingRecipeDatabase& CraftingRecipeDatabase::Instance()
