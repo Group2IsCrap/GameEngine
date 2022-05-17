@@ -1,10 +1,48 @@
 #pragma once
 
 #include "../ECSDefines.h"
-#include "../Source/Audio/AudioClip.h"
+#include "FModAudio.h"
+#include "../../Serialisation/Serialiser.h"
 
-class AudioComponent : public Firelight::ECS::BaseComponent
+using namespace snowFallAudio::FModAudio;
+using namespace Firelight::Serialisation;
+
+namespace Firelight::ECS
 {
-	Firelight::Audio::AudioClip* audioClip;
-	// Channels
-};
+	struct AudioComponent : BaseComponent
+	{
+		//audio information
+		//const std::string& soundName, const Vector3D& soundPos, bool looping, bool is3d, bool streaming, AudioChannel channel
+		std::string soundName;
+		Vector3D soundPos;
+		bool looping;
+		bool is3d;
+		bool streaming;
+		std::string channel;
+
+		void Serialise() override
+		{
+			//variable names
+			Serialiser::Serialise("SoundName", soundName);
+			//Serialiser::Serialise("SoundPos", soundPos);
+			Serialiser::Serialise("Looping", looping);
+			Serialiser::Serialise("Is3d", is3d);
+			Serialiser::Serialise("Streaming", streaming);
+			Serialiser::Serialise("Channel", channel);
+		}
+
+		AudioComponent* Clone() override
+		{
+			//just copy everything to clone
+			AudioComponent* clone = new AudioComponent();
+			clone->soundName = soundName;
+			clone->soundPos = soundPos;
+			clone->looping = looping;
+			clone->is3d = is3d;
+			clone->streaming = streaming;
+			clone->channel = channel;
+
+			return clone;
+		}
+	};
+}

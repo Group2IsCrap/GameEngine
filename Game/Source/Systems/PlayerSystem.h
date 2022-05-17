@@ -1,9 +1,11 @@
 #pragma once
 
 #include <Source/ECS/Systems/System.h>
+#include <Source/ECS/Components/UIComponents.h>
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
+#include "../ImGuiPlayerLayer.h"
 
 using DescriptorType = const char*;
 
@@ -21,12 +23,19 @@ private:
 	size_t m_playerMoveLeftIndex;
 	size_t m_playerMoveDownIndex;
 	size_t m_playerMoveRightIndex;
+	size_t m_interactionEventIndex;
 	size_t m_spawnItemEventIndex;
+	size_t m_removeHealthEventIndex;
+  
 	PlayerEntity* playerEntity;
+
+	ImGuiPlayerLayer* imguiLayer = nullptr;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();
 	void MovePlayerDown();
 	void MovePlayerRight();
+	void Interact();
 	void SpawnItem();
+	void RemoveHealth();
 };

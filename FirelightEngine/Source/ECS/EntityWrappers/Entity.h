@@ -1,5 +1,6 @@
 #pragma once
 #include "../EntityComponentSystem.h"
+#include "../Components/AudioComponents.h"
 
 namespace Firelight::ECS
 {
@@ -105,10 +106,12 @@ namespace Firelight::ECS
 
 		EntityID GetEntityID();
 		Signature GetSignature();
+		void PlayAudioClip();
 	private:
 		Entity(const Entity&) = delete;
 		Entity& operator=(const Entity&) = delete;
 	protected:
+		void PlaySound_Internal(AudioComponent* audioComponent);
 		EntityID m_entityID;
 	};
 }

@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+#include"Source/Events/EventDispatcher.h"
+#include"InventoryEvents.h"
+
 using namespace Firelight;
 
 struct SlotInfo
@@ -30,13 +33,11 @@ public:
 	Inventory(std::string Name);
 	~Inventory();
 
+	void SetEntityData(ECS::EntityID ID) { m_InventoryEntityID = ID; }
+	ECS::EntityID GetEntityData() { return m_InventoryEntityID; }
 
-	void CreatInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::Entity* parent);
-	void CreatInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entity* parent);
-
-	//inventory without manager
-	void CreatInventory(Maths::Vec2f size, float slotCount,ECS::Entity* parent);
-	void CreatInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entity* parent);
+	void CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
 
 	//display controlls
 	void LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit);
@@ -45,7 +46,7 @@ public:
 	//item controlls
 	bool AddItem(Firelight::ECS::Entity* item);
 	bool AddItem(Firelight::ECS::EntityID item);
-	bool AddItem(SlotData* item);
+	bool AddItem(SlotData* item, bool useSlotPlacement);
 
 	void RemoveItem(Firelight::ECS::Entity* item);
 	void RemoveItem(Firelight::ECS::EntityID item);
@@ -65,8 +66,8 @@ public:
 	void Place(SlotData* slotData);
 
 
-	std::vector <SlotData*> GetNullSlotData() { return NullSlotData; }
-	ECS::UIPanel* GetInventorySpace() { return InventorySpace; }
+	std::vector <SlotData*>* GetNullSlotData() { return &m_OutOfInventoryData; }
+	ECS::UIPanel* GetInventorySpace() { return m_InventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }
 private:
@@ -75,7 +76,11 @@ private:
 
 private:
 
-	ECS::UIPanel* InventorySpace;
+	//pannle created by this 
+	ECS::UIPanel* m_InventorySpace;
+
+
+	//data to remove
 	std::string m_Name;
 	UINT SlotCount = 0;
 	int RowCount = 0;
@@ -91,6 +96,10 @@ private:
 	Maths::Vec2i Size;
 	std::vector<std::pair<SlotInfo, SlotData*>> Grid;
 
-	std::vector <SlotData*> NullSlotData;
+	//invetory entity
+	ECS::EntityID m_InventoryEntityID;
+
+	//slots to remove
+	std::vector <SlotData*> m_OutOfInventoryData;
 };
 

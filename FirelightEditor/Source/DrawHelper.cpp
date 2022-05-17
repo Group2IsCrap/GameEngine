@@ -1,6 +1,7 @@
 #include "DrawHelper.h"
 
 #include "Source/Graphics/AssetManager.h"
+#include "Source/Utils/ErrorManager.h"
 
 namespace Firelight::Editor
 {
@@ -129,6 +130,37 @@ namespace Firelight::Editor
 
 		ImGui::Indent();
 		ImGui::Spacing();
+	}
+
+	void DrawHelper::DrawEnumControl(const std::string& label, int* selectedItem, std::vector<std::string> values)
+	{
+		if (values.size() <= 0)
+		{
+			return;
+		}
+
+		ASSERT_FATAL(selectedItem > (int*)values.size(), "Selected Array Index Larger Than Array");
+
+		ImGui::Text(label.c_str());
+		ImGui::SameLine();
+		std::string id = "##EnumCombo";
+		if (ImGui::BeginCombo((id + label).c_str(), values[*selectedItem].c_str()))
+		{
+			for (int i = 0; i < values.size(); i++)
+			{
+				bool isSelected = &selectedItem == nullptr ? false : (values[*selectedItem].c_str() == values[i]);
+				if (ImGui::Selectable(values[i].c_str(), isSelected))
+				{
+					*selectedItem = i;
+					if (isSelected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+			}
+
+			ImGui::EndCombo();
+		}
 	}
 
 	void DrawHelper::DrawImage(const std::string& label, Firelight::ECS::BaseComponent* component, const std::string& texturePath)
