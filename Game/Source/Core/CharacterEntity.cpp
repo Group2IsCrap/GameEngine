@@ -2,12 +2,17 @@
 
 CharacterEntity::CharacterEntity()
 {
+	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
 }
 
 CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)
 {
 
+}
+
+CharacterEntity::CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : SpriteEntity(isTemplate, entityID)
+{
 }
 
 HealthComponent* CharacterEntity::GetHealthComponent()

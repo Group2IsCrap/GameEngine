@@ -375,6 +375,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\EntityWrappers\GameEntityTemplate.h" />
+    <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntityTemplate.h" />
     <ClInclude Include="Source\KeyBinder.h" />
     <ClInclude Include="Source\Graphics\Text\FontGlyph.h" />
     <ClInclude Include="Source\Graphics\Text\Font.h" />
@@ -480,6 +482,8 @@
     <ClInclude Include="Source\ECS\Systems\TextSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\EntityWrappers\GameEntityTemplate.cpp" />
+    <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntityTemplate.cpp" />
     <ClCompile Include="Source\KeyBinder.cpp" />
     <ClCompile Include="Source\Graphics\Text\FontGlyph.cpp" />
     <ClCompile Include="Source\Graphics\Text\Font.cpp" />

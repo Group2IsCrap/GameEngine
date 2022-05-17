@@ -11,6 +11,7 @@ public:
 
 	CharacterEntity();
 	CharacterEntity(Firelight::ECS::EntityID entityID);
+	CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
 	HealthComponent* GetHealthComponent();
 	Firelight::ECS::RigidBodyComponent* GetRigidBodyComponent();
