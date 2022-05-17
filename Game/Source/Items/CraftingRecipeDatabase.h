@@ -13,8 +13,11 @@ public:
 
     void LoadCraftingRecipes(const std::string& filepath);
 
+    const std::vector<const CraftingRecipe*>& GetAllCraftingRecipes() const;
+    const CraftingRecipe*                     GetCraftingRecipeForItem(int itemId) const;
+
 private:
     CraftingRecipeDatabase();
 
-    std::vector<CraftingRecipe*> m_recipes;
+    std::vector<const CraftingRecipe*> m_recipes;
 };

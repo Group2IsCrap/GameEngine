@@ -30,8 +30,8 @@ void CraftingRecipeDatabase::LoadCraftingRecipes(const std::string& filepath)
 	std::vector<std::string> row;
 	std::string line, value;
 
-	std::fstream csvFile(filepath, std::ios::in);
-	if (csvFile.is_open())
+	std::ifstream csvFile(filepath);
+	if (csvFile)
 	{
 		// Skip the first line with the column names
 		getline(csvFile, line);
@@ -92,4 +92,22 @@ void CraftingRecipeDatabase::LoadCraftingRecipes(const std::string& filepath)
 		// Actually construct the recipe object
 		m_recipes.push_back(new CraftingRecipe(itemId, countMaking, requiredItems));
 	}
+}
+
+const std::vector<const CraftingRecipe*>& CraftingRecipeDatabase::GetAllCraftingRecipes() const
+{
+	return m_recipes;
+}
+
+const CraftingRecipe* CraftingRecipeDatabase::GetCraftingRecipeForItem(int itemId) const
+{
+	for (auto* recipe : m_recipes)
+	{
+		if (recipe->GetItemToMake() == itemId)
+		{
+			return recipe;
+		}
+	}
+
+	return nullptr;
 }

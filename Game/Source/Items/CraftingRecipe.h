@@ -12,7 +12,7 @@ public:
     };
 
 public:
-    CraftingRecipe(int itemToMake, int numMaking, const std::vector<ItemRequirement>& requiredItems);
+    CraftingRecipe(int itemToMake, int countMaking, const std::vector<ItemRequirement>& requiredItems);
     ~CraftingRecipe();
     
     // TODO: Hookup to inventory when it's available
@@ -24,10 +24,11 @@ public:
     void craft(/* Inventory& inventory */) {}
 
     int                                 GetItemToMake() const;
+    int                                 GetCountMaking() const;
     const std::vector<ItemRequirement>& GetRequiredItems() const;
 
 private:
     int                          m_itemToMake;
-    int                          m_numMaking;
+    int                          m_countMaking;
     std::vector<ItemRequirement> m_requiredItems;
 };

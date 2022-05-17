@@ -1,8 +1,8 @@
 #include "CraftingRecipe.h"
 
-CraftingRecipe::CraftingRecipe(int itemToMake, int numMaking, const std::vector<ItemRequirement>& requiredItems) :
+CraftingRecipe::CraftingRecipe(int itemToMake, int countMaking, const std::vector<ItemRequirement>& requiredItems) :
     m_itemToMake(itemToMake),
-    m_numMaking(numMaking),
+    m_countMaking(countMaking),
     m_requiredItems(requiredItems)
 {
 }
@@ -16,7 +16,12 @@ int CraftingRecipe::GetItemToMake() const
     return m_itemToMake;
 }
 
+int CraftingRecipe::GetCountMaking() const
+{
+    return m_countMaking;
+}
+
 const std::vector<CraftingRecipe::ItemRequirement>& CraftingRecipe::GetRequiredItems() const
 {
-    m_requiredItems;
+    return m_requiredItems;
 }
