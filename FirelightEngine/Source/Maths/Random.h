@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <cmath>
+#include <random>
 
 // Stop the compiler complaining about SeedWithCurrentTime not being used when it is
 #pragma warning(disable : 4505)
@@ -34,7 +35,6 @@ namespace Firelight::Maths::Random
 		return minVal + (T)(ZeroToOne<double>() * (double)(maxVal - minVal));
 	}
 
-
 	template<typename T>
 	static T InsideRandomUnitCircle()
 	{
@@ -53,6 +53,23 @@ namespace Firelight::Maths::Random
 		//float a = ZeroToOne<float>();
 		//float b = ZeroToOne<float>();
 		//return T(b * radius * std::cos(2.0f * PI * a / b), b * radius * std::sin(2.0f * PI * a / b), 0.0f);
+	}
+
+	//randome int
+	template<typename T>
+	T RandomRange(T range_from, T range_to) {
+		std::random_device   rand_dev;
+		std::mt19937                        generator(rand_dev());
+		std::uniform_int_distribution<T>    distr(range_from, range_to);
+		return distr(generator);
+	}
+	//randome float,double
+	template<typename T>
+	T RandomFloatRange(T range_from, T range_to) {
+		std::random_device   rand_dev;
+		std::mt19937                        generator(rand_dev());
+		std::uniform_real_distribution<T>    distr(range_from, range_to);
+		return distr(generator);
 	}
 
 }

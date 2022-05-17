@@ -31,9 +31,8 @@ namespace Firelight::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetShaderResourceView();
 
 		const Maths::Vec3i& GetDimensions() const;
-		Maths::Vec2f GetTexCoordFromSourcePixelCoord(const Maths::Vec2f& sourcePixelCoord) const;
+		void GetTexCoordFromSourcePixelCoord(Maths::Vec2f& returnVec, const Maths::Vec2f& sourcePixelCoord) const;
 
-		void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 	private:
 		void InitialiseColourTexture(const Colour::RGBA* colourData, UINT width, UINT height);

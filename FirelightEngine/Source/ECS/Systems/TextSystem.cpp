@@ -32,6 +32,11 @@ namespace Firelight::ECS
 			auto* transformComponent = m_entities[entityIndex]->GetComponent<TransformComponent>();
 			auto* textComponent = m_entities[entityIndex]->GetComponent<TextComponent>();
 
+			if (textComponent->hidden)
+			{
+				continue;
+			}
+
 			textComponent->text.SetAnchorPosition(Maths::Vec2f(transformComponent->position.x, transformComponent->position.y));
 
 			if (!textComponent->text.GetMesh())
