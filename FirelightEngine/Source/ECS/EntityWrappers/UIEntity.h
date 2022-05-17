@@ -15,6 +15,7 @@ namespace Firelight::ECS
 		UIBaseWidgetComponent* GetWidgetComponent();
 
 		void SetAnchorSettings(e_AnchorSettings settings);
+		void SetScaleSettings(e_Scale settings);
 		void SetDefaultPosition(Maths::Vec3f pos);
 		void SetDefaultDimensions(Maths::Vec3f dimensions);
 		void SetDefaultScale(Maths::Vec3f scale);
