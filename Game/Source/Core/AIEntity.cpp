@@ -18,6 +18,11 @@ AIEntity::AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Charact
 	m_AIComponent = GetComponent<AIComponent>();
 }
 
+void AIEntity::HealthBelowZero()
+{
+	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+}
+
 AIComponent* AIEntity::GetAIComponent()
 {
 	return m_AIComponent;
