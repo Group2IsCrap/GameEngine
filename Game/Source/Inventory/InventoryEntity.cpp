@@ -82,7 +82,7 @@ void InventoryEntity::RemoveInventory(std::string name)
 
 void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags)
 {
-    AddComponent<InventoryComponentSpecialSlot>();
+    
     
     for (size_t i = GetInventoryComponent(InventoryNumber)->slotStartPositon; i < GetInventoryComponent(InventoryNumber)->slotStartPositon + (int)GetInventoryComponent(InventoryNumber)->slotCount; i++)
     {
@@ -91,11 +91,13 @@ void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, 
         }
         else
         {
-            InventoryComponentSpecialSlot* Slot = GetComponents<InventoryComponentSpecialSlot>().back();
+            InventoryComponentSpecialSlot* Slot = AddComponent<InventoryComponentSpecialSlot>();;
             Slot->anchorSettings = anchorSettings;
             Slot->offset = offset;
             Slot->slotName = slotName;
             Slot->size = size;
+            Slot->tags = tags;
+            int teat = GetComponents<InventoryComponentSpecialSlot>().size() - 1;
             GetSlot(i)->specialSlotIndex = GetComponents<InventoryComponentSpecialSlot>().size() - 1;
 
             break;
