@@ -151,6 +151,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
+    <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AIDeerEntity.cpp" />
+    <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
+    <ClCompile Include="Source\Core\AIEntity.cpp" />
+    <ClCompile Include="Source\Systems\AISystem.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
@@ -167,6 +176,19 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Combat\CombatCalculations.h" />
+    <ClInclude Include="Source\Combat\CombatComponent.h" />
+    <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
+    <ClInclude Include="Source\AI\AISpawner.h" />
+    <ClInclude Include="Source\AI\AIStateBehaviour.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIWanderBehaviour.h" />
+    <ClInclude Include="Source\AI\Enemies\AICrocodileEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AIDeerEntity.h" />
+    <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
+    <ClInclude Include="Source\Core\AIEntity.h" />
+    <ClInclude Include="Source\Systems\AISystem.h" />
+    <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
     <ClInclude Include="Source\Core\Layers.h" />
     <ClInclude Include="Source\Events\PlayerEvents.h" />

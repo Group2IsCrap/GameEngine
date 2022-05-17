@@ -15,6 +15,11 @@ namespace Firelight::ECS
 
 	}
 
+	GameEntity::GameEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Entity(isTemplate, entityID)
+	{
+
+	}
+
 	/// <summary>
 	/// Wrapper that returns the Identification Component
 	/// </summary>
