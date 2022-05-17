@@ -12,11 +12,12 @@ public:
 	AIEntity(Firelight::ECS::EntityID entityID);
 	AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
+	void HealthBelowZero() override;
+
 	AIComponent* GetAIComponent();
 
 	AIType GetType();
 
-	float GetSearchRadius();
 	Entity* GetTarget();
 
 private:

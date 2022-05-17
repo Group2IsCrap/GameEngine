@@ -9,28 +9,23 @@
 
 #include <random>
 #include <vector>
- 
+
 using namespace Firelight::Maths;
 
 /// <summary>
 /// Base class for AI transition behaviour
 /// </summary>
-class AIWanderBehaviour : public AIStateBehaviour
+class AIAttackingBehaviour : public AIStateBehaviour
 {
 public:
-	AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent, float wanderInterval, float speed, std::vector<std::pair<float, float>> radii);
+	AIAttackingBehaviour(RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, float speed, float attackInterval);
 
 	void HandleState(const Firelight::Utils::Time& time) override;
 
-	
+
 private:
-	float m_curWanderTime;
 
-	float m_wanderInterval;
 	float m_speed;
-	Vec3f m_spawnpoint;
-
-	std::vector<std::pair<float, float>> m_radii;
-	Firelight::Maths::Vec3f m_wanderLocation;
 	RigidBodyComponent* m_rigidBodyComponent;
+	AIComponent* m_targetAIComponent;
 };

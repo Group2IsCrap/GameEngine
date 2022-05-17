@@ -18,6 +18,11 @@ AIEntity::AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Charact
 	m_AIComponent = GetComponent<AIComponent>();
 }
 
+void AIEntity::HealthBelowZero()
+{
+	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+}
+
 AIComponent* AIEntity::GetAIComponent()
 {
 	return m_AIComponent;
@@ -26,11 +31,6 @@ AIComponent* AIEntity::GetAIComponent()
 AIType AIEntity::GetType()
 {
 	return m_AIComponent->m_Type;
-}
-
-float AIEntity::GetSearchRadius()
-{
-	return m_AIComponent->m_SearchRadius;
 }
 
 Entity* AIEntity::GetTarget()

@@ -28,9 +28,7 @@ struct AIComponent : Firelight::ECS::BaseComponent
 public:
 
 	AIType m_Type;
-
 	Entity* m_Target;
-	float m_SearchRadius;
 
 public:
 
