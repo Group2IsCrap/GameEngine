@@ -375,6 +375,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\TilemapComponent.h" />
     <ClInclude Include="Source\KeyBinder.h" />
     <ClInclude Include="Source\Graphics\Text\FontGlyph.h" />
     <ClInclude Include="Source\Graphics\Text\Font.h" />
