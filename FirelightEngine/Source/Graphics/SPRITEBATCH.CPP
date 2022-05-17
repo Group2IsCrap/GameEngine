@@ -237,17 +237,20 @@ namespace Firelight::Graphics
         std::vector<DWORD> indices;
         Texture* batchTexture = nullptr;
 
-        auto drawCurrentBatch = [&]()
+        auto drawCurrentBatchIfNecessary = [&]()
         {
-            Mesh mesh = Mesh(vertices, indices, batchTexture);
+            if (indices.size() > 0)
+            {
+                Mesh mesh = Mesh(vertices, indices, batchTexture);
 
-            deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
-            deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
+                deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
+                deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
 
-            mesh.Draw(bindPSData);
+                mesh.Draw(bindPSData);
 
-            vertices.clear();
-            indices.clear();
+                vertices.clear();
+                indices.clear();
+            }
         };
 
         for (int entityIndex = 0; entityIndex < m_entityQueue.size(); ++entityIndex)
@@ -263,7 +266,7 @@ namespace Firelight::Graphics
                     // If not the first quad
                     if (batchTexture != nullptr)
                     {
-                        drawCurrentBatch();
+                        drawCurrentBatchIfNecessary();
                     }
 
                     batchTexture = quadEntity->m_texture;
@@ -291,7 +294,7 @@ namespace Firelight::Graphics
                 // If not the first quad
                 if (batchTexture != nullptr)
                 {
-                    drawCurrentBatch();
+                    drawCurrentBatchIfNecessary();
                 }
 
                 deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
@@ -304,10 +307,7 @@ namespace Firelight::Graphics
         DeleteQueueData();
 
         // Add the last batch
-        if (indices.size() > 0)
-        {
-            drawCurrentBatch();
-        }
+        drawCurrentBatchIfNecessary();
     }
 
     void SpriteBatch::DeleteQueueData()

@@ -137,7 +137,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().RenderFrame();
 		}
 
-		Serialiser::SaveSceneJSON();
+		//Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

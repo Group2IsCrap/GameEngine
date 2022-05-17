@@ -8,30 +8,30 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 {
 	SetParent(canvas->GetEntityID());
 	GetSpriteComponent()->toDraw = false;
-	//SetDefaultDimensions(Firelight::Maths::Vec3f(128, 100, 0));
+	SetDefaultDimensions(Firelight::Maths::Vec3f(128, 100, 0));
 
-	//Firelight::ECS::UIPanel* testUIPanel = new Firelight::ECS::UIPanel();
-	//testUIPanel->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
-	//testUIPanel->GetSpriteComponent()->toDraw = true;
-	//testUIPanel->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
-	//testUIPanel->SetParent(canvas->GetEntityID());
-	//testUIPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(800, 800, 0));
+	Firelight::ECS::UIPanel* testUIPanel = new Firelight::ECS::UIPanel();
+	testUIPanel->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
+	testUIPanel->GetSpriteComponent()->toDraw = true;
+	testUIPanel->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
+	testUIPanel->SetParent(canvas->GetEntityID());
+	testUIPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(800, 800, 0));
 
-	//Firelight::ECS::UIButton* testUIButton = new Firelight::ECS::UIButton();
-	//testUIButton->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
-	//testUIButton->GetSpriteComponent()->toDraw = true;
-	//testUIButton->SetParent(testUIPanel->GetEntityID());
-	//testUIButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
-	//testUIButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
-	//testUIButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
-	//testUIButton->SetOffset(Firelight::Maths::Vec2f(0, -300));
-	//Firelight::ECS::TextComponent* text = testUIButton->AddComponent<Firelight::ECS::TextComponent>();
-	//text->text.SetString("Test");	
-	//text->text.SetTextHeight(80.0f);
-	//text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
-	//text->layer = 100000;
+	Firelight::ECS::UIButton* testUIButton = new Firelight::ECS::UIButton();
+	testUIButton->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
+	testUIButton->GetSpriteComponent()->toDraw = true;
+	testUIButton->SetParent(testUIPanel->GetEntityID());
+	testUIButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
+	testUIButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
+	testUIButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
+	testUIButton->SetOffset(Firelight::Maths::Vec2f(0, -300));
+	Firelight::ECS::TextComponent* text = testUIButton->AddComponent<Firelight::ECS::TextComponent>();
+	text->text.SetString("Test");	
+	text->text.SetTextHeight(80.0f);
+	text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
+	text->layer = 100000;
 
-	/*Firelight::ECS::UIButton* testUIButton2 = new Firelight::ECS::UIButton();
+	Firelight::ECS::UIButton* testUIButton2 = new Firelight::ECS::UIButton();
 	testUIButton2->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
 	testUIButton2->GetSpriteComponent()->toDraw = true;
 	testUIButton2->SetParent(testUIPanel->GetEntityID());
@@ -68,7 +68,7 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	text4->text.SetString("Test4");
 	text4->text.SetTextHeight(80.0f);
 	text4->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
-	text4->layer = 100000;*/
+	text4->layer = 100000;
 
 
 }
