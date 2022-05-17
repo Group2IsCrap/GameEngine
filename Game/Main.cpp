@@ -61,6 +61,7 @@ void SetupEnemyTemplate()
 	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
 	enemyTemplate->AddComponent<RigidBodyComponent>();
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
+	enemyTemplate->AddComponent<HealthComponent>();
 
 	//AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
