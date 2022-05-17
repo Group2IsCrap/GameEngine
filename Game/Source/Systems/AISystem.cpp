@@ -24,5 +24,17 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		AIEntity* currentEntity = new AIEntity(m_entities[entityIndex]->GetEntityID());
 		currentEntity->GetComponent<AIBehaviourComponent>()->m_CurrentTransitions->HandleTransition(time);
 		currentEntity->GetComponent<AIBehaviourComponent>()->m_CurrentState->HandleState(time);
+
+		AIComponent* aiComponent = currentEntity->GetAIComponent();
+		if (aiComponent->m_tint)
+		{
+			aiComponent->m_tintTimer += time.GetDeltaTime();
+			if (aiComponent->m_tintTimer >= aiComponent->m_tintTime)
+			{
+				aiComponent->m_tintTimer = 0.0f;
+				aiComponent->m_tint = false;
+				currentEntity->GetSpriteComponent()->colour = Firelight::Graphics::Colour::RGBA(255, 255, 255, 255);
+			}
+		}
 	}
 }

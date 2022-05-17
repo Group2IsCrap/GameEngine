@@ -30,6 +30,10 @@ public:
 	AIType m_Type;
 	Entity* m_Target;
 
+	float m_tintTime = 0.2f;
+	float m_tintTimer;
+	bool m_tint = false;
+
 public:
 
 	AIComponent* Clone() override

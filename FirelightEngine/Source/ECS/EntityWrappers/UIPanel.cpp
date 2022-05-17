@@ -3,7 +3,7 @@
 namespace Firelight::ECS
 {
 
-	UIPanel::UIPanel()
+	UIPanel::UIPanel() : UIEntity()
 	{
 		AddComponent<UIContainerComponent>();
 	}
