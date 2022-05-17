@@ -135,6 +135,16 @@ namespace Firelight::ECS
 		}
 	};
 
+	struct UIBordreComponent : BaseComponent
+	{
+		Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
+		float width;
+
+		void Serialise() override
+		{
+			
+		}
+	};
 
 	////Base Widget
 	//struct UIWidgetComponent : BaseComponent

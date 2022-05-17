@@ -5,12 +5,14 @@
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
+#include<Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
 #include "../Core/Layers.h"
 
+#include"../Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -96,15 +98,23 @@ void PlayerSystem::MovePlayerRight()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 5.0f, static_cast<int>(GameLayer::Items));
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
+		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
 		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
 		{
 			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
-			TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
+			
 			audioComponent->soundPos = { transformComponent->position.x,  transformComponent->position.y,  transformComponent->position.z };
 			entitiesCollidedWith[0]->PlayAudioClip();
+		}
+		//ckeck if it is a item
+		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
+			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInv", "MainIven", entitiesCollidedWith[0])) {
+				//hide item
+				transformComponent->position = Vec3f(100000, 0, 0);
+			}
 		}
 		//playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 	}

@@ -159,6 +159,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		if (specialSlot) {
 			ECS::EntityComponentSystem::Instance()->GetComponent< Firelight::ECS::UIBaseWidgetComponent >(slot->slotID)->offSet = specialSlot->offset;
 			ECS::EntityComponentSystem::Instance()->GetComponent< Firelight::ECS::UIBaseWidgetComponent >(slot->slotID)->anchorSettings = specialSlot->anchorSettings;
+			ECS::EntityComponentSystem::Instance()->GetComponent< Firelight::ECS::UIBaseWidgetComponent >(slot->slotID)->defaultDimensions = (Maths::Vec3f(specialSlot->size.x / m_inventorySpace->GetWidgetComponent()->currentScale.x, specialSlot->size.y / m_inventorySpace->GetWidgetComponent()->currentScale.y, 0));
 		}
 
 		if (data->stackSize > -1) {

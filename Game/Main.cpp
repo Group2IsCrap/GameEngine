@@ -112,18 +112,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Load All Itemss
 
 		InventorySystem::UIParentID = canvas->GetEntityID();
-		InventoryEntity* inv1 = new InventoryEntity("PlayerInv", false, true, Keys::KEY_F);
-		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
-		inv1->AddInventory("Equipment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
-
-		//InventoryEntity* inv2 = new InventoryEntity();
-		InventoryEntity* inv2 = new InventoryEntity("PlayerInv2", false, true, Keys::KEY_J);
-		inv2->AddInventory("MainIven2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
-		inv2->AddInventory("Equipment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
+		InventoryEntity* inv1 = new InventoryEntity("PlayerInv", false, true, Keys::KEY_B);
+		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, (1080 / 2)), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopRight, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Top, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Left, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Right, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomLeft, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Bottom, std::vector<std::string>());
+		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomRight, std::vector<std::string>());
 		// Load All Items
 
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		InventorySystem::GlobalFunctions::AddItem("PlayerInv","MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
+		
 
 		while (Engine::Instance().ProcessMessages())
 		{

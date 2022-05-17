@@ -17,24 +17,45 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 {
 	//all
 	std::string name;
+
+	//global positonal settings
 	Firelight::Maths::Vec2f size;
 	Firelight::Maths::Vec2f offset;
 	Firelight::ECS::e_AnchorSettings anchorSettings;
 
+	//textuer
 	std::string backgroundTexture= "Sprites/PanelTest.png";
-	std::string slotTexture= "Sprites/Rock.png";
+	std::string slotTexture= "Sprites/Slot_Icon_100x100.png";
 
+	//slot data
 	UINT slotCount = 0;
 	int rowCount=0;
 	int columnCount=0;
 	int slotStartPositon = 0;
 
+	//controll data
 	bool isDisplay = false;
 	bool isSwap= true;
 
 	void Serialise() override
 	{
 		
+		Serialiser::Serialise("name", name);
+
+		Serialiser::Serialise("size", size);
+		Serialiser::Serialise("offset", offset);
+		Serialiser::Serialise("AnchorSettings", (int)anchorSettings);
+
+		Serialiser::Serialise("backgroundTexture", backgroundTexture);
+		Serialiser::Serialise("slotTexture", slotTexture);
+		
+		Serialiser::Serialise("slotCount", slotCount);
+		Serialiser::Serialise("rowCount", rowCount);
+		Serialiser::Serialise("columnCount", columnCount);
+		Serialiser::Serialise("slotStartPositon", slotStartPositon);
+
+		Serialiser::Serialise("isDisplay", isDisplay);
+		Serialiser::Serialise("isSwap", isSwap);
 	}
 
 	InventoryComponent* Clone() override
@@ -152,6 +173,7 @@ struct InventoryComponentSpecialSlot : Firelight::ECS::BaseComponent
 {
 	std::string slotName;
 	Firelight::Maths::Vec2f offset;
+	Firelight::Maths::Vec2f size;
 	Firelight::ECS::e_AnchorSettings anchorSettings;
 	std::vector<std::string> tags;
 
