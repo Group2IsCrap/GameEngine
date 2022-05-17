@@ -15,6 +15,7 @@
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
+
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
@@ -72,6 +73,22 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	if (playerEntity == nullptr)
 	{
 		return;
+	}
+	if (m_moveUp)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Up;
+	}
+	else if (m_moveDown)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Down;
+	}
+	else if (m_moveLeft)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Left;
+	}
+	else if (m_moveRight)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
 	}
 }
 
@@ -156,58 +173,10 @@ void PlayerSystem::SpawnItem()
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
 }
+
 void PlayerSystem::Attack()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesinRange = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 2.0f, (int) GameLayer::Enemies);
-
-	for (int entityIndex = 0; entityIndex < entitiesinRange.size(); ++entityIndex)
-	{
-		Firelight::ECS::Entity* entity = entitiesinRange[entityIndex];
-		TransformComponent* transform = entity->GetComponent<TransformComponent>();
-
-		char playerDirection;
-		int pointOneX, pointOneY, pointTwoX, pointTwoY;
-		if (playerEntity->GetSpriteComponent()->texture == /*player left texture*/) 
-		{
-			pointOneX = playerEntity->GetTransformComponent()->position.x - 5; 
-			pointTwoX = playerEntity->GetTransformComponent()->position.x - 5;
-			pointOneY = playerEntity->GetTransformComponent()->position.y + 3;
-			pointTwoY = playerEntity->GetTransformComponent()->position.y - 3;
-		}
-		if (playerEntity->GetSpriteComponent()->texture == /*player up texture*/) 
-		{
-			pointOneX = playerEntity->GetTransformComponent()->position.x - 3;
-			pointTwoX = playerEntity->GetTransformComponent()->position.x + 3;
-			pointOneY = playerEntity->GetTransformComponent()->position.y + 5;
-			pointTwoY = playerEntity->GetTransformComponent()->position.y + 5;
-		}
-		if (playerEntity->GetSpriteComponent()->texture == /*player right texture*/) 
-		{
-			pointOneX = playerEntity->GetTransformComponent()->position.x + 5;
-			pointTwoX = playerEntity->GetTransformComponent()->position.x + 5;
-			pointOneY = playerEntity->GetTransformComponent()->position.y + 3;
-			pointTwoY = playerEntity->GetTransformComponent()->position.y - 3;
-		}
-		if (playerEntity->GetSpriteComponent()->texture == /*player down texture*/) 
-		{
-			pointOneX = playerEntity->GetTransformComponent()->position.x - 3;
-			pointTwoX = playerEntity->GetTransformComponent()->position.x + 3;
-			pointOneY = playerEntity->GetTransformComponent()->position.y - 5;
-			pointTwoY = playerEntity->GetTransformComponent()->position.y - 5;
-		}
-
-
-		if (transform != nullptr)
-		{                                                                                                                                 //two points on triangle to check depending on direction player is facing
-			if (CombatCalculations::IsPointInTriangle(playerEntity->GetTransformComponent()->position.x, playerEntity->GetTransformComponent()->position.y, pointOneX, pointOneY, pointTwoX, pointTwoY, entity->GetComponent<TransformComponent>()->position.x, entity->GetComponent<TransformComponent>()->position.y))
-			{
-				entity->GetComponent <HealthComponent>()->currentHealth - 1; //replace 1 with damage from weapon componant when done
-				entitiesinRange[entityIndex] = entity;
-			}
-		}
-		
-		//replace transform with ridgid body and next position
-	}
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, 0.5f);
 }
 
 void PlayerSystem::RemoveHealth()
