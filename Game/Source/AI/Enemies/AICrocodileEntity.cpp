@@ -24,6 +24,9 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitCroc.png");
 	GetRigidBodyComponent()->interpolate = true;
 
+	GetComponent<HealthComponent>()->maxHealth = 5;
+	GetComponent<HealthComponent>()->currentHealth = GetMaxHealth();
+
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->drawCollider = true;
 	boxCollider->rect = Firelight::Maths::Rectf(1.0f, -0.2f, 6.0f, 2.4f);

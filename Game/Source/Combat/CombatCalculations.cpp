@@ -1,6 +1,7 @@
 #include "CombatCalculations.h"
 #include <Source/ECS/EntityWrappers/Entity.h>
 #include "../Core/CharacterEntity.h"
+#include "../Core/AIEntity.h"
 
 float CombatCalculations::CalculateTriangleArea(int x1, int y1, int x2, int y2, int x3, int y3)
 {
@@ -43,8 +44,8 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, float offse
     std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(nextPosition + offsetVector, 1.5, static_cast<int>(GameLayer::Enemy));
     for (auto* target : targets)
     {
-        CharacterEntity* currentEntity = new CharacterEntity(target->GetEntityID());
-        currentEntity->RemoveHealth(5);
+        AIEntity* currentEntity = new AIEntity(target->GetEntityID());
+        currentEntity->RemoveHealth(1);
     }
 }
 

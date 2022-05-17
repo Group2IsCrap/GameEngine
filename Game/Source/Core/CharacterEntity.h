@@ -16,6 +16,7 @@ public:
 	HealthComponent* GetHealthComponent();
 	Firelight::ECS::RigidBodyComponent* GetRigidBodyComponent();
 	int GetHealth();
+	int GetMaxHealth();
 	virtual void RemoveHealth(int amount);
 	virtual void HealthBelowZero();
 };
