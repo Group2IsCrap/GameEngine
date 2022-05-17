@@ -18,6 +18,7 @@
     <ClCompile Include="Source\AI\Enemies\AIDeerEntity.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
@@ -45,5 +46,6 @@
     <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
     <ClInclude Include="Source\AI\Behaviours\AIWanderBehaviour.h" />
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
   </ItemGroup>
 </Project>

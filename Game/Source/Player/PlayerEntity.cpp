@@ -10,6 +10,7 @@
 
 PlayerEntity::PlayerEntity()
 {
+	GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Player";
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
 	GetComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;

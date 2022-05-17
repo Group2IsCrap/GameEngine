@@ -17,8 +17,10 @@ AIDeerEntity::AIDeerEntity(Firelight::ECS::EntityID entityID) : AIEntity(entityI
 
 AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : AIEntity(isTemplate, entityID)
 {
+	GetComponent<IdentificationComponent>()->name = "Deer";
 	GetSpriteComponent()->pixelsPerUnit = 50;
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	GetRigidBodyComponent()->interpolate = true;
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->drawCollider = true;
@@ -30,7 +32,15 @@ AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) :
 
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
 
-	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(1.0f, 1.0f, 1.0f);
+	std::vector<std::pair<float, float>> radii
+	{ 
+		std::make_pair(0.8f, 0.2f),
+		std::make_pair(0.4f, 0.6f),
+		std::make_pair(0.1f, 1.0f)
+	};
+
+	aiBehaviourComponent->m_CurrentTransitions = new AITransitionBehaviour(aiBehaviourComponent, GetAIComponent(), GetRigidBodyComponent(), AIState::None);
+	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 1.0f, radii);
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 
 	std::map<AIState, std::function<bool()>> idleTransitions;

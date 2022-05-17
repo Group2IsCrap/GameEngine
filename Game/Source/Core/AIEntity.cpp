@@ -28,11 +28,6 @@ AIType AIEntity::GetType()
 	return m_AIComponent->m_Type;
 }
 
-float AIEntity::GetSearchRadius()
-{
-	return m_AIComponent->m_SearchRadius;
-}
-
 Entity* AIEntity::GetTarget()
 {
 	return m_AIComponent->m_Target;

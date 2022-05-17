@@ -16,7 +16,6 @@ public:
 
 	AIType GetType();
 
-	float GetSearchRadius();
 	Entity* GetTarget();
 
 private:

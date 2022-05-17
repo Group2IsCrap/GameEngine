@@ -62,7 +62,7 @@ void SetupEnemyTemplate()
 	enemyTemplate->AddComponent<RigidBodyComponent>();
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
 
-	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
+	//AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
 

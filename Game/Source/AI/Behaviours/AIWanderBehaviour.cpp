@@ -1,25 +1,44 @@
 #include "AIWanderBehaviour.h"
 
-AIWanderBehaviour::AIWanderBehaviour(float wanderInterval, float wanderRadius, float speed) : m_WanderInterval(wanderInterval), m_WanderRadius(wanderRadius), m_Speed(speed)
+#include <Source/Maths/Random.h>
+#include <Source/Maths/Vec2.h>
+
+using namespace Firelight::Maths;
+
+AIWanderBehaviour::AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent,float wanderInterval, float speed, std::vector<std::pair<float, float>> radii) : m_rigidBodyComponent(rigidbodyComponent), m_wanderInterval(wanderInterval), m_radii(radii), m_speed(speed)
 {
-	m_CurWanderTime = 0.0f;
+	m_curWanderTime = 0.0f;
+	m_spawnpoint = rigidbodyComponent->nextPos;
 }
 
 void AIWanderBehaviour::HandleState(const Firelight::Utils::Time& time)
 {
-	m_CurWanderTime += time.GetDeltaTime();
+	if (m_radii.empty())
+		return;
 
-	if (m_CurWanderTime > m_WanderInterval)
+	m_curWanderTime += time.GetDeltaTime();
+
+	if (m_curWanderTime > m_wanderInterval)
 	{
-		m_CurWanderTime = 0.0f;
+		m_curWanderTime = 0.0f;
 		// Timer reached, find new random spot and set it as the point to walk towards
-		//These should be relative to player
-		m_wanderLocation.x = (rand() % m_WanderRadius);
-		m_wanderLocation.y = (rand() % m_WanderRadius);
+
+		float percentage = Random::ZeroToOne<float>();
+
+		for (auto& radius : m_radii)
+		{
+			if (percentage < radius.first)
+			{
+				m_wanderLocation = Random::RandomPointInCircle<Vec3f>(m_spawnpoint, radius.second);
+				break;
+			}
+			continue;
+		}
+
+		// Conver to direction.
+		m_wanderLocation.Normalise();
 	}
 
 	// Walk towards point here
-	//These should grab respective Entity's rigid body component
-	m_rigidBodyComponent.velocity.x += m_wanderLocation.x + m_Speed * time.GetPhysicsTimeStep();
-	m_rigidBodyComponent.velocity.y += m_wanderLocation.y + m_Speed * time.GetPhysicsTimeStep();
+	m_rigidBodyComponent->velocity += m_wanderLocation * m_speed * time.GetDeltaTime();
 }
