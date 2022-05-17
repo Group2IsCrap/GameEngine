@@ -333,12 +333,13 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
+		InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, slot->specialSlotIndex);
 		if (slot->isUsed == true) 
 		{
 			//not free slot
 			if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(item.UITexID)->parentID == slot->slotID && useSlotPlacement) 
 			{
-				isFail = AddItem(item, false);;
+				isFail = AddItem(item, false);
 				break;
 			}
 			continue;
@@ -349,6 +350,32 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 		}
 		else 
 		{
+
+			bool isGood = true;
+			if (specialSlot) {
+				//test tags
+
+				std::vector<std::string> tagData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(item.entityIDs[0])->tags;
+				for (size_t j = 0; j < specialSlot->tags.size(); j++)
+				{
+					if (std::find(tagData.begin(), tagData.end(), specialSlot->tags[j]) == tagData.end()) {
+						isGood = false;
+						
+					} 
+				}
+			}
+			if (!isGood) {
+				if (useSlotPlacement) {
+					isFail = AddItem(item, false);
+					break;
+				}
+
+
+				continue;
+			}
+
+
+
 			slotData->UITexID = item.UITexID;
 			slotData->stackSize = item.stackSize;
 			slotData->entityIDs = item.entityIDs;
@@ -430,14 +457,34 @@ void Inventory::Place(InventoryStoreData* slotData)
 	{
 		InventoryStoreData* placeSlotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* placeSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, placeSlotData->slotIndex);
-		ECS::EntityID isa = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID;
-		ECS::EntityID isa2 = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(placeSlot->slotID)->parentID;
+		InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, placeSlot->specialSlotIndex);
+	
 		if (placeSlot->slotID == ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID)
 		{
+
 			if (placeSlot->isUsed && !inventoryData->isSwap) 
 			{
 				return;
 			}
+			bool isGood = true;
+
+			if (specialSlot) {
+				//test tags
+
+				std::vector<std::string> tagData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(slotData->entityIDs[0])->tags;
+				for (size_t j = 0; j < specialSlot->tags.size(); j++)
+				{
+					if (std::find(tagData.begin(), tagData.end(), specialSlot->tags[j]) == tagData.end()) {
+						isGood = false;
+						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID = currSlot->slotID;
+						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
+						Events::EventDispatcher::InvokeFunctions<Events::Inventory::UpdateInventory>();
+						return;
+					}
+				}
+			}
+
+			
 
 			InventoryStoreData tempSlotData = *placeSlotData;
 

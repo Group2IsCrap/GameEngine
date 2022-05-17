@@ -440,8 +440,8 @@ namespace Firelight::UI {
 			
 		}
 		
-
-		if (m_clickTime > 0.1f)
+		
+		if (m_clickTime > 0.2f)
 		{
 			m_dragTimerActive = false;
 			m_clickTime = 0.0f;

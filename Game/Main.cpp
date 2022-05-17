@@ -46,13 +46,13 @@ void BindDefaultKeys()
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID());
+	ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID();
 }
 
 void SpawnItem1()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(1);
-	InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(3)->GetEntityID());
+	ItemDatabase::Instance()->CreateInstanceOfItem(3)->GetEntityID();
 }
 
 void SetupDebugUI()
@@ -129,11 +129,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		
-		InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(2)->GetEntityID());
-		InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(4)->GetEntityID());
-		InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(3)->GetEntityID());
-		InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
-		InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID());
 
 		while (Engine::Instance().ProcessMessages())
 		{

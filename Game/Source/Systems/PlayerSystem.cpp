@@ -111,7 +111,8 @@ void PlayerSystem::Interact()
 		}
 		//ckeck if it is a item
 		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
-			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInv", "MainIven", entitiesCollidedWith[0])) {
+
+			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", entitiesCollidedWith[0])) {
 				//hide item
 				transformComponent->position = Vec3f(100000, 0, 0);
 			}
