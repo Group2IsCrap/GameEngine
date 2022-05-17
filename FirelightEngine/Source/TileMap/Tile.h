@@ -4,24 +4,24 @@
 
 namespace Firelight::TileMap
 {
-	class Tile
+	struct Tile
 	{
-	public:
-		Tile();
-
-		void DrawTile();
-
-		void SetTileTexture(Graphics::Texture* texture);
-		void SetDestinationRect(float x, float y, float w, float h);
-		void SetSourceRect(float x, float y, float w, float h);
-		void SetLayer(int layer);
-		void SetRotation(double layer);
-
-	private:
-		Graphics::Texture* m_texture;
-		Maths::Rectf m_sourceRect;
-		Maths::Rectf m_destinationRect;
+		int m_x;
+		int m_y;
 		int m_layer;
-		double m_rotation;
+
+		Tile()
+		{
+			m_x = 0;
+			m_y = 0;
+			m_layer = 0;
+		}
+
+		Tile(int x, int y, int layer)
+		{
+			m_x = x;
+			m_y = y;
+			m_layer = layer;
+		}
 	};
 }

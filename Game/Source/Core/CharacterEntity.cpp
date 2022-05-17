@@ -30,6 +30,11 @@ int CharacterEntity::GetHealth()
 	return GetComponent<HealthComponent>()->currentHealth;
 }
 
+int CharacterEntity::GetMaxHealth()
+{
+	return GetHealthComponent()->maxHealth;
+}
+
 void CharacterEntity::RemoveHealth(int amount)
 {
 	HealthComponent* component = GetComponent<HealthComponent>();
@@ -43,5 +48,5 @@ void CharacterEntity::RemoveHealth(int amount)
 
 void CharacterEntity::HealthBelowZero()
 {
-	
+	float test = 2;
 }

@@ -35,9 +35,7 @@ namespace Firelight::Events
 		template<typename EventType>
 		static void InvokeFunctions();
 		static void InvokeFunctions(DescriptorType descriptor);
-		
-
-
+		static size_t SubscribeFunction(DescriptorType descriptor,CallbackFunctionType&& callbackFunction);
 	private:
 		static std::map<Event::DescriptorType, std::vector<Listener*>> sm_listeners;
 		static std::map<Event::DescriptorType, std::vector<CallbackFunctionType>> sm_observers;

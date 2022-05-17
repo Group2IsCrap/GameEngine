@@ -4,6 +4,8 @@
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
+#include <Source/ImGuiUI/ImGuiManager.h>
+#include<Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
@@ -12,6 +14,7 @@
 #include "../Core/CharacterEntity.h"
 #include "../Combat/CombatCalculations.h"
 
+#include"../Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -39,6 +42,9 @@ PlayerSystem::PlayerSystem()
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::Attack, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
+
+	imguiLayer = new ImGuiPlayerLayer();
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -65,6 +71,7 @@ void PlayerSystem::CheckForPlayer()
 	if (playerEntity == nullptr && m_entities.size() > 0)
 	{
 		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
+		imguiLayer->SetPlayer(playerEntity);
 	}
 }
 
@@ -164,7 +171,23 @@ void PlayerSystem::Interact()
 	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
-		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
+		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
+		{
+			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
+			
+			audioComponent->soundPos = { transformComponent->position.x,  transformComponent->position.y,  transformComponent->position.z };
+			entitiesCollidedWith[0]->PlayAudioClip();
+		}
+		//ckeck if it is a item
+		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
+
+			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", entitiesCollidedWith[0])) {
+				//hide item
+				transformComponent->position = Vec3f(100000, 0, 0);
+			}
+		}
+		//playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 	}
 }
 

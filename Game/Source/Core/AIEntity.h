@@ -12,6 +12,7 @@ public:
 	AIEntity(Firelight::ECS::EntityID entityID);
 	AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
+	void RemoveHealth(int amount) override;
 	void HealthBelowZero() override;
 
 	AIComponent* GetAIComponent();

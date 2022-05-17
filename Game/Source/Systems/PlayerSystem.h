@@ -6,6 +6,7 @@
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
+#include "../ImGuiPlayerLayer.h"
 
 using DescriptorType = const char*;
 
@@ -41,11 +42,12 @@ private:
   
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* playerEntity;
-
+  
 	bool m_moveUp;
 	bool m_moveDown;
 	bool m_moveLeft;
 	bool m_moveRight;
+	ImGuiPlayerLayer* imguiLayer = nullptr;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();

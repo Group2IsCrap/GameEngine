@@ -50,10 +50,10 @@ namespace Firelight::Graphics
         // Calculate tex coords if weve been given a source rect
         if (sourceRect.IsValid())
         {
-            quad->m_topLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y));
-            quad->m_topRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
-            quad->m_bottomLeft.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
-            quad->m_bottomRight.m_texCoord = quad->m_texture->GetTexCoordFromSourcePixelCoord(Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_topLeft.m_texCoord, Maths::Vec2f(sourceRect.x, sourceRect.y));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_topRight.m_texCoord, Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_bottomLeft.m_texCoord, Maths::Vec2f(sourceRect.x, sourceRect.y + sourceRect.h));
+            quad->m_texture->GetTexCoordFromSourcePixelCoord(quad->m_bottomRight.m_texCoord, Maths::Vec2f(sourceRect.x + sourceRect.w, sourceRect.y + sourceRect.h));
         }
         // Otherwise just use default texcoords
         else
@@ -163,7 +163,7 @@ namespace Firelight::Graphics
                 {
                     if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                     {
-                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                        if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                         {
                             return quadX->m_texture < quadY->m_texture;
                         }
@@ -182,7 +182,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
@@ -206,7 +206,7 @@ namespace Firelight::Graphics
                     {
                         if (auto const* quadX = dynamic_cast<QuadEntity const*>(x))
                         {
-                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(x))
+                            if (auto const* quadY = dynamic_cast<QuadEntity const*>(y))
                             {
                                 return quadX->m_texture < quadY->m_texture;
                             }
@@ -237,17 +237,20 @@ namespace Firelight::Graphics
         std::vector<DWORD> indices;
         Texture* batchTexture = nullptr;
 
-        auto drawCurrentBatch = [&]()
+        auto drawCurrentBatchIfNecessary = [&]()
         {
-            Mesh mesh = Mesh(vertices, indices, batchTexture);
+            if (indices.size() > 0)
+            {
+                Mesh mesh = Mesh(vertices, indices, batchTexture);
 
-            deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
-            deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
+                deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
+                deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
 
-            mesh.Draw(bindPSData);
+                mesh.Draw(bindPSData);
 
-            vertices.clear();
-            indices.clear();
+                vertices.clear();
+                indices.clear();
+            }
         };
 
         for (int entityIndex = 0; entityIndex < m_entityQueue.size(); ++entityIndex)
@@ -263,7 +266,7 @@ namespace Firelight::Graphics
                     // If not the first quad
                     if (batchTexture != nullptr)
                     {
-                        drawCurrentBatch();
+                        drawCurrentBatchIfNecessary();
                     }
 
                     batchTexture = quadEntity->m_texture;
@@ -288,6 +291,12 @@ namespace Firelight::Graphics
             }
             else if (auto* textEntity = dynamic_cast<TextEntity*>(entity))
             {
+                // If not the first quad
+                if (batchTexture != nullptr)
+                {
+                    drawCurrentBatchIfNecessary();
+                }
+
                 deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/Text")->GetShader(), NULL, 0);
                 deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/Text")->GetShader(), NULL, 0);
 
@@ -298,10 +307,7 @@ namespace Firelight::Graphics
         DeleteQueueData();
 
         // Add the last batch
-        if (indices.size() > 0)
-        {
-            drawCurrentBatch();
-        }
+        drawCurrentBatchIfNecessary();
     }
 
     void SpriteBatch::DeleteQueueData()

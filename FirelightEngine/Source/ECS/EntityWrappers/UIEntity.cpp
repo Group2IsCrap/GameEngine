@@ -22,6 +22,11 @@ namespace Firelight::ECS
 	{
 		GetComponent<UIBaseWidgetComponent>()->anchorSettings = settings;
 	}
+	
+	void UIEntity::SetScaleSettings(e_Scale settings)
+	{
+		GetComponent<UIBaseWidgetComponent>()->scaleSetting = settings;
+	}
 
 	void UIEntity::SetDefaultPosition(Maths::Vec3f pos)
 	{

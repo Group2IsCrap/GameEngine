@@ -37,12 +37,19 @@
 #include "Source/Serialisation/Serialiser.h"
 #include"Source/Input/GetInput.h"
 
+
+
 #include"Source\Events\UIEvents.h"
 #include "Player/PlayerSystem.h"
 #include "Player/PlayerEntity.h"
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
+
+#include "Source/ECS/Components/TilemapComponent.h"
+#include "Source/TileMap/Tile.h"
+
 #include"Inventory/InventoryManager.h"
+#include"Inventory/InventoryWrapper.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Serialisation;
@@ -51,39 +58,31 @@ using namespace snowFallAudio::FModAudio;
 
 static UICanvas* s_uiCanvas;
 
-void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, float volumedB)
-{
-	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, volumedB);
-}
 
-float vol = 1.0f;
-float newVol = 100.f;
+
+void PlaySound_Internal(const std::string& soundName, const Vector3D& soundPos, bool looping, bool is3d, bool streaming, AudioChannel channel)
+{
+	snowFallAudio::FModAudio::AudioEngine::engine->PlayfModSound(soundName, soundPos, channel, looping, is3d, streaming);
+}
 
 void PlayBeuu()
 {
-	vol = 80.0f;
-	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), vol);
+	PlaySound_Internal("beeuuuuu.mp3", Vector3D(0.0f, 0.0f, 0.0f), false, false, false, AudioEngine::engine->getChannel("UI"));
 }
 
 void PlayMusic()
 {
-	vol = 50.0f;
-	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f),vol);
+	PlaySound_Internal("sound.mp3", Vector3D(0.0f, 0.0f, 0.0f), true, false, true, AudioEngine::engine->getChannel("Background"));
 }
 
 void VolUp()
 {
-	newVol += 50.0f;
-	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
+	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(10.0f);
 }
 
 void VolDown()
 {
-	if (newVol > 0.0f)
-	{
-		newVol -= 50.f;
-		snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(newVol);
-	}
+	snowFallAudio::FModAudio::AudioEngine::engine->VolumeChange(-10.0f);
 }
 
 void StopSounds()
@@ -96,6 +95,7 @@ void CreatUITest() {
 	s_uiCanvas = new UICanvas();
 	s_uiCanvas->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/CanvasTest.png");
 	s_uiCanvas->GetSpriteComponent()->toDraw = false;
+	s_uiCanvas->GetWidgetComponent()->hasParent = false;
 	s_uiCanvas->SetAnchorSettings(ECS::e_AnchorSettings::Center);
 	s_uiCanvas->GetCanvasComponent()->XScreenSize = Engine::Instance().GetWindowDimensionsFloat().x;
 	s_uiCanvas->GetCanvasComponent()->YScreenSize = Engine::Instance().GetWindowDimensionsFloat().y;
@@ -106,7 +106,7 @@ void CreatUITest() {
 
 	Maths::Vec2f ScreenSize = Engine::Instance().GetWindowDimensionsFloat();
 
-	UIPanel* panelSound = new UIPanel();
+	/*UIPanel* panelSound = new UIPanel();
 	panelSound->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/PanelTest.png");
 	panelSound->SetAnchorSettings(ECS::e_AnchorSettings::Right);
 	panelSound->SetParent(s_uiCanvas->GetEntityID());
@@ -150,11 +150,11 @@ void CreatUITest() {
 	buttonStopPlay->SetDefaultDimensions(Maths::Vec3f(880, 120, 0));
 	buttonStopPlay->SetOffset(Maths::Vec2f(0.0f, 330.0f));
 	buttonStopPlay->BindOnLeftPressed(std::bind(StopSounds));
-	buttonStopPlay->SetParent(panelSound->GetEntityID());
+	buttonStopPlay->SetParent(panelSound->GetEntityID());*/
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
-	
+
 }
 InventoryManager* invTestA;
 void SpawnItem0()
@@ -167,15 +167,15 @@ void SpawnItem1()
 }
 void SpawnItem2()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+	invTestA->AddItem("PlayerInv", "MainIven2", ItemDatabase::Instance()->CreateInstanceOfItem(2));
 }
 void SpawnItem3()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+	invTestA->AddItem("PlayerInv2", "MainIven3", ItemDatabase::Instance()->CreateInstanceOfItem(3));
 }
 void SpawnItem4()
 {
-	ItemDatabase::Instance()->CreateInstanceOfItem(4);
+	invTestA->AddItem("PlayerInv2", "MainIven4", ItemDatabase::Instance()->CreateInstanceOfItem(4));
 }
 
 void SetupDebugUI()
@@ -200,34 +200,35 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
-
+		Engine::Instance().GetSystemManager().RegisterGameSystem<InventoryManager>();
 		// Player Character
 		float playerSpeed = 10.0f;
 		PlayerEntity* player = new PlayerEntity(playerSpeed);
 
-		Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
+		//Graphics::Texture* glowTexture = Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/non_binary_transparency.png");
 
-		const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
+		//const auto& windowDimensions = Engine::Instance().GetWindowDimensionsFloat();
 
 		//SpriteEntity* test2 = new SpriteEntity();
 		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
 		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
 		//test2->GetSpriteComponent()->layer = 16;
 
-		CreatUITest();
+		//CreatUITest();
 
-		SetupDebugUI();
-    
-		invTestA = new InventoryManager(s_uiCanvas);
-		invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
+		//SetupDebugUI();
+
+		//invTestA = new InventoryManager(s_uiCanvas);
+		//invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
 		// Temporary text test
 		GameEntity* text = new GameEntity();
 		text->AddComponent<TextComponent>();
 		text->GetComponent<TextComponent>()->text.SetString("Epic String");
 		text->GetComponent<TextComponent>()->text.SetTextHeight(50.0f);
+		text->GetComponent<TextComponent>()->layer = 128;
 		text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 300.0f, 0.0f);
+		text->GetComponent<TransformComponent>()->position = Maths::Vec3f(1100.0f, 300.0f, 0.0f);
 
 		/*SpriteEntity* barn = new SpriteEntity();
 		barn->GetComponent<TransformComponent>()->position.x = 7.0f;
@@ -252,7 +253,41 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//circle->GetComponent<ColliderComponent, BoxColliderComponent>()->drawCollider = true;
 		//circle->GetComponent<StaticComponent>()->isStatic = false;
 
-		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+		//ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+
+		// Tilemap Test
+		TilemapComponent* tilemapComponent = new TilemapComponent();
+		tilemapComponent->sourceSize = 1;
+		tilemapComponent->sourceSpacing = 2;
+		tilemapComponent->cellSize = 100;
+		tilemapComponent->width = 10;
+		tilemapComponent->height = 10;
+		tilemapComponent->Texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/TilemapTest1.png");
+		int alternate = 0;
+		for (int y = 0; y < 5; y++)
+		{
+			for (int x = 0; x < 10; x++)
+			{
+				std::pair<int, int> position(x, y);
+				Firelight::TileMap::Tile* tile;
+				if (alternate % 3 == 0)
+				{
+					tile = new Firelight::TileMap::Tile(0, 0, 25);
+				}
+				else if(alternate % 3 == 1)
+				{
+					tile = new Firelight::TileMap::Tile(1, 0, 25);
+				}
+				else
+				{
+					tile = new Firelight::TileMap::Tile(2, 0, 25);
+				}
+				tilemapComponent->map[position] = tile;
+				alternate++;
+			}
+		}
+		GameEntity* tileMapEntity = new GameEntity();
+		tileMapEntity->AddComponent<Firelight::ECS::TilemapComponent>(tilemapComponent);
 
 		while (Firelight::Engine::Instance().ProcessMessages())
 		{
@@ -260,16 +295,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 
-			// get input onece
-			if (Input::InputGet.KeyIsPressNonRepeat('F')) {
-				invTestA->LoadInventoryGroup("PlayerInv");
-			}
-			if (Input::InputGet.KeyIsPressNonRepeat('G')) {
-				invTestA->UnloadInventoryGroup("PlayerInv");
-			}
-			if (Input::InputGet.KeyIsPressNonRepeat('P')) {
-				invTestA->RemoveItem("PlayerInv", "MainIven",1,10);
-			}
 		}
 
 		Serialiser::SaveSceneJSON();
