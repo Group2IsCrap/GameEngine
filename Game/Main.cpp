@@ -11,6 +11,7 @@
 #include "Source/Systems/PlayerSystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
+#include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
 #include "Source/Core//WorldEntity.h"
@@ -37,18 +38,20 @@ void BindDefaultKeys()
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
-	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
 	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
 }
 
 void SpawnItem0()
 {
 	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	InventorySystem::Global_Functions::AddItem("PlayerInventory", "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID());
 }
 
 void SpawnItem1()
 {
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	InventorySystem::Global_Functions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 }
 
 void SetupDebugUI()
@@ -71,6 +74,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
+
 		// Register KeyBindings
 		BindDefaultKeys();
 
@@ -100,29 +104,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//collider->radius = 4.25f;
 
 		// UI
-
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
 		SetupDebugUI();
 
-		// Load All Itemss
-
-		InventorySystem::UIParentID = canvas->GetEntityID();
-		InventoryWrapper* inv1 = new InventoryWrapper("PlayerInv", false, true, Keys::KEY_F);
-		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
-		inv1->AddInventory("equaitment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
-
-		//InventoryWrapper* inv2 = new InventoryWrapper();
-		InventoryWrapper* inv2 = new InventoryWrapper("PlayerInv2", false, true, Keys::KEY_J);
-		inv2->AddInventory("MainIven2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
-		inv2->AddInventory("equaitment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
 		// Load All Items
+		InventorySystem::UIParentID = canvas->GetEntityID();
+		InventoryWrapper* inv1 = new InventoryWrapper("PlayerInventory", false, true, Keys::KEY_F);
+		inv1->AddInventory("MainIventory", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("Equipment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
 
+		InventoryWrapper* inv2 = new InventoryWrapper("PlayerInv2", false, true, Keys::KEY_J);
+		inv2->AddInventory("MainIventory2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
+		inv2->AddInventory("Equipment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
+		
+		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		InventorySystem::Global_Functions::AddItem("PlayerInv","equaitment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 
 		while (Engine::Instance().ProcessMessages())
 		{

@@ -19,6 +19,7 @@ namespace Firelight::ECS
 		std::string description;
 		std::string iconPath;
 		int stackSize;
+		std::vector<std::string> tags;
 
 		void Serialise() override
 		{
@@ -37,6 +38,7 @@ namespace Firelight::ECS
 			clone->description = description;
 			clone->iconPath = iconPath;
 			clone->stackSize = stackSize;
+			clone->tags = tags;
 
 			return clone;
 		}
