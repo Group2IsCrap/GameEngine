@@ -7,6 +7,7 @@
 #include "Systems/TextSystem.h"
 #include"Systems/UISystem.h"
 #include "../Source/Physics/PhysicsSystem.h"
+#include "Systems/TilemapSystem.h"
 
 namespace Firelight::ECS
 {
@@ -51,5 +52,6 @@ namespace Firelight::ECS
 		m_systems.push_back(std::make_unique<TextSystem>());
 		m_systems.push_back(std::make_unique<UI::UISystem>());
 		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
+		m_systems.push_back(std::make_unique<TilemapSystem>());
 	}
 }
