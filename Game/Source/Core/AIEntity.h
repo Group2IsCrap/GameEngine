@@ -1,4 +1,5 @@
 #pragma once
+#include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../Core/CharacterEntity.h"
 #include "../CoreComponents/AIComponent.h"
