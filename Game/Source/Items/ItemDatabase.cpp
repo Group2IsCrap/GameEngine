@@ -91,7 +91,7 @@ std::vector<std::string> ItemDatabase::GetTagList(std::string stream)
 
 	if (stream.length() > 0)
 	{
-		while (stream.contains(";"))
+		while (stream.find(";") != std::string::npos)
 		{
 			std::string left = stream.substr(0, stream.find_first_of(";"));
 			std::string right = stream.substr(stream.find_first_of(";") + 1);
