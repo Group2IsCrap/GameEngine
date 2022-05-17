@@ -12,6 +12,8 @@ void AIWanderBehaviour::HandleState(const Firelight::Utils::Time& time)
 	if (m_CurWanderTime > m_WanderInterval)
 	{
 		m_CurWanderTime = 0.0f;
-		float test = 2.0f;
+		// Timer reached, find new random spot and set it as the point to walk towards
 	}
+
+	// Walk towards point here
 }
