@@ -392,7 +392,9 @@
     <ClInclude Include="Source\ECS\Components\RenderingComponents.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UIEntity.h" />
     <ClInclude Include="Source\ECS\Systems\AnimationSystem.h" />
+    <ClInclude Include="Source\ECS\Systems\TilemapSystem.h" />
     <ClInclude Include="Source\ECS\Systems\UISystem.h" />
+    <ClInclude Include="Source\Events\DemoEvent.h" />
     <ClInclude Include="Source\Events\UIEvents.h" />
     <ClInclude Include="Source\Graphics\GraphicsEvents.h" />
     <ClInclude Include="Source\Input\ControllerEvent.h" />
@@ -488,6 +490,7 @@
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UIEntity.cpp" />
     <ClCompile Include="Source\ECS\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TilemapSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\UISystem.cpp" />
     <ClCompile Include="Source\Input\GetInput.cpp" />
     <ClCompile Include="Includes\imgui\backends\imgui_impl_dx11.cpp" />
@@ -529,8 +532,6 @@
     <ClCompile Include="Source\SceneManagement\Scene.cpp" />
     <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Source\Serialisation\Serialiser.cpp" />
-    <ClCompile Include="Source\TileMap\Tile.cpp" />
-    <ClCompile Include="Source\TileMap\TileMap.cpp" />
     <ClCompile Include="Source\Utils\AdapterReader.cpp" />
     <ClCompile Include="Source\Graphics\GraphicsHandler.cpp" />
     <ClCompile Include="Source\Utils\ErrorManager.cpp" />
