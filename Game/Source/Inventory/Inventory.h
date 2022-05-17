@@ -18,19 +18,18 @@ class Inventory
 {
 public:
 	Inventory();
-	Inventory(std::string Name);
+	Inventory(std::string name);
 	~Inventory();
 
 	void SetEntityData(ECS::EntityID ID, int InvListPos=0);
 	
-	
-	ECS::EntityID GetEntityData() { return m_InventoryEntityID; }
-	int GetInvetorNumber() { return m_GroupInventoryID; }
-	void CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
-	void CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	ECS::EntityID GetEntityData() { return m_inventoryEntityID; }
+	int GetInventoryNumber() { return m_groupInventoryID; }
+	void CreateInventoryNoPanel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
+	void CreateInventoryNoPanel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
 
 	//display controlls
-	void LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit);
+	void LoadInventory(std::vector<ECS::UIPanel*> *panelToUse, bool toFit);
 	void UnloadInventory();
 
 	//item controlls
@@ -50,27 +49,25 @@ public:
 
 	void Place(InventoryStoreData* slotData);
 
-	ECS::EntityID GetSpecialSlot(std::string Name);
+	ECS::EntityID GetSpecialSlot(std::string name);
 
-
-	std::vector <InventoryStoreData>* GetNullSlotData() { return &m_OutOfInventoryData; }
-	ECS::UIPanel* GetInventorySpace() { return m_InventorySpace; }
-	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_InventoryEntityID, m_GroupInventoryID)->Name; }
-	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_InventoryEntityID, m_GroupInventoryID)->isDisplay; }
+	std::vector <InventoryStoreData>* GetNullSlotData() { return &m_outOfInventoryData; }
+	ECS::UIPanel* GetInventorySpace() { return m_inventorySpace; }
+	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID)->name; }
+	bool GetIsDisplay() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID)->isDisplay; }
 private:
 
 
 
 private:
+	//panel created by this 
+	ECS::UIPanel* m_inventorySpace;
 
-	//pannle created by this 
-	ECS::UIPanel* m_InventorySpace;
-
-	//invetory entity
-	ECS::EntityID m_InventoryEntityID;
-	int m_GroupInventoryID = 0;
+	//inventory entity
+	ECS::EntityID m_inventoryEntityID;
+	int m_groupInventoryID = 0;
 
 	//slots to remove
-	std::vector <InventoryStoreData> m_OutOfInventoryData;
+	std::vector <InventoryStoreData> m_outOfInventoryData;
 };
 
