@@ -1,0 +1,18 @@
+#pragma once
+#include "Source/Events/Event.h"
+namespace Firelight::Events::Inv
+{
+	NEW_EVENT(UPDATEINV);
+	NEW_EVENT(ADD_NEW_INV);
+
+	NEW_EVENT(REMOVE_ITEM);
+	NEW_EVENT(ADD_ITEM);
+	NEW_EVENT(FINED_ITEM);
+
+	NEW_EVENT(LOAD_INVENTORY_GROUP);
+	NEW_EVENT(UNLOAD_INVENTORY_GROUP);
+
+
+
+	
+}

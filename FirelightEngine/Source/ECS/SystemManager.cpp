@@ -4,6 +4,7 @@
 #include"Systems/NDCSpriteRenderSystem.h"
 #include"Systems/PixelSpriteRenderSystem.h"
 #include "Systems/AnimationSystem.h"
+#include "Systems/TextSystem.h"
 #include"Systems/UISystem.h"
 #include "../Source/Physics/PhysicsSystem.h"
 #include "Systems/TilemapSystem.h"
@@ -26,11 +27,11 @@ namespace Firelight::ECS
 		}
 	}
 
-	void SystemManager::PhysicsUpdate(const Utils::Time& time)
+	void SystemManager::FixedUpdate(const Utils::Time& time)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->PhysicsUpdate(time);
+			m_systems[systemIndex]->FixedUpdate(time);
 		}
 	}
 
@@ -48,6 +49,7 @@ namespace Firelight::ECS
 		m_systems.push_back(std::make_unique<NDCSpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<PixelSpriteRenderSystem>());
 		m_systems.push_back(std::make_unique<AnimationSystem>());
+		m_systems.push_back(std::make_unique<TextSystem>());
 		m_systems.push_back(std::make_unique<UI::UISystem>());
 		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
 		m_systems.push_back(std::make_unique<TilemapSystem>());

@@ -5,12 +5,16 @@
 
 #include"..\Maths\Vec2.h"
 
+#include "ControllerEvent.h"
+
 #pragma comment(lib, "Xinput.lib")
+
+using namespace Firelight::Events::Input;
 
 namespace Firelight::Input
 {
 	/// <summary>
-	/// XBox 360 Controller Support
+	/// XBox Controller Support
 	/// </summary>
 	class ControllerInput
 	{
@@ -26,7 +30,7 @@ namespace Firelight::Input
 		void Vibrate(float leftVal, float rightVal);
 
 		void TestInput();
-		bool IsPressed(WORD buttion);
+		bool IsPressed(WORD button);
 
 		Maths::Vec2f GetLeftStickState();
 		Maths::Vec2f GetRightStickState();
@@ -39,9 +43,12 @@ namespace Firelight::Input
 		bool m_InputThis = false;
 	private:
 		bool IsConnected();
+		void ProcessStateChange(Events::Input::ControllerState state);
+
+		void ProcessButtonPressed(bool state, bool previousState, ControllerButtons button);
 
 	public:
-		bool m_Isconnected = false;
+		bool m_IsConnected = false;
 
 	private:
 		int m_User_ID = 0;
@@ -68,5 +75,6 @@ namespace Firelight::Input
 		XINPUT_STATE m_State;
 		POINT m_CurrentMousePos;
 		
+		Events::Input::ControllerState m_previousState;
 	};
 }

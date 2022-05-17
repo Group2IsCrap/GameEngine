@@ -48,7 +48,7 @@ namespace Firelight::Graphics
 	}
 
 	template<class T>
-	inline bool ConstantBuffer<T>::MapToGPU()
+	inline bool ConstantBuffer<T>::MapToGPU() const
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		HRESULT hr = m_deviceContext->Map(m_buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);

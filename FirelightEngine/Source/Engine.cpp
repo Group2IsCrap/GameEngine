@@ -100,6 +100,11 @@ namespace Firelight
     {
         return m_systemManager;
     }
+
+    KeyBinder& Engine::GetKeyBinder()
+    {
+        return m_keyBinder;
+    }
   
     bool Engine::ProcessMessages()
     {
@@ -165,6 +170,7 @@ namespace Firelight
 
     void Engine::Update()
     {
+        m_keyBinder.Update();
         Input::ProcessInput::Instance()->ControllerInput();
 
         m_time.Update();
@@ -174,7 +180,7 @@ namespace Firelight
         // Do as many physics updates as are neccessary this frame
         for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
         {
-            m_systemManager.PhysicsUpdate(m_time); 
+            m_systemManager.FixedUpdate(m_time); 
             Input::ProcessInput::Instance()->TestInput();
         }
 

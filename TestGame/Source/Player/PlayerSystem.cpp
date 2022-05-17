@@ -44,7 +44,7 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 		keyPress = true;
 	}
 
-	if (Firelight::Input::InputGet.KeyIsPress('S'))
+	if (Firelight::Input::InputGet.KeyIsPressNonRepeat('S'))
 	{
 		SetState(m_right ? 1 : 2);
 		m_entities[0]->GetComponent<Firelight::ECS::TransformComponent>()->position.y -= Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_entities[0]->GetComponent<PlayerComponent>()->speed;
@@ -80,7 +80,7 @@ void PlayerSystem::SetState(int state)
 	case 1:
 		if (!m_right)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkRight");
+			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalk");
 			m_right = true;
 			m_left = false;
 		}
@@ -88,7 +88,7 @@ void PlayerSystem::SetState(int state)
 	case 2:
 		if (!m_left)
 		{
-			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalkLeft");
+			Firelight::ECS::AnimationSystem::Instance()->Play(m_entities[0], "PlayerWalk");
 			m_left = true;
 			m_right = false;
 		}

@@ -179,7 +179,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\Includes;$(SolutionDir)\FirelightEngine\Includes\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\Includes;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
@@ -375,6 +375,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\KeyBinder.h" />
+    <ClInclude Include="Source\Graphics\Text\FontGlyph.h" />
+    <ClInclude Include="Source\Graphics\Text\Font.h" />
     <ClInclude Include="Source\ECS\Components\ItemComponents.h" />
     <ClInclude Include="Source\ECS\Systems\PixelSpriteRenderSystem.h" />
     <ClInclude Include="Source\ECS\Systems\NDCSpriteRenderSystem.h" />
@@ -441,6 +444,7 @@
     <ClInclude Include="Source\Maths\Random.h" />
     <ClInclude Include="Source\Maths\Rect.h" />
     <ClInclude Include="Source\Physics\IntersectData.h" />
+    <ClInclude Include="Source\Physics\PhysicsHelpers.h" />
     <ClInclude Include="Source\Physics\PhysicsSystem.h" />
     <ClInclude Include="Source\SceneManagement\Scene.h" />
     <ClInclude Include="Source\SceneManagement\SceneManager.h" />
@@ -470,12 +474,17 @@
     <ClInclude Include="Source\ECS\SystemManager.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntity.h" />
     <ClInclude Include="Source\Utils\Time.h" />
+    <ClInclude Include="Source\Graphics\Text\Text.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\Template.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UIButton.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UICanvas.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\UIPanel.h" />
+    <ClInclude Include="Source\ECS\Systems\TextSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\KeyBinder.cpp" />
+    <ClCompile Include="Source\Graphics\Text\FontGlyph.cpp" />
+    <ClCompile Include="Source\Graphics\Text\Font.cpp" />
     <ClCompile Include="Source\ECS\Systems\PixelSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\Systems\NDCSpriteRenderSystem.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\CameraEntity.cpp" />
@@ -539,10 +548,12 @@
     <ClCompile Include="Source\ECS\SystemManager.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntity.cpp" />
     <ClCompile Include="Source\Utils\Time.cpp" />
+    <ClCompile Include="Source\Graphics\Text\Text.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\Template.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UIButton.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UICanvas.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\UIPanel.cpp" />
+    <ClCompile Include="Source\ECS\Systems\TextSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\icon\directx %28unused%29.ico" />

@@ -10,6 +10,9 @@
 #include "Shaders/VertexShader.h"
 #include "Shaders/PixelShader.h"
 
+#include "Text/Font.h"
+#include "Text/Text.h"
+
 namespace Firelight::Graphics
 {
     GraphicsHandler::GraphicsHandler() :
@@ -295,11 +298,7 @@ namespace Firelight::Graphics
 		// Render Sprite batch batches
 		m_deviceContext->OMSetDepthStencilState(m_disabledDepthStencilState.Get(), 0);
 
-		m_spriteBatch->CreateBatches();
-		for (auto& batch : m_spriteBatch->GetBatches())
-		{
-			batch.Draw();
-		}
+		m_spriteBatch->CreateAndDrawBatches();
 
 		//m_tileMap->UpdateTileMapSize();
 		//m_tileMap->DrawTiles();

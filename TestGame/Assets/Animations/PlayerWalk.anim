@@ -1,0 +1,16 @@
+{
+    "AnimationName": "PlayerWalk",
+    "Loop": true,
+    "FrameTime": 75.0,
+    "FrameCount": 8,
+    "TextureNames": [
+        "Sprites\\Player\\PlayerWalkLeft1.png",
+        "Sprites\\Player\\PlayerWalkLeft2.png",
+        "Sprites\\Player\\PlayerWalkLeft3.png",
+        "Sprites\\Player\\PlayerWalkLeft4.png",
+        "Sprites\\Player\\PlayerWalkLeft5.png",
+        "Sprites\\Player\\PlayerWalkLeft6.png",
+        "Sprites\\Player\\PlayerWalkLeft7.png",
+        "Sprites\\Player\\PlayerWalkLeft8.png"
+    ]
+}

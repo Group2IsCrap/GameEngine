@@ -4,6 +4,7 @@
 
 namespace Firelight::Events::Input 
 {
+	NEW_EVENT(OnKeyPressNonRepeat);
 	class KeyboardEvent: public Events::Event
 	{
 	public:
@@ -50,5 +51,15 @@ namespace Firelight::Events::Input
 		~OnKeyRelease();
 
 		static constexpr DescriptorType sm_descriptor = "OnKeyRelease";
+	};
+	
+	class KeyIsPressed : public KeyboardEvent
+	{
+	public:
+		KeyIsPressed();
+		KeyIsPressed(const KeyEvent type, const unsigned char key);
+		~KeyIsPressed();
+
+		static constexpr DescriptorType sm_descriptor = "KeyIsPressed";
 	};
 }

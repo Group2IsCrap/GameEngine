@@ -47,7 +47,7 @@ namespace Firelight::ECS
 	/// Physics update
 	/// </summary>
 	/// <param name="fixeddt"></param>
-	void System::PhysicsUpdate(const Utils::Time& time)
+	void System::FixedUpdate(const Utils::Time& time)
 	{
 		(void)time;
 	}

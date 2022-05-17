@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 
 #include "Random.h"
+#include "../Utils/ErrorManager.h"
 
 namespace Firelight::Maths
 {
@@ -121,6 +122,23 @@ namespace Firelight::Maths
     inline bool Vec3<T>::operator==(const T scalar) const
     {
         return x == scalar && y == scalar && z == scalar;
+    }
+
+    template<typename T>
+    inline T& Vec3<T>::operator[](int index)
+    {
+        switch (index)
+        {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+        }
+
+        ERROR_STANDARD("Index out of range for vector 3");
+        return x;
     }
 
     template<typename T>

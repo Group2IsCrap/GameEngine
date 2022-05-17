@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "Random.h"
+#include "../Utils/ErrorManager.h"
 
 namespace Firelight::Maths
 {
@@ -92,6 +93,12 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline Vec2<T> Vec2<T>::operator/(const Vec2<T>& vector) const
+    {
+        return Vec2<T>(x / vector.x, y / vector.y);
+    }
+
+    template<typename T>
     inline Vec2<T> Vec2<T>::operator/(const T scalar) const
     {
         return Vec2<T>(x / scalar, y / scalar);
@@ -117,27 +124,18 @@ namespace Firelight::Maths
     }
 
     template<typename T>
-    inline bool Vec2<T>::operator<(const T scalar) const
+    inline T& Vec2<T>::operator[](int index)
     {
-        return x < scalar && y < scalar;
-    }
+        switch (index)
+        {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        }
 
-    template<typename T>
-    inline bool Vec2<T>::operator<(const Vec2<T>& vector) const
-    {
-        return x < vector.x && y < vector.y;
-    }
-
-    template<typename T>
-    inline bool Vec2<T>::operator>(const T scalar) const
-    {
-        return x > scalar&& y > scalar;
-    }
-
-    template<typename T>
-    inline bool Vec2<T>::operator>(const Vec2<T>& vector) const
-    {
-        return x > vector.x&& y > vector.y;
+        ERROR_STANDARD("Index out of range for vector 2");
+        return x;
     }
 
     template<typename T>

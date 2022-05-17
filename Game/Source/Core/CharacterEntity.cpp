@@ -10,9 +10,16 @@ CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight:
 
 }
 
+
+
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
 	return GetComponent<HealthComponent>();
+}
+
+Firelight::ECS::RigidBodyComponent* CharacterEntity::GetRigidBodyComponent()
+{
+	return GetComponent<Firelight::ECS::RigidBodyComponent>();
 }
 
 int CharacterEntity::GetHealth()

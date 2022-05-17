@@ -27,7 +27,11 @@ namespace Firelight::ECS
 		None
 
 	};
-
+	enum class e_Scale
+	{
+		Absolute=0,
+		Relative
+	};
 
 	//Base Widget
 	struct UIBaseWidgetComponent : BaseComponent
@@ -42,6 +46,8 @@ namespace Firelight::ECS
 
 		Maths::Vec3f defaultPosition = Maths::Vec3f(0, 0, 0);
 		Maths::Vec3f defaultDimensions = Maths::Vec3f(100, 100, 0);
+
+		e_Scale scaleSetting = e_Scale::Relative;
 		Maths::Vec3f defaultScale = Maths::Vec3f(1, 1, 0);
 		Maths::Vec3f currentScale = Maths::Vec3f(1, 1, 0);
 
@@ -53,6 +59,8 @@ namespace Firelight::ECS
 
 			//Maybe?
 			Serialiser::Serialise("AnchorSettings", (int)anchorSettings);
+			Serialiser::Serialise("ScaleSetting", (int)scaleSetting);
+
 
 			Serialiser::Serialise("Offset", offSet);
 			Serialiser::Serialise("DefaultPosition", defaultPosition);
@@ -75,7 +83,8 @@ namespace Firelight::ECS
 
 	struct UIDraggableComponent : BaseComponent
 	{
-
+		std::vector<CallbackFunctionType> onPickUpFunctions;
+		std::vector<CallbackFunctionType> onDropUpFunctions;
 	};
 
 	struct UIContainerComponent : BaseComponent
@@ -102,7 +111,7 @@ namespace Firelight::ECS
 		bool isChangeOfTex = true;
 		Graphics::Colour::RGBA colour[3] = { Firelight::Graphics::Colours::sc_white ,Firelight::Graphics::Colours::sc_black,Firelight::Graphics::Colours::sc_defaultMetallic};
 		std::vector<Maths::Rectf> rectsOfButton;
-		const char* buttonText = nullptr;
+		std::string buttonText = std::string();
 
 		void Serialise() override
 		{
@@ -121,7 +130,7 @@ namespace Firelight::ECS
 			}
 			Serialiser::EndArray();
 
-			Serialiser::Serialise("ButtonText", buttonText);
+			Serialiser::Serialise("ButtonText", buttonText.c_str());
 		}
 	};
 

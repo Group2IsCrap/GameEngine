@@ -13,6 +13,8 @@
 namespace Firelight::Graphics
 {
     class SpriteBatch;
+    class Font;
+    class Text;
 }
 
 namespace Firelight::Graphics
