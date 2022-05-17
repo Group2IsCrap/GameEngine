@@ -133,7 +133,10 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				slot->SetDefaultDimensions(Maths::Vec3f(sizeX / m_inventorySpace->GetWidgetComponent()->currentScale.x, sizeY / m_inventorySpace->GetWidgetComponent()->currentScale.y, 0));
 				slot->SetOffset(Maths::Vec2f(currX, currY));
 				slot->GetWidgetComponent()->isActive = inventoryData->isDisplay;
-				
+				TextComponent* text = slot->AddComponent<ECS::TextComponent>();
+				text->hidden = true;
+				text->text.SetTextHeight(20);
+				text->layer = 100000;
 				panelToUse->push_back(slot);
 				nextFreePannle= panelToUse->size();
 			}
@@ -177,6 +180,11 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				slotWidget->defaultDimensions.y / slotWidget->defaultScale.y,
 				0);
 			iconWidget->hasParent = true;
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(data->UITexID);
+			text->hidden = false;
+			text->text.SetString(std::to_string(data->entityIDs.size()));
+			//text->layer = iconSprite->layer + 1;
+
 		}
 	}
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
@@ -206,6 +214,8 @@ void Inventory::UnloadInventory()
 		{
 			pix->toDraw = inventoryData->isDisplay;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(data->UITexID)->isActive = inventoryData->isDisplay;
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(data->UITexID);
+			text->hidden = true;
 		}
 	}
 	for (int i = 0; i < inventoryData->slotCount; i++)
@@ -280,6 +290,10 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 								0);
 							Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
+							TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+							text->hidden = false;
+							//text->text.SetString(std::to_string(slotData->entityIDs.size()));
+							
 						}
 					}
 					else
@@ -290,12 +304,21 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						icon->SetAnchorSettings(ECS::e_AnchorSettings::Center);
 						icon->GetWidgetComponent()->hasParent = false;
 						icon->GetWidgetComponent()->isActive = inventoryData->isDisplay;
+						TextComponent* text = icon->AddComponent<ECS::TextComponent>();
+						text->hidden = true;
+						text->text.SetTextHeight(30);
+						text->layer = 100000;
+						text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_BotRight);
+
 						if (inventoryData->isDisplay) {
 							icon->SetParent(slot->slotID);
 							icon->SetDefaultDimensions(Maths::Vec3f(
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 								0));
+							
+							text->hidden = false;
+							
 						}
 						icon->AddComponent<ECS::UIDraggableComponent>();
 						icon->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
@@ -307,14 +330,19 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 					}
 
 					//slot.second->CurrSlot = &slot.first;
+					
+				}
+				
+			}		
 					slot->isUsed = true;
 					slotData->stackSize = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(item)->stackSize - 1;
-
+					if (inventoryData->isDisplay) {
+						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+						text->text.SetString(std::to_string(slotData->entityIDs.size()));
+					}
 
 					isFail = false;
 					break;
-				}
-			}
 		}
 
 	}
@@ -388,6 +416,9 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = inventoryData->isDisplay;
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = inventoryData->isDisplay;
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID = slot->slotID;
+				TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+				text->hidden = false;
+				text->text.SetString(std::to_string(slotData->entityIDs.size()));
 			}
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->defaultDimensions = Maths::Vec3f(
@@ -433,6 +464,8 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 						slot->isUsed = false;
 						slotData->stackSize = -1;
 						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
+						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+						text->hidden = true;
 					}
 					isFail = false;
 					
@@ -503,7 +536,9 @@ void Inventory::Place(InventoryStoreData* slotData)
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(placeSlotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropUpFunctions.clear();
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, placeSlotData));
-
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(placeSlotData->UITexID);
+			text->hidden = false;
+			text->text.SetString(std::to_string(placeSlotData->entityIDs.size()));
 			if (slotData->stackSize > -1) 
 			{
 				
@@ -511,6 +546,9 @@ void Inventory::Place(InventoryStoreData* slotData)
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
+				TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+				text->hidden = false;
+				text->text.SetString(std::to_string(slotData->entityIDs.size()));
 				currSlot->isUsed = true;
 			}
 			else
@@ -530,7 +568,9 @@ void Inventory::Place(InventoryStoreData* slotData)
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = false;
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Absolute;
-
+	TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+	text->hidden = true;
+	
 	InventoryStoreData dataCopy = *slotData;
 	slotData->entityIDs.clear();
 	slotData->stackSize = -1;
@@ -624,6 +664,8 @@ bool Inventory::RemoveItemType(int howMany, int type)
 						dataToRemove[i]->stackSize = -1;
 						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(dataToRemove[i]->UITexID)->toDraw = false;
 						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(dataToRemove[i]->UITexID)->isActive = false;
+						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(dataToRemove[i]->UITexID);
+						text->hidden = true;
 						break;
 					}
 				}

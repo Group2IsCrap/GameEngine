@@ -31,6 +31,7 @@ namespace InventorySystem
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
+           
             m_entityIDPanelSlot.push_back(Slot);
         }
     }
