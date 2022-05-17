@@ -11,6 +11,7 @@
 #include "Source/Systems/PlayerSystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
+#include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
 #include "Source/Core//WorldEntity.h"
@@ -38,18 +39,20 @@ void BindDefaultKeys()
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
-	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_F, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
 	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
 }
 
 void SpawnItem0()
 {
 	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	InventorySystem::Global_Functions::AddItem("PlayerInventory", "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID());
 }
 
 void SpawnItem1()
 {
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	InventorySystem::Global_Functions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
 }
 
 void SetupDebugUI()
@@ -72,6 +75,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
+
 		// Register KeyBindings
 		BindDefaultKeys();
 
@@ -101,16 +105,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//collider->radius = 4.25f;
 
 		// UI
-
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
 		SetupDebugUI();
 
-		// Load All Itemss
-
+		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();
 		InventoryEntity* inv1 = new InventoryEntity("PlayerInv", false, true, Keys::KEY_B);
 		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, (1080 / 2)), ECS::e_AnchorSettings::TopRight);
@@ -124,7 +127,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Bottom, std::vector<std::string>());
 		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomRight, std::vector<std::string>());
 		// Load All Items
-
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		
 
@@ -140,7 +142,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().RenderFrame();
 		}
 
-		Serialiser::SaveSceneJSON();
+		//Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

@@ -14,6 +14,8 @@ public:
 
 	void LoadItems(std::string filepath);
 
+	std::vector<std::string> GetTagList(std::string stream);
+
 	Entity* CreateInstanceOfItem(int itemID);
 
 private:

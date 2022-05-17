@@ -14,6 +14,7 @@
     <ClCompile Include="Source\UI\DeathMenu.cpp" />
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
+    <ClCompile Include="Source\UI\MainMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
@@ -37,5 +38,6 @@
     <ClInclude Include="Source\UI\DeathMenu.h" />
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
     <ClInclude Include="Source\Core\WorldEntity.h" />
+    <ClInclude Include="Source\UI\MainMenuUI.h" />
   </ItemGroup>
 </Project>
