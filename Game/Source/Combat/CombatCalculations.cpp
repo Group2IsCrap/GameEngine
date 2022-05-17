@@ -14,3 +14,6 @@ bool CombatCalculations::IsPointInTriangle(int PointOneX, int PointOneY, int Poi
 
     return (A == A1 + A2 + A3);
 }
+
+//physics helpers
+//Overlap circle
