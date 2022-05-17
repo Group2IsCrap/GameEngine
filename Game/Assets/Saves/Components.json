@@ -2,139 +2,6 @@
     "Scene": {
         "ComponentTypes": [
             {
-                "ComponentID": 10,
-                "Components": [
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    },
-                    {
-                        "Name": ""
-                    }
-                ]
-            },
-            {
-                "ComponentID": 9,
-                "Components": [
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": true
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    },
-                    {
-                        "IsStatic": false
-                    }
-                ]
-            },
-            {
                 "ComponentID": 3,
                 "Components": [
                     {
@@ -153,8 +20,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -2.9289605617523193,
-                            "Y": 24.80845069885254,
+                            "X": 3.1080923080444336,
+                            "Y": 12.149797439575195,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -166,8 +33,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -2.3829410076141357,
-                            "Y": 24.808809280395508,
+                            "X": 3.1606767177581787,
+                            "Y": 12.149802207946777,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -387,8 +254,8 @@
                     {
                         "Rotation": 0.0,
                         "Position": {
-                            "X": -7.0,
-                            "Y": -3.0,
+                            "X": 0.0,
+                            "Y": 0.0,
                             "Z": 0.0
                         },
                         "Scale": {
@@ -409,11 +276,368 @@
                             "Y": 1.0,
                             "Z": 0.0
                         }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 0.0,
+                            "Y": 8.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 7.0,
+                            "Y": -4.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 9.0,
+                            "Y": -5.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 2.0,
+                            "Y": -1.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -4.0,
+                            "Y": 6.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 6.0,
+                            "Y": -5.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 3.0,
+                            "Y": 1.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -4.0,
+                            "Y": 6.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -9.0,
+                            "Y": 3.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 8.0,
+                            "Y": -8.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -4.0,
+                            "Y": -7.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 6.0,
+                            "Y": -7.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": -6.0,
+                            "Y": 8.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
+                    },
+                    {
+                        "Rotation": 0.0,
+                        "Position": {
+                            "X": 4.0,
+                            "Y": 3.0,
+                            "Z": 0.0
+                        },
+                        "Scale": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Z": 0.0
+                        }
                     }
                 ]
             },
             {
                 "ComponentID": 11,
+                "Components": [
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    },
+                    {
+                        "Name": ""
+                    }
+                ]
+            },
+            {
+                "ComponentID": 9,
+                "Components": [
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": true
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    },
+                    {
+                        "IsStatic": false
+                    }
+                ]
+            },
+            {
+                "ComponentID": 12,
                 "Components": [
                     {
                         "Layer": 0
@@ -477,17 +701,68 @@
                     },
                     {
                         "Layer": 0
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
+                    },
+                    {
+                        "Layer": 1
                     }
                 ]
             },
             {
-                "ComponentID": 12,
+                "ComponentID": 13,
                 "Components": [
                     {
                         "ViewportWorldHeight": 20.0
                     },
                     {
                         "ViewportWorldHeight": 20.0
+                    }
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "Components": [
+                    {
+                        "CurrentHealth": 5,
+                        "MaxHealth": 5
                     }
                 ]
             },
@@ -585,20 +860,333 @@
                         },
                         "FlipX": false,
                         "FlipY": false
-                    }
-                ]
-            },
-            {
-                "ComponentID": 15,
-                "Components": [
+                    },
                     {
-                        "CurrentHealth": 5,
-                        "MaxHealth": 5
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
+                    },
+                    {
+                        "Layer": 997,
+                        "Texture": "INSERT TEXTURE HERE",
+                        "DrawOffset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        },
+                        "PixelsPerUnit": 50.0,
+                        "Colour": {
+                            "R": 255.0,
+                            "G": 255.0,
+                            "B": 255.0,
+                            "A": 255.0
+                        },
+                        "SourceRect": {
+                            "X": 0.0,
+                            "Y": 0.0,
+                            "Width": -1.0,
+                            "Height": -1.0
+                        },
+                        "FlipX": false,
+                        "FlipY": false
                     }
                 ]
             },
             {
-                "ComponentID": 13,
+                "ComponentID": 14,
                 "Components": [
                     {
                         "Name": "",
@@ -611,23 +1199,23 @@
                 "Components": [
                     {
                         "Velocity": {
-                            "X": 0.026544325053691864,
-                            "Y": 0.0000028688505153695587,
+                            "X": 0.0012889431091025472,
+                            "Y": 9.60751145306915e-10,
                             "Z": 0.0
                         },
                         "LastPos": {
-                            "X": -2.367142677307129,
-                            "Y": 24.80881118774414,
+                            "X": 3.16015362739563,
+                            "Y": 12.149802207946777,
                             "Z": 0.0
                         },
                         "NextPos": {
-                            "X": -2.3317501544952393,
-                            "Y": 24.808815002441406,
+                            "X": 3.161872148513794,
+                            "Y": 12.149802207946777,
                             "Z": 0.0
                         },
                         "Layer": 0,
                         "Interpolate": true,
-                        "InterpolationTime": 0.0
+                        "InterpolationTime": 0.03323899954557419
                     },
                     {
                         "Velocity": {
@@ -668,6 +1256,104 @@
                             "Y": -1.0,
                             "Width": 6.400000095367432,
                             "Height": 5.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
+                        }
+                    },
+                    {
+                        "Radius": 1.0,
+                        "Offset": {
+                            "X": 0.0,
+                            "Y": 0.0
                         }
                     },
                     {
@@ -1446,7 +2132,7 @@
                 ]
             },
             {
-                "ComponentID": 16,
+                "ComponentID": 17,
                 "Components": [
                     {
                         "Layer": 1000.0,
@@ -1456,24 +2142,18 @@
                 ]
             },
             {
-                "ComponentID": 17,
-                "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {}
-                ]
-            },
-            {
                 "ComponentID": 18,
                 "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
                     {}
                 ]
             },
@@ -1485,6 +2165,12 @@
             },
             {
                 "ComponentID": 20,
+                "Components": [
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 21,
                 "Components": [
                     {
                         "IsChangeOfTex": true,
@@ -1527,17 +2213,8 @@
                 ]
             },
             {
-                "ComponentID": 14,
+                "ComponentID": 15,
                 "Components": [
-                    {},
-                    {}
-                ]
-            },
-            {
-                "ComponentID": 21,
-                "Components": [
-                    {},
-                    {},
                     {},
                     {}
                 ]
@@ -1554,122 +2231,6 @@
             {
                 "ComponentID": 23,
                 "Components": [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
                     {},
                     {},
                     {},
@@ -1804,6 +2365,229 @@
             {
                 "ComponentID": 25,
                 "Components": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            {
+                "ComponentID": 26,
+                "Components": [
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 0,
+                        "Name": "Rock",
+                        "Description": "It's a stone",
+                        "IconPath": "Sprites/Rock.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
+                    {
+                        "ItemID": 1,
+                        "Name": "Stick",
+                        "Description": " A piece of a tree",
+                        "IconPath": "Sprites/Stick.png",
+                        "StackSize": 69
+                    },
                     {
                         "ItemID": 1,
                         "Name": "Stick",
@@ -1814,8 +2598,106 @@
                 ]
             },
             {
-                "ComponentID": 26,
+                "ComponentID": 27,
                 "Components": [
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
+                    {
+                        "SoundName": "beeuuuuu.mp3",
+                        "Looping": false,
+                        "Is3d": false,
+                        "Streaming": false,
+                        "Channel": "UI"
+                    },
                     {
                         "SoundName": "beeuuuuu.mp3",
                         "Looping": false,
@@ -1826,7 +2708,7 @@
                 ]
             },
             {
-                "ComponentID": 27,
+                "ComponentID": 28,
                 "Components": [
                     {}
                 ]
@@ -1834,7 +2716,152 @@
         ],
         "ComponentMap": [
             {
-                "ComponentID": 10,
+                "ComponentID": 3,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 19,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 20,
+                        "Indices": [18]
+                    },
+                    {
+                        "EntityID": 21,
+                        "Indices": [19]
+                    },
+                    {
+                        "EntityID": 22,
+                        "Indices": [20]
+                    },
+                    {
+                        "EntityID": 23,
+                        "Indices": [21]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [22]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [23]
+                    },
+                    {
+                        "EntityID": 26,
+                        "Indices": [24]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [25]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [26]
+                    },
+                    {
+                        "EntityID": 29,
+                        "Indices": [27]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [28]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [29]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [30]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [31]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [32]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [33]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [34]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 11,
                 "EntityIDs": [
                     {
                         "EntityID": 0,
@@ -2004,184 +3031,62 @@
                     {
                         "EntityID": 22,
                         "Indices": [20]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 3,
-                "EntityIDs": [
-                    {
-                        "EntityID": 0,
-                        "Indices": [0]
                     },
                     {
-                        "EntityID": 1,
-                        "Indices": [1]
+                        "EntityID": 23,
+                        "Indices": [21]
                     },
                     {
-                        "EntityID": 2,
-                        "Indices": [2]
+                        "EntityID": 24,
+                        "Indices": [22]
                     },
                     {
-                        "EntityID": 3,
-                        "Indices": [3]
+                        "EntityID": 25,
+                        "Indices": [23]
                     },
                     {
-                        "EntityID": 4,
-                        "Indices": [4]
+                        "EntityID": 26,
+                        "Indices": [24]
                     },
                     {
-                        "EntityID": 5,
-                        "Indices": [5]
+                        "EntityID": 27,
+                        "Indices": [25]
                     },
                     {
-                        "EntityID": 6,
-                        "Indices": [6]
+                        "EntityID": 28,
+                        "Indices": [26]
                     },
                     {
-                        "EntityID": 7,
-                        "Indices": [7]
+                        "EntityID": 29,
+                        "Indices": [27]
                     },
                     {
-                        "EntityID": 8,
-                        "Indices": [8]
+                        "EntityID": 30,
+                        "Indices": [28]
                     },
                     {
-                        "EntityID": 9,
-                        "Indices": [9]
+                        "EntityID": 31,
+                        "Indices": [29]
                     },
                     {
-                        "EntityID": 10,
-                        "Indices": [10]
+                        "EntityID": 32,
+                        "Indices": [30]
                     },
                     {
-                        "EntityID": 11,
-                        "Indices": [11]
+                        "EntityID": 33,
+                        "Indices": [31]
                     },
                     {
-                        "EntityID": 12,
-                        "Indices": [12]
+                        "EntityID": 34,
+                        "Indices": [32]
                     },
                     {
-                        "EntityID": 13,
-                        "Indices": [13]
+                        "EntityID": 35,
+                        "Indices": [33]
                     },
                     {
-                        "EntityID": 14,
-                        "Indices": [14]
-                    },
-                    {
-                        "EntityID": 16,
-                        "Indices": [15]
-                    },
-                    {
-                        "EntityID": 17,
-                        "Indices": [16]
-                    },
-                    {
-                        "EntityID": 19,
-                        "Indices": [17]
-                    },
-                    {
-                        "EntityID": 20,
-                        "Indices": [18]
-                    },
-                    {
-                        "EntityID": 21,
-                        "Indices": [19]
-                    },
-                    {
-                        "EntityID": 22,
-                        "Indices": [20]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 11,
-                "EntityIDs": [
-                    {
-                        "EntityID": 0,
-                        "Indices": [0]
-                    },
-                    {
-                        "EntityID": 1,
-                        "Indices": [1]
-                    },
-                    {
-                        "EntityID": 2,
-                        "Indices": [2]
-                    },
-                    {
-                        "EntityID": 3,
-                        "Indices": [3]
-                    },
-                    {
-                        "EntityID": 4,
-                        "Indices": [4]
-                    },
-                    {
-                        "EntityID": 5,
-                        "Indices": [5]
-                    },
-                    {
-                        "EntityID": 6,
-                        "Indices": [6]
-                    },
-                    {
-                        "EntityID": 7,
-                        "Indices": [7]
-                    },
-                    {
-                        "EntityID": 8,
-                        "Indices": [8]
-                    },
-                    {
-                        "EntityID": 9,
-                        "Indices": [9]
-                    },
-                    {
-                        "EntityID": 10,
-                        "Indices": [10]
-                    },
-                    {
-                        "EntityID": 11,
-                        "Indices": [11]
-                    },
-                    {
-                        "EntityID": 12,
-                        "Indices": [12]
-                    },
-                    {
-                        "EntityID": 13,
-                        "Indices": [13]
-                    },
-                    {
-                        "EntityID": 14,
-                        "Indices": [14]
-                    },
-                    {
-                        "EntityID": 16,
-                        "Indices": [15]
-                    },
-                    {
-                        "EntityID": 17,
-                        "Indices": [16]
-                    },
-                    {
-                        "EntityID": 19,
-                        "Indices": [17]
-                    },
-                    {
-                        "EntityID": 20,
-                        "Indices": [18]
-                    },
-                    {
-                        "EntityID": 21,
-                        "Indices": [19]
-                    },
-                    {
-                        "EntityID": 22,
-                        "Indices": [20]
+                        "EntityID": 36,
+                        "Indices": [34]
                     }
                 ]
             },
@@ -2195,12 +3100,170 @@
                     {
                         "EntityID": 1,
                         "Indices": [1]
+                    },
+                    {
+                        "EntityID": 2,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 3,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 4,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 5,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 6,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 7,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 8,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 9,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 10,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 11,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 12,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 13,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 14,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 16,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 17,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 19,
+                        "Indices": [17]
+                    },
+                    {
+                        "EntityID": 20,
+                        "Indices": [18]
+                    },
+                    {
+                        "EntityID": 21,
+                        "Indices": [19]
+                    },
+                    {
+                        "EntityID": 22,
+                        "Indices": [20]
+                    },
+                    {
+                        "EntityID": 23,
+                        "Indices": [21]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [22]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [23]
+                    },
+                    {
+                        "EntityID": 26,
+                        "Indices": [24]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [25]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [26]
+                    },
+                    {
+                        "EntityID": 29,
+                        "Indices": [27]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [28]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [29]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [30]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [31]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [32]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [33]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [34]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 13,
+                "EntityIDs": [
+                    {
+                        "EntityID": 0,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 1,
+                        "Indices": [1]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 16,
+                "EntityIDs": [
+                    {
+                        "EntityID": 2,
+                        "Indices": [0]
                     }
                 ]
             },
             {
                 "ComponentID": 0,
                 "EntityIDs": [
+                    {
+                        "EntityID": 26,
+                        "Indices": [7]
+                    },
                     {
                         "EntityID": 2,
                         "Indices": [0]
@@ -2216,20 +3279,63 @@
                     {
                         "EntityID": 21,
                         "Indices": [3]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 15,
-                "EntityIDs": [
+                    },
                     {
-                        "EntityID": 2,
-                        "Indices": [0]
+                        "EntityID": 23,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 29,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [16]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [17]
                     }
                 ]
             },
             {
-                "ComponentID": 13,
+                "ComponentID": 14,
                 "EntityIDs": [
                     {
                         "EntityID": 2,
@@ -2254,6 +3360,10 @@
                 "ComponentID": 8,
                 "EntityIDs": [
                     {
+                        "EntityID": 26,
+                        "Indices": [6]
+                    },
+                    {
                         "EntityID": 2,
                         "Indices": [0]
                     },
@@ -2264,6 +3374,58 @@
                     {
                         "EntityID": 21,
                         "Indices": [2]
+                    },
+                    {
+                        "EntityID": 23,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 29,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [14]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [15]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [16]
                     }
                 ]
             },
@@ -2390,7 +3552,7 @@
                 ]
             },
             {
-                "ComponentID": 16,
+                "ComponentID": 17,
                 "EntityIDs": [
                     {
                         "EntityID": 5,
@@ -2399,7 +3561,7 @@
                 ]
             },
             {
-                "ComponentID": 17,
+                "ComponentID": 18,
                 "EntityIDs": [
                     {
                         "EntityID": 6,
@@ -2448,15 +3610,6 @@
                 ]
             },
             {
-                "ComponentID": 18,
-                "EntityIDs": [
-                    {
-                        "EntityID": 13,
-                        "Indices": [0]
-                    }
-                ]
-            },
-            {
                 "ComponentID": 19,
                 "EntityIDs": [
                     {
@@ -2475,6 +3628,15 @@
                 ]
             },
             {
+                "ComponentID": 21,
+                "EntityIDs": [
+                    {
+                        "EntityID": 13,
+                        "Indices": [0]
+                    }
+                ]
+            },
+            {
                 "ComponentID": 5,
                 "EntityIDs": [
                     {
@@ -2484,7 +3646,7 @@
                 ]
             },
             {
-                "ComponentID": 14,
+                "ComponentID": 15,
                 "EntityIDs": [
                     {
                         "EntityID": 15,
@@ -2493,19 +3655,6 @@
                     {
                         "EntityID": 18,
                         "Indices": [1]
-                    }
-                ]
-            },
-            {
-                "ComponentID": 21,
-                "EntityIDs": [
-                    {
-                        "EntityID": 15,
-                        "Indices": [0, 1]
-                    },
-                    {
-                        "EntityID": 18,
-                        "Indices": [2, 3]
                     }
                 ]
             },
@@ -2527,11 +3676,11 @@
                 "EntityIDs": [
                     {
                         "EntityID": 15,
-                        "Indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+                        "Indices": [0, 1]
                     },
                     {
                         "EntityID": 18,
-                        "Indices": [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]
+                        "Indices": [2, 3]
                     }
                 ]
             },
@@ -2552,8 +3701,12 @@
                 "ComponentID": 25,
                 "EntityIDs": [
                     {
-                        "EntityID": 21,
-                        "Indices": [0]
+                        "EntityID": 15,
+                        "Indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+                    },
+                    {
+                        "EntityID": 18,
+                        "Indices": [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]
                     }
                 ]
             },
@@ -2561,13 +3714,134 @@
                 "ComponentID": 26,
                 "EntityIDs": [
                     {
+                        "EntityID": 29,
+                        "Indices": [7]
+                    },
+                    {
                         "EntityID": 21,
                         "Indices": [0]
+                    },
+                    {
+                        "EntityID": 23,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 26,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [14]
                     }
                 ]
             },
             {
                 "ComponentID": 27,
+                "EntityIDs": [
+                    {
+                        "EntityID": 29,
+                        "Indices": [7]
+                    },
+                    {
+                        "EntityID": 21,
+                        "Indices": [0]
+                    },
+                    {
+                        "EntityID": 23,
+                        "Indices": [1]
+                    },
+                    {
+                        "EntityID": 24,
+                        "Indices": [2]
+                    },
+                    {
+                        "EntityID": 25,
+                        "Indices": [3]
+                    },
+                    {
+                        "EntityID": 26,
+                        "Indices": [4]
+                    },
+                    {
+                        "EntityID": 27,
+                        "Indices": [5]
+                    },
+                    {
+                        "EntityID": 28,
+                        "Indices": [6]
+                    },
+                    {
+                        "EntityID": 30,
+                        "Indices": [8]
+                    },
+                    {
+                        "EntityID": 31,
+                        "Indices": [9]
+                    },
+                    {
+                        "EntityID": 32,
+                        "Indices": [10]
+                    },
+                    {
+                        "EntityID": 33,
+                        "Indices": [11]
+                    },
+                    {
+                        "EntityID": 34,
+                        "Indices": [12]
+                    },
+                    {
+                        "EntityID": 35,
+                        "Indices": [13]
+                    },
+                    {
+                        "EntityID": 36,
+                        "Indices": [14]
+                    }
+                ]
+            },
+            {
+                "ComponentID": 28,
                 "EntityIDs": [
                     {
                         "EntityID": 22,
@@ -2579,7 +3853,7 @@
         "ComponentTypeReference": [
             {
                 "ComponentTypeName": "struct InventoryComponent",
-                "ComponentTypeID": 21
+                "ComponentTypeID": 22
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::TextComponent",
@@ -2587,7 +3861,7 @@
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::AudioComponent",
-                "ComponentTypeID": 26
+                "ComponentTypeID": 27
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::SpriteComponent",
@@ -2603,7 +3877,7 @@
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::IdentificationComponent",
-                "ComponentTypeID": 10
+                "ComponentTypeID": 11
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::NDCSpriteComponent",
@@ -2615,7 +3889,7 @@
             },
             {
                 "ComponentTypeName": "struct InventoryComponentGroupID",
-                "ComponentTypeID": 14
+                "ComponentTypeID": 15
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::UIBaseWidgetComponent",
@@ -2634,60 +3908,64 @@
                 "ComponentTypeID": 9
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::LayerComponent",
-                "ComponentTypeID": 11
+                "ComponentTypeName": "class Firelight::ECS::TilemapComponent",
+                "ComponentTypeID": 10
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
+                "ComponentTypeName": "struct Firelight::ECS::LayerComponent",
                 "ComponentTypeID": 12
             },
             {
-                "ComponentTypeName": "struct PlayerComponent",
+                "ComponentTypeName": "struct Firelight::ECS::Camera2DComponent",
                 "ComponentTypeID": 13
             },
             {
-                "ComponentTypeName": "struct HealthComponent",
-                "ComponentTypeID": 15
+                "ComponentTypeName": "struct PlayerComponent",
+                "ComponentTypeID": 14
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
+                "ComponentTypeName": "struct HealthComponent",
                 "ComponentTypeID": 16
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UICanvasComponent",
                 "ComponentTypeID": 17
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIContainerComponent",
                 "ComponentTypeID": 18
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIHoverableComponent",
                 "ComponentTypeID": 19
             },
             {
-                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeName": "struct Firelight::ECS::UIPressableComponent",
                 "ComponentTypeID": 20
             },
             {
-                "ComponentTypeName": "struct InventoryComponentButtonLayout",
-                "ComponentTypeID": 22
+                "ComponentTypeName": "struct Firelight::ECS::UIButtonComponent",
+                "ComponentTypeID": 21
             },
             {
-                "ComponentTypeName": "struct InventorySlots",
+                "ComponentTypeName": "struct InventoryComponentButtonLayout",
                 "ComponentTypeID": 23
             },
             {
-                "ComponentTypeName": "struct InventoryStoreData",
+                "ComponentTypeName": "struct InventorySlots",
                 "ComponentTypeID": 24
             },
             {
+                "ComponentTypeName": "struct InventoryStoreData",
+                "ComponentTypeID": 25
+            },
+            {
                 "ComponentTypeName": "struct Firelight::ECS::UIDraggableComponent",
-                "ComponentTypeID": 27
+                "ComponentTypeID": 28
             },
             {
                 "ComponentTypeName": "struct Firelight::ECS::ItemComponent",
-                "ComponentTypeID": 25
+                "ComponentTypeID": 26
             }
         ]
     }

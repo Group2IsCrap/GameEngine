@@ -45,6 +45,9 @@
 #include "Components/PlayerComponent.h"
 #include "Items/ItemDatabase.h"
 
+#include "Source/ECS/Components/TilemapComponent.h"
+#include "Source/TileMap/Tile.h"
+
 #include"Inventory/InventoryManager.h"
 #include"Inventory/InventoryWrapper.h"
 using namespace Firelight;

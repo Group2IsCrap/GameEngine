@@ -300,9 +300,6 @@ namespace Firelight::Graphics
 
 		m_spriteBatch->CreateAndDrawBatches();
 
-		//m_tileMap->UpdateTileMapSize();
-		//m_tileMap->DrawTiles();
-
 		// Copy final image to the back buffer
 		m_deviceContext->CopyResource(m_backBuffer.Get(), m_finalImage.m_texture2D.Get());
 
