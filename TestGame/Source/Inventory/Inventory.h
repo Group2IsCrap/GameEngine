@@ -16,28 +16,28 @@ using namespace Firelight;
 struct SlotInfo
 {	
 	int CurrPos = 0;
-	ECS::EntityID SlotID= NULL;
-	bool IsUsed = false;
+	ECS::EntityID slotID= NULL;
+	bool isUsed = false;
 };
 struct SlotData
 {
 	SlotInfo* CurrSlot;
-	int StackSize = -1;
-	std::vector<ECS::EntityID> EntityIDs;
+	int stackSize = -1;
+	std::vector<ECS::EntityID> entityIDs;
 	ECS::EntityID UITexID;
 };
 class Inventory
 {
 public:
 	Inventory();
-	Inventory(std::string Name);
+	Inventory(std::string name);
 	~Inventory();
 
-	void SetEntityData(ECS::EntityID ID) { m_InventoryEntityID = ID; }
-	ECS::EntityID GetEntityData() { return m_InventoryEntityID; }
+	void SetEntityData(ECS::EntityID ID) { m_inventoryEntityID = ID; }
+	ECS::EntityID GetEntityData() { return m_inventoryEntityID; }
 
-	void CreateInventoryNoPannel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
-	void CreateInventoryNoPannel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet);
+	void CreateInventoryNoPanel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
+	void CreateInventoryNoPanel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
 
 	//display controlls
 	void LoadInventory(std::vector<ECS::UIPanel*> *PannleToUse, bool ToFit);
@@ -66,8 +66,8 @@ public:
 	void Place(SlotData* slotData);
 
 
-	std::vector <SlotData*>* GetNullSlotData() { return &m_OutOfInventoryData; }
-	ECS::UIPanel* GetInventorySpace() { return m_InventorySpace; }
+	std::vector <SlotData*>* GetNullSlotData() { return &m_outOfInventoryData; }
+	ECS::UIPanel* GetInventorySpace() { return m_inventorySpace; }
 	std::string GetName() { return m_Name; }
 	bool GetIsDisplay() { return isDisplay; }
 private:
@@ -77,14 +77,14 @@ private:
 private:
 
 	//pannle created by this 
-	ECS::UIPanel* m_InventorySpace;
+	ECS::UIPanel* m_inventorySpace;
 
 
 	//data to remove
 	std::string m_Name;
-	UINT SlotCount = 0;
-	int RowCount = 0;
-	int ColoumCount = 0;
+	UINT slotCount = 0;
+	int rowCount = 0;
+	int columnCount = 0;
 
 
 	bool isOutput;
@@ -93,13 +93,13 @@ private:
 
 	bool isDisplay = false;
 
-	Maths::Vec2i Size;
+	Maths::Vec2i size;
 	std::vector<std::pair<SlotInfo, SlotData*>> Grid;
 
 	//invetory entity
-	ECS::EntityID m_InventoryEntityID;
+	ECS::EntityID m_inventoryEntityID;
 
 	//slots to remove
-	std::vector <SlotData*> m_OutOfInventoryData;
+	std::vector <SlotData*> m_outOfInventoryData;
 };
 

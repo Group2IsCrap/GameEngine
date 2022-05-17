@@ -1,25 +1,24 @@
 #pragma once
 #include "Source/Events/Event.h"
-namespace Firelight::Events::Inv
+namespace Firelight::Events::Inventory
 {
-	NEW_EVENT(UPDATEINV);
-	NEW_EVENT(ADD_NEW_INV);
-	NEW_EVENT(REMOVE_INV);
+	NEW_EVENT(UpdateInventory);
+	NEW_EVENT(AddNewInventory);
+	NEW_EVENT(RemoveInventory);
 
 
+	NEW_EVENT(AddItem);
+	NEW_EVENT(FindItem);
+
+	NEW_EVENT(RemoveItem);
+	NEW_EVENT(RemoveItemType);
+
+	NEW_EVENT(GetItemType);
+	NEW_EVENT(GetItemTypeNumber);
+	NEW_EVENT(GetSpecialSlot);
 	
-	NEW_EVENT(ADD_ITEM);
-	NEW_EVENT(FINED_ITEM);
 
-	NEW_EVENT(REMOVE_ITEM);
-	NEW_EVENT(REMOVE_ITEM_TYPE);
-
-	NEW_EVENT(GET_ITEM_TYPE);
-	NEW_EVENT(GET_ITEM_TYPE_NUMBER);
-	NEW_EVENT(GET_SPECIAL_SLOT);
-	
-
-	NEW_EVENT(LOAD_INVENTORY_GROUP);
-	NEW_EVENT(UNLOAD_INVENTORY_GROUP);
+	NEW_EVENT(LoadInventoryGroup);
+	NEW_EVENT(UnloadInventoryGroup);
 	
 }

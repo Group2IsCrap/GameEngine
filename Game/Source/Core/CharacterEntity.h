@@ -4,7 +4,7 @@
 #include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../CoreComponents/HealthComponent.h"
-#include"../Inventory/InventoryWrapper.h"
+#include "../Inventory/InventoryEntity.h"
 class CharacterEntity : public Firelight::ECS::SpriteEntity
 {
 public:

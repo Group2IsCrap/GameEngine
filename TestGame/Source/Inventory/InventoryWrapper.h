@@ -1,17 +1,17 @@
 #pragma once
 #include<Source/ECS/EntityWrappers/Entity.h>
 #include"InventoryComponents.h"
-class InventoryWrapper:public Firelight::ECS::Entity
+class InventoryEntity:public Firelight::ECS::Entity
 {
 public:
-    InventoryWrapper();
-    ~InventoryWrapper();
+    InventoryEntity();
+    ~InventoryEntity();
 
-    void SetGroup(std::string Group);
-    void SetGroup(InventoryComponentGroupID Group);
+    void SetGroup(std::string group);
+    void SetGroup(InventoryComponentGroupID group);
 
-    InventoryComponentGroupID* GetInvGroup() { return GetComponent<InventoryComponentGroupID>(); }
-    InventoryComponent* GetInvComp() { return GetComponent<InventoryComponent>(); }
+    InventoryComponentGroupID* GetInventoryGroup() { return GetComponent<InventoryComponentGroupID>(); }
+    InventoryComponent* GetInventoryComponent() { return GetComponent<InventoryComponent>(); }
     
 
 };

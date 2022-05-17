@@ -38,6 +38,7 @@ namespace Firelight::ECS
 	{
 		EntityID parentID = 0;
 		bool hasParent = false;
+		bool isActive = true;
 
 		UINT index = 10;
 
@@ -134,6 +135,16 @@ namespace Firelight::ECS
 		}
 	};
 
+	struct UIBordreComponent : BaseComponent
+	{
+		Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
+		float width;
+
+		void Serialise() override
+		{
+			
+		}
+	};
 
 	////Base Widget
 	//struct UIWidgetComponent : BaseComponent

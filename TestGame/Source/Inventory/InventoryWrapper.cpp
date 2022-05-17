@@ -1,19 +1,19 @@
 #include "InventoryWrapper.h"
 
-InventoryWrapper::InventoryWrapper()
+InventoryEntity::InventoryEntity()
 {
     AddComponent<InventoryComponent>();
     AddComponent<InventoryComponentGroupID>();
 
 }
 
-InventoryWrapper::~InventoryWrapper()
+InventoryEntity::~InventoryEntity()
 {
 }
 
-void InventoryWrapper::SetGroup(InventoryComponentGroupID Group)
+void InventoryEntity::SetGroup(InventoryComponentGroupID group)
 {
-    GetComponent<InventoryComponentGroupID>()->Group = Group.Group;
-    GetComponent<InventoryComponentGroupID>()->isDisplayButtions = Group.isDisplayButtions;
-    GetComponent<InventoryComponentGroupID>()->isDisplayAll = Group.isDisplayAll;
+    GetComponent<InventoryComponentGroupID>()->group = group.group;
+    GetComponent<InventoryComponentGroupID>()->isDisplayButtons = group.isDisplayButtons;
+    GetComponent<InventoryComponentGroupID>()->isDisplayAll = group.isDisplayAll;
 }
