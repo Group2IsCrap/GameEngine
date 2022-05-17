@@ -10,16 +10,18 @@
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
+#include "../Items/CraftingRecipeDatabase.h"
 #include "../Core/Layers.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
+
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
-	playerEntity = nullptr;
+	m_playerEntity = nullptr;
 
 	m_playerEntityAddedCheckIndex = EventDispatcher::SubscribeFunction<ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
 	m_playerMoveUpIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEvent>(std::bind(&PlayerSystem::MovePlayerUp, this));
@@ -31,9 +33,10 @@ PlayerSystem::PlayerSystem()
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
+	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::Inventory::LoadInventoryGroup>(this);
 
-	imguiLayer = new ImGuiPlayerLayer();
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
+	m_imguiLayer = new ImGuiPlayerLayer();
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(m_imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -46,20 +49,23 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
+
+	Firelight::Events::EventDispatcher::RemoveListener<Firelight::Events::Inventory::LoadInventoryGroup>(this);
+	Firelight::Events::EventDispatcher::RemoveListener<Firelight::Events::Inventory::UnloadInventoryGroup>(this);
 }
 
 void PlayerSystem::CheckForPlayer()
 {
-	if (playerEntity == nullptr && m_entities.size() > 0)
+	if (m_playerEntity == nullptr && m_entities.size() > 0)
 	{
-		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
-		imguiLayer->SetPlayer(playerEntity);
+		m_playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
+		m_imguiLayer->SetPlayer(m_playerEntity);
 	}
 }
 
 void PlayerSystem::Update(const Firelight::Utils::Time& time)
 {
-	if (playerEntity == nullptr)
+	if (m_playerEntity == nullptr)
 	{
 		return;
 	}
@@ -71,34 +77,52 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	{
 		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
 
-		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
-		playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+		m_playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
+		m_playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+	}
+	else if (event == Firelight::Events::Inventory::LoadInventoryGroup::sm_descriptor)
+	{
+		std::string inventoryGroupName = *reinterpret_cast<std::string*>(data);
+		
+		// When the main player opens their inventory, update what items they can craft
+		m_availableCraftingRecipes.clear();
+
+		if (inventoryGroupName == "PlayerInventory")
+		{
+			for (const auto* recipe : CraftingRecipeDatabase::Instance().GetAllCraftingRecipes())
+			{
+				if (recipe->CanCraft(inventoryGroupName))
+				{
+					m_availableCraftingRecipes.push_back(recipe);
+				}
+			}
+		}
 	}
 }
 
 void PlayerSystem::MovePlayerUp()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
 }
 void PlayerSystem::MovePlayerLeft()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 void PlayerSystem::MovePlayerDown()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 void PlayerSystem::MovePlayerRight()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
 
 }
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
@@ -124,11 +148,11 @@ void PlayerSystem::Interact()
 void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+	itemEntity->GetComponent<TransformComponent>()->position = m_playerEntity->GetTransformComponent()->position;
 }
 
 void PlayerSystem::RemoveHealth()
 {
-	playerEntity->RemoveHealth(1);
+	m_playerEntity->RemoveHealth(1);
 }
 

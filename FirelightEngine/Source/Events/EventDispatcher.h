@@ -20,6 +20,8 @@ namespace Firelight::Events
 		template<typename EventType>
 		static void RemoveListener(const int index);
 		template<typename EventType>
+		static void RemoveListener(Listener* listener);
+		template<typename EventType>
 		static void RemoveAllListeners();
 		template<typename EventType>
 		static void InvokeListeners(void* data);

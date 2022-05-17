@@ -14,6 +14,7 @@
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/Items/CraftingRecipeDatabase.h"
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/ImGuiDebugLayer.h"
@@ -126,9 +127,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "a", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomLeft, std::vector<std::string>{ "a" });
 		inv1->AddSpecialSlot(1, "b", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Bottom, std::vector<std::string>{ "b" });
 		inv1->AddSpecialSlot(1, "c", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomRight, std::vector<std::string>{ "c" });
-		// Load All Items
+
+		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		
+		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
 
 		while (Engine::Instance().ProcessMessages())
 		{

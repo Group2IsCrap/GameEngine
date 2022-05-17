@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 class CraftingRecipe
 {
@@ -15,13 +16,11 @@ public:
     CraftingRecipe(int itemToMake, int countMaking, const std::vector<ItemRequirement>& requiredItems);
     ~CraftingRecipe();
     
-    // TODO: Hookup to inventory when it's available
-    
     // Check if the given inventory has the items to complete the recipe
-    bool canCraft(/* const Inventory& inventory */) { return true; }
+    bool CanCraft(const std::string& inventoryGroup) const;
     
     // Remove the required items from the given inventory and add the item made
-    void craft(/* Inventory& inventory */) {}
+    void Craft(const std::string& inventoryGroup) const;
 
     int                                 GetItemToMake() const;
     int                                 GetCountMaking() const;

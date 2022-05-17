@@ -7,6 +7,8 @@
 #include "../Events/InputEvents.h"
 #include "../ImGuiPlayerLayer.h"
 
+#include "../Items/CraftingRecipe.h"
+
 using DescriptorType = const char*;
 
 class PlayerSystem : public Firelight::ECS::System, Firelight::Events::Listener
@@ -27,9 +29,9 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_removeHealthEventIndex;
   
-	PlayerEntity* playerEntity;
-
-	ImGuiPlayerLayer* imguiLayer = nullptr;
+	PlayerEntity*                      m_playerEntity;
+	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
+	ImGuiPlayerLayer*                  m_imguiLayer = nullptr;
 
 	void MovePlayerUp();
 	void MovePlayerLeft();

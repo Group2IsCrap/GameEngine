@@ -262,7 +262,7 @@ namespace InventorySystem
                 Inventory->LoadInventory(&m_entityIDPanelSlot, false);
             }
         }
-
+        Events::EventDispatcher::InvokeListeners<Events::Inventory::LoadInventoryGroup>((void*)&group);
     }
 
     void InventoryManager::LoadInventoryGroup(std::string group)
@@ -397,7 +397,7 @@ namespace InventorySystem
         }
 
         Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
-
+        Events::EventDispatcher::InvokeListeners<Events::Inventory::LoadInventoryGroup>((void*)&group);
     }
 
     void InventoryManager::UnloadInventory(GroupName group, std::string name)
@@ -410,6 +410,7 @@ namespace InventorySystem
                 inventory->UnloadInventory();
             }
         }
+        Events::EventDispatcher::InvokeListeners<Events::Inventory::UnloadInventoryGroup>((void*)&group);
     }
 
     void InventoryManager::UnloadInventoryGroup(std::string group)
@@ -430,6 +431,7 @@ namespace InventorySystem
             inventory->UnloadInventory();
             index++;
         }
+        Events::EventDispatcher::InvokeListeners<Events::Inventory::UnloadInventoryGroup>((void*)&group);
     }
 
 

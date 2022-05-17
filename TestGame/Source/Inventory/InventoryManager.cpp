@@ -249,6 +249,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
             }
         }
 
+        Events::EventDispatcher::InvokeListeners<Events::Inventory::LoadInventoryGroup>((void*)&group);
         Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 
 }
@@ -279,6 +280,8 @@ void InventoryManager::UnloadInventoryGroup(std::string group)
           In->UnloadInventory();
           index++;
       }
+
+      Events::EventDispatcher::InvokeListeners<Events::Inventory::UnloadInventoryGroup>((void*)&group);
 }
 
 
