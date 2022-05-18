@@ -1,6 +1,6 @@
 ﻿ItemID,ItemName,ItemDescription,IconPath,StackSize,Tags
-0,Rock,It's a stone,Sprites/Rock_Item.png,5,Ingredient;Chest
-1,Stick, A piece of a tree,Sprites/Sticks.png,5,Ingredient;Legs
-2,Leather,Skin of an animal,Sprites/LeatherSmall_Stack.png,5,Ingredient;Head
-3,Wood,Tastes like plant,Sprites/wood_1.png,5,Ingredient;Weapon
-4,Planks,Refined Wood,Sprites/wood_2_stack.png,5,Ingredient;Back
+0,Rock,It's a stone,Sprites/Rock_Item.png,5,Ingredient
+1,Stick, A piece of a tree,Sprites/Sticks.png,5,Ingredient
+2,Leather,Skin of an animal,Sprites/LeatherSmall_Stack.png,5,Ingredient
+3,Wood,Tastes like plant,Sprites/wood_1.png,5,Ingredient
+4,Planks,Refined Wood,Sprites/wood_2_stack.png,5,Ingredient

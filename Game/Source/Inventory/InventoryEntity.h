@@ -11,8 +11,8 @@ public:
 
     void AddInventory(std::string name, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor);
     void RemoveInventory(std::string name);
-    void AddInputCommands();
-    void AddOutputCommands();
+    void AddInputCommands(std::function< void(void*) >&& callbackFunction);
+    void AddOutputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
 
     void AddSpecialSlot(int InventoryNumber,std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
     void AddSpecialSlot(std::string InventoryName, std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);

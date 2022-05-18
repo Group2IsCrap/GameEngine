@@ -225,9 +225,10 @@ namespace InventorySystem
                         InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInventoryNumber());
 
                     if (data) {
+                        InventoryStoreData a = inventory->GetNullSlotData()->front();
                         for (auto& out : data->outputCommand)
                         {
-                            out();
+                            out((void*)&a.entityIDs);
                         }
                     }
                     inventory->GetNullSlotData()->clear();
