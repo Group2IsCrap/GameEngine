@@ -81,7 +81,7 @@ namespace Firelight::ECS
 		m_signatures.erase(entity);
 		m_entities.erase(it);
 
-		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityDestroyedEvent>();
+		Events::EventDispatcher::InvokeFunctions<Events::ECS::OnEntityDestroyedEvent>((void*)entity);
 	}
 
 	/// <summary>

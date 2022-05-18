@@ -11,5 +11,10 @@ namespace Firelight::ECS
 	{
 		return GetComponent<SpriteComponent>();
 	}
+
+	SpriteEntity::SpriteEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : GameEntity(isTemplate, entityID)
+	{
+
+	}
 	
 }

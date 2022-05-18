@@ -170,19 +170,19 @@ namespace Firelight
 
     void Engine::Update()
     {
+        // Do as many physics updates as are neccessary this frame
+        for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
+        {
+            m_systemManager.FixedUpdate(m_time);
+            Input::ProcessInput::Instance()->TestInput();
+        }
+
         m_keyBinder.Update();
         Input::ProcessInput::Instance()->ControllerInput();
 
         m_time.Update();
 
         m_systemManager.Update(m_time);
-
-        // Do as many physics updates as are neccessary this frame
-        for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
-        {
-            m_systemManager.FixedUpdate(m_time); 
-            Input::ProcessInput::Instance()->TestInput();
-        }
 
         m_systemManager.LateUpdate(m_time);
 

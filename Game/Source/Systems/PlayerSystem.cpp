@@ -11,10 +11,13 @@
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
 #include "../Core/Layers.h"
+#include "../Core/CharacterEntity.h"
+#include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
+
 
 PlayerSystem::PlayerSystem()
 {
@@ -22,13 +25,21 @@ PlayerSystem::PlayerSystem()
 	playerEntity = nullptr;
 
 	m_playerEntityAddedCheckIndex = EventDispatcher::SubscribeFunction<ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
+	
 	m_playerMoveUpIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEvent>(std::bind(&PlayerSystem::MovePlayerUp, this));
 	m_playerMoveLeftIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
 	m_playerMoveRightIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
 	m_playerMoveDownIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
+
+	m_playerMoveUpReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEventRelease>(std::bind(&PlayerSystem::MovePlayerUpRelease, this));
+	m_playerMoveLeftReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveLeftEventRelease>(std::bind(&PlayerSystem::MovePlayerLeftRelease, this));
+	m_playerMoveRightReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveDownEventRelease>(std::bind(&PlayerSystem::MovePlayerDownRelease, this));
+	m_playerMoveDownReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveRightEventRelease>(std::bind(&PlayerSystem::MovePlayerRightRelease, this));
+	
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
+	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::Attack, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 
@@ -43,9 +54,16 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
+
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveUpEvent>(m_playerMoveUpReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveLeftEvent>(m_playerMoveLeftReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveDownEvent>(m_playerMoveRightReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveRightEvent>(m_playerMoveDownReleaseIndex);
+
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
+	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -63,6 +81,42 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	{
 		return;
 	}
+	if (m_moveUp)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Up;
+	}
+	else if (m_moveDown)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Down;
+	}
+	else if (m_moveLeft)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Left;
+	}
+	else if (m_moveRight)
+	{
+		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
+	}
+}
+
+void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
+{
+	if (m_moveUp)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveDown)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveLeft)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveRight)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+	}
 }
 
 void PlayerSystem::HandleEvents(DescriptorType event, void* data)
@@ -70,30 +124,46 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	if (event == Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor)
 	{
 		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
-
-		playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
-		playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
 	}
+}
+
+float PlayerSystem::GetSpeed()
+{
+	return playerEntity->GetComponent<PlayerComponent>()->speed;
 }
 
 void PlayerSystem::MovePlayerUp()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_moveUp = true;
 }
 void PlayerSystem::MovePlayerLeft()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
-
+	m_moveLeft = true;
 }
 void PlayerSystem::MovePlayerDown()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
-
+	m_moveDown = true;
 }
 void PlayerSystem::MovePlayerRight()
 {
-	playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_moveRight = true;
+}
 
+void PlayerSystem::MovePlayerUpRelease()
+{
+	m_moveUp = false;
+}
+void PlayerSystem::MovePlayerLeftRelease()
+{
+	m_moveLeft = false;
+}
+void PlayerSystem::MovePlayerDownRelease()
+{
+	m_moveDown = false;
+}
+void PlayerSystem::MovePlayerRightRelease()
+{
+	m_moveRight = false;
 }
 
 void PlayerSystem::Interact()
@@ -125,6 +195,11 @@ void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+}
+
+void PlayerSystem::Attack()
+{
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, 0.5f);
 }
 
 void PlayerSystem::RemoveHealth()

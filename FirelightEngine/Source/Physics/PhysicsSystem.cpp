@@ -93,9 +93,9 @@ namespace Firelight::Physics
 						sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, 100.0f, 100.0f);
 					}
 
-					// Layer 65 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
-					// It may be worth documenting that all colliders are rendered on layer 65.
-					int layerOverride = 65;
+					// Layer 1000 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
+					// It may be worth documenting that all colliders are rendered on layer 1000.
+					int layerOverride = 1000;
 					Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_blue, sourceRect);
 				}
 			}			

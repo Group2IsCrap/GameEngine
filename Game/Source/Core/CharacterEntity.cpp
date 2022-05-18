@@ -2,6 +2,7 @@
 
 CharacterEntity::CharacterEntity()
 {
+	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
 }
 
@@ -10,7 +11,9 @@ CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight:
 
 }
 
-
+CharacterEntity::CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : SpriteEntity(isTemplate, entityID)
+{
+}
 
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
@@ -27,6 +30,11 @@ int CharacterEntity::GetHealth()
 	return GetComponent<HealthComponent>()->currentHealth;
 }
 
+int CharacterEntity::GetMaxHealth()
+{
+	return GetHealthComponent()->maxHealth;
+}
+
 void CharacterEntity::RemoveHealth(int amount)
 {
 	HealthComponent* component = GetComponent<HealthComponent>();
@@ -40,5 +48,5 @@ void CharacterEntity::RemoveHealth(int amount)
 
 void CharacterEntity::HealthBelowZero()
 {
-	
+	float test = 2;
 }

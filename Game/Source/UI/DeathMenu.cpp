@@ -20,7 +20,7 @@ DeathMenu::DeathMenu(Firelight::ECS::Entity* canvas)
 	SetParent(canvas->GetEntityID());
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	GetSpriteComponent()->colour = Firelight::Graphics::Colour::RGBA({150, 150, 150, 255});
-	SetDefaultDimensions({ 800.0f, 500.0f, 0 });
+	SetDefaultDimensions({ 1920.0f, 1080.0f, 0 });
 
 	m_respawnBtn = new Firelight::ECS::UIButton();
 	m_respawnBtn->GetSpriteComponent()->toDraw = false;
@@ -56,6 +56,27 @@ void DeathMenu::OpenMenu(bool opened)
 {
 	GetSpriteComponent()->toDraw = opened;
 	m_respawnBtn->GetSpriteComponent()->toDraw = opened;
+
+	if (opened)
+	{
+		// TODO : Draw text on top of UI? Text should really be part of UI system so that it also scales
+		m_text->AddComponent<TextComponent>(new TextComponent());
+		TextComponent* textC = m_text->GetComponent<TextComponent>();
+		textC->text.SetString("You Died!");
+		textC->text.SetTextHeight(150.0f);
+		textC->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
+		textC->layer = 100000;
+		m_text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 150.0f, 0.0f);
+	}
+	else
+	{
+		if (m_text->HasComponent<TextComponent>())
+		{
+			m_text->RemoveComponent<TextComponent>();
+			return;
+		}
+	}
+
 	m_text->GetComponent<TextComponent>()->hidden = !opened;
 
 	EventDispatcher::InvokeFunctions<UI::UpdateUIEvent>();
