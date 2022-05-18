@@ -5,26 +5,27 @@
 
 void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, float offset)
 {
-    Vec3f offsetVector;
+    float directionalAngle = 0.0f;
+    float weaponAngle;
+    //add to function call
 
     switch (dir)
     {
     case Facing::Up:
-        offsetVector = Vec3f(0.0f, offset, 0.0f);
+        directionalAngle = 90.0f;
         break;
     case Facing::Down:
-        offsetVector = Vec3f(0.0f, -offset, 0.0f);
+        directionalAngle = -90.0f;
         break;
     case Facing::Left:
-        offsetVector = Vec3f(-offset, 0.0f, 0.0f);
+        directionalAngle = 180.0f;
         break;
     case Facing::Right:
-        offsetVector = Vec3f(offset, 0.0f, 0.0f);
+        directionalAngle = 0.0f;
         break;
     }
 
-
-    std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(nextPosition + offsetVector, 1.5, static_cast<int>(GameLayer::Enemy));
+    std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(nextPosition, 2.0f, directionalAngle, 2.0f , static_cast<int>(GameLayer::Enemy));
     for (auto* target : targets)
     {
         AIEntity* currentEntity = new AIEntity(target->GetEntityID());
