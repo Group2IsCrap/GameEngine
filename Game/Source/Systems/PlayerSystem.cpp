@@ -39,7 +39,8 @@ PlayerSystem::PlayerSystem()
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
-	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::Attack, this));
+	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
+	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 
@@ -98,6 +99,11 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
 	}
 	m_attackCooldown += time.GetDeltaTime();
+	if (m_attackCooldown >= m_currentWeaponCooldown && m_isAttacking)
+	{
+		m_attackCooldown = 0.0f;
+		Attack();
+	}
 }
 
 void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
@@ -200,11 +206,7 @@ void PlayerSystem::SpawnItem()
 
 void PlayerSystem::Attack()
 {
-	if (m_attackCooldown >= m_currentWeaponCooldown)
-	{
-		m_canAttack = true;
-	}
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, m_canAttack);
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
 }
 
 void PlayerSystem::RemoveHealth()
@@ -216,4 +218,14 @@ void PlayerSystem::SwitchWeapon()
 {
 	//Get current weapon from equipped & cooldown
 	//Swap currentWeaponCooldown
+}
+
+void PlayerSystem::StartAttack()
+{
+	m_isAttacking = true;
+}
+
+void PlayerSystem::StopAttack()
+{
+	m_isAttacking = false;
 }

@@ -22,4 +22,5 @@ namespace Firelight::Events::InputEvents
 	NEW_EVENT(SpawnItemEvent);
 	NEW_EVENT(RemoveHealthEvent);
 	NEW_EVENT(AttackEvent);
+	NEW_EVENT(ReleaseAttackEvent);
 }

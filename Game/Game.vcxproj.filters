@@ -18,6 +18,9 @@
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
     <ClCompile Include="Source\Core\ResourceEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\RockEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BerryBushEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
@@ -30,6 +33,9 @@
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
     <ClInclude Include="Source\WorldEntities\TreeEntity.h" />
     <ClInclude Include="Source\Core\ResourceEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BerryBushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\RockEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
@@ -71,7 +77,6 @@
     <ClInclude Include="Source\UI\MainMenuUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\lewis\Downloads\Tree.png" />
     <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />
   </ItemGroup>
 </Project>

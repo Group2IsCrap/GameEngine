@@ -24,16 +24,5 @@ TreeEntity::TreeEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Res
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->drawCollider = true;
-	boxCollider->rect = Firelight::Maths::Rectf(1.0f, -0.2f, 6.0f, 2.4f);
-}
-
-void TreeEntity::RemoveHealth(int amount)
-{
-	ResourceEntity::RemoveHealth(amount);
-}
-
-void TreeEntity::HealthBelowZero()
-{
-	//Drop shit
-	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 2.0f, 8.0f);
 }

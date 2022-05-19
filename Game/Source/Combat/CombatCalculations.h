@@ -17,7 +17,6 @@ public:
 
 	bool IsPointInTriangle(int PointOneX, int PointOneY, int PointTwoX, int PointTwoY, int PointThreeX, int PointThreeY, int PointToCheckX, int PointToCheckY);
 
-	static void PlaceSphere(Facing dir, Vec3f nextPos, bool canAttack);
+	static void PlaceSphere(Facing dir, Vec3f nextPos);
 	
 };
-

@@ -27,6 +27,9 @@
 #include "Source/AI/Enemies/AIDeerEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
 #include "Source/WorldEntities/TreeEntity.h"
+#include "Source/WorldEntities/RockEntity.h"
+#include "Source/WorldEntities/BushEntity.h"
+#include "Source/WorldEntities/BerryBushEntity.h"
 
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
@@ -41,6 +44,8 @@ void BindDefaultKeys()
 {
 	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
 	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
+
 
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
@@ -109,6 +114,10 @@ void SetupResourceTemplate()
 	resourceTemplate->AddComponent<HealthComponent>();
 
 	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
+	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
+	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
+	
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)

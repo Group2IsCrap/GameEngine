@@ -43,4 +43,5 @@ void ResourceEntity::RemoveHealth(int amount)
 
 void ResourceEntity::HealthBelowZero()
 {
+	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
 }
