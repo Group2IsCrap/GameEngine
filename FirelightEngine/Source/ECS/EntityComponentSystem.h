@@ -37,6 +37,11 @@ namespace Firelight::ECS
 			return m_componentManager->GetComponent<T>(entity, index);
 		}
 
+		std::string GetTypeOfComponent(BaseComponent* component)
+		{
+			return m_componentManager->GetTypeOfComponent(component);
+		}
+
 		template<typename T, typename T2>
 		T2* GetComponent(EntityID entity, int index = 0)
 		{

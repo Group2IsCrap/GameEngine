@@ -136,10 +136,11 @@ void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
 	
 }
 void DropItemAtPlayer(void* toDrop, EntityID player) {
-	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
+	std::vector<EntityID> DropIDs= *reinterpret_cast<std::vector <EntityID>*>(toDrop);
 
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
-	for (EntityID DropID : DropIDs) {
+	for (EntityID DropID : DropIDs) 
+	{
 		DropItemAt(toDropData->position, DropID);
 	}
 }

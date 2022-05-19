@@ -74,7 +74,7 @@ namespace Firelight::UI {
 			if (m_dragWidget != nullptr)
 			{
 				m_dragWidget->anchorSettings = m_CurrDragAnchor;
-				for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions)
+				for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions)
 				{
 					Event();
 				}
@@ -421,7 +421,7 @@ namespace Firelight::UI {
 		{
 			m_dragWidget->anchorSettings = m_CurrDragAnchor;
 
-			for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions)
+			for (auto&& Event : m_dragEntity->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions)
 			{
 				Event();
 			}
