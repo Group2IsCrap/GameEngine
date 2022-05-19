@@ -7,7 +7,7 @@
 
 using namespace Firelight::Serialisation;
 
-struct CombatComponent : Firelight::ECS::BaseComponent
+struct WeaponComponent : Firelight::ECS::BaseComponent
 {
 	// data for combat componant
 	std::string WeaponName = "";
@@ -21,9 +21,9 @@ struct CombatComponent : Firelight::ECS::BaseComponent
 		Serialiser::Serialise("WeaponDamage", WeaponDamage);
 	}
 
-	CombatComponent* Clone() override
+	WeaponComponent* Clone() override
 	{
-		CombatComponent* clone = new CombatComponent();
+		WeaponComponent* clone = new WeaponComponent();
 		clone->WeaponDamage = WeaponDamage;
 		clone->WeaponName = WeaponName;
 		clone->WeaponSpeed = WeaponSpeed;

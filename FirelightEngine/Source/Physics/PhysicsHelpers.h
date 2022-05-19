@@ -187,12 +187,12 @@ namespace Firelight::Physics
 						float distSquared = Vec3f::DistSquared(point, transform->position);
 						if (distSquared < radiusSquared)
 						{
-							Vec3f vector1 = (radius*cos((directionalAngle + theta) * (PI / 180)), radius*sin((directionalAngle + theta) * (PI / 180)));
+							Vec3f vector1 = (radius * std::cos((directionalAngle + theta) * (PI / 180)), radius * std::sin((directionalAngle + theta) * (PI / 180)));
 							Vec3f normal1 = (-vector1.y, vector1.x);
 
 							if (normal1.Dot(transform->position - point) <= 0)
 							{
-								Vec3f vector2 = (radius * cos((directionalAngle - theta) * (PI / 180)), radius * sin((directionalAngle - theta) * (PI / 180)));
+								Vec3f vector2 = (radius * std::cos((directionalAngle - theta) * (PI / 180)), radius * std::sin((directionalAngle - theta) * (PI / 180)));
 								Vec3f normal2 = (-vector2.y, vector2.x);
 
 								if (normal2.Dot(transform->position - point) >= 0)

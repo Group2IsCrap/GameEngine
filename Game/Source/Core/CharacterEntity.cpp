@@ -48,5 +48,4 @@ void CharacterEntity::RemoveHealth(int amount)
 
 void CharacterEntity::HealthBelowZero()
 {
-	float test = 2;
 }
