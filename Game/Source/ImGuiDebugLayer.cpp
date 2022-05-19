@@ -43,6 +43,7 @@ void ImGuiDebugLayer::Render()
 	RenderItemWindow();
 	RenderKeyBindingPrototype();
 	RenderDebugInformation();
+	RenderECSDebug();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -56,6 +57,12 @@ void ImGuiDebugLayer::RenderItemWindow()
 	{
 		spawnItemCommand[1]();
 	}
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderECSDebug()
+{
+	ImGui::Begin("ECS Debug");
 	ImGui::End();
 }
 

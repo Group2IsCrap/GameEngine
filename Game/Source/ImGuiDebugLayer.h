@@ -21,6 +21,8 @@ public:
 
 	void RenderItemWindow();
 
+	void RenderECSDebug();
+
 	void RenderKeyBindingPrototype();
 
 	void RenderDebugInformation();
