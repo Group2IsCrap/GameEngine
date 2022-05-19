@@ -18,14 +18,23 @@ using namespace Firelight::Maths;
 class AIAttackingBehaviour : public AIStateBehaviour
 {
 public:
-	AIAttackingBehaviour(RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, float speed, float attackInterval);
+	AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, int damage, float speed, float attackRange, float attackCooldown, float attackRadius);
 
 	void HandleState(const Firelight::Utils::Time& time) override;
 
+private:
+	void Attack(Firelight::Maths::Vec3f dir);
 
 private:
 
+	int m_damage;
+	float m_attackRange;
+	float m_attackTimer;
+	float m_attackCooldown;
+	float m_attackRadius;
+
 	float m_speed;
+	EntityID m_entityID;
 	RigidBodyComponent* m_rigidBodyComponent;
 	AIComponent* m_targetAIComponent;
 };

@@ -21,6 +21,11 @@ namespace Firelight::Physics
 	{
 	public:
 
+		static inline std::vector<Entity*> OverlapCircle(Vec3f point, float radius, int layer = 0 )
+		{
+			return OverlapCircle(point, radius, std::vector<int>{ layer });
+		}
+
 		/// <summary>
 		/// Returns a vector of entities that intersect within a circle at the given point of given radius on corresponding layer.
 		/// </summary>
@@ -28,7 +33,7 @@ namespace Firelight::Physics
 		/// <param name="radius">The radius of the circle check</param>
 		/// <param name="layer">The layer of the entities to check for</param>
 		/// <returns>Vector of entities</returns>
-		static inline std::vector<Entity*> OverlapCircle(Vec3f point, float radius, int layer = 0)
+		static inline std::vector<Entity*> OverlapCircle(Vec3f point, float radius, std::vector<int> layers = { 0 })
 		{
 			std::vector<Entity*> entities;
 			std::vector<ECS::EntityID> allEntities = ECS::EntityComponentSystem::Instance()->GetEntities();
@@ -48,7 +53,16 @@ namespace Firelight::Physics
 				}
 
 				// Skip if the layer is not the same
-				if (entity->GetComponent<LayerComponent>()->layer != layer)
+				bool entityIsOnLayer = false;
+				for (auto layer : layers)
+				{
+					if (entity->GetComponent<LayerComponent>()->layer == layer)
+					{
+						entityIsOnLayer = true;
+						break;
+					}
+				}
+				if (!entityIsOnLayer)
 				{
 					continue;
 				}

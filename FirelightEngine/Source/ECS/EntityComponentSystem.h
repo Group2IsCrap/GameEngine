@@ -125,7 +125,7 @@ namespace Firelight::ECS
 		{
 			m_componentManager->AddComponent<T>(entity, component);
 			m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), true);
-			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>((void*)entity);
 		}
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace Firelight::ECS
 			if (!HasComponent<T>(entity))
 			{
 				m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), false);
-				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>((void*)entity);
 			}
 		}
 		/// <summary>
