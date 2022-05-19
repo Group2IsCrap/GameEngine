@@ -153,12 +153,16 @@ namespace Firelight::UI {
 				m_MouseRawCurr = Maths::Vec2f((float)eventMouse->GetMouseX(), (float)eventMouse->GetMouseY());
 
 			}
-
-			if (m_updateTime > 0.1 || m_clickTime > 0.1f || (eventMouse->GetType() != Events::Input::e_MouseEventType::Move && eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove))
+			static bool check = false;
+			if (m_updateTime > 0.1 || m_clickTime > m_clickLengthTime || (/*eventMouse->GetType() != Events::Input::e_MouseEventType::Move &&*/ eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove))
 			{
-				if(eventMouse->GetType() == Events::Input::e_MouseEventType::Move || eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove)
+				if(/*eventMouse->GetType() == Events::Input::e_MouseEventType::Move ||*/ eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove)
 				{
-					m_updateTime = 0;
+				
+						m_updateTime = 0;
+						
+					
+					
 				}
 				for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 				{
@@ -363,7 +367,7 @@ namespace Firelight::UI {
 			}
 
 
-			if (m_dragButtonIsPressed && m_clickTime > 0.1f)
+			if (m_dragButtonIsPressed && m_clickTime > m_clickLengthTime)
 			{
 				auto parentComponent = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(UIComponent->parentID);
 				if (UIComponent->hasParent && parentComponent != nullptr && m_dragWidget == parentComponent && !m_isDragging)
@@ -441,7 +445,7 @@ namespace Firelight::UI {
 		}
 		
 		
-		if (m_clickTime > 0.2f)
+		if (m_clickTime > 0.1f)
 		{
 			m_dragTimerActive = false;
 			m_clickTime = 0.0f;
@@ -581,10 +585,16 @@ namespace Firelight::UI {
 		}
 		else
 		{
+			float borderWidthY=0;
+			float borderWidthX = 0;
 			ECS::UIBaseWidgetComponent* currWidgetParent = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(UIComponent->parentID);
 			ECS::TransformComponent* currTransform = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(UIComponent->parentID);
 			ECS::PixelSpriteComponent* currSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
-
+			
+			if (ECS::UIBordreComponent* Border = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBordreComponent>(UIComponent->parentID)) {
+				borderWidthY = Engine::Instance().GetWindowDimensionsFloat().y*	(Border->widthTopBot/ currCanvas->YScreenSize);
+				borderWidthX = Engine::Instance().GetWindowDimensionsFloat().x * (Border->widthLeftRight / currCanvas->YScreenSize);
+			}
 			if (currCanvas != nullptr) 
 			{
 				UIComponent->defaultScale.x = UIComponent->defaultDimensions.x / currCanvas->XScreenSize;
@@ -602,34 +612,34 @@ namespace Firelight::UI {
 			switch (UIComponent->anchorSettings)
 			{
 				case Firelight::ECS::e_AnchorSettings::TopLeft:
-					UITransformComponent->position.y = (currTransform->position.y- (hight*0.5f)) + (childHight * 0.5f);
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y- (hight*0.5f)) + (childHight * 0.5f)+ borderWidthY;
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f)+ borderWidthX;
 					break;
 				case Firelight::ECS::e_AnchorSettings::Top:
-					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f) + borderWidthY;
 					UITransformComponent->position.x = currTransform->position.x;
 					break;
 				case Firelight::ECS::e_AnchorSettings::TopRight:
-					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f);
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f))- (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f) + borderWidthY;
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f))- (childWidth * 0.5f) - borderWidthX;
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::BottomLeft:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX;
 					break;
 				case Firelight::ECS::e_AnchorSettings::Bottom:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
 					UITransformComponent->position.x = currTransform->position.x;
 					break;
 				case Firelight::ECS::e_AnchorSettings::BottomRight:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f);
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f);
+					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX;
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::Left:
 					UITransformComponent->position.y = currTransform->position.y;
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX;
 					break;
 				case Firelight::ECS::e_AnchorSettings::Center:
 					UITransformComponent->position.y = currTransform->position.y;
@@ -637,7 +647,7 @@ namespace Firelight::UI {
 					break;
 				case Firelight::ECS::e_AnchorSettings::Right:
 					UITransformComponent->position.y = currTransform->position.y;
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f);
+					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX;
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::None: {
@@ -726,6 +736,7 @@ namespace Firelight::UI {
 			case Firelight::ECS::e_Scale::Absolute:
 			{
 				UITransformComponent->scale = UIComponent->defaultScale;
+				
 				UISpriteComponent->layer = currSprite->layer + 1;
 			}
 			break;

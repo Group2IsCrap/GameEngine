@@ -117,6 +117,27 @@ void DropItemAtPlayer(void* toDrop, EntityID player) {
 	}
 }
 
+void ReAddToPlayer(void* toAdd) {
+	std::vector<EntityID>* AddIDs = (std::vector <EntityID>*)toAdd;
+	std::vector<EntityID> toRemove;
+	for (size_t i = 0; i < AddIDs->size(); i++)
+	{
+		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", AddIDs->at(i))) {
+			toRemove.push_back(AddIDs->at(i));
+		}
+	}
+	//fun remove loops 
+	for (size_t i = 0; i < toRemove.size(); i++)
+	{
+		for (size_t j = 0; j < AddIDs->size(); j++)
+		{
+			if (AddIDs->at(j) == toRemove[i]) {
+				AddIDs->erase(AddIDs->begin() + j);
+				break;
+			}
+		}
+	}
+}
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -179,8 +200,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();
 		InventoryEntity* inv1 = new InventoryEntity("PlayerInventory", false, true, Keys::KEY_B);
-		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, (1080 / 2)), ECS::e_AnchorSettings::TopRight);
-		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(400, (1080 / 2)+200), Maths::Vec2f(0, (1080 / 2)-200), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(400, (1080 / 2)-200), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
 
 		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopRight, std::vector<std::string>{ "Weapon" });
 		inv1->AddSpecialSlot(1, "Head", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>{ "Head" });
@@ -191,7 +212,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "b", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Bottom, std::vector<std::string>{ "b" });
 		inv1->AddSpecialSlot(1, "c", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomRight, std::vector<std::string>{ "c" });
 
+		
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
+		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
 		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
 		
 		// Load All Items
