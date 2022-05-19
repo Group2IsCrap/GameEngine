@@ -97,6 +97,7 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	{
 		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
 	}
+	m_attackCooldown += time.GetDeltaTime();
 }
 
 void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
@@ -199,7 +200,11 @@ void PlayerSystem::SpawnItem()
 
 void PlayerSystem::Attack()
 {
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, 0.5f);
+	if (m_attackCooldown >= m_currentWeaponCooldown)
+	{
+		m_canAttack = true;
+	}
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos, m_canAttack);
 }
 
 void PlayerSystem::RemoveHealth()
@@ -207,3 +212,8 @@ void PlayerSystem::RemoveHealth()
 	playerEntity->RemoveHealth(1);
 }
 
+void PlayerSystem::SwitchWeapon()
+{
+	//Get current weapon from equipped & cooldown
+	//Swap currentWeaponCooldown
+}

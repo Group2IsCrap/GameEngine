@@ -3,7 +3,7 @@
 #include "../Core/CharacterEntity.h"
 #include "../Core/AIEntity.h"
 
-void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, float offset)
+void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, bool canAttack)
 {
     float directionalAngle = 0.0f;
     float weaponAngle;
@@ -25,10 +25,23 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, float offse
         break;
     }
 
-    std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(nextPosition, 2.0f, directionalAngle, 2.0f , static_cast<int>(GameLayer::Enemy));
-    for (auto* target : targets)
+    std::vector<int> layers = {static_cast<int>(GameLayer::Enemy), static_cast<int>(GameLayer::Resource)};
+
+    for (int i = 0; i < layers.size(); i++)
     {
-        AIEntity* currentEntity = new AIEntity(target->GetEntityID());
-        currentEntity->RemoveHealth(1);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(nextPosition, 2.0f, directionalAngle, 2.0f, layers[i]);
+        if (targets.empty())
+        {
+            continue;
+        }
+        else
+        {
+            for (auto* target : targets)
+            {
+                AIEntity* currentEntity = new AIEntity(target->GetEntityID());
+                currentEntity->RemoveHealth(1);
+            }
+            break;
+        }
     }
 }

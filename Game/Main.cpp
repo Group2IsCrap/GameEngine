@@ -26,6 +26,7 @@
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
+#include "Source/WorldEntities/TreeEntity.h"
 
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
@@ -97,6 +98,20 @@ void SetupEnemyTemplate()
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
 
+void SetupResourceTemplate()
+{
+	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate();
+	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
+	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = static_cast<int>(RenderLayer::Items);
+	resourceTemplate->AddComponent<RigidBodyComponent>();
+	resourceTemplate->AddComponent<HealthComponent>();
+
+	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -122,7 +137,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		//AI
 		SetupEnemyTemplate();
-		
+		SetupResourceTemplate();
 
 		// Grass
 		SpriteEntity* test2 = new SpriteEntity();

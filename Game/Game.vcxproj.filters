@@ -16,9 +16,11 @@
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
+    <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
+    <ClCompile Include="Source\Core\ResourceEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Combat\CombatComponent.h" />
+    <ClInclude Include="Source\Combat\WeaponComponent.h" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
@@ -26,6 +28,8 @@
     <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
+    <ClInclude Include="Source\WorldEntities\TreeEntity.h" />
+    <ClInclude Include="Source\Core\ResourceEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
@@ -65,5 +69,9 @@
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
     <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\lewis\Downloads\Tree.png" />
+    <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />
   </ItemGroup>
 </Project>
