@@ -72,8 +72,8 @@ void DeathMenu::OpenMenu(bool opened)
 	{
 		if (m_text->HasComponent<TextComponent>())
 		{
-			delete m_text->GetComponent<TextComponent>();
 			m_text->RemoveComponent<TextComponent>();
+			return;
 		}
 	}
 

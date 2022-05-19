@@ -2,52 +2,56 @@
 #include <Source/ECS/EntityWrappers/Entity.h>
 #include "../Core/CharacterEntity.h"
 #include "../Core/AIEntity.h"
+#include "../Core/ResourceEntity.h"
 
-float CombatCalculations::CalculateTriangleArea(int x1, int y1, int x2, int y2, int x3, int y3)
+void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition)
 {
-    return abs((x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2.0);
-}
-
-bool CombatCalculations::IsPointInTriangle(int PointOneX, int PointOneY, int PointTwoX, int PointTwoY, int PointThreeX, int PointThreeY, int PointToCheckX, int PointToCheckY)
-{
-    float A = CalculateTriangleArea(PointOneX, PointOneY, PointTwoX, PointOneY, PointThreeX, PointThreeY);
-    float A1 = CalculateTriangleArea(PointToCheckX, PointToCheckY, PointTwoX, PointOneY, PointThreeX, PointThreeY);
-    float A2 = CalculateTriangleArea(PointOneX, PointOneY, PointToCheckX, PointToCheckY, PointThreeX, PointThreeY);
-    float A3 = CalculateTriangleArea(PointOneX, PointOneY, PointTwoX, PointOneY, PointToCheckX, PointToCheckY);
-
-    return (A == A1 + A2 + A3);
-}
-
-//up & right pos
-
-void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition, float offset)
-{
-    Vec3f offsetVector;
+    float directionalAngle = 0.0f;
+    float weaponAngle;
+    //add to function call
 
     switch (dir)
     {
     case Facing::Up:
-        offsetVector = Vec3f(0.0f, offset, 0.0f);
+        directionalAngle = 90.0f;
         break;
     case Facing::Down:
-        offsetVector = Vec3f(0.0f, -offset, 0.0f);
+        directionalAngle = -90.0f;
         break;
     case Facing::Left:
-        offsetVector = Vec3f(-offset, 0.0f, 0.0f);
+        directionalAngle = 180.0f;
         break;
     case Facing::Right:
-        offsetVector = Vec3f(offset, 0.0f, 0.0f);
+        directionalAngle = 0.0f;
         break;
     }
 
+    std::vector<int> layers = {static_cast<int>(GameLayer::Enemy), static_cast<int>(GameLayer::Resource)};
+    
 
-    std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(nextPosition + offsetVector, 1.5, static_cast<int>(GameLayer::Enemy));
-    for (auto* target : targets)
+    for (int i = 0; i < layers.size(); i++)
     {
-        AIEntity* currentEntity = new AIEntity(target->GetEntityID());
-        currentEntity->RemoveHealth(1);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(nextPosition, 2.0f, directionalAngle, 2.0f, layers[i]);
+        if (targets.empty())
+        {
+            continue;
+        }
+        else
+        {
+            for (auto* target : targets)
+            {
+                if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Resource))
+                {
+                    ResourceEntity* resourceEntity = new ResourceEntity(target->GetEntityID());
+                    resourceEntity->RemoveHealth(1);
+                }
+                else if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Enemy))
+                {
+                    AIEntity* aiEntity = new AIEntity(target->GetEntityID());
+                    aiEntity->RemoveHealth(1);
+                }
+            }
+            break;
+        }
     }
 }
-
-//physics helpers
-//Overlap circle
