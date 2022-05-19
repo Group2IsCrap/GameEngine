@@ -11,6 +11,8 @@ namespace Firelight::ECS
 	public:
 		UIEntity();
 
+		UIEntity(std::string name);
+
 		PixelSpriteComponent* GetSpriteComponent();
 		UIBaseWidgetComponent* GetWidgetComponent();
 

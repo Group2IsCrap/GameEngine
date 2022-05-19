@@ -17,7 +17,7 @@ AIDeerEntity::AIDeerEntity(Firelight::ECS::EntityID entityID) : AIEntity(entityI
 
 AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : AIEntity(isTemplate, entityID)
 {
-	GetComponent<IdentificationComponent>()->name = "Deer";
+	GetIDComponent()->name = "Deer";
 	GetSpriteComponent()->pixelsPerUnit = 50;
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
 	GetRigidBodyComponent()->interpolate = true;

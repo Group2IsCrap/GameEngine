@@ -3,12 +3,19 @@
 namespace Firelight::ECS
 {
 
-	UICanvas::UICanvas()
+	UICanvas::UICanvas() : UIEntity()
 	{
 		AddComponent<UICanvasComponent>();
+		this->GetIDComponent()->name = "UI Canvas";
 	}
 
-	UICanvas::UICanvas(Firelight::Maths::Vec3f dimensions, int layer, bool draw, Firelight::ECS::e_AnchorSettings anchorSettings)
+
+	UICanvas::UICanvas(std::string name) : UICanvas()
+	{
+		this->GetIDComponent()->name = name;
+	}
+
+	UICanvas::UICanvas(Firelight::Maths::Vec3f dimensions, int layer, bool draw, Firelight::ECS::e_AnchorSettings anchorSettings) : UIEntity()
 	{
 		AddComponent<UICanvasComponent>();
 		GetSpriteComponent()->toDraw = draw;
@@ -16,6 +23,7 @@ namespace Firelight::ECS
 		GetCanvasComponent()->XScreenSize = dimensions.x;
 		GetCanvasComponent()->YScreenSize = dimensions.y;
 		GetCanvasComponent()->layer = layer;
+		this->GetIDComponent()->name = "UI Canvas";
 	}
 
 	UICanvasComponent* UICanvas::GetCanvasComponent()

@@ -8,5 +8,6 @@ namespace Firelight::ECS
 	{
 	public:
 		SpriteEntityTemplate();
+		SpriteEntityTemplate(std::string name);
 	};
 }

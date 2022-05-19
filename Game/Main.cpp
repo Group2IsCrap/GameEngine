@@ -87,7 +87,7 @@ void SetupDebugUI()
 
 void SetupEnemyTemplate()
 {
-	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate();
+	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate("Enemy Template");
 	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
 	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
 	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
@@ -104,7 +104,7 @@ void SetupEnemyTemplate()
 
 void SetupResourceTemplate()
 {
-	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate();
+	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
 	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
 	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
 	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
@@ -114,9 +114,13 @@ void SetupResourceTemplate()
 	resourceTemplate->AddComponent<HealthComponent>();
 
 	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	entity1->GetIDComponent()->name = "Resource: Tree";
 	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
+	entity2->GetIDComponent()->name = "Resource: Rock";
 	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
+	entity3->GetIDComponent()->name = "Resource: Bush";
 	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
+	entity4->GetIDComponent()->name = "Resource: Berry Bush";
 	
 }
 
@@ -137,8 +141,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		BindDefaultKeys();
 
 		// Camera
-		CameraEntity* camera = new CameraEntity();
-		Engine::Instance().SetActiveCamera(camera);
+		CameraEntity* camera = Engine::Instance().GetActiveCamera();
+		
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
@@ -147,15 +151,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupEnemyTemplate();
 		SetupResourceTemplate();
 
-		// Grass
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
+		//// Grass
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 		// World
 		WorldEntity* world = new WorldEntity();
 
-		SpriteEntity* barn = new SpriteEntity();
+		SpriteEntity* barn = new SpriteEntity("Barn");
 		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
 		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
 		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");

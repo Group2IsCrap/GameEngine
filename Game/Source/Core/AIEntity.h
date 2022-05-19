@@ -9,6 +9,7 @@ class AIEntity : public CharacterEntity
 public:
 
 	AIEntity();
+	AIEntity(std::string name);
 	AIEntity(Firelight::ECS::EntityID entityID);
 	AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 

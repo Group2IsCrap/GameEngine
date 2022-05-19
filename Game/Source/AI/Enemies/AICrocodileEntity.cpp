@@ -19,6 +19,7 @@ AICrocodileEntity::AICrocodileEntity(Firelight::ECS::EntityID entityID) : AIEnti
 
 AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : AIEntity(isTemplate, entityID)
 {
+	GetIDComponent()->name = "Crocodile";
 	//GetComponent<RigidBodyComponent>()->nextPos = { 2.0f, 0.0f, 0.0f };
 	GetSpriteComponent()->pixelsPerUnit = 35;
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitCroc.png");
