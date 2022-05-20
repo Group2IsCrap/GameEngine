@@ -23,7 +23,6 @@ AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) :
 	GetRigidBodyComponent()->interpolate = true;
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
-	boxCollider->drawCollider = true;
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 4.0f, 4.0f);
 
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
