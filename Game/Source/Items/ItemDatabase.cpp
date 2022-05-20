@@ -52,6 +52,13 @@ void ItemDatabase::LoadItems(std::string filepath)
 	}
 	file.close();
 
+	std::map<int, std::vector<std::string>> WeaponData;
+	std::map<int, std::vector<std::string>> ArmourData;
+	std::map<int, std::vector<std::string>> foodData;
+	LoadExtra("Assets/weapon.csv", WeaponData);
+	LoadExtra("Assets/armour.csv", ArmourData);
+	LoadExtra("Assets/food.csv", foodData);
+
 	for (int i = 0; i < itemData.size(); ++i)
 	{
 		Template* itemTemplate = new SpriteEntityTemplate("Item Template - " + itemData[i][1]);
@@ -85,6 +92,7 @@ void ItemDatabase::LoadItems(std::string filepath)
 		audioComponent->streaming = false;
 		audioComponent->channel = "UI";
 
+		AddExtraComponent(itemTemplate, WeaponData, ArmourData, foodData);
 
 		itemTemplates.insert(std::make_pair(itemComponent->itemID, itemTemplate));
 	}
@@ -137,4 +145,57 @@ ItemDatabase::~ItemDatabase()
 	}
 
 	itemTemplates.clear();
+}
+
+void ItemDatabase::LoadExtra(std::string filepath, std::map<int, std::vector<std::string>>& Data)
+{
+	std::vector<std::string> row;
+	std::string line, column;
+
+	std::fstream file(filepath, std::ios::in);
+	if (file.is_open())
+	{
+		getline(file, line);
+		while (getline(file, line))
+		{
+			row.clear();
+
+			std::stringstream str(line);
+
+			while (getline(str, column, ','))
+			{
+				row.push_back(column);
+			}
+			Data[stoi(row[0])]= row;
+		}
+	}
+
+}
+
+void ItemDatabase::AddExtraComponent(Template* itemTemplate, std::map<int, std::vector<std::string>> weaponData, std::map<int, std::vector<std::string>>armourData, std::map<int, std::vector<std::string>>foodData)
+{
+	
+	ItemComponent* itemComponent = itemTemplate->GetComponent<ItemComponent>();
+		if (weaponData.contains(itemComponent->itemID)) {
+			
+			ECS::WeaponComponent* weapon = itemTemplate->AddComponent<ECS::WeaponComponent>();
+			weapon->Angle= std::stof(weaponData.at(itemComponent->itemID)[1]);
+			weapon->Radius = std::stof(weaponData.at(itemComponent->itemID)[2]);
+			weapon->Damage = std::stof(weaponData.at(itemComponent->itemID)[3]);
+			weapon->Cooldown = std::stof(weaponData.at(itemComponent->itemID)[4]);
+			weapon->HarvestType = (ECS::e_HarvestType)std::stoi(weaponData.at(itemComponent->itemID)[5]);
+			weapon->HarvestDamage = std::stof(weaponData.at(itemComponent->itemID)[6]);
+		}
+		if (armourData.contains(itemComponent->itemID)) {
+			
+			ECS::ArmourComponent* armour = itemTemplate->AddComponent<ECS::ArmourComponent>();
+			armour->armourValue = std::stof(armourData.at(itemComponent->itemID)[1]);
+			armour->durability = std::stof(armourData.at(itemComponent->itemID)[2]);
+		}
+		if (foodData.contains(itemComponent->itemID)) {
+			 ECS::FoodComponent* food = itemTemplate->AddComponent<ECS::FoodComponent>();
+			 food->HealthRegeneration= std::stoi(foodData.at(itemComponent->itemID)[1]);
+		}
+	
+
 }
