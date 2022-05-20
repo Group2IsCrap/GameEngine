@@ -5,7 +5,9 @@
 #include "../Source/ECS/Components/PhysicsComponents.h"
 #include "../Source/ECS/EntityManager.h"
 #include "../Source/ECS/EntityWrappers/Entity.h"
+#include "../Source/ECS/EntityWrappers/SpriteEntity.h"
 #include "../Source/Maths/Vec2.h"
+#include <Source/Graphics/AssetManager.h>
 
 #include <vector>
 #include <math.h>
@@ -138,6 +140,19 @@ namespace Firelight::Physics
 		/// <returns>Vector of entities</returns>
 		static inline std::vector<Entity*> OverlapCone(Vec3f point, float radius, float directionalAngle, float theta, std::vector<int> layers = { 0 })
 		{
+			Firelight::ECS::SpriteEntity* spriteEntity = new SpriteEntity("line");
+			spriteEntity->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Line.png");
+			spriteEntity->GetSpriteComponent()->pixelsPerUnit = 62.5f;
+			spriteEntity->GetTransformComponent()->position = point;
+
+			Firelight::ECS::SpriteEntity* spriteEntity2 = new SpriteEntity("line2");
+			spriteEntity2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Line.png");
+			spriteEntity2->GetSpriteComponent()->pixelsPerUnit = 62.5f;
+			spriteEntity2->GetTransformComponent()->position = point;
+			
+
+
+
 			std::vector<Entity*> entities;
 			std::vector<ECS::EntityID> allEntities = ECS::EntityComponentSystem::Instance()->GetEntities();
 			for (auto entityID : allEntities)
@@ -174,10 +189,25 @@ namespace Firelight::Physics
 
 				for (int k = 0; k < colliders.size(); ++k)
 				{
+					
 					Firelight::ECS::ColliderComponent* collider = colliders[k];
 
 					Firelight::ECS::CircleColliderComponent* circleCollider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(collider);
 					Firelight::ECS::BoxColliderComponent* boxCollider = dynamic_cast<Firelight::ECS::BoxColliderComponent*>(collider);
+					float thetaRadPos = (directionalAngle + theta) * (PI / 180);
+					float thetaRadNeg;
+					if (directionalAngle == 0)
+					{
+						thetaRadNeg = (360.0f - theta) * (PI / 180);
+					}
+					else
+					{
+						thetaRadNeg = (directionalAngle - theta) * (PI / 180);
+					}
+					
+
+					spriteEntity->GetTransformComponent()->rotation = thetaRadPos;
+					spriteEntity2->GetTransformComponent()->rotation = thetaRadNeg;
 
 					if (circleCollider != nullptr)
 					{
@@ -185,19 +215,23 @@ namespace Firelight::Physics
 						float radiusSquared = radius + circleCollider->radius;
 						radiusSquared *= radiusSquared;
 						float distSquared = Vec3f::DistSquared(point, transform->position);
+
 						if (distSquared < radiusSquared)
 						{
-							Vec3f vector1 = (radius * std::cos((directionalAngle + theta) * (PI / 180)), radius * std::sin((directionalAngle + theta) * (PI / 180)));
-							Vec3f normal1 = (-vector1.y, vector1.x);
+							float x1 = std::cos(thetaRadPos);
+							float y1 = std::sin(thetaRadPos);
+							Vec3f vector1 = Vec3f(x1, y1, 0.0f);
+							Vec3f normal1 = Vec3f(-vector1.y, vector1.x, 0.0f);
 
 							if (normal1.Dot(transform->position - point) <= 0)
 							{
-								Vec3f vector2 = (radius * std::cos((directionalAngle - theta) * (PI / 180)), radius * std::sin((directionalAngle - theta) * (PI / 180)));
-								Vec3f normal2 = (-vector2.y, vector2.x);
+								float x2 = std::cos(thetaRadNeg);
+								float y2 = std::sin(thetaRadNeg);
+								Vec3f vector2 = Vec3f(x2, y2, 0.0f);
+								Vec3f normal2 = Vec3f(-vector2.y, vector2.x, 0.0f);
 
 								if (normal2.Dot(transform->position - point) >= 0)
 								{
-									//In Cone
 									entities.push_back(entity);
 									break;
 								}
@@ -215,10 +249,11 @@ namespace Firelight::Physics
 						bool isCollide = false;
 
 						std::vector<Vec3f> corners;
-						corners.push_back((	transform->position.x - boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2));
-						corners.push_back((transform->position.x + boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2));
-						corners.push_back((transform->position.x - boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2));
-						corners.push_back((transform->position.x + boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2));
+						corners.push_back(Vec3f(	transform->position.x - boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2, 0.0f));
+						corners.push_back(Vec3f(transform->position.x + boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2, 0.0f));
+						corners.push_back(Vec3f(transform->position.x - boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2, 0.0f));
+						corners.push_back(Vec3f(transform->position.x + boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2, 0.0f));
+						corners.push_back(Vec3f(transform->position.x, transform->position.y, 0.0f));
 						
 
 						if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
@@ -228,31 +263,49 @@ namespace Firelight::Physics
 
 						if (circleDistance.x <= (boxCollider->rect.w / 2) || circleDistance.y <= (boxCollider->rect.h / 2))
 						{
-							entities.push_back(entity);
+							//entities.push_back(entity);
 							break;
 						}
 
-						for (int i = 0; i < 4; i++)
+						for (int i = 0; i < corners.size(); i++)
 						{
 							float cornerDistanceSquared = (corners[i].x * corners[i].x) + (corners[i].y * corners[i].y);
 
 							if (cornerDistanceSquared <= (radius * radius))
 							{
-								Vec3f vector1 = (radius * cos((directionalAngle + theta) * (PI / 180)), radius * sin((directionalAngle + theta) * (PI / 180)));
-								Vec3f normal1 = (-vector1.y, vector1.x);
+								float x1 = radius * std::cos(thetaRadPos);
+								float y1 = radius * std::sin(thetaRadPos);
+								Vec3f vector1 = Vec3f(x1, y1, 0.0f);
+								Vec3f normal1 = Vec3f((vector1.y - point.y), -(vector1.x - point.x), 0.0f);
 
-								if (normal1.Dot(corners[i] - point) <= 0)
+								Vec3f check = corners[i] - point;
+
+								float normalCheck = Vec3f::Dot(normal1, check);
+
+								if (normalCheck <= 0.0f)
 								{
-									Vec3f vector2 = (radius * cos((directionalAngle - theta) * (PI / 180)), radius * sin((directionalAngle - theta) * (PI / 180)));
-									Vec3f normal2 = (-vector2.y, vector2.x);
+									float x2 = radius * std::cos(thetaRadNeg);
+									float y2 = radius * std::sin(thetaRadNeg);
+									Vec3f vector2 = Vec3f(x2, y2, 0.0f);
+									Vec3f normal2 = Vec3f((vector2.y - point.y), -(vector2.x - point.x), 0.0f);
 
-									if (normal2.Dot(corners[i] - point) >= 0)
+									float normalCheck2 = Vec3f::Dot(normal2, check);
+
+									if (normalCheck2 >= 0.0f)
 									{
 										//In Cone
 										isCollide = true;
 										entities.push_back(entity);
 										break;
 									}
+									else
+									{
+										continue;
+									}
+								}
+								else
+								{
+									continue;
 								}
 							}
 						}
