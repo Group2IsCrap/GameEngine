@@ -8,6 +8,7 @@
 #include "Source/Panels/InspectorPanel.h"
 #include "Source/Panels/ViewportPanel.h"
 #include "Source/Panels/AnimationWindow.h"
+#include "Source/Panels/TimelineWindow.h"
 
 #include <vector>
 
@@ -35,6 +36,7 @@ private:
 	InspectorPanel* m_inspectorPanel;
 	ViewportPanel* m_viewportPanel;
 	AnimationWindow* m_animationWindow;
+	TimelineWindow* m_timelineWindow;
 
 	bool m_drawAnimationWindow;
 };
