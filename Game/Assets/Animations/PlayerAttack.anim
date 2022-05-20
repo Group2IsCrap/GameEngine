@@ -1,0 +1,20 @@
+{
+    "AnimationName": "PlayerAttack",
+    "Loop": false,
+    "FrameTime": 15.17300033569336,
+    "FrameCount": 12,
+    "TextureNames": [
+        "Sprites\\Player\\Attack\\PlayerAttack-20001.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20002.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20003.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20004.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20005.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20006.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20007.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20008.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20009.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20010.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20011.png",
+        "Sprites\\Player\\Attack\\PlayerAttack-20012.png"
+    ]
+}

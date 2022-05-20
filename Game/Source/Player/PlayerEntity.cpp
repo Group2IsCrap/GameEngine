@@ -7,6 +7,7 @@
 #include "../Core/Layers.h"
 
 #include "PlayerComponent.h"
+#include <Source/ECS/Components/AnimationComponent.h>
 
 PlayerEntity::PlayerEntity()
 {
@@ -16,6 +17,8 @@ PlayerEntity::PlayerEntity()
 	GetComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
 	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player);
 	GetLayerComponent()->layer = static_cast<int>(GameLayer::Player);
+	GetSpriteComponent()->pixelsPerUnit *= 2;
+	AddComponent<Firelight::ECS::AnimationComponent>();
 
 	GetHealthComponent()->maxHealth = 5;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;

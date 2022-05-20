@@ -4,6 +4,7 @@
 
 #include <Source/Physics/PhysicsHelpers.h>
 #include <Source/Engine.h>
+#include "../../Core/Layers.h"
 
 AITransitionBehaviour::AITransitionBehaviour(AIBehaviourComponent* aiBehaviourComponent, AIComponent* aiComponent, Firelight::ECS::RigidBodyComponent* rigidbodyComponent, AIState state) : m_AIBehaviourComponent(aiBehaviourComponent), m_AIComponent(aiComponent), m_rigidBodyComponent(rigidbodyComponent), m_AIState(state)
 {
@@ -51,7 +52,12 @@ bool AITransitionBehaviour::WanderToAttack(float searchRadius, std::vector<int> 
 	{
 		m_wanderTimer = 0.0f;
 		
-		std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_rigidBodyComponent->nextPos, searchRadius, 0);
+		std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_rigidBodyComponent->nextPos, searchRadius, 
+			std::vector<int>
+			{
+				static_cast<int>(GameLayer::Player),
+				static_cast<int>(GameLayer::Enemy)
+			});
 		for (auto* target : targets)
 		{
 			auto it = std::find(enemiesToTarget.begin(), enemiesToTarget.end(), target->GetComponent<IdentificationComponent>()->name);
