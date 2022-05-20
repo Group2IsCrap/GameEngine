@@ -2,6 +2,8 @@
 #include "Noise.h"
 #include "Biomes.h"
 #include "..\FirelightEngine\Source\Maths\Rect.h"
+#include "..\FirelightEngine\Source\TileMap\TileMap.h"
+#include "..\FirelightEngine\Source\Graphics\Data\Texture.h"
 #include <map>
 
 enum class IslandSpawnDirection

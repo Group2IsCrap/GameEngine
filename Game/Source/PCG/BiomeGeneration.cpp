@@ -6,6 +6,7 @@
 #include "../FirelightEngine/Source/Graphics/GraphicsEvents.h"
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
 #include "../FirelightEngine/Source/Events/EventDispatcher.h"
+#include "../FirelightEngine/Source/ECS/Systems/TilemapSystem.h"
 
 unsigned int BiomeGeneration::mapSeed = 1234;
 
