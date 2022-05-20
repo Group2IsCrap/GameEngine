@@ -27,7 +27,7 @@ namespace InventorySystem
         ECS::UIPanel* Slot;
         for (size_t i = 0; i < 100; i++)
         {
-            Slot = new ECS::UIPanel();
+            Slot = new ECS::UIPanel("Inventory Slot");
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
@@ -303,7 +303,7 @@ namespace InventorySystem
             if (index == m_entityIDButton.size()) 
             {
                 //create new buttion
-                ECS::UIButton* button = new ECS::UIButton();
+                ECS::UIButton* button = new ECS::UIButton("Load Inventory Group Button");
                 button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
                 button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
                 button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));
@@ -320,7 +320,7 @@ namespace InventorySystem
 
         if (m_entityIDButton.size() == 0) 
         {
-            ECS::UIButton* button = new ECS::UIButton();
+            ECS::UIButton* button = new ECS::UIButton("Load Inventory Group Button");
             button->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
             button->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
             button->SetDefaultDimensions(Maths::Vec3f(100, 120, 0));

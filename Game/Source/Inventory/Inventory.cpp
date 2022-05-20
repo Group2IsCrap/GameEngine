@@ -25,7 +25,7 @@ void Inventory::SetEntityData(ECS::EntityID ID, int InvListPos)
 
 void Inventory::CreateInventory(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset)
 {
-	m_inventorySpace = new ECS::UIPanel();
+	m_inventorySpace = new ECS::UIPanel("Inventory Space");
 	m_inventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	m_inventorySpace->GetSpriteComponent()->toDraw = false;
 	m_inventorySpace->SetAnchorSettings(Anchor);
@@ -42,7 +42,7 @@ void Inventory::CreateInventory(Maths::Vec2f size, float slotCount, ECS::EntityI
 }
 void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings anchor, Maths::Vec2f offset)
 {
-	m_inventorySpace = new ECS::UIPanel();
+	m_inventorySpace = new ECS::UIPanel("Inventory Space");
 	m_inventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	m_inventorySpace->GetSpriteComponent()->toDraw = false;
 	m_inventorySpace->GetWidgetComponent()->isActive = true;
@@ -138,7 +138,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 			else
 			{
 				//new pannle
-				slot = new ECS::UIPanel();
+				slot = new ECS::UIPanel("Inventory Slot");
 				slot->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture(inventoryData->slotTexture);
 				slot->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
 				slot->SetParent(m_inventorySpace->GetEntityID());
@@ -320,7 +320,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 					}
 					else
 					{
-						ECS::UIEntity* icon = new ECS::UIEntity();
+						ECS::UIEntity* icon = new ECS::UIEntity("Inventory Icon");
 						icon->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(item)->iconPath);
 						icon->GetSpriteComponent()->toDraw = inventoryData->isDisplay;
 						icon->SetAnchorSettings(ECS::e_AnchorSettings::Center);

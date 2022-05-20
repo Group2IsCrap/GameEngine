@@ -6,6 +6,7 @@
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
 #include <Source/ECS/Components/AudioComponents.h>
+#include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include <Source/Graphics/AssetManager.h>
 #include "../Core/Layers.h"
 
@@ -52,7 +53,8 @@ void ItemDatabase::LoadItems(std::string filepath)
 
 	for (int i = 0; i < itemData.size(); ++i)
 	{
-		Template* itemTemplate = new Template();
+		Template* itemTemplate = new SpriteEntityTemplate("Item Template - " + itemData[i][1]);
+
 		ItemComponent* itemComponent = itemTemplate->AddComponent<ItemComponent>();
 		itemComponent->itemID = std::stoi(itemData[i][0]);
 		itemComponent->name = itemData[i][1];
@@ -60,17 +62,19 @@ void ItemDatabase::LoadItems(std::string filepath)
 		itemComponent->iconPath = itemData[i][3];
 		itemComponent->stackSize = std::stoi(itemData[i][4]);
 		itemComponent->tags = GetTagList(itemData[i][5]);
-		SpriteComponent* spriteComponent = itemTemplate->AddComponent<SpriteComponent>();
+
+		SpriteComponent* spriteComponent = itemTemplate->GetComponent<SpriteComponent>();
 		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(itemComponent->iconPath);
 		spriteComponent->pixelsPerUnit = 50;
 		spriteComponent->layer = static_cast<int>(RenderLayer::Items);
-		TransformComponent* transformComponent = itemTemplate->AddComponent<TransformComponent>();
-		StaticComponent* staticComponent = itemTemplate->AddComponent<StaticComponent>();
-		staticComponent->isStatic = false;
+
+		itemTemplate->GetComponent<StaticComponent>()->isStatic = false;
+
 		CircleColliderComponent* circleCollider = new CircleColliderComponent();
 		itemTemplate->AddComponent<Firelight::ECS::ColliderComponent>(circleCollider);
-		LayerComponent* layerComponent = itemTemplate->AddComponent<LayerComponent>();
-		layerComponent->layer = static_cast<int>(GameLayer::Items);
+
+		itemTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Items);
+
 		AudioComponent* audioComponent = new AudioComponent();
 		itemTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
 		audioComponent->soundName = "beeuuuuu.mp3";
@@ -114,6 +118,7 @@ Entity* ItemDatabase::CreateInstanceOfItem(int itemID)
 	entity->GetComponent<LayerComponent>()->layer = 1;
 	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->radius = 1.0f;
 	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->isTrigger = true;
+	entity->GetComponent<IdentificationComponent>()->name = "Item: " + entity->GetComponent<ItemComponent>()->name;
 
 	return entity;
 }

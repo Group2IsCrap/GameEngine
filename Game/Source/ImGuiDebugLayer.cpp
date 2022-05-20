@@ -5,6 +5,8 @@
 
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 
+using namespace Firelight::ECS;
+
 ImGuiDebugLayer::ImGuiDebugLayer()
 {
 	SetupTheme();
@@ -43,6 +45,7 @@ void ImGuiDebugLayer::Render()
 	RenderItemWindow();
 	RenderKeyBindingPrototype();
 	RenderDebugInformation();
+	RenderECSDebug();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -55,6 +58,31 @@ void ImGuiDebugLayer::RenderItemWindow()
 	if (ImGui::Button("Spawn Stick"))
 	{
 		spawnItemCommand[1]();
+	}
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderECSDebug()
+{
+	ImGui::Begin("ECS Debug");
+	std::vector<EntityID> entities = EntityComponentSystem::Instance()->GetEntities();
+	for (auto& entity : entities)
+	{
+		IdentificationComponent* id = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(entity);
+		if (id != nullptr)
+		{
+			ImGui::Text(id->name.c_str());
+		}
+		else
+		{
+			ImGui::Text(std::to_string(entity).c_str());
+			std::vector<BaseComponent*> components = EntityComponentSystem::Instance()->GetAllComponents(entity);
+			for (int i = 0; i < components.size(); ++i)
+			{
+				i += 1;
+			}
+
+		}
 	}
 	ImGui::End();
 }

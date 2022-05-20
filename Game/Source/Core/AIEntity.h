@@ -9,11 +9,13 @@ class AIEntity : public CharacterEntity
 public:
 
 	AIEntity();
+	AIEntity(std::string name);
 	AIEntity(Firelight::ECS::EntityID entityID);
 	AIEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
 	void RemoveHealth(int amount) override;
 	void HealthBelowZero() override;
+	void FaceDirection();
 
 	AIComponent* GetAIComponent();
 
@@ -23,4 +25,6 @@ public:
 
 private:
 	AIComponent* m_AIComponent;
+	RigidBodyComponent* m_rigidbodyComponent;
+	SpriteComponent* m_spriteComponent;
 };

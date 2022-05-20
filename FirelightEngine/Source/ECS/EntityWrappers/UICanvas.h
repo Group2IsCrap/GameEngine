@@ -9,6 +9,7 @@ namespace Firelight::ECS
 	{
 	public:
 		UICanvas();
+		UICanvas(std::string name);
 		UICanvas(Firelight::Maths::Vec3f dimensions, int layer = 100, bool draw = false, Firelight::ECS::e_AnchorSettings anchorSettings = Firelight::ECS::e_AnchorSettings::Center);
 
 		UICanvasComponent* GetCanvasComponent();

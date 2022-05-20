@@ -131,7 +131,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib;</AdditionalDependencies>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,6 +159,7 @@
     <ClCompile Include="Source\AI\Enemies\AIDeerEntity.cpp" />
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
+    <ClCompile Include="Source\Core\ResourceEntity.cpp" />
     <ClCompile Include="Source\Systems\AISystem.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
@@ -174,10 +175,14 @@
     <ClCompile Include="Source\UI\DeathMenu.cpp" />
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BerryBushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\RockEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Combat\CombatCalculations.h" />
-    <ClInclude Include="Source\Combat\CombatComponent.h" />
+    <ClInclude Include="Source\Combat\WeaponComponent.h" />
     <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
     <ClInclude Include="Source\AI\AISpawner.h" />
     <ClInclude Include="Source\AI\AIStateBehaviour.h" />
@@ -187,6 +192,7 @@
     <ClInclude Include="Source\AI\Enemies\AIDeerEntity.h" />
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
     <ClInclude Include="Source\Core\AIEntity.h" />
+    <ClInclude Include="Source\Core\ResourceEntity.h" />
     <ClInclude Include="Source\Systems\AISystem.h" />
     <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
@@ -211,6 +217,10 @@
     <ClInclude Include="Source\UI\DeathMenu.h" />
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
     <ClInclude Include="Source\Core\WorldEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BerryBushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\RockEntity.h" />
+    <ClInclude Include="Source\WorldEntities\TreeEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
@@ -219,6 +229,9 @@
     <ProjectReference Include="..\SnowfallEngine\SnowfallEngine.vcxproj">
       <Project>{2e6e55df-89ad-461d-8acc-b73399320c31}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

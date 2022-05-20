@@ -20,8 +20,30 @@ public:
 	void FixedUpdate(const Firelight::Utils::Time& time) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
+	void SwitchWeapon();
+
 private:
 	float GetSpeed();
+
+	void MovePlayerUp();
+	void MovePlayerLeft();
+	void MovePlayerDown();
+	void MovePlayerRight();
+
+	void MovePlayerUpRelease();
+	void MovePlayerLeftRelease();
+	void MovePlayerDownRelease();
+	void MovePlayerRightRelease();
+
+	void HandlePlayerAnimations();
+
+	void Interact();
+	void SpawnItem();
+	void Attack();
+	void RemoveHealth();
+
+	void StartAttack();
+	void StopAttack();
 
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -38,6 +60,7 @@ private:
 	size_t m_interactionEventIndex;
 	size_t m_spawnItemEventIndex;
 	size_t m_attackIndex;
+	size_t m_releaseAttackIndex;
 	size_t m_removeHealthEventIndex;
   
 	Firelight::Maths::Vec3f m_velocity;
@@ -49,18 +72,8 @@ private:
 	bool m_moveRight;
 	ImGuiPlayerLayer* imguiLayer = nullptr;
 
-	void MovePlayerUp();
-	void MovePlayerLeft();
-	void MovePlayerDown();
-	void MovePlayerRight();
-
-	void MovePlayerUpRelease();
-	void MovePlayerLeftRelease();
-	void MovePlayerDownRelease();
-	void MovePlayerRightRelease();
-
-	void Interact();
-	void SpawnItem();
-	void Attack();
-	void RemoveHealth();
+	bool m_isAttacking = false;
+	float m_attackCooldown = 0.0f;
+	float m_currentWeaponCooldown = 1.0f;
+	bool m_canAttack = true;
 };

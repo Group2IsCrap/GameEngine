@@ -149,6 +149,24 @@ namespace Firelight::ECS
 			return components;
 		}
 
+
+		std::vector<BaseComponent*> GetAllComponents(EntityID entity)
+		{
+			std::vector<BaseComponent*> components = std::vector<BaseComponent*>();
+			for (auto& type : sm_componentHashTypes)
+			{
+				ComponentTypeID typeID = type.second;
+				if (m_componentMap[typeID].contains(entity))
+				{
+					for (int i = 0; i < m_componentMap[typeID][entity].size(); ++i)
+					{
+						components.push_back(m_componentData[typeID][m_componentMap[typeID][entity][i]]);
+					}
+				}
+			}
+			return components;
+		}
+
 		/// <summary>
 		/// Returns a ptr to a BaseComponent on the given entity
 		/// </summary>
