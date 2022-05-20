@@ -2,15 +2,18 @@
 #include"Source/Events/EventDispatcher.h"
 #include"InventoryEvents.h"
 
-InventoryEntity::InventoryEntity()
+InventoryEntity::InventoryEntity() : Entity()
 {
-    AddComponent<InventoryComponentGroupID>(); 
+    AddComponent<IdentificationComponent>()->name = "Inventory";
+    AddComponent<InventoryComponentGroupID>();
+
 }
 
-InventoryEntity::InventoryEntity(std::string name, bool isDisplayButtons, bool isDisplayAll, Firelight::Keys keyToActivate)
+InventoryEntity::InventoryEntity(std::string name, bool isDisplayButtons, bool isDisplayAll, Firelight::Keys keyToActivate) : InventoryEntity()
 {
-    AddComponent<InventoryComponentGroupID>();
-    
+
+    this->GetComponent<IdentificationComponent>()->name = name;
+
     GetInventoryGroup()->group = name;
     GetInventoryGroup()->isDisplayButtons = isDisplayButtons;
     GetInventoryGroup()->isDisplayAll = isDisplayAll;

@@ -4,7 +4,7 @@
 
 Firelight::ECS::GameEntityTemplate::GameEntityTemplate() : Template()
 {
-	AddComponent<IdentificationComponent>();
+	AddComponent<IdentificationComponent>()->name = "Game Entity Template";
 	AddComponent<StaticComponent>();
 	AddComponent<LayerComponent>();
 	AddComponent<TransformComponent>();

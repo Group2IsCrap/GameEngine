@@ -1,9 +1,16 @@
 #include "CharacterEntity.h"
 
-CharacterEntity::CharacterEntity()
+CharacterEntity::CharacterEntity() : Firelight::ECS::SpriteEntity()
 {
 	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
+	this->GetIDComponent()->name = "Character Entity";
+}
+
+
+CharacterEntity::CharacterEntity(std::string name) : CharacterEntity()
+{
+	this->GetIDComponent()->name = name;
 }
 
 CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)

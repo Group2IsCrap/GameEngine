@@ -84,6 +84,11 @@ namespace Firelight::ECS
 			return m_componentManager->GetAllComponents<T>();
 		}
 
+		std::vector<BaseComponent*> GetAllComponents(EntityID entity)
+		{
+			return m_componentManager->GetAllComponents(entity);
+		}
+
 		/// <summary>
 		/// Returns a list of all components.
 		/// </summary>

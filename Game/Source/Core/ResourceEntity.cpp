@@ -4,6 +4,12 @@ ResourceEntity::ResourceEntity()
 {
 	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
+	this->GetIDComponent()->name = "Resource";
+}
+
+ResourceEntity::ResourceEntity(std::string name) : ResourceEntity()
+{
+	this->GetIDComponent()->name = name;
 }
 
 ResourceEntity::ResourceEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)

@@ -8,6 +8,8 @@ namespace Firelight::ECS
 	public:
 		UIButton();
 
+		UIButton(std::string name);
+
 		void BindOnLeftPressed(CallbackFunctionType callback);
 		void BindOnRightPressed(CallbackFunctionType callback);
 		void BindOnMiddlePressed(CallbackFunctionType callback);

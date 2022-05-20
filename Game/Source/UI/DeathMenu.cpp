@@ -22,7 +22,9 @@ DeathMenu::DeathMenu(Firelight::ECS::Entity* canvas)
 	GetSpriteComponent()->colour = Firelight::Graphics::Colour::RGBA({150, 150, 150, 255});
 	SetDefaultDimensions({ 1920.0f, 1080.0f, 0 });
 
-	m_respawnBtn = new Firelight::ECS::UIButton();
+	this->GetIDComponent()->name = "Death Menu UI";
+
+	m_respawnBtn = new Firelight::ECS::UIButton("Respawn Button");
 	m_respawnBtn->GetSpriteComponent()->toDraw = false;
 	m_respawnBtn->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	m_respawnBtn->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Top);

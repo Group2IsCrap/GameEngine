@@ -8,6 +8,12 @@ AIEntity::AIEntity() : CharacterEntity()
 	m_spriteComponent = GetComponent<SpriteComponent>();
 	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Enemy);
 	GetLayerComponent()->layer = static_cast<int>(GameLayer::Enemy);
+	this->GetIDComponent()->name = "AI Entity";
+}
+
+AIEntity::AIEntity(std::string name) : AIEntity()
+{
+	this->GetIDComponent()->name = name;
 }
 
 AIEntity::AIEntity(Firelight::ECS::EntityID entityID) : CharacterEntity(entityID)

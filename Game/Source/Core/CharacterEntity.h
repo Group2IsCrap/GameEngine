@@ -10,6 +10,7 @@ class CharacterEntity : public Firelight::ECS::SpriteEntity
 public:
 
 	CharacterEntity();
+	CharacterEntity(std::string name);
 	CharacterEntity(Firelight::ECS::EntityID entityID);
 	CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 

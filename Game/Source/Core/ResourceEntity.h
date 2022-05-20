@@ -10,6 +10,7 @@ class ResourceEntity : public Firelight::ECS::SpriteEntity
 public:
 
 	ResourceEntity();
+	ResourceEntity(std::string name);
 	ResourceEntity(Firelight::ECS::EntityID entityID);
 	ResourceEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
