@@ -7,6 +7,9 @@
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
 #include "../FirelightEngine/Source/Events/EventDispatcher.h"
 #include "../FirelightEngine/Source/ECS/Systems/TilemapSystem.h"
+#include "BiomeInfo.h"
+
+using namespace Firelight::Events;
 
 unsigned int BiomeGeneration::mapSeed = 1234;
 
@@ -21,12 +24,12 @@ BiomeGeneration::BiomeGeneration()
 {
 	sm_biomeMap =
 	{
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/yellow.png"),
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/red.png"),
-		Firelight::Graphics::AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png")
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/yellow.png"),
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/red.png"),
+		AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png")
 	};
 }
 
@@ -67,7 +70,7 @@ void BiomeGeneration::Uninitialise()
 
 void BiomeGeneration::Render()
 {
-	Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&BiomeGeneration::Draw, this));
+	EventDispatcher::SubscribeFunction<Graphics::OnEarlyRender>(std::bind(&BiomeGeneration::Draw, this));
 }
 
 void BiomeGeneration::Draw()
@@ -85,17 +88,17 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 
 void BiomeGeneration::DrawIslands()
 {
-	Firelight::Maths::Rectf m_initialSourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);;
-	Firelight::Maths::Rectf m_destinationRect = Firelight::Maths::Rectf(0.0f, 3.0f, 1.0f, 1.0f);
-	Firelight::Maths::Rectf m_centre = Firelight::Maths::Rectf(-10.0f, 0.0f, 1.0f, 1.0f);
-	Firelight::Maths::Rectf m_curIslandCentre = m_centre;
+	Rectf m_initialSourceRect = Rectf(0.0f, 0.0f, -1.0f, -1.0f);;
+	Rectf m_destinationRect = Rectf(0.0f, 3.0f, 1.0f, 1.0f);
+	Rectf m_centre = Rectf(-10.0f, 0.0f, 1.0f, 1.0f);
+	Rectf m_curIslandCentre = m_centre;
 	int m_layer = 32;
 	double m_rotation = 0.0;
 	size_t numberOfIslands = 6;
 	m_radius = 6;
 
 	//for each island
-	Firelight::Maths::Rectf newDestRect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f);
+	Rectf newDestRect = Rectf(0.0f, 0.0f, 1.0f, 1.0f);
 	int iterator = 0;
 	IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
 
@@ -115,9 +118,9 @@ void BiomeGeneration::DrawIslands()
 		bool isIslandPositionEmpty = false;
 		while (!isIslandPositionEmpty)
 		{
-			Firelight::Maths::Vec2i potentialNewIslandPosition = Firelight::Maths::Vec2i(0, 0);
+			Vec2i potentialNewIslandPosition = Vec2i(0, 0);
 
-			potentialNewIslandPosition = Firelight::Maths::Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
+			potentialNewIslandPosition = Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
 
 			switch (direction)
 			{
@@ -172,22 +175,24 @@ void BiomeGeneration::DrawIslands()
 	m_OccupiedIslandSpaces.clear();
 }
 
-void BiomeGeneration::DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index)
+void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, int index)
 {
 	//dont need these two once tile map is used.
 	int m_layer = 32;
 	double m_rotation = 0.0;
 
-	m_OccupiedIslandSpaces.push_back(Firelight::Maths::Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
+	m_OccupiedIslandSpaces.push_back(Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
 
 	for (int x = -m_radius; x <= m_radius; ++x)
 	{
 		for (int y = -m_radius; y <= m_radius; ++y)
 		{
-			destRect = Firelight::Maths::Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
-			if (Firelight::Maths::Vec2i::Dist(Firelight::Maths::Vec2i((int)destRect.x, destRect.y), Firelight::Maths::Vec2i(currentIslandCentre.x, currentIslandCentre.y)) <= m_radius)
+			destRect = Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
+			if (Vec2i::Dist(Vec2i((int)destRect.x, destRect.y), Vec2i(currentIslandCentre.x, currentIslandCentre.y)) <= m_radius)
 			{
-				Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, sourceRect);
+
+				//mapOfBiomesOnTileIDs[y] = 
+				//GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Colours::sc_white, sourceRect);
 			}
 			else
 			{
@@ -204,7 +209,7 @@ void BiomeGeneration::DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firel
 	}
 }
 
-void BiomeGeneration::DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction)
+void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, IslandSpawnDirection direction)
 {
 	//dont need these two once tile map is used.
 	int m_layer = 32;
@@ -236,7 +241,7 @@ void BiomeGeneration::DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::M
 	{
 		for (size_t y = 0; y < m_bridgeWidth; ++y)
 		{
-			Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[5], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, sourceRect);
+			GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[5], m_layer, m_rotation, Colours::sc_white, sourceRect);
 			switch (direction)
 			{
 			case IslandSpawnDirection::North:
@@ -280,7 +285,7 @@ void BiomeGeneration::DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::M
 	}
 }
 
-bool BiomeGeneration::IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition)
+bool BiomeGeneration::IsIslandSpaceFree(Vec2i newIslandPosition)
 {
 	if (std::find(m_OccupiedIslandSpaces.begin(), m_OccupiedIslandSpaces.end(), newIslandPosition) != m_OccupiedIslandSpaces.end())
 	{

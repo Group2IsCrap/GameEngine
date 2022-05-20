@@ -30,7 +30,6 @@ namespace Firelight::TileMap
 	{
 	public:
 		Tile();
-
 		void DrawTile();
 
 		void SetTileTexture(Graphics::Texture* texture);
@@ -38,13 +37,19 @@ namespace Firelight::TileMap
 		void SetSourceRect(float x, float y, float w, float h);
 		void SetLayer(int layer);
 		void SetRotation(double layer);
+		void SetTileID(unsigned int m_tileID);
+
+		unsigned int GetTileID() const;
+		Maths::Rectf GetDestinationRect() const;
 
 	private:
 
 		Graphics::Texture* m_texture;
 		Maths::Rectf m_sourceRect;
 		Maths::Rectf m_destinationRect;
+		unsigned int m_tileID;
 		int m_layer;
 		int m_rotation;
+		bool m_isOccupied;
 	};
 }

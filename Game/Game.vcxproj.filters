@@ -15,6 +15,9 @@
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
+    <ClCompile Include="IslandGeneration.cpp" />
+    <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
+    <ClCompile Include="Source\PCG\Noise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
@@ -39,5 +42,10 @@
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
     <ClInclude Include="Source\Core\WorldEntity.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
+    <ClInclude Include="IslandGeneration.h" />
+    <ClInclude Include="Source\PCG\BiomeGeneration.h" />
+    <ClInclude Include="Source\PCG\Biomes.h" />
+    <ClInclude Include="Source\PCG\Noise.h" />
+    <ClInclude Include="Source\PCG\BiomeInfo.h" />
   </ItemGroup>
 </Project>

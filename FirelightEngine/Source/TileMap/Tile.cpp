@@ -11,6 +11,7 @@ namespace Firelight::TileMap
 		: m_texture(Graphics::AssetManager::Instance().GetDefaultTexture())
 		, m_sourceRect(0.0f, 0.0f, -1.0f, -1.0f)
 		, m_destinationRect(-2.0f, -2.0f, 1.0f, 1.0f)
+		, m_tileID(0)
 		, m_layer(32)
 		, m_rotation(0.0)
 	{}
@@ -43,5 +44,20 @@ namespace Firelight::TileMap
 	void Tile::SetRotation(double rotation)
 	{
 		m_rotation = rotation;
+	}
+
+	void Tile::SetTileID(unsigned int tileID)
+	{
+		m_tileID = tileID;
+	}
+
+	unsigned int Tile::GetTileID() const
+	{
+		return m_tileID;
+	}
+
+	Maths::Rectf Tile::GetDestinationRect() const
+	{
+		return m_destinationRect;
 	}
 }

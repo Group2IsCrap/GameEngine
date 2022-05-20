@@ -6,6 +6,9 @@
 #include "..\FirelightEngine\Source\Graphics\Data\Texture.h"
 #include <map>
 
+using namespace Firelight::Graphics;
+using namespace Firelight::Maths;
+
 enum class IslandSpawnDirection
 {
 	North,
@@ -32,10 +35,10 @@ public:
 
 private:
 
-	void DrawIslandCircles(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, int index);
-	void DrawBridge(Firelight::Maths::Rectf& destRect, Firelight::Maths::Rectf sourceRect, Firelight::Maths::Rectf currentIslandCentre, IslandSpawnDirection direction);
+	void DrawIslandCircles(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, int index);
+	void DrawBridge(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, IslandSpawnDirection direction);
 
-	bool IsIslandSpaceFree(Firelight::Maths::Vec2i newIslandPosition);
+	bool IsIslandSpaceFree(Vec2i newIslandPosition);
 
 	IslandSpawnDirection CalculateNextIslandDirection(unsigned int noiseIndex);
 	unsigned int CalculateRandomIslandIndex();
@@ -48,8 +51,8 @@ private:
 	static BiomeGeneration* sm_instance;
 	static unsigned int mapSeed;
 
-	std::vector< Firelight::Maths::Vec2i > m_OccupiedIslandSpaces;
-	std::vector< Firelight::Graphics::Texture*> sm_biomeMap;
+	std::vector< Vec2i > m_OccupiedIslandSpaces;
+	std::vector< Texture*> sm_biomeMap;
 	Biome m_biome;
 
 	unsigned int m_bridgeWidth;

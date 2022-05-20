@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IslandGeneration.h" />
+    <ClInclude Include="Source\PCG\BiomeInfo.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
     <ClInclude Include="Source\Core\Layers.h" />
     <ClInclude Include="Source\Events\PlayerEvents.h" />

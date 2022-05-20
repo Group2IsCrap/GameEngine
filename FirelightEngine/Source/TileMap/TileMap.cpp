@@ -1,6 +1,5 @@
 #include "TileMap.h"
 #include "Tile.h"
-#include "TileSet.h"
 #include "../Events/EventDispatcher.h"
 #include "../Graphics/AssetManager.h"
 #include "../Graphics/GraphicsHandler.h"
@@ -25,6 +24,7 @@ namespace Firelight::TileMap
 
     void TileMap::UpdateTileMapSize()
     {
+        unsigned int tileNum = 0;
         for (int x = 0; x < m_tileMapWidth; ++x)
         {
             std::vector<Tile> vec;
@@ -32,7 +32,10 @@ namespace Firelight::TileMap
             {
                   Tile newTile;
                   newTile.SetTileTexture(Graphics::AssetManager::Instance().GetDefaultTexture());
+                  newTile.SetTileID(tileNum);
                   vec.emplace_back(newTile);
+
+                  tileNum++;
             }
             m_tileMap.emplace_back(vec);
         }
@@ -72,6 +75,23 @@ namespace Firelight::TileMap
     void TileMap::SetTileMapWidth(int tileMapWidth)
     {
         m_tileMapWidth = tileMapWidth;
+    }
+
+    Tile* TileMap::GetTileAtPosition(Maths::Vec2f position)
+    {
+        auto tile = find_if_in_2DArray(m_tileMap.begin(), m_tileMap.end(), [position](Tile tile) { return (position.x > tile.GetDestinationRect().x) && (position.x < tile.GetDestinationRect().w) && (position.y > tile.GetDestinationRect().y) && (position.y < tile.GetDestinationRect().y + tile.GetDestinationRect().h); });
+
+        tile[0].size();
+
+        //std::vector<std::vector<Tile>>::iterator tileAtPosition = std::find_if(m_tileMap.begin(), m_tileMap.end(), [position](Tile tile)
+        //    {
+        //        return (position.x > tile.GetDestinationRect().x) && (position.x < tile.GetDestinationRect().w) && (position.y > tile.GetDestinationRect().y) && (position.y < tile.GetDestinationRect().y + tile.GetDestinationRect().h);
+        //    });
+
+        //if (tileAtPosition != m_tileMap.end())
+        //{
+        //    std::vector<Tile> getTileVectors = tileAtPosition - m_tileMap.begin();
+        //}
     }
 
     std::vector<std::vector<Tile>>& TileMap::GetTileMap()
