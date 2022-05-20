@@ -92,6 +92,9 @@ namespace Firelight::TileMap
         //{
         //    std::vector<Tile> getTileVectors = tileAtPosition - m_tileMap.begin();
         //}
+        Tile* tile1 = new Tile();
+
+        return tile1;
     }
 
     std::vector<std::vector<Tile>>& TileMap::GetTileMap()

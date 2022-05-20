@@ -128,12 +128,12 @@ void InventoryManager::CreatInventory(std::string group, std::string InvName, Ma
     m_Inventory[group].emplace_back(newInv);
 }
 
-void InventoryManager::GroupLoadOrUnload(std::string group)
-{
-
-
-
-}
+//void InventoryManager::GroupLoadOrUnload(std::string group)
+//{
+//
+//
+//
+//}
 
 void InventoryManager::LoadInventory(GroupName group, std::string name)
 {
