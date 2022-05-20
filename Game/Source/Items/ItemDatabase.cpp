@@ -50,6 +50,7 @@ void ItemDatabase::LoadItems(std::string filepath)
 			itemData.push_back(row);
 		}
 	}
+	file.close();
 
 	for (int i = 0; i < itemData.size(); ++i)
 	{

@@ -48,6 +48,7 @@ public:
 	std::vector<ECS::EntityID> GetItemType(int howMany, int type);
 
 	void Place(InventoryStoreData* slotData);
+	void OnLeftIimesFunction(std::vector<ECS::EntityID>* id);
 
 	ECS::EntityID GetSpecialSlot(std::string name);
 
