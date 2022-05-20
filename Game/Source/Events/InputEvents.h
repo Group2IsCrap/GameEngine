@@ -23,4 +23,6 @@ namespace Firelight::Events::InputEvents
 	NEW_EVENT(RemoveHealthEvent);
 	NEW_EVENT(AttackEvent);
 	NEW_EVENT(ReleaseAttackEvent);
+
+	NEW_EVENT(ShowDebugEvent);
 }

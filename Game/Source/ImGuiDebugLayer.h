@@ -19,6 +19,8 @@ public:
 	ImGuiDebugLayer();
 	~ImGuiDebugLayer();
 
+	void Initialize();
+
 	void RenderItemWindow();
 
 	void RenderECSDebug();
