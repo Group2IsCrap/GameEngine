@@ -40,6 +40,24 @@ using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
 
+static bool g_RenderDebug = false;
+static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
+
+static void ToggleDebugLayer()
+{
+	g_RenderDebug = !g_RenderDebug;
+
+	if (g_RenderDebug)
+	{
+		g_debugLayer->Initialize();
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(g_debugLayer);
+	}
+	else
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(g_debugLayer);
+	}
+}
+
 void BindDefaultKeys()
 {
 	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
@@ -57,11 +75,15 @@ void BindDefaultKeys()
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
 
+	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
+
 
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
 
 	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
 	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
+
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
 }
 
 void SpawnItem0()
@@ -81,11 +103,15 @@ void SpawnItem1()
 
 void SetupDebugUI()
 {
+	if (!g_RenderDebug)
+	{
+		return;
+	}
+
 	// ImGui Test code
-	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
-	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
-	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
+	g_debugLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(g_debugLayer);
 }
 
 void SetupEnemyTemplate()
