@@ -85,7 +85,7 @@ namespace Firelight::ECS
 	struct UIDraggableComponent : BaseComponent
 	{
 		std::vector<CallbackFunctionType> onPickUpFunctions;
-		std::vector<CallbackFunctionType> onDropUpFunctions;
+		std::vector<CallbackFunctionType> onDropFunctions;
 	};
 
 	struct UIContainerComponent : BaseComponent

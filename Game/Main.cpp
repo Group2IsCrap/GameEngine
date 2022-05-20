@@ -193,6 +193,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupEnemyTemplate();
 		SetupResourceTemplate();
 
+
 		//// Grass
 		//SpriteEntity* test2 = new SpriteEntity();
 		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");

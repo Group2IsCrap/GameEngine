@@ -343,7 +343,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 							
 						}
 						icon->AddComponent<ECS::UIDraggableComponent>();
-						icon->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
+						icon->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						icon->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, icon->GetEntityID()));
 						slotData->UITexID = icon->GetEntityID();
 					}
@@ -451,7 +451,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 			slotData->stackSize = item.stackSize;
 			slotData->entityIDs = item.entityIDs;
 
-			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 			slot->isUsed = true;
 
 			
@@ -577,8 +577,8 @@ void Inventory::Place(InventoryStoreData* slotData)
 			placeSlot->isUsed = true;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(placeSlotData->UITexID)->parentID = placeSlot->slotID;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(placeSlotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
-			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropUpFunctions.clear();
-			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, placeSlotData));
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropFunctions.clear();
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(placeSlotData->UITexID)->onDropFunctions.push_back(std::bind(&Inventory::Place, this, placeSlotData));
 			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(placeSlotData->UITexID);
 			text->hidden = false;
 			text->text.SetString(std::to_string(placeSlotData->entityIDs.size()));
@@ -587,8 +587,8 @@ void Inventory::Place(InventoryStoreData* slotData)
 				
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID = currSlot->slotID;
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
-				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
-				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
+				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
+				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 				TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 				text->hidden = false;
 				text->text.SetString(std::to_string(slotData->entityIDs.size()));
@@ -613,7 +613,9 @@ void Inventory::Place(InventoryStoreData* slotData)
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
 	TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 	text->hidden = true;
-	
+
+
+	//ECS::EntityComponentSystem::Instance()->RemoveEntity(slotData->UITexID);
 	InventoryStoreData dataCopy = *slotData;
 	slotData->entityIDs.clear();
 	slotData->stackSize = -1;
