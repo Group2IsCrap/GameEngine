@@ -26,7 +26,9 @@ void AIAttackingBehaviour::HandleState(const Firelight::Utils::Time& time)
 	dir.Normalise();
 
 	// Move towards target if too far
-	if (Firelight::Maths::Vec3f::Dist(m_rigidBodyComponent->nextPos, targetRigidbody->nextPos) <= m_attackRange)
+	SpriteComponent* targetSprite = m_targetAIComponent->m_Target->GetComponent<SpriteComponent>();
+	float widthInWorld = targetSprite->sourceRect.w / targetSprite->pixelsPerUnit;
+	if ((Firelight::Maths::Vec3f::Dist(m_rigidBodyComponent->nextPos, targetRigidbody->nextPos)) <= m_attackRange + widthInWorld)
 	{
 		// Increase timer, attack if cooldown is reached
 		m_attackTimer += time.GetDeltaTime();

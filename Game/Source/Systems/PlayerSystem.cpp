@@ -5,7 +5,6 @@
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
-#include<Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
@@ -15,7 +14,9 @@
 #include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
+#include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Systems/AnimationSystem.h>
+
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -43,10 +44,11 @@ PlayerSystem::PlayerSystem()
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
+
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 
 	imguiLayer = new ImGuiPlayerLayer();
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -264,4 +266,18 @@ void PlayerSystem::StartAttack()
 void PlayerSystem::StopAttack()
 {
 	m_isAttacking = false;
+}
+
+void PlayerSystem::ToggleDebug()
+{
+	m_drawDebugUI = !m_drawDebugUI;
+
+	if (m_drawDebugUI)
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
+	}
+	else
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(imguiLayer);
+	}
 }

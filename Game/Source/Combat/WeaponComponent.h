@@ -9,24 +9,23 @@ using namespace Firelight::Serialisation;
 
 struct WeaponComponent : Firelight::ECS::BaseComponent
 {
-	// data for combat componant
-	std::string WeaponName = "";
-	float WeaponSpeed = 1;
-	float WeaponDamage = 5;
+	float Cooldown = 1;
+	float Damage = 5;
+	float Radius = 0;
+	float Angle = 40;
 
 	void Serialise() override
 	{
-		Serialiser::Serialise("WeaponName", WeaponName.c_str());
-		Serialiser::Serialise("WeaponSpeed", WeaponSpeed);
-		Serialiser::Serialise("WeaponDamage", WeaponDamage);
+		/*Serialiser::Serialise("WeaponSpeed", WeaponSpeed);
+		Serialiser::Serialise("WeaponDamage", WeaponDamage);*/
 	}
 
 	WeaponComponent* Clone() override
 	{
-		WeaponComponent* clone = new WeaponComponent();
+		/*WeaponComponent* clone = new WeaponComponent();
 		clone->WeaponDamage = WeaponDamage;
 		clone->WeaponName = WeaponName;
 		clone->WeaponSpeed = WeaponSpeed;
-		return clone;
+		return clone;*/
 	}
 };

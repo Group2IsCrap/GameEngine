@@ -23,6 +23,5 @@ RockEntity::RockEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Res
 	GetComponent<HealthComponent>()->currentHealth = 4;
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
-	boxCollider->drawCollider = true;
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 5.5f, 3.0f);
 }

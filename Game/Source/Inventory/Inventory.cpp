@@ -2,11 +2,15 @@
 #include "Source/Graphics/AssetManager.h"
 #include"Source/ECS/Components/ItemComponents.h"
 
-Inventory::Inventory()
+Inventory::Inventory():
+	m_inventoryEntityID(-1),
+	m_inventorySpace(nullptr)
 {
 }
 
-Inventory::Inventory(std::string name)
+Inventory::Inventory(std::string name):
+	m_inventoryEntityID(-1),
+	m_inventorySpace(nullptr)
 {
 }
 
@@ -258,6 +262,29 @@ bool Inventory::AddItem(Firelight::ECS::Entity* item)
 	return AddItem(item->GetEntityID());
 }
 
+
+void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
+	if (id->size() == 0) {
+		return;
+	}
+	for (ECS::EntityID itemID: *id)
+	{
+		ECS::ItemComponent* itemData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(itemID);
+		bool isUsed = true;
+		for (std::string tag : itemData->tags) {
+			if (tag == "Food") {
+				//health up event
+				isUsed = true;
+				break;
+			}
+		}
+		if (isUsed) {
+			RemoveItem(itemID);
+			continue;
+		}
+	}
+}
+
 bool Inventory::AddItem(Firelight::ECS::EntityID item)
 {
 	bool isFail = true;
@@ -345,6 +372,8 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						icon->AddComponent<ECS::UIDraggableComponent>();
 						icon->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						icon->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, icon->GetEntityID()));
+						UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
+						press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
 						slotData->UITexID = icon->GetEntityID();
 					}
 					if (inventoryData->isDisplay) {

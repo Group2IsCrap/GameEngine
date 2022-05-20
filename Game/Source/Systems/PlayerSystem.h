@@ -21,6 +21,7 @@ public:
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	void SwitchWeapon();
+	void ToggleDebug();
 
 private:
 	float GetSpeed();
@@ -71,6 +72,7 @@ private:
 	bool m_moveLeft;
 	bool m_moveRight;
 	ImGuiPlayerLayer* imguiLayer = nullptr;
+	bool m_drawDebugUI;
 
 	bool m_isAttacking = false;
 	float m_attackCooldown = 0.0f;
