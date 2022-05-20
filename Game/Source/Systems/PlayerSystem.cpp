@@ -96,6 +96,9 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 					m_availableCraftingRecipes.push_back(recipe);
 				}
 			}
+
+			m_imguiLayer->SetDebugCraftingMenuEnabled(true);
+			m_imguiLayer->GiveAvailableCraftingRecipes(&m_availableCraftingRecipes);
 		}
 	}
 }

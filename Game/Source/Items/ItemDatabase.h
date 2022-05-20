@@ -1,6 +1,7 @@
 #pragma once
 #include <Source/ECS/EntityWrappers/Entity.h>
 #include <Source/ECS/EntityWrappers/Template.h>
+#include <Source/ECS/Components/ItemComponents.h>
 
 #include <string>
 #include <unordered_map>
@@ -19,7 +20,9 @@ public:
 	Entity* CreateInstanceOfItem(int itemID);
 
 	// Bad, should probably be optimised in some way
-	int GetItemIdFromName(const std::string& name);
+	int            GetItemIdFromName(const std::string& name);
+	Template*      GetItemTemplateFromId(int itemId);
+	ItemComponent* GetItemComponentFromId(int itemId);
 
 private:
 	ItemDatabase();

@@ -1,7 +1,6 @@
 #include "ItemDatabase.h"
 
 #include <Source/ECS/EntityComponentSystem.h>
-#include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
@@ -133,6 +132,25 @@ int ItemDatabase::GetItemIdFromName(const std::string& name)
 	}
 
 	return -1;
+}
+
+Template* ItemDatabase::GetItemTemplateFromId(int itemId)
+{
+	auto mapIter = itemTemplates.find(itemId);
+	if (mapIter != itemTemplates.end())
+	{
+		return mapIter->second;
+	}
+	return nullptr;
+}
+
+ItemComponent* ItemDatabase::GetItemComponentFromId(int itemId)
+{
+	if (Template* itemTemplate = GetItemTemplateFromId(itemId))
+	{
+		return itemTemplate->GetComponent<ItemComponent>();
+	}
+	return nullptr;
 }
 
 ItemDatabase::ItemDatabase()
