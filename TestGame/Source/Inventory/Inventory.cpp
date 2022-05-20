@@ -19,7 +19,7 @@ Inventory::~Inventory()
 	Grid.clear();
 	ECS::EntityComponentSystem::Instance()->RemoveEntity(m_inventorySpace->GetEntityID());
 }
-void Inventory::CreateInventoryNoPanel(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
+void Inventory::CreateInventory(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
 	m_inventorySpace = new ECS::UIPanel();
 	m_inventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
@@ -61,7 +61,7 @@ void Inventory::CreateInventoryNoPanel(Maths::Vec2f size, float slotCount, ECS::
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 }
-void Inventory::CreateInventoryNoPanel(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
+void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f OffSet)
 {
 	m_inventorySpace = new ECS::UIPanel("Inventory Space");
 	m_inventorySpace->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
@@ -270,7 +270,7 @@ bool Inventory::AddItem(Firelight::ECS::Entity* item)
 							0));
 					}
 					Immage->AddComponent<ECS::UIDraggableComponent>();
-					Immage->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
+					Immage->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
 					Immage->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, Immage->GetEntityID()));
 					Slot.second->UITexID = Immage->GetEntityID();
 				}
@@ -337,7 +337,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 							0));
 					}
 					Immage->AddComponent<ECS::UIDraggableComponent>();
-					Immage->GetComponent<ECS::UIDraggableComponent>()->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
+					Immage->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
 					Slot.second->UITexID = Immage->GetEntityID();
 				}
 				if (isDisplay) {
@@ -380,7 +380,7 @@ bool Inventory::AddItem(SlotData* item, bool useSlotPlacement )
 			delete Slot.second;
 			Slot.second = item;
 			Slot.second->CurrSlot = &Slot.first;
-			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(Slot.second->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(Slot.second->UITexID)->onDropFunctions.push_back(std::bind(&Inventory::Place, this, Slot.second));
 
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(item->UITexID)->toDraw = isDisplay;
 			Slot.first.isUsed = true;
@@ -472,7 +472,7 @@ void Inventory::Place(SlotData* slotData)
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
 
 	Grid[slotData->CurrSlot->CurrPos].second = new SlotData();
-	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
+	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Absolute;
 
 	//to be used some were else

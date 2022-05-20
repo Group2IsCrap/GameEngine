@@ -96,6 +96,24 @@ namespace Firelight::Events
 		InvokeFunctions(EventType::sm_descriptor, data);
 	}
 
+	inline void EventDispatcher::UnsubscribeFunction(DescriptorType descriptor, const size_t index)
+	{
+		size_t trueIndex = sm_eventMap[descriptor][index];
+		if (trueIndex < sm_observers[descriptor].size())
+		{
+			sm_observers[descriptor].erase(sm_observers[descriptor].begin() + trueIndex);
+			sm_eventMap[descriptor].erase(index);
+
+			for (auto& ele : sm_eventMap[descriptor])
+			{
+				if (ele.second > trueIndex)
+				{
+					ele.second--;
+				}
+			}
+		}
+	}
+
 	inline void EventDispatcher::InvokeFunctions(DescriptorType descriptor)
 	{
 		if (!sm_observers.contains(descriptor))

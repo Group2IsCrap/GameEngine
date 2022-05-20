@@ -61,6 +61,21 @@ namespace Firelight::ECS
 			return nullptr;
 		}
 
+		std::string GetTypeOfComponent(BaseComponent* component)
+		{
+			for (auto& type : m_componentData)
+			{
+				for (int i = 0; i < type.second.size(); ++i)
+				{
+					if (type.second[i] == component)
+					{
+						return sm_componentHashNames[sm_componentTypeHash[type.first]];
+					}
+				}
+			}
+			return "";
+		}
+
 		template<typename T, typename T2>
 		T2* GetComponent(EntityID entity, int index = 0)
 		{

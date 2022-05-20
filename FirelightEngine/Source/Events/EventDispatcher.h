@@ -30,6 +30,7 @@ namespace Firelight::Events
 		static size_t SubscribeFunction(CallbackFunctionType&& callbackFunction);
 		template<typename EventType>
 		static void UnsubscribeFunction(const size_t index);
+		static void UnsubscribeFunction(DescriptorType descriptor, const size_t index);
 		template<typename EventType>
 		static void UnsubscribeAllFunctions();
 		template<typename EventType>

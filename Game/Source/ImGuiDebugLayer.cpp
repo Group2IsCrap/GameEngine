@@ -66,23 +66,39 @@ void ImGuiDebugLayer::RenderECSDebug()
 {
 	ImGui::Begin("ECS Debug");
 	std::vector<EntityID> entities = EntityComponentSystem::Instance()->GetEntities();
-	for (auto& entity : entities)
+	ImGui::SetNextItemOpen(true);
+	if (ImGui::TreeNode(("Entities (" + std::to_string(entities.size()) + ")").c_str()))
 	{
-		IdentificationComponent* id = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(entity);
-		if (id != nullptr)
+		for (auto& entity : entities)
 		{
-			ImGui::Text(id->name.c_str());
-		}
-		else
-		{
-			ImGui::Text(std::to_string(entity).c_str());
 			std::vector<BaseComponent*> components = EntityComponentSystem::Instance()->GetAllComponents(entity);
-			for (int i = 0; i < components.size(); ++i)
+			IdentificationComponent* id = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(entity);
+			std::string nodeText = std::to_string(entity);
+			if (id != nullptr)
 			{
-				i += 1;
+				nodeText +=  ": " + id->name;
+			}
+			else
+			{
+				nodeText = "Entity " + nodeText;
 			}
 
+			if (ImGui::TreeNode((nodeText + " (" + std::to_string(components.size()) + ")").c_str()))
+			{
+				for (int i = 0; i < components.size(); ++i)
+				{
+					BaseComponent* component = components[i];
+					std::string componentTypeString = EntityComponentSystem::Instance()->GetTypeOfComponent(component).substr(7);
+					if (componentTypeString.starts_with("Firelight::ECS::"))
+					{
+						componentTypeString = componentTypeString.substr(16);
+					}
+					ImGui::Text(("    " + componentTypeString).c_str());
+				}
+				ImGui::TreePop();
+			}
 		}
+		ImGui::TreePop();
 	}
 	ImGui::End();
 }

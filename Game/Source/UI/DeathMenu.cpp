@@ -34,7 +34,7 @@ DeathMenu::DeathMenu(Firelight::ECS::Entity* canvas)
 	m_respawnBtn->SetParent(canvas->GetEntityID());
 
 	// TODO : Draw text on top of UI? Text should really be part of UI system so that it also scales
-	m_text = new GameEntity();
+	m_text = new GameEntity("YouDied Text");
 	m_text->AddComponent<TextComponent>(new TextComponent());
 	m_text->GetComponent<TextComponent>()->text.SetString("You Died!");
 	m_text->GetComponent<TextComponent>()->text.SetTextHeight(150.0f);
