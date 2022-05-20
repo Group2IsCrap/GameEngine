@@ -8,6 +8,11 @@
 
 #include "../Source/Physics/IntersectData.h"
 
+namespace Firelight::Events
+{
+	NEW_EVENT(DrawCollidersEvent);
+}
+
 namespace Firelight::Physics
 {
 	class PhysicsSystem : public Firelight::ECS::System
@@ -63,8 +68,12 @@ namespace Firelight::Physics
 		bool CheckCollision(Firelight::ECS::RigidBodyComponent* rigidBody, Firelight::ECS::CircleColliderComponent* circleCollider, Firelight::ECS::RigidBodyComponent* rigidBody2, Firelight::ECS::CircleColliderComponent* circleCollider2);
 		bool CheckCollision(Firelight::ECS::RigidBodyComponent* rigidBody, Firelight::ECS::BoxColliderComponent* boxCollider, Firelight::ECS::RigidBodyComponent* rigidBody2, Firelight::ECS::CircleColliderComponent* circleCollider);
 
+		void ToggleDrawColliders();
+
 	private:
 		size_t m_onEarlyRenderSub;
+		size_t m_drawCollidersIndex;
 		float interpolationTime = 0.0f;
+		bool m_drawColliders;
 	};
 }
