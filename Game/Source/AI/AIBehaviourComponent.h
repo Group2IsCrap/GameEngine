@@ -12,8 +12,8 @@ struct AIBehaviourComponent : Firelight::ECS::BaseComponent
 {
 public:
 
-	AITransitionBehaviour* m_CurrentTransitions = new AITransitionBehaviour(this, nullptr, nullptr, AIState::None);
-	AIStateBehaviour* m_CurrentState = new AIStateBehaviour();
+	AITransitionBehaviour* m_CurrentTransitions = nullptr;
+	AIStateBehaviour* m_CurrentState = nullptr;
 
 public:
 

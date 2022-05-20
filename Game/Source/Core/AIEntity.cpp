@@ -34,7 +34,7 @@ void AIEntity::RemoveHealth(int amount)
 {
 	// Tint red for x amount of time
 	GetAIComponent()->m_tint = true;
-	GetSpriteComponent()->colour = Firelight::Graphics::Colour::RGBA(100, 0, 0, 255);
+	GetSpriteComponent()->colour = Firelight::Graphics::Colour::RGBA(200, 0, 0, 255);
 
 	CharacterEntity::RemoveHealth(amount);
 }

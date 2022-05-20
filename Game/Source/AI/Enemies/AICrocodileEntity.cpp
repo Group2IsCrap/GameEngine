@@ -29,7 +29,6 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 	GetComponent<HealthComponent>()->currentHealth = GetMaxHealth();
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
-	boxCollider->drawCollider = true;
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 9.0f, 2.4f);
 
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
