@@ -28,7 +28,7 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		currentEntity->FaceDirection();
 
 		AIComponent* aiComponent = currentEntity->GetAIComponent();
-		if (aiComponent->m_tint)
+		if (currentEntity != nullptr && aiComponent->m_tint)
 		{
 			aiComponent->m_tintTimer += time.GetDeltaTime();
 			if (aiComponent->m_tintTimer >= aiComponent->m_tintTime)
