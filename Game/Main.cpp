@@ -100,7 +100,7 @@ void SetupEnemyTemplate()
 	enemyTemplate->AddComponent<RigidBodyComponent>();
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
 	enemyTemplate->AddComponent<HealthComponent>();
-
+	
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
@@ -232,7 +232,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(400, (1080 / 2)-200), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
 
 		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopRight, std::vector<std::string>{ "Weapon" });
-		inv1->AddSpecialSlot(1, "Head", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>{ "Head" });
+		inv1->AddSpecialSlot(1, "Head", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>{ "Helm" });
 		inv1->AddSpecialSlot(1, "Body", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Top, std::vector<std::string>{ "Chest" });
 		inv1->AddSpecialSlot(1, "legs", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Left, std::vector<std::string>{ "Legs" });
 		inv1->AddSpecialSlot(1, "feet", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Right, std::vector<std::string>{ "Back" });

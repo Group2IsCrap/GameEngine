@@ -619,7 +619,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 	slotData->stackSize = -1;
 	//slotData->UITexID = 0;
 
-	//to be used some were else
+	//to be used somewere else
 	m_outOfInventoryData.push_back(dataCopy);
 
 	Events::EventDispatcher::InvokeFunctions<Events::Inventory::UpdateInventory>();
@@ -638,7 +638,7 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 		{
 			if (specialSlot->slotName == name) 
 			{
-				return slotData->entityIDs[0];
+				return m_inventoryEntityID;
 			}
 		}
 
