@@ -15,6 +15,7 @@
 #include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
+#include <Source/ECS/Systems/AnimationSystem.h>
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -82,21 +83,23 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	{
 		return;
 	}
+	PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
+
 	if (m_moveUp)
 	{
-		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Up;
+		playerComponent->facing = Facing::Up;
 	}
 	else if (m_moveDown)
 	{
-		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Down;
+		playerComponent->facing = Facing::Down;
 	}
 	else if (m_moveLeft)
 	{
-		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Left;
+		playerComponent->facing = Facing::Left;
 	}
 	else if (m_moveRight)
 	{
-		playerEntity->GetComponent<PlayerComponent>()->facing = Facing::Right;
+		playerComponent->facing = Facing::Right;
 	}
 	m_attackCooldown += time.GetDeltaTime();
 	if (m_attackCooldown >= m_currentWeaponCooldown && m_isAttacking)
@@ -104,6 +107,8 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 		m_attackCooldown = 0.0f;
 		Attack();
 	}
+
+	HandlePlayerAnimations();
 }
 
 void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
@@ -173,6 +178,36 @@ void PlayerSystem::MovePlayerRightRelease()
 	m_moveRight = false;
 }
 
+void PlayerSystem::HandlePlayerAnimations()
+{
+	if (playerEntity == nullptr)
+	{
+		return;
+	}
+
+	if (m_moveRight)
+	{
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = false;
+	}
+	else if (m_moveLeft)
+	{
+		// Move left
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = true;
+	}
+	else if (m_moveUp || m_moveDown)
+	{
+		// Prioritize right side when moving
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = false;
+	}
+	else if (!m_isAttacking)
+	{
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerIdle");
+	}
+}
+
 void PlayerSystem::Interact()
 {
 	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
@@ -194,7 +229,6 @@ void PlayerSystem::Interact()
 				transformComponent->position = Vec3f(100000, 0, 0);
 			}
 		}
-		//playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 	}
 }
 
@@ -206,6 +240,7 @@ void PlayerSystem::SpawnItem()
 
 void PlayerSystem::Attack()
 {
+	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
 	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
 }
 

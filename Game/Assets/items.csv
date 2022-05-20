@@ -1,6 +1,50 @@
 ﻿ItemID,ItemName,ItemDescription,IconPath,StackSize,Tags
-0,Rock,It's a stone,Sprites/Rock_Item.png,5,Ingredient
-1,Stick, A piece of a tree,Sprites/Sticks.png,5,Ingredient
-2,Leather,Skin of an animal,Sprites/LeatherSmall_Stack.png,5,Ingredient
-3,Wood,Tastes like plant,Sprites/wood_1.png,5,Ingredient
-4,Planks,Refined Wood,Sprites/wood_2_stack.png,5,Ingredient
+0,Rock,It's a stone,Sprites/Items/Rock_Item.png,5,Ingredient
+1,Stick, A piece of a tree,Sprites/Items/Sticks.png,5,Ingredient
+2,Leather,Skin of an animal,Sprites/Items/LeatherSmall_Stack.png,5,Ingredient
+3,Wood,Tastes like plant,Sprites/Items/wood_1.png,5,Ingredient
+4,Planks,Refined Wood,Sprites/Items/wood_2_stack.png,5,Ingredient
+5,Fibre,,Sprites/Items/fiber.png,5,Ingredient
+6,Fur,,Sprites/Items/Fur.png,5,Ingredient
+7,Shell ,,Sprites/Items/Fur.png,5,Ingredient
+8,Feather ,,Sprites/Items/Feather.png,5,Ingredient
+9,Scales ,,Sprites/Items/Feather.png,5,Ingredient
+10,Metal Scrap ,,Sprites/Items/Feather.png,5,Ingredient
+11,Infused Wood ,,Sprites/Items/Feather.png,5,Ingredient
+12,Crocodile Teeth ,,Sprites/Items/Feather.png,5,Ingredient
+13,Frog Saliva ,,Sprites/Items/Feather.png,5,Ingredient
+14,Frog Eye ,,Sprites/Items/Feather.png,5,Ingredient
+15,Bug Wings ,,Sprites/Items/Feather.png,5,Ingredient
+16,Slime Clump ,,Sprites/Items/Feather.png,5,Ingredient
+17,Tongue,,Sprites/Items/Feather.png,5,Ingredient
+18,Stinger,,Sprites/Items/Feather.png,5,Ingredient
+19,Poison,,Sprites/Items/Feather.png,5,Ingredient
+20,Bone,,Sprites/Items/Feather.png,5,Ingredient
+21,Potions 1,,Sprites/Items/Feather.png,5,Potions
+22,Potions 2,,Sprites/Items/Feather.png,5,Potions
+23,Potions 3,,Sprites/Items/Feather.png,5,Potions
+24,Potions 4,,Sprites/Items/Feather.png,5,Potions
+25,Bag 1,,Sprites/Items/Feather.png,1,Bag
+26,Bag 2,,Sprites/Items/Feather.png,1,Bag
+27,Bag 3,,Sprites/Items/Feather.png,1,Bag
+28,Bag 4,,Sprites/Items/Feather.png,1,Bag
+29,Metal  Chest,,Sprites/Items/Feather.png,1,Armor;Chest
+30,Metal  Legs,,Sprites/Items/Feather.png,1,Armor;Legs
+31,Metal  Helm,,Sprites/Items/Feather.png,1,Armor;Helm
+32,Scale   Chest,,Sprites/Items/Feather.png,1,Armor;Chest
+33,Scale   Legs,,Sprites/Items/Feather.png,1,Armor;Legs
+34,Scale   Helm,,Sprites/Items/Feather.png,1,Armor;Helm
+35,Stone Pickaxe,,Sprites/Items/Feather.png,1,Tool;Pickaxe
+36,Metal Pickaxe,,Sprites/Items/Feather.png,1,Tool;Pickaxe
+37,Infused Pickaxe,,Sprites/Items/Feather.png,1,Tool;Pickaxe
+38,Stone Axe,,Sprites/Items/Feather.png,1,Tool;Axe
+39,Metal Axe,,Sprites/Items/Feather.png,1,Tool;Axe
+40,Infused Axe,,Sprites/Items/Feather.png,1,Tool;Axe
+41,Berry,,Sprites/Items/Feather.png,5,Food
+42,Meat ,,Sprites/Items/Feather.png,5,Food
+43,combo 1,,Sprites/Items/Feather.png,5,Food
+44,combo 2,,Sprites/Items/Feather.png,5,Food
+45,combo 3,,Sprites/Items/Feather.png,5,Food
+46,combo 4,,Sprites/Items/Feather.png,5,Food
+47,combo 5,,Sprites/Items/Feather.png,5,Food
+48,combo 6,,Sprites/Items/Feather.png,5,Food

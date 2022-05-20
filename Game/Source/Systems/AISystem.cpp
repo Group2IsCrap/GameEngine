@@ -22,8 +22,10 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 	{
 		// Get the AI entity for easy access to wrappers
 		AIEntity* currentEntity = new AIEntity(m_entities[entityIndex]->GetEntityID());
-		currentEntity->GetComponent<AIBehaviourComponent>()->m_CurrentTransitions->HandleTransition(time);
-		currentEntity->GetComponent<AIBehaviourComponent>()->m_CurrentState->HandleState(time);
+		AIBehaviourComponent* aiBehaviourComponment = currentEntity->GetComponent<AIBehaviourComponent>();
+		aiBehaviourComponment->m_CurrentTransitions->HandleTransition(time);
+		aiBehaviourComponment->m_CurrentState->HandleState(time);
+		currentEntity->FaceDirection();
 
 		AIComponent* aiComponent = currentEntity->GetAIComponent();
 		if (aiComponent->m_tint)

@@ -5,7 +5,8 @@
 
 using namespace Firelight::Maths;
 
-AIWanderBehaviour::AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent,float wanderInterval, float speed, std::vector<std::pair<float, float>> radii) : m_rigidBodyComponent(rigidbodyComponent), m_wanderInterval(wanderInterval), m_radii(radii), m_speed(speed)
+AIWanderBehaviour::AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent, float wanderInterval, float speed, std::vector<std::pair<float, float>> radii) : 
+	m_rigidBodyComponent(rigidbodyComponent), m_wanderInterval(wanderInterval), m_radii(radii), m_speed(speed)
 {
 	m_curWanderTime = 0.0f;
 	m_spawnpoint = rigidbodyComponent->nextPos;

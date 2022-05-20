@@ -137,8 +137,9 @@ namespace Firelight::ECS
 
 	struct UIBordreComponent : BaseComponent
 	{
-		Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
-		float width;
+		//Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
+		float widthTopBot;
+		float widthLeftRight;
 
 		void Serialise() override
 		{
