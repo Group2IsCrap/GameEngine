@@ -35,6 +35,8 @@ private:
 	void MovePlayerDownRelease();
 	void MovePlayerRightRelease();
 
+	void HandlePlayerAnimations();
+
 	void Interact();
 	void SpawnItem();
 	void Attack();

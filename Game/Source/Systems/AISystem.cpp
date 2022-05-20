@@ -25,6 +25,7 @@ void AISystem::Update(const Firelight::Utils::Time& time)
 		AIBehaviourComponent* aiBehaviourComponment = currentEntity->GetComponent<AIBehaviourComponent>();
 		aiBehaviourComponment->m_CurrentTransitions->HandleTransition(time);
 		aiBehaviourComponment->m_CurrentState->HandleState(time);
+		currentEntity->FaceDirection();
 
 		AIComponent* aiComponent = currentEntity->GetAIComponent();
 		if (aiComponent->m_tint)

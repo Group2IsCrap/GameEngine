@@ -20,6 +20,8 @@ namespace Firelight::UI {
 	}
 	void UISystem::Update(const Utils::Time& time)
 	{
+		if (m_Canvas == nullptr)
+			return;
 
 		m_updateTime += time.GetDeltaTime();
 

@@ -29,12 +29,7 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->drawCollider = true;
-	boxCollider->rect = Firelight::Maths::Rectf(1.0f, -0.2f, 6.0f, 2.4f);
-
-	BoxColliderComponent* boxCollider2 = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
-	boxCollider2->drawCollider = true;
-	boxCollider2->isTrigger = true;
-	boxCollider2->rect = Firelight::Maths::Rectf(-2.3f, -0.6f, 3.5f, 0.75f);
+	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 9.0f, 2.4f);
 
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
 
