@@ -31,6 +31,7 @@ namespace InventorySystem
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
+           
             m_entityIDPanelSlot.push_back(Slot);
         }
     }
@@ -75,12 +76,14 @@ namespace InventorySystem
         }
         else if (event == Events::Inventory::GetSpecialSlot::sm_descriptor)
         {
-            GlobalFunctions::SpecilaItemSlotData* data = (GlobalFunctions::SpecilaItemSlotData*)eventData;
+            GlobalFunctions::SpecialItemSlotData* data = (GlobalFunctions::SpecialItemSlotData*)eventData;
 
             data->returnData = GetSpecialSlot(data->groupName, data->inventoryName, data->slotName);
         }
         else if (event == Events::Inventory::RemoveInventory::sm_descriptor)
         {
+            GlobalFunctions::RemoveInvetoryData* data = (GlobalFunctions::RemoveInvetoryData*)eventData;
+            RemoveInventory(data->groupName, data->inventoryName);
         }
     }
     void InventoryManager::GroupLoadOrUnload(std::string group)
@@ -110,7 +113,7 @@ namespace InventorySystem
                 if (m_inventory[inventoryGroupData->group].size() == 0 && inventoryGroupData->keyToActivate != Keys::KEY_INVALID)
                 {
                  
-                    Events::EventDispatcher::SubscribeFunction(inventoryGroupData->group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, inventoryGroupData->group));
+                    m_inventoryEventsIDs[inventoryGroupData->group]=Events::EventDispatcher::SubscribeFunction(inventoryGroupData->group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, inventoryGroupData->group));
                     Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(inventoryGroupData->group.c_str(), inventoryGroupData->keyToActivate, Firelight::KeyEventType::KeyPressSingle);
                 
                 }
@@ -162,7 +165,7 @@ namespace InventorySystem
         if (m_inventory[groupName].size() == 0) 
         {
             //TODO Remove
-            //Events::EventDispatcher::UnsubscribeFunction(b->Group.c_str());
+            Events::EventDispatcher::UnsubscribeFunction(groupName.c_str(),m_inventoryEventsIDs[groupName]);
             //Firelight::Engine::Instance().GetKeyBinder().unv(b->Group.c_str(), b->keyToAcvate, Firelight::KeyEventType::KeyPressSingle);
         }
         
@@ -189,6 +192,9 @@ namespace InventorySystem
                     {
                         for (auto& inventory2 : inventoryGroup2.second)
                         {
+                            if (inventory2->GetName() == inventory->GetName()) {
+                                continue;
+                            }
                             //move to new invetory
                             //via buttion text
                             if (ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIButtonComponent>(ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot.UITexID)->parentID)) 
@@ -210,10 +216,25 @@ namespace InventorySystem
                                 {
                                     inventory->GetNullSlotData()->clear();
                                     return;
+                                }if (toDrop)
+                                {
+                                    //drop code here
+                                    InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory2->GetEntityData(), inventory2->GetInventoryNumber());
+
+                                if (data) {
+                                    InventoryStoreData a = inventory->GetNullSlotData()->front();
+                                    for (auto& out : data->outputCommand)
+                                    {
+                                        out((void*)&a.entityIDs);
+                                    }
+                                }
+                                inventory->GetNullSlotData()->clear();
+                                return;
                                 }
                             }
-                           
+                            
                         }
+                       
                     }
 
 
@@ -224,9 +245,10 @@ namespace InventorySystem
                         InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(inventory->GetEntityData(), inventory->GetInventoryNumber());
 
                     if (data) {
+                        InventoryStoreData a = inventory->GetNullSlotData()->front();
                         for (auto& out : data->outputCommand)
                         {
-                            out();
+                            out((void*)&a.entityIDs);
                         }
                     }
                     inventory->GetNullSlotData()->clear();
@@ -243,14 +265,14 @@ namespace InventorySystem
     void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventoryNoPanel(size, columnRows, parent, anc, offSet);
+        newInventory->CreateInventory(size, columnRows, parent, anc, offSet);
         m_inventory[group].emplace_back(newInventory);
     }
 
     void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventoryNoPanel(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
+        newInventory->CreateInventory(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
         m_inventory[group].emplace_back(newInventory);
     }
 
@@ -396,8 +418,8 @@ namespace InventorySystem
             }
         }
 
+       
         Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
-
     }
 
     void InventoryManager::UnloadInventory(GroupName group, std::string name)

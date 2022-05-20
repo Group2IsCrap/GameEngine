@@ -7,7 +7,7 @@
 #include<Source/KeyBinder.h>
 using namespace Firelight::Serialisation;
 using namespace Firelight::ECS;
-using CallbackFunctionType = std::function< void() >;
+using CallbackFunctionTypeVoid = std::function< void(void*) >;
 using CallbackFunctionTypeBool = std::function< bool() >;
 
 /// <summary>
@@ -24,8 +24,8 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 	Firelight::ECS::e_AnchorSettings anchorSettings;
 
 	//textuer
-	std::string backgroundTexture= "Sprites/PanelTest.png";
-	std::string slotTexture= "Sprites/Slot_Icon_100x100.png";
+	std::string backgroundTexture= "Sprites/UI/Invetory_Back_V1_30_100.png";
+	std::string slotTexture= "Sprites/UI/Slot_Icon_100x100.png";
 
 	//slot data
 	UINT slotCount = 0;
@@ -140,7 +140,7 @@ struct InventoryComponentOutPut: Firelight::ECS::BaseComponent
 {
 	//special output code
 	//eg item to be sold
-	std::vector<CallbackFunctionType> outputCommand;
+	std::vector<CallbackFunctionTypeVoid> outputCommand;
 	bool isOutput;
 	
 	void Serialise() override
@@ -155,7 +155,7 @@ struct InventoryComponentOutPut: Firelight::ECS::BaseComponent
 struct InventoryComponentInPut : Firelight::ECS::BaseComponent
 {
 	//special input code
-	std::vector<CallbackFunctionType> inputCommand;
+	std::vector<CallbackFunctionTypeVoid> inputCommand;
 	bool isInput;
 
 	void Serialise() override
