@@ -315,7 +315,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 							//text->text.SetString(std::to_string(slotData->entityIDs.size()));
 							
 						}
-						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
+						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						
 					}
 					else
@@ -609,7 +609,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 	currSlot->isUsed = false;
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = false;
-	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropUpFunctions.clear();
+	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
 	ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->scaleSetting = ECS::e_Scale::Relative;
 	TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 	text->hidden = true;
