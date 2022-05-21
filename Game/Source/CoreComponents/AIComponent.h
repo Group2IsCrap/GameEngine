@@ -41,7 +41,6 @@ struct AIComponent : Firelight::ECS::BaseComponent
 		return clone;
 	}
 
-
 	void RenderDebugUI() override
 	{
 		ImGuiVariable("Type", (int)m_Type);

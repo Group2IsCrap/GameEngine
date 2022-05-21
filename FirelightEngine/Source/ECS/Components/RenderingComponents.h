@@ -87,7 +87,7 @@ namespace Firelight::ECS
 		void RenderDebugUI() override
 		{
 			ImGuiVariable("Layer", layer);
-			ImGuiVariable("Texture", "ptr");
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
 			ImGuiVariable("DrawOffset", drawOffset);
 			ImGuiVariable("PixelsPerUnit", pixelsPerUnit);
 			ImGuiVariable("Colour", std::to_string(colour.GetR()) + ", " + std::to_string(colour.GetG()) + ", " + std::to_string(colour.GetB()) + ", " + std::to_string(colour.GetA()));
@@ -144,7 +144,7 @@ namespace Firelight::ECS
 		void RenderDebugUI() override
 		{
 			ImGuiVariable("Layer", layer);
-			ImGuiVariable("Texture", "ptr");
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
 			ImGuiVariable("DrawOffset", drawOffset);
 			ImGuiVariable("Colour", std::to_string(colour.GetR()) + ", " + std::to_string(colour.GetG()) + ", " + std::to_string(colour.GetB()) + ", " + std::to_string(colour.GetA()));
 			ImGuiVariable("SourceRect", sourceRect);
@@ -199,8 +199,8 @@ namespace Firelight::ECS
 
 		void RenderDebugUI() override
 		{
-			ImGuiVariable("Layer", layer);
-			ImGuiVariable("Texture", "ptr");
+			ImGuiVariable("Layer", layer);   
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
 			ImGuiVariable("DrawOffset", drawOffset);
 			ImGuiVariable("Colour", colour);
 			ImGuiVariable("SourceRect", sourceRect);
