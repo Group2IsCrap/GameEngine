@@ -82,7 +82,7 @@ namespace Firelight::Physics
 					{
 						float radiusSquared = radius + circleCollider->radius;
 						radiusSquared *= radiusSquared;
-						float distSquared = Vec3f::DistSquared(point, entity->GetComponent<TransformComponent>()->position);
+						float distSquared = Vec3f::DistSquared(point, entity->GetComponent<TransformComponent>()->GetPosition());
 						if (distSquared < radiusSquared)
 						{
 							// Add to list
@@ -95,8 +95,8 @@ namespace Firelight::Physics
 					{
 						Maths::Vec2f circleDistance;
 						TransformComponent* transform = entity->GetComponent<TransformComponent>();
-						circleDistance.x = std::abs(transform->position.x - point.x);
-						circleDistance.y = std::abs(transform->position.y - point.y);
+						circleDistance.x = std::abs(transform->GetPosition().x - point.x);
+						circleDistance.y = std::abs(transform->GetPosition().y - point.y);
 
 						if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
 						{
@@ -197,7 +197,8 @@ namespace Firelight::Physics
 						TransformComponent* transform = entity->GetComponent<TransformComponent>();
 						float radiusSquared = radius + circleCollider->radius;
 						radiusSquared *= radiusSquared;
-						float distSquared = Vec3f::DistSquared(point, transform->position);
+
+						float distSquared = Vec3f::DistSquared(point, transform->GetPosition());
 
 						if (distSquared < radiusSquared)
 						{
@@ -206,14 +207,14 @@ namespace Firelight::Physics
 							Vec3f vector1 = Vec3f(x1, y1, 0.0f);
 							Vec3f normal1 = Vec3f(-vector1.y, vector1.x, 0.0f);
 
-							if (normal1.Dot(transform->position - point) <= 0)
+							if (normal1.Dot(transform->GetPosition() - point) <= 0)
 							{
 								float x2 = std::cos(thetaRadNeg);
 								float y2 = std::sin(thetaRadNeg);
 								Vec3f vector2 = Vec3f(x2, y2, 0.0f);
 								Vec3f normal2 = Vec3f(-vector2.y, vector2.x, 0.0f);
 
-								if (normal2.Dot(transform->position - point) >= 0)
+								if (normal2.Dot(transform->GetPosition() - point) >= 0)
 								{
 									entities.push_back(entity);
 									break;
@@ -226,18 +227,20 @@ namespace Firelight::Physics
 					{
 						Maths::Vec2f circleDistance;
 						TransformComponent* transform = entity->GetComponent<TransformComponent>();
-						circleDistance.x = std::abs(transform->position.x - point.x);
-						circleDistance.y = std::abs(transform->position.y - point.y);
+						Maths::Vec3f position = transform->GetPosition();
+						circleDistance.x = std::abs(position.x - point.x);
+						circleDistance.y = std::abs(position.y - point.y);
 
 						bool isCollide = false;
 
 						std::vector<Vec3f> corners;
-						corners.push_back(Vec3f(transform->position.x - boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2, 0.0f)); //bot left
-						corners.push_back(Vec3f(transform->position.x + boxCollider->rect.w / 2, transform->position.y - boxCollider->rect.h / 2, 0.0f)); //bot right
-						corners.push_back(Vec3f(transform->position.x - boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2, 0.0f)); //top left
-						corners.push_back(Vec3f(transform->position.x + boxCollider->rect.w / 2, transform->position.y + boxCollider->rect.h / 2, 0.0f)); //top right
-						corners.push_back(Vec3f(transform->position.x, transform->position.y, 0.0f)); //center
-						
+
+
+						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));//bot left
+						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));//bot right
+						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));//top right
+						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));//top left
+						corners.push_back(Vec3f(position.x, position.y, 0.0f));
 
 						if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
 						{
@@ -251,9 +254,9 @@ namespace Firelight::Physics
 						}
 
 
-						Vec3f leftPoint = (radius * std::cos(thetaRadPos), radius * std::sin(thetaRadPos), 0.0f);
-						Vec3f rightPoint = (radius * std::cos(thetaRadNeg), radius * std::sin(thetaRadNeg), 0.0f);
-						Vec3f centerPoint = (radius * std::cos(directionalAngle), radius * std::sin(directionalAngle), 0.0f);
+						Vec3f leftPoint = (radius * (std::cos(thetaRadPos)), radius * (std::sin(thetaRadPos)), 0.0f);
+						Vec3f rightPoint = (radius * (std::cos(thetaRadNeg)), radius * (std::sin(thetaRadNeg)), 0.0f);
+						Vec3f centerPoint = (radius * (std::cos(directionalAngle)), radius * (std::sin(directionalAngle)), 0.0f);
 
 						bool leftIn = false;
 						bool rightIn = false;
@@ -284,12 +287,19 @@ namespace Firelight::Physics
 									next = 0;
 								}
 								Vec3f intersection = LineIntersects(point, points[j], corners[i], corners[next]);
-								if (smallerX <= intersection.x <= biggerX)
+								if (intersection != Vec3f(FLT_MAX, FLT_MAX, FLT_MAX))
 								{
-									doesLineIntersect = true;
-									entities.push_back(entity);
-									break;
+									if (smallerX <= intersection.x <= biggerX)
+									{
+										if (smallerY <= intersection.y <= biggerY)
+										{
+											doesLineIntersect = true;
+											entities.push_back(entity);
+											break;
+										}
+									}
 								}
+								
 							}
 							if (doesLineIntersect)
 							{
@@ -376,12 +386,12 @@ namespace Firelight::Physics
 		{
 			//line 1
 			float a = a2.y - a1.y;
-			float b = a1.x - a2.x;
+			float b = a2.x - a1.x;
 			float c = a * (a1.x) + b * (a1.y);
 
 			//line 2
 			float d = b2.y - b1.y;
-			float e = b1.x - b2.x;
+			float e = b2.x - b1.x;
 			float f = d * (b1.x) + e * (b1.y);
 
 			float det = (a * e) - (b * d);

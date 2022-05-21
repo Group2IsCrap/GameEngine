@@ -13,7 +13,7 @@ enum class GameLayer : int
 enum class RenderLayer : int
 {
 	World = 0,
-	Foreground = 1000,
+	Foreground = 1200,
 	Player = 999,
 	Enemy = 998,
 	Items = 997,

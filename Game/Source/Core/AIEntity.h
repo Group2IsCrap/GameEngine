@@ -27,4 +27,5 @@ private:
 	AIComponent* m_AIComponent;
 	RigidBodyComponent* m_rigidbodyComponent;
 	SpriteComponent* m_spriteComponent;
+	TransformComponent* m_transformComponent;
 };

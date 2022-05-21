@@ -29,8 +29,8 @@ namespace InventorySystem
 		void ItemChangeInventory();
 
 		//creation
-		void CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
-		void CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCount, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
+		void CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
+		void CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCount, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc);
 
 		void GroupLoadOrUnload(std::string group);
 		//render on screen

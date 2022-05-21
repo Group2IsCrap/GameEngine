@@ -134,7 +134,7 @@ namespace InventorySystem
                 }
                 if (toAdd) 
                 {
-                    CreateInventory(inventoryGroupData->group, inventoryData[i]->name, inventoryData[i]->size, Maths::Vec2f(inventoryData[i]->columnCount, inventoryData[i]->rowCount), UIParentID, inventoryData[i]->offset, inventoryData[i]->anchorSettings);
+                    CreateInventory(inventoryGroupData->group, inventoryData[i]->name, inventoryData[i]->size, Maths::Vec2f(inventoryData[i]->columnCount, inventoryData[i]->rowCount), inventoryData[i]->margin, UIParentID, inventoryData[i]->offset, inventoryData[i]->anchorSettings);
                     m_inventory[inventoryGroupData->group].back()->SetEntityData(m_entities.back()->GetEntityID(),i);
                 }
             }
@@ -262,17 +262,17 @@ namespace InventorySystem
 
     }
 
-    void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+    void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventory(size, columnRows, parent, anc, offSet);
+        newInventory->CreateInventory(size, columnRows, margin, parent, anc, offSet);
         m_inventory[group].emplace_back(newInventory);
     }
 
-    void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+    void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventory(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
+        newInventory->CreateInventory(size, slotCont, margin, parent, ECS::e_AnchorSettings::Top, 0);
         m_inventory[group].emplace_back(newInventory);
     }
 
