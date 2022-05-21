@@ -3,6 +3,9 @@
 #include "..\Source\Engine.h"
 
 static bool isNotToDoFLag = false;
+
+using namespace Firelight::Maths;
+
 namespace Firelight::UI {
 	
 	UISystem::UISystem()
@@ -463,18 +466,18 @@ namespace Firelight::UI {
 	{
 		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 		{
-			
 			AnchorSettings(m_entities[entityIndex]);
 		}
 	}
 
 	bool UISystem::IsHit(int x, int y, ECS::UIBaseWidgetComponent* widget, ECS::TransformComponent* transform)
 	{
-		float width = Engine::Instance().GetWindowDimensionsFloat().x* transform->scale.x;
-		float hight = Engine::Instance().GetWindowDimensionsFloat().y* transform->scale.y;
+		float width = Engine::Instance().GetWindowDimensionsFloat().x * transform->scale.x;
+		float hight = Engine::Instance().GetWindowDimensionsFloat().y * transform->scale.y;
+		Firelight::Maths::Vec3f position = transform->GetPosition();
 		Maths::Rectf rectPixel(
-			transform->position.x - (width * 0.5f),
-			transform->position.y - (hight * 0.5f),
+			position.x - (width * 0.5f),
+			position.y - (hight * 0.5f),
 			width, hight);
 		Maths::Rectf rectNDC = rectPixel.CreateNDCRectFromPixelRect(Engine::Instance().GetWindowDimensionsFloat());
 		
@@ -532,55 +535,47 @@ namespace Firelight::UI {
 			}
 			UITransformComponent->scale = UIComponent->defaultScale;
 			float width = Engine::Instance().GetWindowDimensionsFloat().x * UITransformComponent->scale.x;
-			float hight = Engine::Instance().GetWindowDimensionsFloat().y * UITransformComponent->scale.y;
+			float height = Engine::Instance().GetWindowDimensionsFloat().y * UITransformComponent->scale.y;
+			Firelight::Maths::Vec3f position = UITransformComponent->GetPosition();
 
 			switch (UIComponent->anchorSettings)
 			{
 			case Firelight::ECS::e_AnchorSettings::TopLeft:
-				UITransformComponent->position.y = 0 + (hight * 0.5f);
-				UITransformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(width * 0.5f, height * 0.5f, 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::Top:
-				UITransformComponent->position.y = 0 + (hight * 0.5f);
-				UITransformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x * 0.5f, height * 0.5f, 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::TopRight:
-				UITransformComponent->position.y = 0 + (hight * 0.5f);
-				UITransformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x - (width * 0.5f), height * 0.5f, 0.0f));
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::BottomLeft:
-				UITransformComponent->position.y = screen.y - (hight * 0.5f);
-				UITransformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(width * 0.5f, screen.y - (height * 0.5f), 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::Bottom:
-				UITransformComponent->position.y = screen.y - (hight * 0.5f);
-				UITransformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x * 0.5f, screen.y - (height * 0.5f), 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::BottomRight:
-				UITransformComponent->position.y = screen.y - (hight * 0.5f);
-				UITransformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x - (width * 0.5f), screen.y - (height * 0.5f), 0.0f));
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::Left:
-				UITransformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
-				UITransformComponent->position.x = 0 + (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(width * 0.5f, (screen.y * 0.5f) + (height * 0.5f), 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::Center:
-				UITransformComponent->position.y = (screen.y * 0.5f);
-				UITransformComponent->position.x = (screen.x * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x * 0.5f, screen.y * 0.5f, 0.0f));
 				break;
 			case Firelight::ECS::e_AnchorSettings::Right:
-				UITransformComponent->position.y = (screen.y * 0.5f) + (hight * 0.5f);
-				UITransformComponent->position.x = screen.x - (width * 0.5f);
+				UITransformComponent->SetPosition(Vec3f(screen.x - (width * 0.5f), (screen.y * 0.5f) + (height * 0.5f), 0.0f));
 				break;
 
 			case Firelight::ECS::e_AnchorSettings::None:
-				UITransformComponent->position = UIComponent->defaultPosition;
+				UITransformComponent->SetPosition(UIComponent->defaultPosition);
 				return;
 				break;
 			default:
-				UITransformComponent->position = UIComponent->defaultPosition;
+				UITransformComponent->SetPosition(UIComponent->defaultPosition);
 				break;
 			}
 			return;
@@ -594,7 +589,7 @@ namespace Firelight::UI {
 			ECS::PixelSpriteComponent* currSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
 			
 			if (ECS::UIBordreComponent* Border = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBordreComponent>(UIComponent->parentID)) {
-				borderWidthY = Engine::Instance().GetWindowDimensionsFloat().y*	(Border->widthTopBot/ currCanvas->YScreenSize);
+				borderWidthY = Engine::Instance().GetWindowDimensionsFloat().y * (Border->widthTopBot/ currCanvas->YScreenSize);
 				borderWidthX = Engine::Instance().GetWindowDimensionsFloat().x * (Border->widthLeftRight / currCanvas->YScreenSize);
 			}
 			if (currCanvas != nullptr) 
@@ -607,53 +602,72 @@ namespace Firelight::UI {
 			UITransformComponent->scale = UIComponent->currentScale;
 
 			float width = screen.x * currTransform->scale.x;
-			float hight = screen.y * currTransform->scale.y;
+			float height = screen.y * currTransform->scale.y;
 			float childWidth = screen.x * UIComponent->currentScale.x;
 			float childHight = screen.y * UIComponent->currentScale.y;
+			Vec3f curPos = currTransform->GetPosition();
 
 			switch (UIComponent->anchorSettings)
 			{
 				case Firelight::ECS::e_AnchorSettings::TopLeft:
-					UITransformComponent->position.y = (currTransform->position.y- (hight*0.5f)) + (childHight * 0.5f)+ borderWidthY;
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f)+ borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX,
+						(curPos.y - (height * 0.5f)) + (childHight * 0.5f) + borderWidthY,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::Top:
-					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f) + borderWidthY;
-					UITransformComponent->position.x = currTransform->position.x;
+					UITransformComponent->SetPosition(Vec3f(
+						curPos.x,
+						(curPos.y - (height * 0.5f)) + (childHight * 0.5f) + borderWidthY,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::TopRight:
-					UITransformComponent->position.y = (currTransform->position.y - (hight * 0.5f)) + (childHight * 0.5f) + borderWidthY;
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f))- (childWidth * 0.5f) - borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX,
+						(curPos.y - (height * 0.5f)) + (childHight * 0.5f) + borderWidthY,
+						0.0f));
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::BottomLeft:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX,
+						(curPos.y + (height * 0.5f)) - (childHight * 0.5f) - borderWidthY,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::Bottom:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
-					UITransformComponent->position.x = currTransform->position.x;
+					UITransformComponent->SetPosition(Vec3f(
+						curPos.x,
+						(curPos.y + (height * 0.5f)) - (childHight * 0.5f) - borderWidthY,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::BottomRight:
-					UITransformComponent->position.y = (currTransform->position.y + (hight * 0.5f)) - (childHight * 0.5f) - borderWidthY;
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX,
+						(curPos.y + (height * 0.5f)) - (childHight * 0.5f) - borderWidthY,
+						0.0f));
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::Left:
-					UITransformComponent->position.y = currTransform->position.y;
-					UITransformComponent->position.x = (currTransform->position.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x - (width * 0.5f)) + (childWidth * 0.5f) + borderWidthX,
+						curPos.y,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::Center:
-					UITransformComponent->position.y = currTransform->position.y;
-					UITransformComponent->position.x = currTransform->position.x ;
+					UITransformComponent->SetPosition(Vec3f(
+						curPos.x,
+						curPos.y,
+						0.0f));
 					break;
 				case Firelight::ECS::e_AnchorSettings::Right:
-					UITransformComponent->position.y = currTransform->position.y;
-					UITransformComponent->position.x = (currTransform->position.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX;
+					UITransformComponent->SetPosition(Vec3f(
+						(curPos.x + (width * 0.5f)) - (childWidth * 0.5f) - borderWidthX,
+						curPos.y,
+						0.0f));
 					break;
 
 				case Firelight::ECS::e_AnchorSettings::None: {
-					UITransformComponent->position = UIComponent->defaultPosition;
+					UITransformComponent->SetPosition(UIComponent->defaultPosition);
 
 					ECS::Entity* currentParent = m_Canvas;
 					
@@ -759,8 +773,7 @@ namespace Firelight::UI {
 			//offset(pix) = size(pix) * scale factor(%)
 			float offX = Engine::Instance().GetWindowDimensionsFloat().x * (UIComponent->offSet.x / currCanvas->XScreenSize);
 			float offY = Engine::Instance().GetWindowDimensionsFloat().y * (UIComponent->offSet.y / currCanvas->YScreenSize);
-			UITransformComponent->position.x += offX;
-			UITransformComponent->position.y += offY;
+			UITransformComponent->SetPosition(UITransformComponent->GetPosition() + Vec3f(offX, offY, 0.0f));
 		}
 	}
 

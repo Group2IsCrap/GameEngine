@@ -43,10 +43,13 @@ namespace Firelight::ECS
 			const Maths::Vec2f spriteWorldSize = (!spriteComponent->sourceRect.IsValid()) ? Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / spriteComponent->pixelsPerUnit 
 				: Maths::Vec2f(spriteComponent->sourceRect.w, spriteComponent->sourceRect.h) / spriteComponent->pixelsPerUnit;
 
+			Firelight::Maths::Vec3f position = transformComponent->GetPosition();
 			Maths::Rectf destRect(
-				transformComponent->position.x - spriteWorldSize.x * 0.5f + spriteComponent->drawOffset.x,
-				transformComponent->position.y - spriteWorldSize.y * 0.5f + spriteComponent->drawOffset.y,
+				position.x - spriteWorldSize.x * 0.5f + spriteComponent->drawOffset.x,
+				position.y - spriteWorldSize.y * 0.5f + spriteComponent->drawOffset.y,
 				spriteWorldSize.x, spriteWorldSize.y);
+
+			spriteComponent->flipX = transformComponent->GetFlipped();
 
 			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect, spriteComponent->flipX, spriteComponent->flipY);
 		}

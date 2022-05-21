@@ -49,7 +49,6 @@ static void ToggleDebugLayer()
 
 	if (g_RenderDebug)
 	{
-		g_debugLayer->Initialize();
 		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(g_debugLayer);
 	}
 	else
@@ -65,10 +64,10 @@ void BindDefaultKeys()
 	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
 
 
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
 
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
@@ -103,15 +102,10 @@ void SpawnItem1()
 
 void SetupDebugUI()
 {
-	if (!g_RenderDebug)
-	{
-		return;
-	}
-
 	// ImGui Test code
+	g_debugLayer->Initialize();
 	g_debugLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
 	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(g_debugLayer);
 }
 
 void SetupEnemyTemplate()
@@ -135,8 +129,9 @@ void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
 
 	Maths::Vec3f atPos= at;
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(toDrop);
-	if (toDropData) {
-		toDropData->position = Maths::Random::RandomPointInCircle(atPos, 3);
+	if (toDropData) 
+	{
+		toDropData->SetPosition(Maths::Random::RandomPointInCircle(atPos, 3));
 	}
 	
 }
@@ -145,7 +140,7 @@ void DropItemAtPlayer(void* toDrop, EntityID player) {
 
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
 	for (EntityID DropID : DropIDs) {
-		DropItemAt(toDropData->position, DropID);
+		DropItemAt(toDropData->GetPosition(), DropID);
 	}
 }
 
@@ -229,8 +224,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		WorldEntity* world = new WorldEntity();
 
 		SpriteEntity* barn = new SpriteEntity("Barn");
-		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
-		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
+		barn->GetComponent<TransformComponent>()->SetPosition(Firelight::Maths::Vec3f(10.0f, 10.0f, 0.0f));
 		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
 		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
 		barn->GetComponent<SpriteComponent>()->layer = 33;
@@ -279,9 +273,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		{
 			Engine::Instance().Update();
 
-			Maths::Vec3f desiredPosition = player->GetTransformComponent()->position;
-			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->position, desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
-			camera->GetTransformComponent()->position = smoothPosition;
+			Maths::Vec3f desiredPosition = player->GetTransformComponent()->GetPosition();
+			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->GetPosition(), desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
+			camera->GetTransformComponent()->SetPosition(smoothPosition);
 
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();

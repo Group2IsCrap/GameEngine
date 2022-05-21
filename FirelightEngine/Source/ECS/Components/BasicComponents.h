@@ -3,8 +3,11 @@
 #include <string>
 
 #include "../ECSDefines.h"
+#include "../EntityWrappers/Entity.h"
 #include "../../Maths/Vec3.h"
 #include "../../Serialisation/Serialiser.h"
+
+#include <map>
 
 using namespace Firelight::Serialisation;
 
@@ -79,9 +82,60 @@ namespace Firelight::ECS
 	/// </summary>
 	struct TransformComponent : BaseComponent
 	{
-		Firelight::Maths::Vec3f position;
+	public:
+		Firelight::Maths::Vec3f GetPosition() { return position; }
+		void SetPosition(const Firelight::Maths::Vec3f& pos) 
+		{
+			Firelight::Maths::Vec3f difference = pos - position;
+
+			// Update child objects
+			for (auto child : children)
+			{
+				TransformComponent* transform = child.second->GetComponent<TransformComponent>();
+				transform->SetPosition(transform->GetPosition() + difference);
+			}
+
+			position = pos;
+		}
+
+		void FlipX(bool flip)
+		{
+			if (isFlipped == flip)
+				return;
+
+			// TODO : Binary search to root and flip basd on root. Currently,
+			// root must be flipped or items will not work aka do not flip child objects unless it's the
+			// top of the chain that you care for.
+			for (auto child : children)
+			{
+				child.second->GetComponent<TransformComponent>()->FlipX(flip);
+			}
+
+			Firelight::Maths::Vec3f inverted = Firelight::Maths::Vec3f(position.x *= -1, position.y, position.z);
+			SetPosition(inverted);
+			isFlipped = flip;
+		}
+
+		bool GetFlipped() { return isFlipped; }
+
+		void SetParent(Entity* parent) 
+		{ 
+			if (children.contains(parent->GetEntityID()))
+			{
+				return;
+			}
+			this->parent = parent;
+		}
+		Entity* GetParent() { return parent; }
+
+		void AddChild(Entity* child) { if (children.contains(child->GetEntityID())) return; children[child->GetEntityID()] = child; }
+		void RemoveChild(Entity* child) { if (children.contains(child->GetEntityID())) children.erase(child->GetEntityID()); }
+		Entity* GetChild(int index) { if (children[index] != nullptr) return children[index]; return nullptr; }
+		std::map<EntityID, Entity*> GetChildren() { return children; }
+		
+
 		Firelight::Maths::Vec3f scale;
-		float                   rotation = 0.0f;
+		float rotation = 0.0f;
 
 		void Serialise() override
 		{
@@ -99,6 +153,12 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+	private:
+		Firelight::Maths::Vec3f position;
+		Entity* parent;
+		std::map<EntityID, Entity*> children;
+		bool isFlipped;
 	};
 
 }
