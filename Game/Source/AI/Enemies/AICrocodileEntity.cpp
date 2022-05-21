@@ -8,7 +8,6 @@
 
 AICrocodileEntity::AICrocodileEntity() : AIEntity()
 {
-	GetComponent<TransformComponent>()->SetPosition({ 10.0f, 0.0f, 0.0f });
 	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitCroc.png");
 	
 }
@@ -33,12 +32,14 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 
 	AIBehaviourComponent* aiBehaviourComponent = GetComponent<AIBehaviourComponent>();
 
+
 	std::vector<std::pair<float, float>> radii
 	{
 		std::make_pair(0.1f, 1.0f),
 		std::make_pair(0.4f, 0.6f),
 		std::make_pair(0.8f, 0.2f)
 	};
+
 
 	aiBehaviourComponent->m_CurrentTransitions = new AITransitionBehaviour(aiBehaviourComponent, GetAIComponent(), GetRigidBodyComponent(), AIState::None);
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 0.5f, radii);

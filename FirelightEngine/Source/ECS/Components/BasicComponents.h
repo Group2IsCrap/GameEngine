@@ -98,7 +98,8 @@ namespace Firelight::ECS
 			position = pos;
 		}
 
-		void FlipX(bool flip)
+		// TODO : Replace flip pos with binary search of root to not flip the root object if no children are present.
+		void FlipX(bool flip, bool flipPos = true)
 		{
 			if (isFlipped == flip)
 				return;
@@ -111,8 +112,11 @@ namespace Firelight::ECS
 				child.second->GetComponent<TransformComponent>()->FlipX(flip);
 			}
 
-			Firelight::Maths::Vec3f inverted = Firelight::Maths::Vec3f(position.x *= -1, position.y, position.z);
-			SetPosition(inverted);
+			if (flipPos)
+			{
+				Firelight::Maths::Vec3f inverted = Firelight::Maths::Vec3f(position.x *= -1, position.y, position.z);
+				SetPosition(inverted);
+			}
 			isFlipped = flip;
 		}
 

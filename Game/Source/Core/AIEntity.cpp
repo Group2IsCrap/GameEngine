@@ -56,7 +56,7 @@ void AIEntity::FaceDirection()
 
 	Firelight::Maths::Vec3f dir = m_rigidbodyComponent->velocity;
 	dir.Normalise();
-	m_transformComponent->FlipX(dir.x < 0);
+	m_transformComponent->FlipX(dir.x < 0, false);
 }
 
 AIComponent* AIEntity::GetAIComponent()
