@@ -44,6 +44,7 @@ namespace Firelight::Maths
         // Static functions
         static Vec2<T> Normalise(const Vec2<T>& vector);
         static T       Dot(const Vec2<T>& vector1, const Vec2<T>& vector2);
+        static Vec2<T> Invert(const Vec2<T>& vector1);
 
         static T       Length(const Vec2<T>& vector);
         static T       LengthSquared(const Vec2<T>& vector);

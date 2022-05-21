@@ -1,6 +1,7 @@
 #include "InventoryEntity.h"
 #include"Source/Events/EventDispatcher.h"
 #include"InventoryEvents.h"
+#include <Source/Graphics/AssetManager.h>
 
 InventoryEntity::InventoryEntity() : Entity()
 {
@@ -27,9 +28,15 @@ InventoryEntity::~InventoryEntity()
 {
 }
 
-void InventoryEntity::AddInventory(std::string name, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor)
+void InventoryEntity::AddInventory(std::string name, std::string backgroundTexture, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f border, Firelight::Maths::Vec2f slotMargin, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor)
 {
-    AddComponent<InventoryComponent>();
+    AddInventory(name, backgroundTexture, rowCount, columnCount, size, Firelight::Maths::Vec2f(0.0f, 0.0f), border, slotMargin, offset, UIAnchor);
+}
+
+void InventoryEntity::AddInventory(std::string name, std::string backgroundTexture, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f slotSize, Firelight::Maths::Vec2f border, Firelight::Maths::Vec2f slotMargin, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor)
+{
+    InventoryComponent* inventoryComponent = AddComponent<InventoryComponent>();
+    inventoryComponent->backgroundTexture = backgroundTexture;
     AddComponent<InventoryComponentButtonLayout>();
     AddComponent<InventoryComponentOutPut>();
     AddComponent<InventoryComponentInPut>();
@@ -44,6 +51,9 @@ void InventoryEntity::AddInventory(std::string name, int rowCount, int columnCou
     this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->anchorSettings = UIAnchor;
     this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->slotCount = rowCount * columnCount;
     this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->slotStartPositon = GetInventoryGroup()->totalNumberOfSlots;
+    this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->slotSize = slotSize;
+    this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->slotMargin = slotMargin;
+    this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->margin = border;
 
     int index = GetInventoryGroup()->totalNumberOfSlots;
     for (size_t i = 0; i < rowCount; i++)
@@ -57,7 +67,7 @@ void InventoryEntity::AddInventory(std::string name, int rowCount, int columnCou
             GetComponent<InventorySlots>(index)->currentIndex = index;
             GetComponent<InventoryStoreData>(index)->slotIndex = index;
             index++;
-            
+
         }
 
     }
@@ -91,10 +101,8 @@ void InventoryEntity::AddOutputCommands(int invetoryNum, std::function< void(voi
     GetComponent<InventoryComponentOutPut>(invetoryNum)->outputCommand.push_back(callbackFunction);
 }
 
-void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags)
+void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, std::string slotTexture, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags)
 {
-    
-    
     for (size_t i = GetInventoryComponent(InventoryNumber)->slotStartPositon; i < GetInventoryComponent(InventoryNumber)->slotStartPositon + (int)GetInventoryComponent(InventoryNumber)->slotCount; i++)
     {
         if (GetSlot(i)->specialSlotIndex != -1) {
@@ -103,6 +111,11 @@ void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, 
         else
         {
             InventoryComponentSpecialSlot* Slot = AddComponent<InventoryComponentSpecialSlot>();;
+            Slot->slotTexture = Firelight::Graphics::AssetManager::Instance().GetTexture(slotTexture);
+            if (Slot->slotTexture == nullptr)
+            {
+                Slot->slotTexture = Firelight::Graphics::AssetManager::Instance().GetDefaultTexture();
+            }
             Slot->anchorSettings = anchorSettings;
             Slot->offset = offset;
             Slot->slotName = slotName;

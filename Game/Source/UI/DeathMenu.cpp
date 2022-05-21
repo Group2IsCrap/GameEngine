@@ -35,12 +35,12 @@ DeathMenu::DeathMenu(Firelight::ECS::Entity* canvas)
 
 	// TODO : Draw text on top of UI? Text should really be part of UI system so that it also scales
 	m_text = new GameEntity("YouDied Text");
-	m_text->AddComponent<TextComponent>(new TextComponent());
-	m_text->GetComponent<TextComponent>()->text.SetString("You Died!");
-	m_text->GetComponent<TextComponent>()->text.SetTextHeight(150.0f);
-	m_text->GetComponent<TextComponent>()->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-	m_text->GetComponent<TextComponent>()->layer = 100000;
-	m_text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 150.0f, 0.0f);
+	TextComponent* textComponent = m_text->AddComponent<TextComponent>(new TextComponent());
+	textComponent->text.SetString("You Died!");
+	textComponent->text.SetTextHeight(150.0f);
+	textComponent->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
+	textComponent->layer = 100000;
+	m_text->GetComponent<TransformComponent>()->SetPosition(Maths::Vec3f(640.0f, 150.0f, 0.0f));
 
 	SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	OpenMenu(false);
@@ -68,7 +68,7 @@ void DeathMenu::OpenMenu(bool opened)
 		textC->text.SetTextHeight(150.0f);
 		textC->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
 		textC->layer = 100000;
-		m_text->GetComponent<TransformComponent>()->position = Maths::Vec3f(640.0f, 150.0f, 0.0f);
+		m_text->GetComponent<TransformComponent>()->SetPosition(Maths::Vec3f(640.0f, 150.0f, 0.0f));
 	}
 	else
 	{

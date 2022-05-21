@@ -6,7 +6,7 @@
 
 AIDeerEntity::AIDeerEntity() : AIEntity()
 {
-	GetComponent<TransformComponent>()->position = { 10.0f, 0.0f, 0.0f };
+	GetComponent<TransformComponent>()->SetPosition({10.0f, 0.0f, 0.0f});
 	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
 
 }
