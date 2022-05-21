@@ -54,8 +54,16 @@ namespace Firelight::ECS
 		Bone* parent;
 		std::vector<Bone*> children;
 
+		void Rotate(float rotation);
+		void SetPosition(Firelight::Maths::Vec3f& position);
+		void FlipX(bool flip);
+
+		Firelight::Maths::Vec3f& GetPosition() { return position; }
+		float& GetRotation() { return rotation; }
+
 	private:
 		Firelight::Maths::Vec3f position;
+		Firelight::Maths::Vec3f anchorPoint;
 		float rotation;
 	};
 
