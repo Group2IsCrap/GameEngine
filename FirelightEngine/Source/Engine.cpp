@@ -75,6 +75,8 @@ namespace Firelight
 
         m_initialised = true;
 
+        IdentificationComponent::RegisterComponent();
+
         return true;
     }
 

@@ -42,5 +42,19 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("ItemID", itemID);
+			ImGuiVariable("Name", name);
+			ImGuiVariable("Description", description);
+			ImGuiVariable("IconPath", iconPath);
+			ImGuiVariable("StackSize", stackSize);
+			ImGuiText("Tags");
+			for (int i = 0; i < tags.size(); ++i)
+			{
+				ImGuiVariable("    " + std::to_string(i), tags[i]);
+			}
+		}
 	};
 }

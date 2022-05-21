@@ -93,7 +93,11 @@ void ImGuiDebugLayer::RenderECSDebug()
 					{
 						componentTypeString = componentTypeString.substr(16);
 					}
-					ImGui::Text(("    " + componentTypeString).c_str());
+					if (ImGui::TreeNode(componentTypeString.c_str()))
+					{
+						component->RenderDebugUI();
+						ImGui::TreePop();
+					}
 				}
 				ImGui::TreePop();
 			}

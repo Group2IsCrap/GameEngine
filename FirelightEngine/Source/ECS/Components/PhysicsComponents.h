@@ -47,6 +47,16 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Velocity", velocity);
+			ImGuiVariable("LastPos", lastPos);
+			ImGuiVariable("InterpolationTime", interpolationTime);
+			ImGuiVariable("Interpolate", interpolate ? "true" : "false");
+			ImGuiVariable("NextPos", nextPos);
+			ImGuiVariable("Layer", layer);
+		}
 	};
 
 	struct ColliderComponent : BaseComponent
@@ -67,6 +77,13 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("IsEnabled", isEnabled ? "true" : "false");
+			ImGuiVariable("DrawCollider", drawCollider);
+			ImGuiVariable("IsTrigger", isTrigger ? "true" : "false");
+		}
 	};
 
 	struct BoxColliderComponent : ColliderComponent
@@ -84,6 +101,11 @@ namespace Firelight::ECS
 			clone->rect = rect;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Rect", rect);
 		}
 	};
 
@@ -105,6 +127,12 @@ namespace Firelight::ECS
 			clone->offset = offset;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Radius", radius);
+			ImGuiVariable("Offset", offset);
 		}
 	};
 }

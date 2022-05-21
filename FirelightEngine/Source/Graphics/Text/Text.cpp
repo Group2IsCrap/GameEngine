@@ -64,6 +64,11 @@ namespace Firelight::Graphics
         return m_mesh;
     }
 
+    std::string Text::GetString()
+    {
+        return m_string;
+    }
+
     void Text::SetString(const std::string& string, bool updateMesh)
     {
         m_string = string;
