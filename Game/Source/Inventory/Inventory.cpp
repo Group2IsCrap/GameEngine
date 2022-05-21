@@ -124,9 +124,6 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				slot = panelToUse->at(nextFreePannle);
 				ECS::PixelSpriteComponent* Sprite = slot->GetSpriteComponent();
 
-				InventoryComponentSpecialSlot* special = slot->GetComponent<InventoryComponentSpecialSlot>();
-				Sprite->texture = special ? special->slotTexture : Graphics::AssetManager::Instance().GetTexture(inventoryData->slotTexture);
-
 				Sprite->toDraw = inventoryData->isDisplay;
 				ECS::UIBaseWidgetComponent* Widget = slot->GetWidgetComponent();
 				Widget->isActive = true;
@@ -136,6 +133,17 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				Widget->offSet = Maths::Vec2f(currX, currY) + inventoryData->slotMargin;
 				Widget->anchorSettings = ECS::e_AnchorSettings::TopLeft;
 				
+				InventorySlots* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, currentPos);
+				if (InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentSpecialSlot >(m_inventoryEntityID, slotData->specialSlotIndex))
+				{
+					Sprite->texture = specialSlot->slotTexture;
+				}
+				else
+				{
+					Sprite->texture = Graphics::AssetManager::Instance().GetTexture(inventoryData->slotTexture);
+				}
+				
+
 				//find next non drawn pannle
 				bool isFound = false;
 				for (size_t k = 0; k < panelToUse->size(); k++)

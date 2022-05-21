@@ -251,9 +251,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddInventory("MainInventory", "Sprites/UI/PlayerInventory.png", 1, 10, Maths::Vec2f(1000, 100), Maths::Vec2f(75, 75), Maths::Vec2f(0, 0), Maths::Vec2f(12.5f, 12.5f), Maths::Vec2f(-100, 0), ECS::e_AnchorSettings::Bottom);
 		inv1->AddInventory("Equipment", "Sprites/UI/PlayerInventory1.png", 1, 3, Maths::Vec2f(300 - 12.5f, 100), Maths::Vec2f(0, 0), Maths::Vec2f(25, 0), Maths::Vec2f(75 * 4 + (25.0f * 3) - 12.5f + 50, 0), ECS::e_AnchorSettings::Bottom);
 
-		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
-		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
-		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
+		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Weapon.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
+		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/SlotIcon.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
+		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/SlotIcon.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
 
 		
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
