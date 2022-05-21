@@ -9,14 +9,12 @@ public:
     InventoryEntity(std::string name, bool isDisplayButtons, bool isDisplayAll, Firelight::Keys keyToActivate);
     ~InventoryEntity();
 
-    void AddInventory(std::string name, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor);
+    void AddInventory(std::string name, std::string backgroundTexture, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f border, Firelight::Maths::Vec2f slotMargin, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor);
+    void AddInventory(std::string name, std::string backgroundTexture, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f slotSize, Firelight::Maths::Vec2f border, Firelight::Maths::Vec2f slotMargin, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor);
     void RemoveInventory(std::string name);
-    void AddInputCommands(std::function< void(void*) >&& callbackFunction);
     void AddOutputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
 
-    void AddSpecialSlot(int InventoryNumber,std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
-    void AddSpecialSlot(std::string InventoryName, std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
-    void AddButionLayout(int InventoryNumber,Firelight::Maths::Vec2f offSet, Firelight::ECS::e_AnchorSettings anchorSettings, bool isActive);
+    void AddSpecialSlot(int InventoryNumber,std::string slotName, std::string slotTexture, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
 
     InventoryComponentGroupID* GetInventoryGroup() { return GetComponent<InventoryComponentGroupID>(); }
     InventoryComponent* GetInventoryComponent(int number) { return GetComponent<InventoryComponent>(number); }
