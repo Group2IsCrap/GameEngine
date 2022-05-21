@@ -252,7 +252,7 @@ void PlayerSystem::SpawnItem()
 void PlayerSystem::Attack()
 {
 	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetTransformComponent()->position);
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetTransformComponent()->GetPosition());
 }
 
 void PlayerSystem::RemoveHealth()
