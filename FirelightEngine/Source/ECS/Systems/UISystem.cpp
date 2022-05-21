@@ -593,7 +593,7 @@ namespace Firelight::UI {
 			ECS::TransformComponent* currTransform = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(UIComponent->parentID);
 			ECS::PixelSpriteComponent* currSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(UIComponent->parentID);
 			
-			if (ECS::UIBordreComponent* Border = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBordreComponent>(UIComponent->parentID)) {
+			if (ECS::UIBorderComponent* Border = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBorderComponent>(UIComponent->parentID)) {
 				borderWidthY = Engine::Instance().GetWindowDimensionsFloat().y*	(Border->widthTopBot/ currCanvas->YScreenSize);
 				borderWidthX = Engine::Instance().GetWindowDimensionsFloat().x * (Border->widthLeftRight / currCanvas->YScreenSize);
 			}

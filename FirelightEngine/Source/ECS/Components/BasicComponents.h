@@ -13,8 +13,8 @@ namespace Firelight::ECS
 	/// <summary>
 	/// Simple ID component used for testing
 	/// </summary>
-	struct IdentificationComponent : BaseComponent
-	{
+	
+	DEFINE_COMPONENT(IdentificationComponent, BaseComponent)
 		std::string name;
 
 		void Serialise() override
@@ -28,6 +28,11 @@ namespace Firelight::ECS
 			clone->name = name;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Name", name);
 		}
 	};
 
@@ -49,6 +54,11 @@ namespace Firelight::ECS
 			clone->isStatic = isStatic;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("IsStatic", isStatic ? "true" : "false");
 		}
 	};
 
@@ -72,6 +82,12 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);
+		}
+
 	};
 
 	/// <summary>
@@ -98,6 +114,13 @@ namespace Firelight::ECS
 			clone->rotation = rotation;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Position", position);
+			ImGuiVariable("Rotation", rotation);
+			ImGuiVariable("Scale", scale);
 		}
 	};
 

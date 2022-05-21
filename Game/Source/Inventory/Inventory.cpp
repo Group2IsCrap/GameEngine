@@ -37,7 +37,7 @@ void Inventory::CreateInventory(Maths::Vec2f size, float slotCount, ECS::EntityI
 	m_inventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
 	m_inventorySpace->SetOffset(offset);
 	
-	UIBordreComponent* border = m_inventorySpace->AddComponent<ECS::UIBordreComponent>();
+	UIBorderComponent* border = m_inventorySpace->AddComponent<ECS::UIBorderComponent>();
 	border->widthTopBot = 10;
 	border->widthLeftRight = 10;
 
@@ -54,7 +54,7 @@ void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::Entit
 	m_inventorySpace->SetParent(parent);
 	m_inventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
 	m_inventorySpace->SetOffset(offset);
-	UIBordreComponent* border = m_inventorySpace->AddComponent<ECS::UIBordreComponent>();
+	UIBorderComponent* border = m_inventorySpace->AddComponent<ECS::UIBorderComponent>();
 	border->widthTopBot = 7;
 	border->widthLeftRight = 10;
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
@@ -84,7 +84,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		float rowCount = inventoryData->slotCount / columnCount;
 	}
 
-	UIBordreComponent* border = m_inventorySpace->GetComponent<ECS::UIBordreComponent>();
+	UIBorderComponent* border = m_inventorySpace->GetComponent<ECS::UIBorderComponent>();
 	float sizeY = (m_inventorySpace->GetWidgetComponent()->defaultDimensions.y- (border->widthTopBot/ m_inventorySpace->GetWidgetComponent()->currentScale.y)) / inventoryData->rowCount;
 	float sizeX = (m_inventorySpace->GetWidgetComponent()->defaultDimensions.x- (border->widthLeftRight/m_inventorySpace->GetWidgetComponent()->currentScale.x)) / inventoryData->columnCount;
 

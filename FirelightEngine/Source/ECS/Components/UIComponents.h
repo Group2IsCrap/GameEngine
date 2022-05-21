@@ -69,6 +69,23 @@ namespace Firelight::ECS
 			Serialiser::Serialise("DefaultScale", defaultScale);
 			Serialiser::Serialise("CurrentScale", currentScale);
 		}
+
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("ParentID", (int)parentID);
+			ImGuiVariable("HasParent", hasParent);
+			ImGuiVariable("Index", (int)index);
+
+			ImGuiVariable("AnchorSettings", (int)anchorSettings);
+			ImGuiVariable("ScaleSetting", (int)scaleSetting);
+
+			ImGuiVariable("Offset", offSet);
+			ImGuiVariable("DefaultPosition", defaultPosition);
+			ImGuiVariable("DefaultDimensions", defaultDimensions);
+			ImGuiVariable("DefaultScale", defaultScale);
+			ImGuiVariable("CurrentScale", currentScale);
+		}
 	};
 
 	struct UIPressableComponent : BaseComponent
@@ -76,21 +93,44 @@ namespace Firelight::ECS
 		std::vector<CallbackFunctionType> onLeftPressFunctions;
 		std::vector<CallbackFunctionType> onRightPressFunctions;
 		std::vector<CallbackFunctionType> onMiddlePressFunctions;
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("OnLeftPressFunctions", (int)onLeftPressFunctions.size());
+			ImGuiVariable("OnRightPressFunctions", (int)onRightPressFunctions.size());
+			ImGuiVariable("OnMiddlePressFunctions", (int)onMiddlePressFunctions.size());
+		}
+
 	};
+
 	struct UIHoverableComponent : BaseComponent
 	{
 		std::vector<CallbackFunctionType> onHoverFunctions;
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("OnHoverFunctions", (int)onHoverFunctions.size());
+		}
 	};
 
 	struct UIDraggableComponent : BaseComponent
 	{
 		std::vector<CallbackFunctionType> onPickUpFunctions;
 		std::vector<CallbackFunctionType> onDropFunctions;
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("OnPickUpFunctions", (int)onPickUpFunctions.size());
+			ImGuiVariable("OnDropFunctions", (int)onDropFunctions.size());
+		}
 	};
 
 	struct UIContainerComponent : BaseComponent
 	{
-
+		void RenderDebugUI() override
+		{
+			ImGuiText("UI Container Component Contains No Data");
+		}
 	};
 
 	struct UICanvasComponent : BaseComponent
@@ -104,6 +144,13 @@ namespace Firelight::ECS
 			Serialiser::Serialise("Layer", layer);
 			Serialiser::Serialise("XScreenSize", XScreenSize);
 			Serialiser::Serialise("YScreenSize", YScreenSize);
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);
+			ImGuiVariable("XScreenSize", XScreenSize);
+			ImGuiVariable("YScreenSize", YScreenSize);
 		}
 	};
 
@@ -133,9 +180,27 @@ namespace Firelight::ECS
 
 			Serialiser::Serialise("ButtonText", buttonText.c_str());
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("IsChangeOfTex", isChangeOfTex);
+
+			ImGuiText("Colours");
+			ImGuiVariable("    Colour 1", colour[0]);
+			ImGuiVariable("    Colour 2", colour[1]);
+			ImGuiVariable("    Colour 3", colour[2]);
+
+			ImGuiText("Rects of Button");
+			for (int i = 0; i < rectsOfButton.size(); ++i)
+			{
+				ImGuiVariable("    Rect" + std::to_string(i), rectsOfButton[i]);
+			}
+
+			ImGuiVariable("ButtonText", buttonText);
+		}
 	};
 
-	struct UIBordreComponent : BaseComponent
+	struct UIBorderComponent : BaseComponent
 	{
 		//Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
 		float widthTopBot;
@@ -144,6 +209,13 @@ namespace Firelight::ECS
 		void Serialise() override
 		{
 			
+		}
+
+		void RenderDebugUI() override
+		{
+
+			ImGuiVariable("widthTopBot", widthTopBot);
+			ImGuiVariable("widthLeftRight", widthLeftRight);
 		}
 	};
 

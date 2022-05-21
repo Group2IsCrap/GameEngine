@@ -50,6 +50,8 @@ namespace Firelight::Graphics
         void Draw() const;
 
         const Mesh* GetMesh() const;
+        
+        std::string GetString();
 
         void SetString(const std::string& string, bool updateMesh = true);
         void SetFont(Font* font, bool updateMesh = true);
