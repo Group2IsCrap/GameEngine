@@ -121,9 +121,10 @@ std::vector<std::string> ItemDatabase::GetTagList(std::string stream)
 
 Entity* ItemDatabase::CreateInstanceOfItem(int itemID)
 {
-	Entity* entity = new Entity(true, itemTemplates[itemID]->GetTemplateID());		
-	entity->GetComponent<TransformComponent>()->position.x = (float)(rand() % 20) - 10.0f;
-	entity->GetComponent<TransformComponent>()->position.y = (float)(rand() % 20) - 10.0f;
+	Entity* entity = new Entity(true, itemTemplates[itemID]->GetTemplateID());
+	TransformComponent* transformComponent = entity->GetComponent<TransformComponent>();
+	Maths::Vec3f pos = Maths::Vec3f((float)(rand() % 20) - 10.0f, (float)(rand() % 20) - 10.0f, 0.0f);
+	transformComponent->SetPosition(pos);
 	entity->GetComponent<LayerComponent>()->layer = 1;
 	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->radius = 1.0f;
 	entity->GetComponent<ColliderComponent, CircleColliderComponent>()->isTrigger = true;

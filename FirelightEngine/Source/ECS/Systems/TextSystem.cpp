@@ -37,7 +37,8 @@ namespace Firelight::ECS
 				continue;
 			}
 
-			textComponent->text.SetAnchorPosition(Maths::Vec2f(transformComponent->position.x, transformComponent->position.y));
+			Firelight::Maths::Vec3f position = transformComponent->GetPosition();
+			textComponent->text.SetAnchorPosition(Maths::Vec2f(position.x, position.y));
 
 			if (!textComponent->text.GetMesh())
 			{

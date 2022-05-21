@@ -18,7 +18,7 @@ BushEntity::BushEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Res
 {
 	GetSpriteComponent()->pixelsPerUnit = 35;
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Bush.png");
-	GetComponent<TransformComponent>()->position = { 5.0f, -5.0f, 0.0f };
+	GetComponent<TransformComponent>()->SetPosition({ 5.0f, -5.0f, 0.0f });
 
 	GetComponent<HealthComponent>()->currentHealth = 1;
 

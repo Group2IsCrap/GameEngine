@@ -5,7 +5,6 @@
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
-#include<Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
@@ -15,7 +14,9 @@
 #include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
+#include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Systems/AnimationSystem.h>
+
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -43,10 +44,11 @@ PlayerSystem::PlayerSystem()
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
+
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 
 	imguiLayer = new ImGuiPlayerLayer();
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -66,6 +68,7 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
+	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_releaseAttackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -150,6 +153,10 @@ void PlayerSystem::MovePlayerUp()
 }
 void PlayerSystem::MovePlayerLeft()
 {
+	if (playerEntity != nullptr)
+	{
+		playerEntity->GetTransformComponent()->FlipX(true);
+	}
 	m_moveLeft = true;
 }
 void PlayerSystem::MovePlayerDown()
@@ -158,6 +165,10 @@ void PlayerSystem::MovePlayerDown()
 }
 void PlayerSystem::MovePlayerRight()
 {
+	if (playerEntity != nullptr)
+	{
+		playerEntity->GetTransformComponent()->FlipX(false);
+	}
 	m_moveRight = true;
 }
 
@@ -210,7 +221,7 @@ void PlayerSystem::HandlePlayerAnimations()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->position, 1.0f, static_cast<int>(GameLayer::Items));
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->GetPosition(), 1.0f, static_cast<int>(GameLayer::Items));
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
@@ -218,7 +229,7 @@ void PlayerSystem::Interact()
 		{
 			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
 			
-			audioComponent->soundPos = { transformComponent->position.x,  transformComponent->position.y,  transformComponent->position.z };
+			audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
 			entitiesCollidedWith[0]->PlayAudioClip();
 		}
 		//ckeck if it is a item
@@ -226,7 +237,7 @@ void PlayerSystem::Interact()
 
 			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", entitiesCollidedWith[0])) {
 				//hide item
-				transformComponent->position = Vec3f(100000, 0, 0);
+				transformComponent->SetPosition(Vec3f(100000, 0, 0));
 			}
 		}
 	}
@@ -235,13 +246,13 @@ void PlayerSystem::Interact()
 void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	itemEntity->GetComponent<TransformComponent>()->position = playerEntity->GetTransformComponent()->position;
+	itemEntity->GetComponent<TransformComponent>()->SetPosition(playerEntity->GetTransformComponent()->GetPosition());
 }
 
 void PlayerSystem::Attack()
 {
 	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetTransformComponent()->GetPosition());
 }
 
 void PlayerSystem::RemoveHealth()
@@ -263,4 +274,18 @@ void PlayerSystem::StartAttack()
 void PlayerSystem::StopAttack()
 {
 	m_isAttacking = false;
+}
+
+void PlayerSystem::ToggleDebug()
+{
+	m_drawDebugUI = !m_drawDebugUI;
+
+	if (m_drawDebugUI)
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
+	}
+	else
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(imguiLayer);
+	}
 }

@@ -25,8 +25,8 @@ public:
 	
 	ECS::EntityID GetEntityData() { return m_inventoryEntityID; }
 	int GetInventoryNumber() { return m_groupInventoryID; }
-	void CreateInventory(Maths::Vec2f size, float slotCount, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
-	void CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
+	void CreateInventory(Maths::Vec2f size, float slotCount, Maths::Vec2f margin, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
+	void CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, Maths::Vec2f margin, ECS::EntityID parent, ECS::e_AnchorSettings Anchor, Maths::Vec2f offset);
 
 	//display controlls
 	void LoadInventory(std::vector<ECS::UIPanel*> *panelToUse, bool toFit);

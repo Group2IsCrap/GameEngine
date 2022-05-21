@@ -9,13 +9,18 @@ using namespace Firelight::ECS;
 
 ImGuiDebugLayer::ImGuiDebugLayer()
 {
-	SetupTheme();
-	spawnItemCommand = std::vector<CallbackFunctionType>(5);
+	
 }
 
 ImGuiDebugLayer::~ImGuiDebugLayer()
 {
 
+}
+
+void ImGuiDebugLayer::Initialize()
+{
+	SetupTheme();
+	spawnItemCommand = std::vector<CallbackFunctionType>(5);
 }
 
 void ImGuiDebugLayer::Render()
@@ -93,7 +98,11 @@ void ImGuiDebugLayer::RenderECSDebug()
 					{
 						componentTypeString = componentTypeString.substr(16);
 					}
-					ImGui::Text(("    " + componentTypeString).c_str());
+					if (ImGui::TreeNode(componentTypeString.c_str()))
+					{
+						component->RenderDebugUI();
+						ImGui::TreePop();
+					}
 				}
 				ImGui::TreePop();
 			}

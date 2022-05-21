@@ -23,4 +23,9 @@ struct HealthComponent : Firelight::ECS::BaseComponent
 		clone->maxHealth = maxHealth;
 		return clone;
 	}
+	void RenderDebugUI() override
+	{
+		//ImGuiVariable("CurrentHealth", currentHealth);
+		//ImGuiVariable("MaxHealth", maxHealth);
+	}
 };

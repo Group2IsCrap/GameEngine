@@ -219,6 +219,12 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline Vec3<T> Vec3<T>::Invert(const Vec3<T>& vector1)
+    {
+        return Vec3<T>(1 / vector1.x, 1 / vector1.y, 1 / vector1.z);
+    }
+
+    template<typename T>
     inline T Vec3<T>::Length(const Vec3<T>& vector)
     {
         return vector.Length();

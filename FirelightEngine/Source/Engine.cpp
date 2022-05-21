@@ -75,6 +75,8 @@ namespace Firelight
 
         m_initialised = true;
 
+        IdentificationComponent::RegisterComponent();
+
         return true;
     }
 
@@ -140,7 +142,7 @@ namespace Firelight
     {
         if (m_activeCamera != nullptr)
         {
-            const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->position;
+            const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->GetPosition();
             const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
             const float aspectRatio = windowDimensions.x / windowDimensions.y;
 

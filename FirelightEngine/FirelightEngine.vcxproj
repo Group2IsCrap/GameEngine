@@ -375,6 +375,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ECS\Components\TilemapComponent.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\GameEntityTemplate.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntityTemplate.h" />
     <ClInclude Include="Source\ECS\HashCaching.h" />

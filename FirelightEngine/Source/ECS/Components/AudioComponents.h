@@ -44,5 +44,15 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("SoundName", soundName);
+			ImGuiVariable("SoundPos", std::to_string(soundPos.x) + ", " + std::to_string(soundPos.y) + ", " + std::to_string(soundPos.z));
+			ImGuiVariable("Looping", looping);
+			ImGuiVariable("Is3D", is3d);
+			ImGuiVariable("Streaming", streaming);
+			ImGuiVariable("Channel", channel);
+		}
 	};
 }

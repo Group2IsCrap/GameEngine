@@ -209,7 +209,7 @@ namespace Firelight::Editor
 	void DrawHelper::DrawComponentType(Firelight::ECS::TransformComponent* component)
 	{
 		ImGui::Spacing();
-		DrawVec3Control("Position", component->position.x, component->position.y, component->position.z);
+		//DrawVec3Control("Position", component->GetPosition().x, component->GetPosition().y, component->GetPosition().z);
 		ImGui::Unindent();
 		ImGui::AlignTextToFramePadding();
 		ImGui::Text("Rotation");

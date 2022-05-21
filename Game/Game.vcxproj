@@ -125,7 +125,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -37,7 +37,7 @@ namespace Firelight::ECS
 		{
 			Firelight::Maths::Rectf destinationRect(it->first.first * tilemap->cellSize + 100.0f, it->first.second * tilemap->cellSize + 100.0f, tilemap->cellSize, tilemap->cellSize);
 			Firelight::Maths::Rectf sourceRect(it->second->m_x * (tilemap->sourceSize + tilemap->sourceSpacing), it->second->m_y * (tilemap->sourceSize + tilemap->sourceSpacing), tilemap->sourceSize, tilemap->sourceSize);
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destinationRect, tilemap->Texture, it->second->m_layer, 0.0f, Firelight::Graphics::Colours::sc_white, sourceRect);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destinationRect, tilemap->texture, it->second->m_layer, 0.0f, Firelight::Graphics::Colours::sc_white, sourceRect);
 		}
 	}
 }

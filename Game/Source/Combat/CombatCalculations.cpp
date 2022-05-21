@@ -4,7 +4,7 @@
 #include "../Core/AIEntity.h"
 #include "../Core/ResourceEntity.h"
 
-void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition)
+void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
 {
     float directionalAngle = 0.0f;
     float weaponAngle;
@@ -16,7 +16,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition)
         directionalAngle = 90.0f;
         break;
     case Facing::Down:
-        directionalAngle = -90.0f;
+        directionalAngle = 270.0f;
         break;
     case Facing::Left:
         directionalAngle = 180.0f;
@@ -31,7 +31,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f nextPosition)
 
     for (int i = 0; i < layers.size(); i++)
     {
-        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(nextPosition, 2.0f, directionalAngle, 2.0f, layers[i]);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(point, 2.0f, directionalAngle, 5.0f, layers[i]);
         if (targets.empty())
         {
             continue;
