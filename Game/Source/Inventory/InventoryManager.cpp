@@ -161,7 +161,7 @@ namespace InventorySystem
         }
 
 
-            //remove group
+        //remove group
         if (m_inventory[groupName].size() == 0) 
         {
             //TODO Remove

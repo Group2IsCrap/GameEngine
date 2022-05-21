@@ -14,6 +14,8 @@
 #include "../Graphics/AssetManager.h"
 
 #include "IntersectData.h"
+#include "../KeyBinder.h"
+#include "../Engine.h"
 
 namespace Firelight::Physics
 {
@@ -22,6 +24,10 @@ namespace Firelight::Physics
 		AddWhitelistComponent<Firelight::ECS::RigidBodyComponent>();
 		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
 		AddWhitelistComponent<Firelight::ECS::StaticComponent>();
+
+		KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+		keyBinder->BindKeyboardActionEvent(Firelight::Events::DrawCollidersEvent::sm_descriptor, Keys::KEY_FUNCTION_1, KeyEventType::KeyPressSingle);
+		m_drawCollidersIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::DrawCollidersEvent>(std::bind(&PhysicsSystem::ToggleDrawColliders, this));
 
 		m_onEarlyRenderSub = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&PhysicsSystem::Render, this));
 	}
@@ -415,5 +421,19 @@ namespace Firelight::Physics
 
 
 
+	}
+	
+	void PhysicsSystem::ToggleDrawColliders()
+	{
+		m_drawColliders = !m_drawColliders;
+
+		for (auto* entity : m_entities)
+		{
+			std::vector<Firelight::ECS::ColliderComponent*> colliderComponents = entity->GetComponents<Firelight::ECS::ColliderComponent>();
+			for (auto* collider : colliderComponents)
+			{
+				collider->drawCollider = m_drawColliders;
+			}
+		}
 	}
 }

@@ -20,10 +20,10 @@
 18,Stinger,,Sprites/Items/Feather.png,5,Ingredient
 19,Poison,,Sprites/Items/Feather.png,5,Ingredient
 20,Bone,,Sprites/Items/Feather.png,5,Ingredient
-21,Potions 1,,Sprites/Items/Feather.png,5,Potions
-22,Potions 2,,Sprites/Items/Feather.png,5,Potions
-23,Potions 3,,Sprites/Items/Feather.png,5,Potions
-24,Potions 4,,Sprites/Items/Feather.png,5,Potions
+21,Potions 1,,Sprites/Items/Feather.png,5,Food;Potions
+22,Potions 2,,Sprites/Items/Feather.png,5,Food;Potions
+23,Potions 3,,Sprites/Items/Feather.png,5,Food;Potions
+24,Potions 4,,Sprites/Items/Feather.png,5,Food;Potions
 25,Bag 1,,Sprites/Items/Feather.png,1,Bag
 26,Bag 2,,Sprites/Items/Feather.png,1,Bag
 27,Bag 3,,Sprites/Items/Feather.png,1,Bag
@@ -40,11 +40,15 @@
 38,Stone Axe,,Sprites/Items/Feather.png,1,Tool;Axe
 39,Metal Axe,,Sprites/Items/Feather.png,1,Tool;Axe
 40,Infused Axe,,Sprites/Items/Feather.png,1,Tool;Axe
-41,Berry,,Sprites/Items/Feather.png,5,Food
-42,Meat ,,Sprites/Items/Feather.png,5,Food
-43,combo 1,,Sprites/Items/Feather.png,5,Food
-44,combo 2,,Sprites/Items/Feather.png,5,Food
-45,combo 3,,Sprites/Items/Feather.png,5,Food
-46,combo 4,,Sprites/Items/Feather.png,5,Food
-47,combo 5,,Sprites/Items/Feather.png,5,Food
-48,combo 6,,Sprites/Items/Feather.png,5,Food
+41,sword1,,Sprites/Items/Feather.png,1,Weapon
+42,sword2,,Sprites/Items/Feather.png,1,Weapon
+43,sword3,,Sprites/Items/Feather.png,1,Weapon
+44,sword4,,Sprites/Items/Feather.png,1,Weapon
+45,Berry,,Sprites/Items/Feather.png,5,Food
+46,Meat ,,Sprites/Items/Feather.png,5,Food
+47,combo 1,,Sprites/Items/Feather.png,5,Food
+48,combo 2,,Sprites/Items/Feather.png,5,Food
+49,combo 3,,Sprites/Items/Feather.png,5,Food
+50,combo 4,,Sprites/Items/Feather.png,5,Food
+51,combo 5,,Sprites/Items/Feather.png,5,Food
+52,combo 6,,Sprites/Items/Feather.png,5,Food
