@@ -68,6 +68,7 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
+	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_releaseAttackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -251,7 +252,7 @@ void PlayerSystem::SpawnItem()
 void PlayerSystem::Attack()
 {
 	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetTransformComponent()->position);
 }
 
 void PlayerSystem::RemoveHealth()

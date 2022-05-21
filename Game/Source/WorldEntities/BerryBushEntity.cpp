@@ -25,4 +25,5 @@ BerryBushEntity::BerryBushEntity(bool isTemplate, Firelight::ECS::EntityID entit
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->isTrigger = true;
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, -0.2f, 3.0f, 1.0f);
+
 }
