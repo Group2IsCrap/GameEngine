@@ -11,6 +11,7 @@ using namespace Firelight::Serialisation;
 
 #include <string>
 #include <map>
+#include <vector>
 
 namespace Firelight::ECS
 {
@@ -55,9 +56,32 @@ namespace Firelight::ECS
 		std::vector<Bone*> children;
 
 		void Rotate(float rotation);
-		void SetPosition(Firelight::Maths::Vec3f& position);
-		void SetAnchorPoint(Firelight::Maths::Vec3f& anchorPoint);
-		void FlipX(bool flip);
+		void SetPosition(Firelight::Maths::Vec3f& position)
+		{
+			this->position = position;
+		}
+		void SetAnchorPoint(Firelight::Maths::Vec3f& anchorPoint)
+		{
+			this->anchorPoint = anchorPoint;
+		}
+
+		void FlipX(bool flip)
+		{
+			if (isFlipped == flip)
+				return;
+
+			// TODO : Binary search to root and flip basd on root. Currently,
+			// root must be flipped or items will not work aka do not flip child objects unless it's the
+			// top of the chain that you care for.
+			for (auto child : children)
+			{
+				child->FlipX(flip);
+			}
+
+			Firelight::Maths::Vec3f inverted = Firelight::Maths::Vec3f(position.x *= -1, position.y, position.z);
+			SetPosition(inverted);
+			isFlipped = flip;
+		}
 
 		Firelight::Maths::Vec3f& GetPosition() { return position; }
 		Firelight::Maths::Vec3f& GetAnchorPoint() { return anchorPoint; }
@@ -67,11 +91,18 @@ namespace Firelight::ECS
 		Firelight::Maths::Vec3f position;
 		Firelight::Maths::Vec3f anchorPoint;
 		float rotation;
+		bool isFlipped;
 	};
 
 	struct BoneSkeletonComponent : BaseComponent
 	{
 		Bone* rootBone;
+
+		void AddNewBone(Bone* parent)
+		{
+			
+		}
+		
 	};
 }
 
