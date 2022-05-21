@@ -47,5 +47,21 @@ namespace Firelight::ECS
 			return clone;
 		}
 	};
+
+	struct Bone
+	{
+	public:
+		Bone* parent;
+		std::vector<Bone*> children;
+
+	private:
+		Firelight::Maths::Vec3f position;
+		float rotation;
+	};
+
+	struct BoneSkeletonComponent : BaseComponent
+	{
+		Bone* rootBone;
+	};
 }
 
