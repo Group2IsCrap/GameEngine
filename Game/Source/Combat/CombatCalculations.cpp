@@ -6,23 +6,29 @@
 
 void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
 {
-    float directionalAngle = 0.0f;
-    float weaponAngle;
+    /*float directionalAngle = 0.0f;
+    float weaponAngle;*/
     //add to function call
+
+    Vec3f offset = Vec3f(0.0f,0.0f,0.0f);
 
     switch (dir)
     {
     case Facing::Up:
-        directionalAngle = 90.0f;
+        offset = (0.0f, 4.0f, 0.0f);
+        //directionalAngle = 90.0f;
         break;
     case Facing::Down:
-        directionalAngle = 270.0f;
+        offset = (0.0f, -4.0f, 0.0f);
+        //directionalAngle = 270.0f;
         break;
     case Facing::Left:
-        directionalAngle = 180.0f;
+        offset = (-4.0f, 0.0f, 0.0f);
+        //directionalAngle = 180.0f;
         break;
     case Facing::Right:
-        directionalAngle = 0.0f;
+        offset = (4.0f, 0.0f, 0.0f);
+        //directionalAngle = 0.0f;
         break;
     }
 
@@ -31,7 +37,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
 
     for (int i = 0; i < layers.size(); i++)
     {
-        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCone(point, 2.0f, directionalAngle, 5.0f, layers[i]);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(point + offset, 2.0f, layers[i]);
         if (targets.empty())
         {
             continue;
