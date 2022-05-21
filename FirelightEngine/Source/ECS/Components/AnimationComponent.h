@@ -56,9 +56,11 @@ namespace Firelight::ECS
 
 		void Rotate(float rotation);
 		void SetPosition(Firelight::Maths::Vec3f& position);
+		void SetAnchorPoint(Firelight::Maths::Vec3f& anchorPoint);
 		void FlipX(bool flip);
 
 		Firelight::Maths::Vec3f& GetPosition() { return position; }
+		Firelight::Maths::Vec3f& GetAnchorPoint() { return anchorPoint; }
 		float& GetRotation() { return rotation; }
 
 	private:
