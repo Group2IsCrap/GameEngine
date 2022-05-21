@@ -208,7 +208,8 @@ namespace Firelight::ECS
 
 		void Serialise() override
 		{
-			
+			Serialiser::Serialise("widthTopBot", widthTopBot);
+			Serialiser::Serialise("widthLeftRight", widthLeftRight);
 		}
 
 		void RenderDebugUI() override
