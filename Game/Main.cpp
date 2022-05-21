@@ -252,7 +252,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddInventory("Equipment", "Sprites/UI/PlayerInventory1.png", 1, 3, Maths::Vec2f(300 - 12.5f, 100), Maths::Vec2f(0, 0), Maths::Vec2f(25, 0), Maths::Vec2f(75 * 4 + (25.0f * 3) - 12.5f + 50, 0), ECS::e_AnchorSettings::Bottom);
 
 		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Weapon.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
-		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/SlotIcon.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
+		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Hat.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
 		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/SlotIcon.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
 
 		
