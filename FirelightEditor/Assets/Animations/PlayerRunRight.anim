@@ -1,0 +1,26 @@
+{
+    "AnimationName": "PlayerRunRight",
+    "Loop": true,
+    "FrameTime": 27.17300033569336,
+    "FrameCount": 18,
+    "TextureNames": [
+        "Sprites\\Player\\Run\\PlayerRun0001.png",
+        "Sprites\\Player\\Run\\PlayerRun0002.png",
+        "Sprites\\Player\\Run\\PlayerRun0003.png",
+        "Sprites\\Player\\Run\\PlayerRun0004.png",
+        "Sprites\\Player\\Run\\PlayerRun0005.png",
+        "Sprites\\Player\\Run\\PlayerRun0007.png",
+        "Sprites\\Player\\Run\\PlayerRun0007.png",
+        "Sprites\\Player\\Run\\PlayerRun0008.png",
+        "Sprites\\Player\\Run\\PlayerRun0009.png",
+        "Sprites\\Player\\Run\\PlayerRun0010.png",
+        "Sprites\\Player\\Run\\PlayerRun0011.png",
+        "Sprites\\Player\\Run\\PlayerRun0012.png",
+        "Sprites\\Player\\Run\\PlayerRun0013.png",
+        "Sprites\\Player\\Run\\PlayerRun0014.png",
+        "Sprites\\Player\\Run\\PlayerRun0015.png",
+        "Sprites\\Player\\Run\\PlayerRun0016.png",
+        "Sprites\\Player\\Run\\PlayerRun0017.png",
+        "Sprites\\Player\\Run\\PlayerRun0018.png"
+    ]
+}

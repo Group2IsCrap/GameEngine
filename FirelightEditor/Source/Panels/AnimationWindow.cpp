@@ -22,6 +22,7 @@ AnimationWindow::AnimationWindow()
 	{
 		m_selectedAnimEnum = new int(0);
 	}
+	m_isOpen = true;
 }
 
 AnimationWindow::~AnimationWindow()

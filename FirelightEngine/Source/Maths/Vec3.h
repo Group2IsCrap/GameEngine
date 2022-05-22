@@ -49,6 +49,7 @@ namespace Firelight::Maths
         static Vec3<T>    Normalise(const Vec3<T>& vector);
         static T          Dot(const Vec3<T>& vector1, const Vec3<T>& vector2);
         static Vec3<T>    Cross(const Vec3<T>& vector1, const Vec3<T>& vector2);
+        static Vec3<T>    Invert(const Vec3<T>& vector1);
                           
         static T          Length(const Vec3<T>& vector);
         static T          LengthSquared(const Vec3<T>& vector);

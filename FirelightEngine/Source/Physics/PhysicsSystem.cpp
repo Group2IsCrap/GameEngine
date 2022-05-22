@@ -14,6 +14,8 @@
 #include "../Graphics/AssetManager.h"
 
 #include "IntersectData.h"
+#include "../KeyBinder.h"
+#include "../Engine.h"
 
 namespace Firelight::Physics
 {
@@ -22,6 +24,10 @@ namespace Firelight::Physics
 		AddWhitelistComponent<Firelight::ECS::RigidBodyComponent>();
 		AddWhitelistComponent<Firelight::ECS::ColliderComponent>();
 		AddWhitelistComponent<Firelight::ECS::StaticComponent>();
+
+		KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+		keyBinder->BindKeyboardActionEvent(Firelight::Events::DrawCollidersEvent::sm_descriptor, Keys::KEY_FUNCTION_1, KeyEventType::KeyPressSingle);
+		m_drawCollidersIndex = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::DrawCollidersEvent>(std::bind(&PhysicsSystem::ToggleDrawColliders, this));
 
 		m_onEarlyRenderSub = Firelight::Events::EventDispatcher::SubscribeFunction<Firelight::Events::Graphics::OnEarlyRender>(std::bind(&PhysicsSystem::Render, this));
 	}
@@ -68,10 +74,10 @@ namespace Firelight::Physics
 						}
 
 						const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / 1.0f;
-
+						Maths::Vec3f position = transformComponent->GetPosition();
 						destRect = Firelight::Maths::Rectf(
-							(transformComponent->position.x - circleCollider->radius + circleCollider->offset.x + spriteComponent->drawOffset.x),
-							(transformComponent->position.y - circleCollider->radius + circleCollider->offset.y + spriteComponent->drawOffset.y),
+							(position.x - circleCollider->radius + circleCollider->offset.x + spriteComponent->drawOffset.x),
+							(position.y - circleCollider->radius + circleCollider->offset.y + spriteComponent->drawOffset.y),
 							circleCollider->radius + circleCollider->radius,
 							circleCollider->radius + circleCollider->radius);
 						sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, 100.0f, 100.0f);
@@ -86,16 +92,17 @@ namespace Firelight::Physics
 
 						const Maths::Vec2f spriteWorldSize = Maths::Vec2f((float)texture->GetDimensions().x, (float)texture->GetDimensions().y) / 1.0f;
 
+						Maths::Vec3f position = transformComponent->GetPosition();
 						destRect = Firelight::Maths::Rectf(
-							transformComponent->position.x - ((boxCollider->rect.w * 0.5f)) + spriteComponent->drawOffset.x + boxCollider->rect.x,
-							transformComponent->position.y - ((boxCollider->rect.h * 0.5f)) + spriteComponent->drawOffset.y + boxCollider->rect.y,
+							position.x - ((boxCollider->rect.w * 0.5f)) + spriteComponent->drawOffset.x + boxCollider->rect.x,
+							position.y - ((boxCollider->rect.h * 0.5f)) + spriteComponent->drawOffset.y + boxCollider->rect.y,
 							boxCollider->rect.w, boxCollider->rect.h);
 						sourceRect = Firelight::Maths::Rectf(0.0f, 0.0f, 100.0f, 100.0f);
 					}
 
-					// Layer 65 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
-					// It may be worth documenting that all colliders are rendered on layer 65.
-					int layerOverride = 65;
+					// Layer 1000 is not rendering within the engine as we put a cap on it (64 being max) in the editor.
+					// It may be worth documenting that all colliders are rendered on layer 1000.
+					int layerOverride = 1000;
 					Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, layerOverride, 0.0, Firelight::Graphics::Colours::sc_blue, sourceRect);
 				}
 			}			
@@ -114,7 +121,7 @@ namespace Firelight::Physics
 			{
 				float timeVal = rigidBodyComponent->interpolationTime / time.GetPhysicsTimeStep();
 
-				transformComponent->position = Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal);
+				transformComponent->SetPosition(Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal));
 				rigidBodyComponent->interpolationTime += time.GetDeltaTime();
 			}
 		}
@@ -122,7 +129,6 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::FixedUpdate(const Utils::Time& time)
 	{
-
 		ApplyForces(time.GetPhysicsTimeStep());
 		HandleCollisions();
 	}
@@ -142,8 +148,9 @@ namespace Firelight::Physics
 			}
 			else
 			{
-				transformComponent->position += rigidBodyComponent->velocity;
-				rigidBodyComponent->nextPos = transformComponent->position;
+				Maths::Vec3f position = transformComponent->GetPosition();
+				transformComponent->SetPosition(transformComponent->GetPosition() + rigidBodyComponent->velocity);;
+				rigidBodyComponent->nextPos = transformComponent->GetPosition();
 			}
 
 			float val = (1 - fixedDeltaTime * rigidBodyComponent->dragCoefficient);
@@ -169,7 +176,7 @@ namespace Firelight::Physics
 			Firelight::ECS::CircleColliderComponent* collider2 = entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::CircleColliderComponent>();
 
 			float radiusDistance = collider->radius + collider2->radius;
-			Firelight::Maths::Vec3f direction = entity2->GetComponent<Firelight::ECS::TransformComponent>()->position - entity->GetComponent<Firelight::ECS::TransformComponent>()->position;
+			Firelight::Maths::Vec3f direction = entity2->GetComponent<Firelight::ECS::TransformComponent>()->GetPosition() - entity->GetComponent<Firelight::ECS::TransformComponent>()->GetPosition();
 
 			float directionLength = direction.Length();
 			direction.Normalise();
@@ -184,15 +191,17 @@ namespace Firelight::Physics
 			Firelight::ECS::TransformComponent* transform2 = entity2->GetComponent< Firelight::ECS::TransformComponent>();
 			Firelight::ECS::BoxColliderComponent* collider = entity->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>();
 			Firelight::ECS::BoxColliderComponent* collider2 = entity2->GetComponent<Firelight::ECS::ColliderComponent, Firelight::ECS::BoxColliderComponent>();
+			Maths::Vec3f position = transform->GetPosition();
+			Maths::Vec3f position2 = transform2->GetPosition();
 
 			Firelight::Maths::Vec3f halfExtents(collider->rect.w / 2.0f, collider->rect.h / 2.0f, 0.0f);
 			Firelight::Maths::Vec3f halfExtents2(collider2->rect.w / 2.0f, collider2->rect.h / 2.0f, 0.0f);
 								 
-			Firelight::Maths::Vec3f minExtents(transform->position.x - halfExtents.x, transform->position.y - halfExtents.y, 0.0f);
-			Firelight::Maths::Vec3f maxExtents(transform->position.x + halfExtents.x, transform->position.y + halfExtents.y, 0.0f);
+			Firelight::Maths::Vec3f minExtents(position.x - halfExtents.x, position.y - halfExtents.y, 0.0f);
+			Firelight::Maths::Vec3f maxExtents(position.x + halfExtents.x, position.y + halfExtents.y, 0.0f);
 								 
-			Firelight::Maths::Vec3f minExtents2(transform2->position.x - halfExtents2.x, transform2->position.y - halfExtents2.y, 0.0f);
-			Firelight::Maths::Vec3f maxExtents2(transform2->position.x + halfExtents2.x, transform2->position.y + halfExtents2.y, 0.0f);
+			Firelight::Maths::Vec3f minExtents2(position2.x - halfExtents2.x, position2.y - halfExtents2.y, 0.0f);
+			Firelight::Maths::Vec3f maxExtents2(position2.x + halfExtents2.x, position2.y + halfExtents2.y, 0.0f);
 								 
 			Firelight::Maths::Vec3f dists(minExtents2 - maxExtents);
 			Firelight::Maths::Vec3f dists2(minExtents - maxExtents2);
@@ -269,7 +278,6 @@ namespace Firelight::Physics
 								bool collision = true;
 								do
 								{
-									
 									Maths::Vec3f& pos1 = entityRigidBody->nextPos;
 									Maths::Vec3f& pos2 = entity2RigidBody->nextPos;
 
@@ -415,5 +423,19 @@ namespace Firelight::Physics
 
 
 
+	}
+	
+	void PhysicsSystem::ToggleDrawColliders()
+	{
+		m_drawColliders = !m_drawColliders;
+
+		for (auto* entity : m_entities)
+		{
+			std::vector<Firelight::ECS::ColliderComponent*> colliderComponents = entity->GetComponents<Firelight::ECS::ColliderComponent>();
+			for (auto* collider : colliderComponents)
+			{
+				collider->drawCollider = m_drawColliders;
+			}
+		}
 	}
 }

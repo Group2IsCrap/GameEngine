@@ -7,17 +7,34 @@
 #include "../Core/Layers.h"
 
 #include "PlayerComponent.h"
+#include <Source/ECS/Components/AnimationComponent.h>
 
 PlayerEntity::PlayerEntity()
 {
+	GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Player";
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
-	AddComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
+	GetComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
 	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player);
 	GetLayerComponent()->layer = static_cast<int>(GameLayer::Player);
+	GetSpriteComponent()->pixelsPerUnit *= 2;
+	AddComponent<Firelight::ECS::AnimationComponent>();
 
 	GetHealthComponent()->maxHealth = 5;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
+
+	SpriteEntity* stick = new SpriteEntity();
+	stick->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Stick.png");
+	stick->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
+	stick->GetTransformComponent()->SetPosition({ 0.75f, -0.4f, 0.0f });
+	GetTransformComponent()->AddChild(stick);
+
+	SpriteEntity* hat = new SpriteEntity();
+	hat->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Items/Armor/LeatherHat.png");
+	hat->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
+	hat->GetSpriteComponent()->pixelsPerUnit *= 3;
+	hat->GetTransformComponent()->SetPosition({ 0.0f, 1.0f, 0.0f });
+	GetTransformComponent()->AddChild(hat);
 
 	Firelight::ECS::BoxColliderComponent* boxCollider = dynamic_cast<Firelight::ECS::BoxColliderComponent*>(AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent()));
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 2.0f);

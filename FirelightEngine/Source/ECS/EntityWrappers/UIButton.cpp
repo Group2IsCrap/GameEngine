@@ -2,11 +2,17 @@
 
 namespace Firelight::ECS
 {
-	UIButton::UIButton()
+	UIButton::UIButton() : UIEntity()
 	{
 		AddComponent<UIHoverableComponent>();
 		AddComponent<UIPressableComponent>();
 		AddComponent<UIButtonComponent>();
+		this->GetIDComponent()->name = "UI Button";
+	}
+
+	UIButton::UIButton(std::string name) : UIButton()
+	{
+		this->GetIDComponent()->name = name;
 	}
 
 	void UIButton::BindOnLeftPressed(CallbackFunctionType callback)

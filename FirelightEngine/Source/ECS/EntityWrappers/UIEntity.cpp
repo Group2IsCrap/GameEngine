@@ -2,10 +2,16 @@
 
 namespace Firelight::ECS
 {
-	Firelight::ECS::UIEntity::UIEntity()
+	UIEntity::UIEntity() : GameEntity()
 	{
 		AddComponent<UIBaseWidgetComponent>();
 		AddComponent<PixelSpriteComponent>();
+		this->GetIDComponent()->name = "UI Entity";
+	}
+
+	UIEntity::UIEntity(std::string name) : UIEntity()
+	{
+		this->GetIDComponent()->name = name;
 	}
 
 	PixelSpriteComponent* UIEntity::GetSpriteComponent()

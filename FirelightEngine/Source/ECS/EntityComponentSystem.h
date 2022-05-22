@@ -37,6 +37,11 @@ namespace Firelight::ECS
 			return m_componentManager->GetComponent<T>(entity, index);
 		}
 
+		std::string GetTypeOfComponent(BaseComponent* component)
+		{
+			return m_componentManager->GetTypeOfComponent(component);
+		}
+
 		template<typename T, typename T2>
 		T2* GetComponent(EntityID entity, int index = 0)
 		{
@@ -84,6 +89,11 @@ namespace Firelight::ECS
 			return m_componentManager->GetAllComponents<T>();
 		}
 
+		std::vector<BaseComponent*> GetAllComponents(EntityID entity)
+		{
+			return m_componentManager->GetAllComponents(entity);
+		}
+
 		/// <summary>
 		/// Returns a list of all components.
 		/// </summary>
@@ -125,7 +135,7 @@ namespace Firelight::ECS
 		{
 			m_componentManager->AddComponent<T>(entity, component);
 			m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), true);
-			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>();
+			Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentAddedEvent>((void*)entity);
 		}
 
 		/// <summary>
@@ -154,7 +164,7 @@ namespace Firelight::ECS
 			if (!HasComponent<T>(entity))
 			{
 				m_entityManager->UpdateEntitySignature(entity, m_componentManager->GetComponentType<T>(), false);
-				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>();
+				Events::EventDispatcher::InvokeFunctions<Events::ECS::OnComponentRemovedEvent>((void*)entity);
 			}
 		}
 		/// <summary>

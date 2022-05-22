@@ -9,16 +9,31 @@
 #include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "Source/Systems/PlayerSystem.h"
+#include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/ImGuiDebugLayer.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
+#include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
+#include "Source/Core/AIEntity.h"
+#include "Source/AI/Enemies/AICrocodileEntity.h"
+#include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/AIBehaviourComponent.h"
+#include "Source/WorldEntities/TreeEntity.h"
+#include "Source/WorldEntities/RockEntity.h"
+#include "Source/WorldEntities/BushEntity.h"
+#include "Source/WorldEntities/BerryBushEntity.h"
+
+#include "Source/Inventory/InventoryEntity.h"
+#include "Source/Inventory/InventoryManager.h"
+#include "Source/Inventory/InventoryFunctionsGlobal.h"
 
 #include "Source/PCG/BiomeGeneration.h"
 #include "Source/TileMap/TileMap.h"
@@ -31,30 +46,64 @@ using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
 
+static bool g_RenderDebug = false;
+static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
+
+static void ToggleDebugLayer()
+{
+	g_RenderDebug = !g_RenderDebug;
+
+	if (g_RenderDebug)
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(g_debugLayer);
+	}
+	else
+	{
+		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(g_debugLayer);
+	}
+}
+
 void BindDefaultKeys()
 {
 	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
+	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
+
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
+
+	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
+
+
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
-	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
 	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
+
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
 }
 
 void SpawnItem0()
 {
+	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	InventorySystem::Global_Functions::AddItem("PlayerInventory", "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID());
 }
 
 void SpawnItem1()
 {
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
-	InventorySystem::Global_Functions::AddItem("PlayerInventory", "Equipment", ItemDatabase::Instance()->CreateInstanceOfItem(1)->GetEntityID());
+	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+	ItemDatabase::Instance()->CreateInstanceOfItem(4);
 }
 
 void GenerateBiomeUI()
@@ -66,11 +115,88 @@ void GenerateBiomeUI()
 void SetupDebugUI()
 {
 	// ImGui Test code
-	ImGuiDebugLayer* itemTestLayer = new ImGuiDebugLayer();
-	itemTestLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
-	itemTestLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
-	itemTestLayer->spawnItemCommand[2] = std::bind(GenerateBiomeUI);
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
+	g_debugLayer->Initialize();
+	g_debugLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
+	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
+}
+
+void SetupEnemyTemplate()
+{
+	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate("Enemy Template");
+	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
+	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
+	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
+	enemyTemplate->AddComponent<RigidBodyComponent>();
+	enemyTemplate->AddComponent<AIBehaviourComponent>();
+	enemyTemplate->AddComponent<HealthComponent>();
+	
+	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
+	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+}
+
+void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
+
+	Maths::Vec3f atPos= at;
+	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(toDrop);
+	if (toDropData) 
+	{
+		toDropData->SetPosition(Maths::Random::RandomPointInCircle(atPos, 3));
+	}
+	
+}
+void DropItemAtPlayer(void* toDrop, EntityID player) {
+	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
+
+	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
+	for (EntityID DropID : DropIDs) {
+		DropItemAt(toDropData->GetPosition(), DropID);
+	}
+}
+
+void ReAddToPlayer(void* toAdd) {
+	std::vector<EntityID>* AddIDs = (std::vector <EntityID>*)toAdd;
+	std::vector<EntityID> toRemove;
+	for (size_t i = 0; i < AddIDs->size(); i++)
+	{
+		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", AddIDs->at(i))) {
+			toRemove.push_back(AddIDs->at(i));
+		}
+	}
+	//fun remove loops 
+	for (size_t i = 0; i < toRemove.size(); i++)
+	{
+		for (size_t j = 0; j < AddIDs->size(); j++)
+		{
+			if (AddIDs->at(j) == toRemove[i]) {
+				AddIDs->erase(AddIDs->begin() + j);
+				break;
+			}
+		}
+	}
+}
+void SetupResourceTemplate()
+{
+	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
+	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
+	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = static_cast<int>(RenderLayer::Items);
+	resourceTemplate->AddComponent<RigidBodyComponent>();
+	resourceTemplate->AddComponent<HealthComponent>();
+
+	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	entity1->GetIDComponent()->name = "Resource: Tree";
+	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
+	entity2->GetIDComponent()->name = "Resource: Rock";
+	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
+	entity3->GetIDComponent()->name = "Resource: Bush";
+	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
+	entity4->GetIDComponent()->name = "Resource: Berry Bush";
+	
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -79,18 +205,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Engine::Instance().Initialise(hInstance, "Game Name", "windowClass", Maths::Vec2i(1280, 720)))
+	if (Engine::Instance().Initialise(hInstance, "Don't Perish", "windowClass", Maths::Vec2i(1280, 720)))
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
 
 		// Register KeyBindings
 		BindDefaultKeys();
 
 		// Camera
-		CameraEntity* camera = new CameraEntity();
-		Engine::Instance().SetActiveCamera(camera);
+		CameraEntity* camera = Engine::Instance().GetActiveCamera();
+		
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
@@ -100,12 +227,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
 		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
 		test2->GetSpriteComponent()->layer = 16;
+		
+		//AI
+		SetupEnemyTemplate();
+		SetupResourceTemplate();
+
+
+		//// Grass
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 		// World
 		WorldEntity* world = new WorldEntity();
 
-		SpriteEntity* barn = new SpriteEntity();
-		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
-		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
+		SpriteEntity* barn = new SpriteEntity("Barn");
+		barn->GetComponent<TransformComponent>()->SetPosition(Firelight::Maths::Vec3f(10.0f, 10.0f, 0.0f));
 		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
 		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
 		barn->GetComponent<SpriteComponent>()->layer = 33;
@@ -113,7 +250,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		barn->GetComponent<StaticComponent>()->isStatic = true;
 		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
 		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
-		boxCollider->drawCollider = true;
 		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
 		//collider->drawCollider = true;
 		//collider->radius = 4.25f;
@@ -131,7 +267,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
-		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
+		//MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
@@ -139,24 +275,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();
-		InventoryWrapper* inv1 = new InventoryWrapper("PlayerInventory", false, true, Keys::KEY_F);
-		inv1->AddInventory("MainIventory", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
-		inv1->AddInventory("Equipment", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopRight);
+		InventoryEntity* inv1 = new InventoryEntity("PlayerInventory", false, true, Keys::KEY_B);
+		inv1->AddInventory("MainInventory", "Sprites/UI/PlayerInventory.png", 1, 10, Maths::Vec2f(1000, 100), Maths::Vec2f(75, 75), Maths::Vec2f(0, 0), Maths::Vec2f(12.5f, 12.5f), Maths::Vec2f(-100, 0), ECS::e_AnchorSettings::Bottom);
+		inv1->AddInventory("Equipment", "Sprites/UI/PlayerInventory1.png", 1, 3, Maths::Vec2f(300 - 12.5f, 100), Maths::Vec2f(0, 0), Maths::Vec2f(25, 0), Maths::Vec2f(75 * 4 + (25.0f * 3) - 12.5f + 50, 0), ECS::e_AnchorSettings::Bottom);
 
-		InventoryWrapper* inv2 = new InventoryWrapper("PlayerInv2", false, true, Keys::KEY_J);
-		inv2->AddInventory("MainIventory2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopLeft);
-		inv2->AddInventory("Equipment2", 10, 3, Maths::Vec2f(300, 720 / 2), Maths::Vec2f(0, (720 / 2) + 100), ECS::e_AnchorSettings::TopLeft);
+		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
+		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
+		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
+
+		
+		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
+		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
+		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
 		
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+
 
 		while (Engine::Instance().ProcessMessages())
 		{
 			Engine::Instance().Update();
 
-			Maths::Vec3f desiredPosition = player->GetTransformComponent()->position;
-			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->position, desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
-			camera->GetTransformComponent()->position = smoothPosition;
+			Maths::Vec3f desiredPosition = player->GetTransformComponent()->GetPosition();
+			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->GetPosition(), desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
+			camera->GetTransformComponent()->SetPosition(smoothPosition);
 
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();

@@ -15,6 +15,10 @@ namespace Firelight::ECS
 
         }
 
+        SpriteEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
+
+        SpriteEntity(std::string name);
+
         SpriteComponent* GetSpriteComponent();
     };
 }

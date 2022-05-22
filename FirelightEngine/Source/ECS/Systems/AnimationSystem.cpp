@@ -147,6 +147,12 @@ namespace Firelight::ECS
 
 		if (m_animations.contains(animationName))
 		{
+			if (animatorComponent->currentAnimation != nullptr && 
+				animatorComponent->currentAnimation->m_animationName == animationName &&
+				animatorComponent->currentFrameIndex < animatorComponent->currentAnimation->m_frameCount - 1)
+			{
+				return;
+			}
 			animatorComponent->currentAnimation = m_animations[animationName];
 			animatorComponent->currentFrameCount = 0.0f;
 			animatorComponent->currentFrameIndex = 0;

@@ -125,13 +125,13 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib;</AdditionalDependencies>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,6 +153,16 @@
   <ItemGroup>
     <ClCompile Include="EnvironmentGeneration.cpp" />
     <ClCompile Include="IslandGeneration.cpp" />
+    <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
+    <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AIDeerEntity.cpp" />
+    <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
+    <ClCompile Include="Source\Core\AIEntity.cpp" />
+    <ClCompile Include="Source\Core\ResourceEntity.cpp" />
+    <ClCompile Include="Source\Systems\AISystem.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
     <ClCompile Include="Source\Core\CharacterEntity.cpp" />
@@ -160,7 +170,7 @@
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
     <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
-    <ClCompile Include="Source\Inventory\InventoryWrapper.cpp" />
+    <ClCompile Include="Source\Inventory\InventoryEntity.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
     <ClCompile Include="Source\PCG\Noise.cpp" />
@@ -169,11 +179,29 @@
     <ClCompile Include="Source\UI\DeathMenu.cpp" />
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BerryBushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\BushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\RockEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EnvironmentGeneration.h" />
     <ClInclude Include="IslandGeneration.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
+    <ClInclude Include="Source\Combat\CombatCalculations.h" />
+    <ClInclude Include="Source\Combat\WeaponComponent.h" />
+    <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
+    <ClInclude Include="Source\AI\AISpawner.h" />
+    <ClInclude Include="Source\AI\AIStateBehaviour.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIWanderBehaviour.h" />
+    <ClInclude Include="Source\AI\Enemies\AICrocodileEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AIDeerEntity.h" />
+    <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
+    <ClInclude Include="Source\Core\AIEntity.h" />
+    <ClInclude Include="Source\Core\ResourceEntity.h" />
+    <ClInclude Include="Source\Systems\AISystem.h" />
+    <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
     <ClInclude Include="Source\Core\Layers.h" />
     <ClInclude Include="Source\Events\PlayerEvents.h" />
@@ -186,7 +214,7 @@
     <ClInclude Include="Source\Inventory\InventoryEvents.h" />
     <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h" />
     <ClInclude Include="Source\Inventory\InventoryManager.h" />
-    <ClInclude Include="Source\Inventory\InventoryWrapper.h" />
+    <ClInclude Include="Source\Inventory\InventoryEntity.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\PCG\BiomeGeneration.h" />
     <ClInclude Include="Source\PCG\Biomes.h" />
@@ -199,6 +227,10 @@
     <ClInclude Include="Source\UI\DeathMenu.h" />
     <ClInclude Include="Source\UI\PlayerHealthUI.h" />
     <ClInclude Include="Source\Core\WorldEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BerryBushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\BushEntity.h" />
+    <ClInclude Include="Source\WorldEntities\RockEntity.h" />
+    <ClInclude Include="Source\WorldEntities\TreeEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
@@ -207,6 +239,9 @@
     <ProjectReference Include="..\SnowfallEngine\SnowfallEngine.vcxproj">
       <Project>{2e6e55df-89ad-461d-8acc-b73399320c31}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

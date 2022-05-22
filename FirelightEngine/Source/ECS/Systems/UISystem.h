@@ -73,6 +73,7 @@ namespace Firelight::UI {
 
 		float m_updateTime = 0.0f;
 		float m_clickTime = 0.0f;
+		float m_clickLengthTime = 0.01f;
 		bool m_dragTimerActive = false;
 	};
 

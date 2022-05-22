@@ -2,15 +2,25 @@
 
 namespace Firelight::ECS
 {
-	GameEntity::GameEntity()
+	GameEntity::GameEntity() : Entity()
 	{
-		AddComponent<IdentificationComponent>();
+		AddComponent<IdentificationComponent>()->name = "Game Entity";
 		AddComponent<StaticComponent>();
 		AddComponent<LayerComponent>();
 		AddComponent<TransformComponent>();
 	}
 
+	GameEntity::GameEntity(std::string name) : GameEntity()
+	{
+		this->GetIDComponent()->name = name;
+	}
+
 	GameEntity::GameEntity(Firelight::ECS::EntityID entityID) : Entity(entityID)
+	{
+
+	}
+
+	GameEntity::GameEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : Entity(isTemplate, entityID)
 	{
 
 	}

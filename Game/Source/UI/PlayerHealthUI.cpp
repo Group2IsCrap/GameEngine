@@ -15,9 +15,11 @@ PlayerHealthUI::PlayerHealthUI(Firelight::ECS::Entity* canvas, int startHealth)
 	SetDefaultDimensions(Firelight::Maths::Vec3f(128, 100, 0));
 	m_startHealth = startHealth;
 
+	this->GetIDComponent()->name = "Player Health UI";
+
 	for (unsigned int i = 0; i < m_startHealth; ++i)
 	{
-		Firelight::ECS::UIPanel* heartUIEntity = new Firelight::ECS::UIPanel();
+		Firelight::ECS::UIPanel* heartUIEntity = new Firelight::ECS::UIPanel("Heart UI " + std::to_string(i));
 		heartUIEntity->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
 		heartUIEntity->GetSpriteComponent()->toDraw = true;
 		heartUIEntity->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::TopLeft);

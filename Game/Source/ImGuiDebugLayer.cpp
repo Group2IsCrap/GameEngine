@@ -5,15 +5,22 @@
 
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 
+using namespace Firelight::ECS;
+
 ImGuiDebugLayer::ImGuiDebugLayer()
 {
-	SetupTheme();
-	spawnItemCommand = std::vector<CallbackFunctionType>(5);
+	
 }
 
 ImGuiDebugLayer::~ImGuiDebugLayer()
 {
 
+}
+
+void ImGuiDebugLayer::Initialize()
+{
+	SetupTheme();
+	spawnItemCommand = std::vector<CallbackFunctionType>(5);
 }
 
 void ImGuiDebugLayer::Render()
@@ -43,6 +50,7 @@ void ImGuiDebugLayer::Render()
 	RenderItemWindow();
 	RenderKeyBindingPrototype();
 	RenderDebugInformation();
+	RenderECSDebug();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -64,6 +72,51 @@ void ImGuiDebugLayer::RenderItemWindow()
 		spawnItemCommand[2]();
 	}
 
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderECSDebug()
+{
+	ImGui::Begin("ECS Debug");
+	std::vector<EntityID> entities = EntityComponentSystem::Instance()->GetEntities();
+	ImGui::SetNextItemOpen(true);
+	if (ImGui::TreeNode(("Entities (" + std::to_string(entities.size()) + ")").c_str()))
+	{
+		for (auto& entity : entities)
+		{
+			std::vector<BaseComponent*> components = EntityComponentSystem::Instance()->GetAllComponents(entity);
+			IdentificationComponent* id = EntityComponentSystem::Instance()->GetComponent<IdentificationComponent>(entity);
+			std::string nodeText = std::to_string(entity);
+			if (id != nullptr)
+			{
+				nodeText +=  ": " + id->name;
+			}
+			else
+			{
+				nodeText = "Entity " + nodeText;
+			}
+
+			if (ImGui::TreeNode((nodeText + " (" + std::to_string(components.size()) + ")").c_str()))
+			{
+				for (int i = 0; i < components.size(); ++i)
+				{
+					BaseComponent* component = components[i];
+					std::string componentTypeString = EntityComponentSystem::Instance()->GetTypeOfComponent(component).substr(7);
+					if (componentTypeString.starts_with("Firelight::ECS::"))
+					{
+						componentTypeString = componentTypeString.substr(16);
+					}
+					if (ImGui::TreeNode(componentTypeString.c_str()))
+					{
+						component->RenderDebugUI();
+						ImGui::TreePop();
+					}
+				}
+				ImGui::TreePop();
+			}
+		}
+		ImGui::TreePop();
+	}
 	ImGui::End();
 }
 

@@ -7,10 +7,20 @@
 
 using namespace Firelight::Serialisation;
 
+
+enum class Facing
+{
+	Left,
+	Right,
+	Up,
+	Down
+};
+
 struct PlayerComponent : Firelight::ECS::BaseComponent
 {
 	std::string name = "";
-	float speed = 2;
+	float speed = 1.5f;
+	Facing facing;
 
 	void Serialise() override
 	{
@@ -24,5 +34,12 @@ struct PlayerComponent : Firelight::ECS::BaseComponent
 		clone->name = name;
 		clone->speed = speed;
 		return clone;
+	}
+
+	void RenderDebugUI() override
+	{
+		ImGuiVariable("Name", name);
+		ImGuiVariable("Speed", speed);
+		ImGuiVariable("Facing", (int)facing);
 	}
 };
