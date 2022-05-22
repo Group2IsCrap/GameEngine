@@ -1,5 +1,6 @@
 #include "ResourceEntity.h"
 
+
 ResourceEntity::ResourceEntity()
 {
 	AddComponent<Firelight::ECS::RigidBodyComponent>();
@@ -49,5 +50,18 @@ void ResourceEntity::RemoveHealth(int amount)
 
 void ResourceEntity::HealthBelowZero()
 {
+	//Determine what to drop
+	//Loop and call drop items
+
+
 	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+}
+
+void ResourceEntity::DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location)
+{
+	Firelight::ECS::TransformComponent* toDropData = Firelight::ECS::EntityComponentSystem::Instance()->GetComponent<Firelight::ECS::TransformComponent>(drop);
+	if (toDropData)
+	{
+		toDropData->SetPosition(Firelight::Maths::Random::RandomPointInCircle(location, 3));
+	}
 }

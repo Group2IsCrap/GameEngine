@@ -125,7 +125,8 @@ void SetupEnemyTemplate()
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
 
-void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
+void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
+{
 
 	Maths::Vec3f atPos= at;
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(toDrop);
@@ -133,9 +134,10 @@ void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
 	{
 		toDropData->SetPosition(Maths::Random::RandomPointInCircle(atPos, 3));
 	}
-	
 }
-void DropItemAtPlayer(void* toDrop, EntityID player) {
+
+void DropItemAtPlayer(void* toDrop, EntityID player)
+{
 	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
 
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
@@ -144,7 +146,8 @@ void DropItemAtPlayer(void* toDrop, EntityID player) {
 	}
 }
 
-void ReAddToPlayer(void* toAdd) {
+void ReAddToPlayer(void* toAdd) 
+{
 	std::vector<EntityID>* AddIDs = (std::vector <EntityID>*)toAdd;
 	std::vector<EntityID> toRemove;
 	for (size_t i = 0; i < AddIDs->size(); i++)
@@ -165,6 +168,7 @@ void ReAddToPlayer(void* toAdd) {
 		}
 	}
 }
+
 void SetupResourceTemplate()
 {
 	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
