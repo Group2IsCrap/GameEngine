@@ -18,6 +18,7 @@
     <ClCompile Include="IslandGeneration.cpp" />
     <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
     <ClCompile Include="Source\PCG\Noise.cpp" />
+    <ClCompile Include="EnvironmentGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
@@ -47,5 +48,6 @@
     <ClInclude Include="Source\PCG\Biomes.h" />
     <ClInclude Include="Source\PCG\Noise.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
+    <ClInclude Include="EnvironmentGeneration.h" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,6 @@
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
 #include "../FirelightEngine/Source/Events/EventDispatcher.h"
 #include "../FirelightEngine/Source/ECS/Systems/TilemapSystem.h"
-#include "BiomeInfo.h"
 
 using namespace Firelight::Events;
 
@@ -17,21 +16,12 @@ BiomeGeneration::BiomeGeneration()
 	: m_biomeNoise(nullptr)
 	, m_islandDirectionNoise(nullptr)
 	, m_islandShapeNoise(nullptr)
-	, m_biome()
+	, m_tileMap(nullptr)
+	, m_biomeCount((unsigned int)BiomeType::Bridge)
 	, m_bridgeWidth(2)
 	, m_bridgeLength(3)
 	, m_radius(3)
-{
-	sm_biomeMap =
-	{
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/yellow.png"),
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/red.png"),
-		AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png")
-	};
-}
+{}
 
 BiomeGeneration* BiomeGeneration::sm_instance = nullptr;
 
@@ -44,8 +34,15 @@ BiomeGeneration* BiomeGeneration::Instance()
 	return sm_instance;
 }
 
-void BiomeGeneration::Initialise()
+void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap)
 {
+	m_tileMap = tileMap;
+
+	sbiomeTextures = { AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
+					    AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
+						AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
+						AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png") };
+
 	m_biomeNoise = new Noise();
 	m_biomeNoise->SetSeed(3007);
 	m_biomeNoise->SetNoiseScale(250.0f);
@@ -68,32 +65,17 @@ void BiomeGeneration::Uninitialise()
 	delete m_islandShapeNoise;
 }
 
-void BiomeGeneration::Render()
-{
-	EventDispatcher::SubscribeFunction<Graphics::OnEarlyRender>(std::bind(&BiomeGeneration::Draw, this));
-}
-
-void BiomeGeneration::Draw()
-{
-	//TILE MAP DRAWS SO THIS FUNCTION SHOULDNT EXIST
-
-	DrawIslands();
-}
-
 unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 {
 	srand(m_biomeNoise->GetSeed());
 	return rand() % m_OccupiedIslandSpaces.size();
 }
 
-void BiomeGeneration::DrawIslands()
+void BiomeGeneration::GenerateWorld()
 {
-	Rectf m_initialSourceRect = Rectf(0.0f, 0.0f, -1.0f, -1.0f);;
-	Rectf m_destinationRect = Rectf(0.0f, 3.0f, 1.0f, 1.0f);
-	Rectf m_centre = Rectf(-10.0f, 0.0f, 1.0f, 1.0f);
+	Rectf m_destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
+	Rectf m_centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
 	Rectf m_curIslandCentre = m_centre;
-	int m_layer = 32;
-	double m_rotation = 0.0;
 	size_t numberOfIslands = 6;
 	m_radius = 6;
 
@@ -104,7 +86,7 @@ void BiomeGeneration::DrawIslands()
 
 	for (size_t index = 0; index < numberOfIslands; ++index)
 	{
-		DrawIslandCircles(newDestRect, m_initialSourceRect, m_curIslandCentre, index);
+		DrawIslandCircles(newDestRect, m_curIslandCentre, index);
 
 		if (index == numberOfIslands - 1)
 			continue;
@@ -114,73 +96,14 @@ void BiomeGeneration::DrawIslands()
 		m_curIslandCentre.x = m_OccupiedIslandSpaces[randomIndex].x;
 		m_curIslandCentre.y = m_OccupiedIslandSpaces[randomIndex].y;
 
-		//find new island centre
-		bool isIslandPositionEmpty = false;
-		while (!isIslandPositionEmpty)
-		{
-			Vec2i potentialNewIslandPosition = Vec2i(0, 0);
-
-			potentialNewIslandPosition = Vec2i((int)m_curIslandCentre.x, (int)m_curIslandCentre.y);
-
-			switch (direction)
-			{
-			case IslandSpawnDirection::North:
-				potentialNewIslandPosition.y = m_curIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
-				if (IsIslandSpaceFree(potentialNewIslandPosition))
-				{
-					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.y = potentialNewIslandPosition.y;
-					isIslandPositionEmpty = true;
-				}
-
-				break;
-			case IslandSpawnDirection::East:
-				potentialNewIslandPosition.x = m_curIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
-				if (IsIslandSpaceFree(potentialNewIslandPosition))
-				{
-					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.x = potentialNewIslandPosition.x;
-					isIslandPositionEmpty = true;
-				}
-
-				break;
-
-			case IslandSpawnDirection::South:
-				potentialNewIslandPosition.y = m_curIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
-				if (IsIslandSpaceFree(potentialNewIslandPosition))
-				{
-					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.y = potentialNewIslandPosition.y;
-					isIslandPositionEmpty = true;
-				}
-
-				break;
-
-			case IslandSpawnDirection::West:
-				potentialNewIslandPosition.x = m_curIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
-				if (IsIslandSpaceFree(potentialNewIslandPosition))
-				{
-					DrawBridge(m_destinationRect, m_initialSourceRect, m_curIslandCentre, direction);
-					m_curIslandCentre.x = potentialNewIslandPosition.x;
-					isIslandPositionEmpty = true;
-				}
-
-				break;
-			}
-			iterator++;
-			direction = CalculateNextIslandDirection(iterator);
-		}
+		FindNextIslandCentre(m_curIslandCentre, direction, m_destinationRect, iterator);
 	}
 
 	m_OccupiedIslandSpaces.clear();
 }
 
-void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, int index)
+void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCentre, int index)
 {
-	//dont need these two once tile map is used.
-	int m_layer = 32;
-	double m_rotation = 0.0;
-
 	m_OccupiedIslandSpaces.push_back(Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
 
 	for (int x = -m_radius; x <= m_radius; ++x)
@@ -190,12 +113,17 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf sourceRect, Rectf
 			destRect = Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
 			if (Vec2i::Dist(Vec2i((int)destRect.x, destRect.y), Vec2i(currentIslandCentre.x, currentIslandCentre.y)) <= m_radius)
 			{
-
-				//mapOfBiomesOnTileIDs[y] = 
-				//GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Colours::sc_white, sourceRect);
+				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
+				if (tile != nullptr)
+				{
+					mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+					tile->SetTileTexture(sbiomeTextures[(int)RandomBiomeType(index)]);
+					tile->test = true;
+				}
 			}
 			else
 			{
+				// This is adding variety to the island shapes
 				//int numberOfExtraTiles = CalculateIslandShape(rand() + index);
 				//for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
 				//{
@@ -209,7 +137,66 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf sourceRect, Rectf
 	}
 }
 
-void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf sourceRect, Rectf currentIslandCentre, IslandSpawnDirection direction)
+void BiomeGeneration::FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpawnDirection& direction, Rectf& destRect, int& iterator)
+{
+	bool isIslandPositionEmpty = false;
+	while (!isIslandPositionEmpty)
+	{
+		Vec2i potentialNewIslandPosition = Vec2i(0, 0);
+
+		potentialNewIslandPosition = Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y);
+
+		switch (direction)
+		{
+		case IslandSpawnDirection::North:
+			potentialNewIslandPosition.y = currentIslandCentre.y + (m_radius * 2) + m_bridgeLength + 1;
+			if (IsIslandSpaceFree(potentialNewIslandPosition))
+			{
+				DrawBridge(destRect, currentIslandCentre, direction);
+				currentIslandCentre.y = potentialNewIslandPosition.y;
+				isIslandPositionEmpty = true;
+			}
+
+			break;
+		case IslandSpawnDirection::East:
+			potentialNewIslandPosition.x = currentIslandCentre.x + (m_radius * 2) + m_bridgeLength + 1;
+			if (IsIslandSpaceFree(potentialNewIslandPosition))
+			{
+				DrawBridge(destRect, currentIslandCentre, direction);
+				currentIslandCentre.x = potentialNewIslandPosition.x;
+				isIslandPositionEmpty = true;
+			}
+
+			break;
+
+		case IslandSpawnDirection::South:
+			potentialNewIslandPosition.y = currentIslandCentre.y - (m_radius * 2) - m_bridgeLength - 1;
+			if (IsIslandSpaceFree(potentialNewIslandPosition))
+			{
+				DrawBridge(destRect, currentIslandCentre, direction);
+				currentIslandCentre.y = potentialNewIslandPosition.y;
+				isIslandPositionEmpty = true;
+			}
+
+			break;
+
+		case IslandSpawnDirection::West:
+			potentialNewIslandPosition.x = currentIslandCentre.x - (m_radius * 2) - m_bridgeLength - 1;
+			if (IsIslandSpaceFree(potentialNewIslandPosition))
+			{
+				DrawBridge(destRect, currentIslandCentre, direction);
+				currentIslandCentre.x = potentialNewIslandPosition.x;
+				isIslandPositionEmpty = true;
+			}
+
+			break;
+		}
+		iterator++;
+		direction = CalculateNextIslandDirection(iterator);
+	}
+}
+
+void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf currentIslandCentre, IslandSpawnDirection direction)
 {
 	//dont need these two once tile map is used.
 	int m_layer = 32;
@@ -241,7 +228,10 @@ void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf sourceRect, Rectf curren
 	{
 		for (size_t y = 0; y < m_bridgeWidth; ++y)
 		{
-			GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[5], m_layer, m_rotation, Colours::sc_white, sourceRect);
+			Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
+			mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Bridge;
+			tile->SetTileTexture(sbiomeTextures[(int)BiomeType::Bridge]);
+
 			switch (direction)
 			{
 			case IslandSpawnDirection::North:
@@ -339,29 +329,29 @@ unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
 }
 
 
-unsigned int BiomeGeneration::RandomBiomeIndex(unsigned int noiseIndex)
+BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 {
 	float* noiseData = m_biomeNoise->GetNoiseData();
 	float data = noiseData[noiseIndex];
 
-	if (data >= -1.0 && data <= -0.6)
+	float compareMin = -1.0f;
+	float compareMax = 1.0f;
+
+	float comparisonSampleSize = compareMax - compareMin;
+	float adjustmentSize = comparisonSampleSize / m_biomeCount;
+
+
+	if (data >= compareMin && data <= compareMin + adjustmentSize)
 	{
-		return 0;
+		return BiomeType::Forest;
 	}
-	if (data > -0.6 && data <= -0.2)
+	if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize)
 	{
-		return 1;
+		return BiomeType::Swamp;
 	}
-	if (data >= -0.2 && data < 0.2)
+	if (data >= compareMax - adjustmentSize && data < compareMax)
 	{
-		return 2;
+		return BiomeType::Snow;
 	}
-	if (data >= 0.2 && data < 0.6)
-	{
-		return 3;
-	}
-	if (data >= 0.6 && data <= 1.0)
-	{
-		return 4;
-	}
+	return BiomeType::Forest;
 }

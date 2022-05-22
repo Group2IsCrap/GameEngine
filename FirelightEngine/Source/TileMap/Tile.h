@@ -41,6 +41,9 @@ namespace Firelight::TileMap
 
 		unsigned int GetTileID() const;
 		Maths::Rectf GetDestinationRect() const;
+		bool IsOccupied() const;
+
+		bool test;
 
 	private:
 

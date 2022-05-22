@@ -10,10 +10,11 @@ namespace Firelight::TileMap
 	Tile::Tile()
 		: m_texture(Graphics::AssetManager::Instance().GetDefaultTexture())
 		, m_sourceRect(0.0f, 0.0f, -1.0f, -1.0f)
-		, m_destinationRect(-2.0f, -2.0f, 1.0f, 1.0f)
+		, m_destinationRect(0.0f, 0.0f, 1.0f, 1.0f)
 		, m_tileID(0)
 		, m_layer(32)
 		, m_rotation(0.0)
+		, test(false)
 	{}
 
 	void Tile::DrawTile()
@@ -59,5 +60,10 @@ namespace Firelight::TileMap
 	Maths::Rectf Tile::GetDestinationRect() const
 	{
 		return m_destinationRect;
+	}
+
+	bool Tile::IsOccupied() const
+	{
+		return m_isOccupied;
 	}
 }

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnvironmentGeneration.cpp" />
     <ClCompile Include="IslandGeneration.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnvironmentGeneration.h" />
     <ClInclude Include="IslandGeneration.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />

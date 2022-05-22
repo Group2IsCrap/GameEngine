@@ -10,7 +10,9 @@ enum class BiomeType
 {
 	Forest,
 	Swamp,
-	Snow
+	Snow,
+	Bridge,
+	Void
 };
 
 struct BiomeInfo
@@ -21,3 +23,5 @@ struct BiomeInfo
 };
 
 static std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
+
+static std::vector< Firelight::Graphics::Texture* > sbiomeTextures;
