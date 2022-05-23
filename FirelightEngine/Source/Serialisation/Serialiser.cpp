@@ -337,7 +337,22 @@ namespace Firelight::Serialisation
 		Writer->String("INSERT TEXT DATA HERE");
 	}
 
-	void Serialiser::Deserialize(std::string name, int& value)
+	//Loads All Scene objects from a file
+	void Serialiser::LoadSceneJSON()
+	{
+		if (LoadFile("Assets/Saves/Components.json"))
+		{
+			if (FileDocument->HasMember("Scene"))
+			{
+				rapidjson::Value& sceneRoot = (*FileDocument)["Scene"];
+
+				Firelight::ECS::EntityComponentSystem::Instance()->Deserialise(sceneRoot);
+			}
+		}
+
+	}
+
+	void Serialiser::Deserialise(std::string name, int& value)
 	{
 		if (FileDocument->HasMember(name.c_str()))
 		{
@@ -346,7 +361,7 @@ namespace Firelight::Serialisation
 
 	}
 
-	void Serialiser::Deserialize(std::string name, float& value)
+	void Serialiser::Deserialise(std::string name, float& value)
 	{
 		if (FileDocument->HasMember(name.c_str()))
 		{
@@ -354,7 +369,7 @@ namespace Firelight::Serialisation
 		}
 	}
 
-	void Serialiser::Deserialize(std::string name, std::string& value)
+	void Serialiser::Deserialise(std::string name, std::string& value)
 	{
 		if (FileDocument->HasMember(name.c_str()))
 		{
@@ -363,7 +378,7 @@ namespace Firelight::Serialisation
 	}
 
 	
-	void Serialiser::Deserialize(std::string name, bool& value)
+	void Serialiser::Deserialise(std::string name, bool& value)
 	{
 		if (FileDocument->HasMember(name.c_str()))
 		{

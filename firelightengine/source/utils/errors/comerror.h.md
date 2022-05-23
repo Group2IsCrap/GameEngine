@@ -1,0 +1,2 @@
+# COMError.h
+
