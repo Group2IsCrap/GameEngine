@@ -275,8 +275,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
-
-		Serialiser::SaveSceneJSON();
 	}
 
 	return 0;

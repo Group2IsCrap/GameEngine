@@ -44,10 +44,10 @@ namespace Firelight::ECS
 				if (Serialiser::LoadFile(path.string().c_str()))
 				{
 					Firelight::Animation::Animation* animation = new Firelight::Animation::Animation();
-					Serialiser::Deserialize("AnimationName", animation->m_animationName);
-					Serialiser::Deserialize("Loop", animation->m_loop);
-					Serialiser::Deserialize("FrameTime", animation->m_frameTime);
-					Serialiser::Deserialize("FrameCount", animation->m_frameCount);
+					Serialiser::Deserialise("AnimationName", animation->m_animationName);
+					Serialiser::Deserialise("Loop", animation->m_loop);
+					Serialiser::Deserialise("FrameTime", animation->m_frameTime);
+					Serialiser::Deserialise("FrameCount", animation->m_frameCount);
 					auto genericArray = (*Serialiser::FileDocument)["TextureNames"].GetArray();
 					for (auto& value : genericArray)
 					{

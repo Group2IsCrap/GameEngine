@@ -60,7 +60,7 @@ void ImGuiDebugLayer::RenderItemWindow()
 	{
 		spawnItemCommand[0]();
 	}
-	if (ImGui::Button("Spawn Stick"))
+	if (ImGui::Button("Spawn All Items"))
 	{
 		spawnItemCommand[1]();
 	}
@@ -70,6 +70,15 @@ void ImGuiDebugLayer::RenderItemWindow()
 void ImGuiDebugLayer::RenderECSDebug()
 {
 	ImGui::Begin("ECS Debug");
+	if (ImGui::Button("Save ECS"))
+	{
+		Serialiser::SaveSceneJSON();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load ECS"))
+	{
+		Serialiser::LoadSceneJSON();
+	}
 	std::vector<EntityID> entities = EntityComponentSystem::Instance()->GetEntities();
 	ImGui::SetNextItemOpen(true);
 	if (ImGui::TreeNode(("Entities (" + std::to_string(entities.size()) + ")").c_str()))
