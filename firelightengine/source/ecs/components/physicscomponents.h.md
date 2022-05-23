@@ -1,2 +1,0 @@
-# PhysicsComponents.h
-

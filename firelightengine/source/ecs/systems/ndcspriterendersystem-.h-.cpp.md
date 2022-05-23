@@ -1,2 +1,0 @@
-# NDCSpriteRenderSystem (.h/.cpp)
-

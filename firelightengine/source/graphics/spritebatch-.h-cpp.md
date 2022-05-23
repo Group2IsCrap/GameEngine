@@ -1,2 +1,0 @@
-# SpriteBatch (.h/cpp)
-

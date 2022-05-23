@@ -1,2 +1,0 @@
-# PixelShader (.h/.cpp)
-

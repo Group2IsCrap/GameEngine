@@ -1,2 +1,0 @@
-# GraphicsHandler (.h/cpp)
-

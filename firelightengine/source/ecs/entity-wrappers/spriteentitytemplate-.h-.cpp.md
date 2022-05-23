@@ -1,2 +1,0 @@
-# SpriteEntityTemplate (.h/.cpp)
-

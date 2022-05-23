@@ -1,2 +1,0 @@
-# SpriteEntity (.h/.cpp)
-

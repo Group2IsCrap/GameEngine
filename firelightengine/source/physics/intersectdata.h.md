@@ -1,2 +1,0 @@
-# IntersectData.h
-

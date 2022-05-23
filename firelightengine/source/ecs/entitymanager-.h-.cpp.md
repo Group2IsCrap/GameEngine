@@ -1,2 +1,0 @@
-# EntityManager (.h/.cpp)
-

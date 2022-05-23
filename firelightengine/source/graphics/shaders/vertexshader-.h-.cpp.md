@@ -1,2 +1,0 @@
-# VertexShader (.h/.cpp)
-

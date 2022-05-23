@@ -1,2 +1,0 @@
-# HashCaching (.h/.cpp)
-

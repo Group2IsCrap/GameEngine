@@ -1,2 +1,0 @@
-# IShader (.h/.cpp)
-

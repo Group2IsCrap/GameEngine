@@ -1,2 +1,0 @@
-# AnimationComponent.h
-

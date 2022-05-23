@@ -1,2 +1,0 @@
-# UIEntity (.h/.cpp)
-

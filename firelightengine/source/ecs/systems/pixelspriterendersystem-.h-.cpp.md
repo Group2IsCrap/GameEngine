@@ -1,2 +1,0 @@
-# PixelSpriteRenderSystem (.h/.cpp)
-

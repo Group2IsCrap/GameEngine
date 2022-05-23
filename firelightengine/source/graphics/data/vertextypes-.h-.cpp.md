@@ -1,2 +1,0 @@
-# VertexTypes (.h/.cpp)
-

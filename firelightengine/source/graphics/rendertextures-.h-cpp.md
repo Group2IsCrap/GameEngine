@@ -1,2 +1,0 @@
-# RenderTextures (.h/cpp)
-

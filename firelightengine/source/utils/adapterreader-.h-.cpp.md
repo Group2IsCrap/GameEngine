@@ -1,2 +1,0 @@
-# AdapterReader (.h/.cpp)
-

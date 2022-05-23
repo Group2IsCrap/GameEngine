@@ -1,2 +1,0 @@
-# GraphicsEvents.h
-

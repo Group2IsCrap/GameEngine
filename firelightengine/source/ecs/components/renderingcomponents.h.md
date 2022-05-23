@@ -1,2 +1,0 @@
-# RenderingComponents.h
-

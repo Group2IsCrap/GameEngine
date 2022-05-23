@@ -1,2 +1,0 @@
-# ECSDefines.h
-

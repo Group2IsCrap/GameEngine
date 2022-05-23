@@ -1,2 +1,0 @@
-# GameEntityTemplate (.h/.cpp)
-

@@ -1,2 +1,0 @@
-# IndexBuffer (.h/.cpp)
-

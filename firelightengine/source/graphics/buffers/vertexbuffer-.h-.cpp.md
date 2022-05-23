@@ -1,2 +1,0 @@
-# VertexBuffer (.h/.cpp)
-
