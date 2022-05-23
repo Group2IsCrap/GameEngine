@@ -1,4 +1,5 @@
 #include "ResourceEntity.h"
+#include "../Items/ItemDatabase.h"
 
 ResourceEntity::ResourceEntity()
 {
@@ -49,5 +50,34 @@ void ResourceEntity::RemoveHealth(int amount)
 
 void ResourceEntity::HealthBelowZero()
 {
+	//Determine what to drop
+	//Loop and call drop items
+	ResourceComponent* resourceComponent = GetComponent<ResourceComponent>();
+	for (int i = 0; i < resourceComponent->itemDrops.size(); i++)
+	{
+		ItemDrops drop = resourceComponent->itemDrops[i];
+		for (int j = 0; j < drop.minDrop; j++)
+		{
+			DropItems(ItemDatabase::Instance()->CreateInstanceOfItem(drop.itemID)->GetEntityID(), GetTransformComponent()->GetPosition());
+		}
+		for (int k = 0; k < drop.maxDrop - drop.minDrop; k++)
+		{
+			int roll = Firelight::Maths::Random::RandomRange<int>(0, 100);
+			if (roll <= drop.chance)
+			{
+				DropItems(ItemDatabase::Instance()->CreateInstanceOfItem(drop.itemID)->GetEntityID(), GetTransformComponent()->GetPosition());
+			}
+		}
+	}
+
 	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+}
+
+void ResourceEntity::DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location)
+{
+	Firelight::ECS::TransformComponent* toDropData = Firelight::ECS::EntityComponentSystem::Instance()->GetComponent<Firelight::ECS::TransformComponent>(drop);
+	if (toDropData)
+	{
+		toDropData->SetPosition(Firelight::Maths::Random::RandomPointInCircle(location, 3));
+	}
 }

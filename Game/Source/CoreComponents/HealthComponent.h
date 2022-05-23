@@ -28,4 +28,5 @@ struct HealthComponent : Firelight::ECS::BaseComponent
 		ImGuiVariable("CurrentHealth", std::to_string(currentHealth));
 		ImGuiVariable("MaxHealth", std::to_string(maxHealth));
 	}
+
 };
