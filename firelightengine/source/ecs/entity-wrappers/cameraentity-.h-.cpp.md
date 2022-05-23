@@ -1,0 +1,2 @@
+# CameraEntity (.h/.cpp)
+

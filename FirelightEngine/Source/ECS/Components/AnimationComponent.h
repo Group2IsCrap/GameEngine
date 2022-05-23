@@ -47,6 +47,16 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("CurrentAnimation", currentAnimation != nullptr ? currentAnimation->m_animationName : "nullptr");
+			ImGuiVariable("CurrentFrameCount", currentFrameCount);
+			ImGuiVariable("CurrentFrameIndex", currentFrameIndex);
+			ImGuiVariable("PlayOnStart", playOnStart);
+			ImGuiVariable("ShouldPlay", shouldPlay);
+			ImGuiVariable("Animations", (int)animations.size());
+		}
 	};
 
 	struct Bone

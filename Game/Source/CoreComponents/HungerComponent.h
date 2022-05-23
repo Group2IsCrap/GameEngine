@@ -32,4 +32,13 @@ struct HungerComponent : Firelight::ECS::BaseComponent
 		clone->hungerDecreaseInterval = hungerDecreaseInterval;
 		return clone;
 	}
+
+	void RenderDebugUI() override
+	{
+		ImGuiVariable("CurrentHunger", currentHunger);
+		ImGuiVariable("StartHunger", startHunger);
+		ImGuiVariable("MaxHunger", maxHunger);
+		ImGuiVariable("HungerDecreaseAmount", hungerDecreaseAmount);
+		ImGuiVariable("HungerDecreaseInterval", hungerDecreaseInterval);
+	}
 };

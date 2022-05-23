@@ -37,7 +37,7 @@ void Inventory::CreateInventory(Maths::Vec2f size, float slotCount, Maths::Vec2f
 	m_inventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
 	m_inventorySpace->SetOffset(offset);
 
-	UIBordreComponent* border = m_inventorySpace->AddComponent<ECS::UIBordreComponent>();
+	UIBorderComponent* border = m_inventorySpace->AddComponent<ECS::UIBorderComponent>();
 	border->widthTopBot = margin.y;
 	border->widthLeftRight = margin.x;
 
@@ -54,9 +54,10 @@ void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, Maths::Vec
 	m_inventorySpace->SetDefaultDimensions(Maths::Vec3f(size.x, size.y, 0));
 	m_inventorySpace->SetOffset(offset);
 
-	UIBordreComponent* border = m_inventorySpace->AddComponent<ECS::UIBordreComponent>();
+	UIBorderComponent * border = m_inventorySpace->AddComponent<ECS::UIBorderComponent>();
 	border->widthTopBot = margin.y;
 	border->widthLeftRight = margin.x;
+
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
 }
 
@@ -84,7 +85,8 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		float rowCount = inventoryData->slotCount / columnCount;
 	}
 
-	UIBordreComponent* border = m_inventorySpace->GetComponent<ECS::UIBordreComponent>();
+
+	UIBorderComponent * border = m_inventorySpace->GetComponent<ECS::UIBorderComponent>();
 	float sizeY;
 	float sizeX;
 	if (inventoryData->slotSize == Firelight::Maths::Vec2f(0.0f, 0.0f))
@@ -97,6 +99,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		sizeY = inventoryData->slotSize.y;
 		sizeX = inventoryData->slotSize.x;
 	}
+
 
 	float currX = 0;
 	float currY = 0;

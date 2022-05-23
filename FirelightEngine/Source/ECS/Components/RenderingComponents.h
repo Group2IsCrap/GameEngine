@@ -34,6 +34,11 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("ViewportWorldHeight", viewportWorldHeight);
+		}
 	};
 
 	/// <summary>
@@ -78,6 +83,18 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
+			ImGuiVariable("DrawOffset", drawOffset);
+			ImGuiVariable("PixelsPerUnit", pixelsPerUnit);
+			ImGuiVariable("Colour", std::to_string(colour.GetR()) + ", " + std::to_string(colour.GetG()) + ", " + std::to_string(colour.GetB()) + ", " + std::to_string(colour.GetA()));
+			ImGuiVariable("SourceRect", sourceRect);
+			ImGuiVariable("FlipX", flipX);
+			ImGuiVariable("FlipY", flipY);
+		}
 	};
 
 
@@ -93,7 +110,7 @@ namespace Firelight::ECS
 
 		Firelight::Graphics::Colour::RGBA colour = Firelight::Graphics::Colours::sc_white;
 		Maths::Rectf                      sourceRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
-		Maths::Rectf                      descRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
+		Maths::Rectf                      destRect = Maths::Rectf(0.0f, 0.0f, -1.0f, -1.0f);
 		bool                              flipX = false;
 		bool                              flipY = false;
 
@@ -104,7 +121,7 @@ namespace Firelight::ECS
 			Serialiser::Serialise("DrawOffset", drawOffset);
 			Serialiser::Serialise("Colour", colour);
 			Serialiser::Serialise("SourceRect", sourceRect);
-			Serialiser::Serialise("DestRect", descRect);
+			Serialiser::Serialise("DestRect", destRect);
 			Serialiser::Serialise("FlipX", flipX);
 			Serialiser::Serialise("FlipY", flipY);
 		}
@@ -115,13 +132,25 @@ namespace Firelight::ECS
 			clone->texture = texture;
 			clone->layer = layer;
 			clone->drawOffset = drawOffset;
-			clone->descRect = descRect;
+			clone->destRect = destRect;
 			clone->colour = colour;
 			clone->sourceRect = sourceRect;
 			clone->flipX = flipX;
 			clone->flipY = flipY;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
+			ImGuiVariable("DrawOffset", drawOffset);
+			ImGuiVariable("Colour", std::to_string(colour.GetR()) + ", " + std::to_string(colour.GetG()) + ", " + std::to_string(colour.GetB()) + ", " + std::to_string(colour.GetA()));
+			ImGuiVariable("SourceRect", sourceRect);
+			ImGuiVariable("DestRect", destRect);
+			ImGuiVariable("FlipX", flipX);
+			ImGuiVariable("FlipY", flipY);
 		}
 	};
 
@@ -167,6 +196,17 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);   
+			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
+			ImGuiVariable("DrawOffset", drawOffset);
+			ImGuiVariable("Colour", colour);
+			ImGuiVariable("SourceRect", sourceRect);
+			ImGuiVariable("FlipX", flipX);
+			ImGuiVariable("FlipY", flipY);
+		}
 	};
 
 	/// <summary>
@@ -193,6 +233,13 @@ namespace Firelight::ECS
 			clone->hidden = hidden;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Text", text.GetString());
+			ImGuiVariable("Layer", layer);
+			ImGuiVariable("Hidden", hidden ? "true" : "false");
 		}
 	};
 }

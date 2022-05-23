@@ -35,4 +35,11 @@ struct PlayerComponent : Firelight::ECS::BaseComponent
 		clone->speed = speed;
 		return clone;
 	}
+
+	void RenderDebugUI() override
+	{
+		ImGuiVariable("Name", name);
+		ImGuiVariable("Speed", speed);
+		ImGuiVariable("Facing", (int)facing);
+	}
 };

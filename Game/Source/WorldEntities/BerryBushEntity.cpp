@@ -18,6 +18,8 @@ BerryBushEntity::BerryBushEntity(bool isTemplate, Firelight::ECS::EntityID entit
 {
 	GetSpriteComponent()->pixelsPerUnit = 35;
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/BerryBush.png");
+
+
 	GetComponent<TransformComponent>()->SetPosition({ -5.0f, -5.0f, 0.0f });
 
 	GetComponent<HealthComponent>()->currentHealth = 2;
@@ -25,5 +27,4 @@ BerryBushEntity::BerryBushEntity(bool isTemplate, Firelight::ECS::EntityID entit
 	BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(AddComponent<ColliderComponent>(new BoxColliderComponent()));
 	boxCollider->isTrigger = true;
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, -0.2f, 3.0f, 1.0f);
-
 }

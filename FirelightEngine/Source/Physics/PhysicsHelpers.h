@@ -235,12 +235,12 @@ namespace Firelight::Physics
 
 						std::vector<Vec3f> corners;
 
-						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));
-						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));
-						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));
-						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));
+
+						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));//bot left
+						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y - boxCollider->rect.h / 2, 0.0f));//bot right
+						corners.push_back(Vec3f(position.x + boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));//top right
+						corners.push_back(Vec3f(position.x - boxCollider->rect.w / 2, position.y + boxCollider->rect.h / 2, 0.0f));//top left
 						corners.push_back(Vec3f(position.x, position.y, 0.0f));
-						
 
 						if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
 						{
@@ -253,9 +253,93 @@ namespace Firelight::Physics
 							//break;
 						}
 
+
+						Vec3f leftPoint = (radius * (std::cos(thetaRadPos)), radius * (std::sin(thetaRadPos)), 0.0f);
+						Vec3f rightPoint = (radius * (std::cos(thetaRadNeg)), radius * (std::sin(thetaRadNeg)), 0.0f);
+						Vec3f centerPoint = (radius * (std::cos(directionalAngle)), radius * (std::sin(directionalAngle)), 0.0f);
+
+						bool leftIn = false;
+						bool rightIn = false;
+						bool centerIn = false;
+
+						//Line intersection
+
+						std::vector<Vec3f> points;
+						points.push_back(leftPoint);
+						points.push_back(rightPoint);
+
+						bool doesBoxCollide = false;
+
+						for (int j = 0; j < points.size(); j++)
+						{
+							float biggerX = (point.x > points[j].x) ? point.x : points[j].x;
+							float smallerX = (point.x < points[j].x) ? point.x : points[j].x;
+							float biggerY = (point.y > points[j].y) ? point.y : points[j].y;
+							float smallerY = (point.y < points[j].y) ? point.y : points[j].y;
+
+							bool doesLineIntersect = false;
+
+							for (int i = 0; i < 4; i++)
+							{
+								int next = i + 1;
+								if (i == 3)
+								{
+									next = 0;
+								}
+								Vec3f intersection = LineIntersects(point, points[j], corners[i], corners[next]);
+								if (intersection != Vec3f(FLT_MAX, FLT_MAX, FLT_MAX))
+								{
+									if (smallerX <= intersection.x <= biggerX)
+									{
+										if (smallerY <= intersection.y <= biggerY)
+										{
+											doesLineIntersect = true;
+											entities.push_back(entity);
+											break;
+										}
+									}
+								}
+								
+							}
+							if (doesLineIntersect)
+							{
+								doesBoxCollide = true;
+								break;
+							}
+						}
+						if (doesBoxCollide)
+						{
+							break;
+						}
+						
+						
+
+						
+
+						//Point in box
+						if ((leftPoint.x > corners[0].x && leftPoint.x < corners[1].x) && (leftPoint.y < corners[2].y && leftPoint.y > corners[0].y))
+						{
+							leftIn = true;
+						}
+						if ((rightPoint.x > corners[0].x && rightPoint.x < corners[1].x) && (rightPoint.y < corners[2].y && rightPoint.y > corners[0].y))
+						{
+							rightIn = true;
+						}
+						if ((centerPoint.x > corners[0].x && centerPoint.x < corners[1].x) && (centerPoint.y < corners[2].y && centerPoint.y > corners[0].y))
+						{
+							centerIn = true;
+						}
+
+						if (leftIn || rightIn || centerIn)
+						{
+							entities.push_back(entity);
+							break;
+						}
+
+						//Corner in cone
 						for (int i = 0; i < corners.size(); i++)
 						{
-							float cornerDistanceSquared = (corners[i].x * corners[i].x) + (corners[i].y * corners[i].y);
+							float cornerDistanceSquared = ((corners[i].x-point.x) * (corners[i].x - point.x)) + ((corners[i].y-point.y) * (corners[i].y - point.y));
 
 							if (cornerDistanceSquared <= (radius * radius))
 							{
@@ -273,18 +357,12 @@ namespace Firelight::Physics
 									Vec3f vector2 = Vec3f(x2, y2, 0.0f);
 									Vec3f normal2 = Vec3f(-vector2.y, vector2.x, 0.0f);
 
-									Vec3f check2 = corners[i] - point;
-
-									if (normal2.Dot(check2) >= 0)
+									if (normal2.Dot(check) >= 0)
 									{
 										//In Cone
 										isCollide = true;
 										entities.push_back(entity);
 										break;
-									}
-									else
-									{
-										continue;
 									}
 								}
 								else
@@ -302,6 +380,33 @@ namespace Firelight::Physics
 			}
 
 			return entities;
+		}
+
+		Vec3f static inline LineIntersects(Vec3f a1, Vec3f a2, Vec3f b1, Vec3f b2)
+		{
+			//line 1
+			float a = a2.y - a1.y;
+			float b = a2.x - a1.x;
+			float c = a * (a1.x) + b * (a1.y);
+
+			//line 2
+			float d = b2.y - b1.y;
+			float e = b2.x - b1.x;
+			float f = d * (b1.x) + e * (b1.y);
+
+			float det = (a * e) - (b * d);
+
+			if (det == 0)
+			{
+				return Vec3f(FLT_MAX, FLT_MAX, FLT_MAX);
+			}
+			else
+			{
+				float x = ((e * c) - (b * f)) / det;
+				float y = ((a * f) - (d * c)) / det;
+				return Vec3f(x, y, 0.0f);
+			}
+
 		}
 
 	};
