@@ -472,8 +472,8 @@ namespace Firelight::UI {
 
 	bool UISystem::IsHit(int x, int y, ECS::UIBaseWidgetComponent* widget, ECS::TransformComponent* transform)
 	{
-		float width = Engine::Instance().GetWindowDimensionsFloat().x * transform->scale.x;
-		float hight = Engine::Instance().GetWindowDimensionsFloat().y * transform->scale.y;
+		float width = Engine::Instance().GetWindowDimensionsFloat().x * transform->GetScale().x;
+		float hight = Engine::Instance().GetWindowDimensionsFloat().y * transform->GetScale().y;
 		Firelight::Maths::Vec3f position = transform->GetPosition();
 		Maths::Rectf rectPixel(
 			position.x - (width * 0.5f),
@@ -533,9 +533,9 @@ namespace Firelight::UI {
 			{
 				UISpriteComponent->layer = m_CanvasLayer;
 			}
-			UITransformComponent->scale = UIComponent->defaultScale;
-			float width = Engine::Instance().GetWindowDimensionsFloat().x * UITransformComponent->scale.x;
-			float height = Engine::Instance().GetWindowDimensionsFloat().y * UITransformComponent->scale.y;
+			UITransformComponent->SetScale(UIComponent->defaultScale);
+			float width = Engine::Instance().GetWindowDimensionsFloat().x * UITransformComponent->GetScale().x;
+			float height = Engine::Instance().GetWindowDimensionsFloat().y * UITransformComponent->GetScale().y;
 			Firelight::Maths::Vec3f position = UITransformComponent->GetPosition();
 
 			switch (UIComponent->anchorSettings)
@@ -600,10 +600,10 @@ namespace Firelight::UI {
 			}
 
 			//UIComponent->currentScale = UIComponent->defaultScale * currWidgetParent->currentScale;
-			UITransformComponent->scale = UIComponent->currentScale;
+			UITransformComponent->SetScale(UIComponent->currentScale);
 
-			float width = screen.x * currTransform->scale.x;
-			float height = screen.y * currTransform->scale.y;
+			float width = screen.x * currTransform->GetScale().x;
+			float height = screen.y * currTransform->GetScale().y;
 			float childWidth = screen.x * UIComponent->currentScale.x;
 			float childHight = screen.y * UIComponent->currentScale.y;
 			Vec3f curPos = currTransform->GetPosition();
@@ -727,7 +727,7 @@ namespace Firelight::UI {
 					{
 					case Firelight::ECS::e_Scale::Absolute:
 					{
-						UITransformComponent->scale = UIComponent->currentScale;
+						UITransformComponent->SetScale(UIComponent->currentScale);
 						UISpriteComponent->layer = currSprite->layer + 1;
 					}
 					break;
@@ -735,8 +735,8 @@ namespace Firelight::UI {
 						//default setting is Relative Scaling
 					default:
 					{
-						UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
-						UITransformComponent->scale = UIComponent->currentScale;
+						UIComponent->currentScale = UIComponent->defaultScale * currTransform->GetScale();
+						UITransformComponent->SetScale(UIComponent->currentScale);
 						UISpriteComponent->layer = currSprite->layer + 1;
 					}
 					break;
@@ -752,7 +752,7 @@ namespace Firelight::UI {
 			{
 			case Firelight::ECS::e_Scale::Absolute:
 			{
-				UITransformComponent->scale = UIComponent->defaultScale;
+				UITransformComponent->SetScale(UIComponent->defaultScale);
 				
 				UISpriteComponent->layer = currSprite->layer + 1;
 			}
@@ -761,8 +761,8 @@ namespace Firelight::UI {
 				//default setting is Relative Scaling
 			default:
 			{
-				UIComponent->currentScale = UIComponent->defaultScale * currTransform->scale;
-				UITransformComponent->scale = UIComponent->currentScale;
+				UIComponent->currentScale = UIComponent->defaultScale * currTransform->GetScale();
+				UITransformComponent->SetScale(UIComponent->currentScale);
 				UISpriteComponent->layer = currSprite->layer + 1;
 			}
 				break;

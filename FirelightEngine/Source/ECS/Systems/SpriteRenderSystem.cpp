@@ -51,7 +51,7 @@ namespace Firelight::ECS
 
 			spriteComponent->flipX = transformComponent->GetFlipped();
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->rotation, spriteComponent->colour, spriteComponent->sourceRect, spriteComponent->flipX, spriteComponent->flipY);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, texture, spriteComponent->layer, (double)transformComponent->GetRotation(), spriteComponent->colour, spriteComponent->sourceRect, spriteComponent->flipX, spriteComponent->flipY);
 		}
 
 		

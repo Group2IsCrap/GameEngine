@@ -28,7 +28,7 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 
 	//textuer
 	std::string backgroundTexture = "Sprites/UI/Invetory_Back_V1_30_100.png";
-	std::string slotTexture = "Sprites/UI/Slot_Icon_100x100.png";
+	std::string slotTexture = "Sprites/UI/SlotIcon.png";
 
 	//slot data
 	UINT slotCount = 0;
