@@ -6,6 +6,7 @@
 #include "../EntityWrappers/Entity.h"
 #include "../../Maths/Vec3.h"
 #include "../../Serialisation/Serialiser.h"
+#include "TransformData.h"
 
 #include <map>
 
@@ -99,77 +100,38 @@ namespace Firelight::ECS
 	struct TransformComponent : BaseComponent
 	{
 	public:
-		Firelight::Maths::Vec3f GetPosition() { return position; }
-		void SetPosition(const Firelight::Maths::Vec3f& pos) 
-		{
-			Firelight::Maths::Vec3f difference = pos - position;
-
-			// Update child objects
-			for (auto child : children)
-			{
-				TransformComponent* transform = child.second->GetComponent<TransformComponent>();
-				transform->SetPosition(transform->GetPosition() + difference);
-			}
-
-			position = pos;
-		}
-
-		// TODO : Replace flip pos with binary search of root to not flip the root object if no children are present.
-		void FlipX(bool flip, bool flipPos = true)
-		{
-			if (isFlipped == flip)
-				return;
-
-			// TODO : Binary search to root and flip basd on root. Currently,
-			// root must be flipped or items will not work aka do not flip child objects unless it's the
-			// top of the chain that you care for.
-			for (auto child : children)
-			{
-				child.second->GetComponent<TransformComponent>()->FlipX(flip);
-			}
-
-			if (flipPos)
-			{
-				Firelight::Maths::Vec3f inverted = Firelight::Maths::Vec3f(position.x *= -1, position.y, position.z);
-				SetPosition(inverted);
-			}
-			isFlipped = flip;
-		}
-
-		bool GetFlipped() { return isFlipped; }
-
-		void SetParent(Entity* parent) 
-		{ 
-			if (children.contains(parent->GetEntityID()))
-			{
-				return;
-			}
-			this->parent = parent;
-		}
-		Entity* GetParent() { return parent; }
-
-		void AddChild(Entity* child) { if (children.contains(child->GetEntityID())) return; children[child->GetEntityID()] = child; }
-		void RemoveChild(Entity* child) { if (children.contains(child->GetEntityID())) children.erase(child->GetEntityID()); }
-		Entity* GetChild(int index) { if (children[index] != nullptr) return children[index]; return nullptr; }
-		std::map<EntityID, Entity*> GetChildren() { return children; }
 		
+		Firelight::Maths::Vec3f GetPosition() { return transformData->GetPosition(); }
+		void SetPosition(const Firelight::Maths::Vec3f& pos) { transformData->SetPosition(pos); }
 
-		Firelight::Maths::Vec3f scale;
-		float rotation = 0.0f;
+		float GetRotation() { return transformData->GetRotation(); }
+		void SetRotation(float rot) { transformData->SetRotation(rot); };
+
+		Firelight::Maths::Vec3f GetScale() { return transformData->GetScale(); }
+		void SetScale(const Firelight::Maths::Vec3f& scale) { transformData->SetScale(scale); }
+
+		void FlipX(bool flip, bool flipPos = true) { transformData->FlipX(flip, flipPos); }
+		bool GetFlipped() { return transformData->GetFlipped(); }
+
+		void SetParent(Entity* parent) { transformData->SetParent(parent); }
+		void AddChild(Entity* child) { transformData->AddChild(child); }
+		void RemoveChild(Entity* child) { transformData->RemoveChild(child); }
+		Entity* GetChild(int index) { transformData->GetChild(index); }
+		std::map<EntityID, Entity*> GetChildren() { transformData->GetChildren(); }
 
 		void Serialise() override
 		{
-			Serialiser::Serialise("Rotation", rotation);
-			Serialiser::Serialise("Position", position);
-			Serialiser::Serialise("Scale", scale);
+			Serialiser::Serialise("Rotation", GetRotation());
+			Serialiser::Serialise("Position", GetPosition());
+			Serialiser::Serialise("Scale", GetScale());
 		}
 
 		TransformComponent* Clone() override
 		{
 			TransformComponent* clone = new TransformComponent();
-			clone->position = position;
-			clone->scale = scale;
-			clone->rotation = rotation;
+			clone->SetPosition(GetPosition());
+			clone->transformData->SetRotation(GetRotation());
+			clone->transformData->SetScale(GetScale());
 
 			return clone;
 		}
@@ -177,17 +139,11 @@ namespace Firelight::ECS
 
 		void RenderDebugUI() override
 		{
-			ImGuiVariable("Position", position);
-			ImGuiVariable("Rotation", rotation);
-			ImGuiVariable("Scale", scale);
+			ImGuiVariable("Position", GetPosition());
+			ImGuiVariable("Rotation", GetRotation());
+			ImGuiVariable("Scale", GetScale());
 		}
-
 	private:
-		Firelight::Maths::Vec3f position;
-		Entity* parent;
-		std::map<EntityID, Entity*> children;
-		bool isFlipped;
-
+		TransformData* transformData = new TransformData();
 	};
-
 }
