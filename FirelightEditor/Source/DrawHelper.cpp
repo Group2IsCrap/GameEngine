@@ -214,14 +214,16 @@ namespace Firelight::Editor
 		ImGui::AlignTextToFramePadding();
 		ImGui::Text("Rotation");
 		ImGui::SameLine();
-		ImGui::DragFloat(GetUniqueID("Rotation").c_str(), &component->rotation, 0.1f, 0.0f, 0.0f, "%.2f");
+		/*
+		ImGui::DragFloat(GetUniqueID("Rotation").c_str(), &component->GetRotation(), 0.1f, 0.0f, 0.0f, "%.2f");
 		if (component->rotation > 360)
 			component->rotation = 0;
 		if (component->rotation < 0)
 			component->rotation = 360;
+			*/
 		ImGui::Indent();
 		ImGui::Spacing();
-		DrawVec3Control("Scale", component->scale.x, component->scale.y, component->scale.z);
+		//DrawVec3Control("Scale", component->scale.x, component->scale.y, component->scale.z);
 		ImGui::Spacing();
 	}
 	

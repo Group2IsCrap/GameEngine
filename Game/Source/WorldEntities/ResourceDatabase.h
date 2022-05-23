@@ -23,8 +23,8 @@ public:
 private:
 	ResourceDatabase();
 	~ResourceDatabase();
-	void addColliders(Template* resourceTemplate, std::string colliderData);
-	void addDrops(ResourceComponent* resourceComponent, std::string dropData);
+	void AddColliders(Template* resourceTemplate, std::string colliderData);
+	void AddDrops(ResourceComponent* resourceComponent, std::string dropData);
 
 	static ResourceDatabase* sm_instance;
 

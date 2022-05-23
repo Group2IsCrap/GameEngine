@@ -150,7 +150,7 @@ void ReAddToPlayer(void* toAdd)
 	std::vector<EntityID> toRemove;
 	for (size_t i = 0; i < AddIDs->size(); i++)
 	{
-		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", AddIDs->at(i))) {
+		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainInventory", AddIDs->at(i))) {
 			toRemove.push_back(AddIDs->at(i));
 		}
 	}
