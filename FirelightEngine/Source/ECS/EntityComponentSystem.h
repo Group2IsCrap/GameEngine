@@ -6,6 +6,8 @@
 #include <memory>
 
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/document.h"
+#include "rapidjson/rapidjson.h"
 
 namespace Firelight::ECS
 {	
@@ -235,6 +237,7 @@ namespace Firelight::ECS
 		void UpdateAllEntitySignatures();
 
 		void Serialise();
+		void Deserialise(rapidjson::Value& sceneRoot);
 
 		static EntityComponentSystem* Instance();
 	private:

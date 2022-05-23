@@ -340,20 +340,16 @@ namespace Firelight::Serialisation
 	//Loads All Scene objects from a file
 	void Serialiser::LoadSceneJSON()
 	{
-		//rapidjson::StringBuffer buffer;
-		//Writer = new rapidjson::PrettyWriter<rapidjson::StringBuffer>(buffer);
+		if (LoadFile("Assets/Saves/Components.json"))
+		{
+			if (FileDocument->HasMember("Scene"))
+			{
+				rapidjson::Value& sceneRoot = (*FileDocument)["Scene"];
 
-		//Writer->StartObject();
-		//Writer->String("Scene");
-		//Writer->StartObject();
-		//Firelight::ECS::EntityComponentSystem::Instance()->Serialise();
-		//Writer->EndObject();
-		//Writer->EndObject();
+				Firelight::ECS::EntityComponentSystem::Instance()->Deserialise(sceneRoot);
+			}
+		}
 
-		//WriteToFileJSON("Assets/Saves/Components.json", buffer.GetString());
-
-		//delete Writer;
-		//Writer = nullptr;
 	}
 
 	void Serialiser::Deserialise(std::string name, int& value)

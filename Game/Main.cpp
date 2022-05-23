@@ -122,7 +122,7 @@ void SetupEnemyTemplate()
 	enemyTemplate->AddComponent<HealthComponent>();
 	
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
-	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+	//AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
@@ -213,7 +213,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//AI
 		SetupEnemyTemplate();
 		SetupResourceTemplate();
-
 
 		//// Grass
 		//SpriteEntity* test2 = new SpriteEntity();
