@@ -29,6 +29,7 @@
 #include "Source/AI/AIBehaviourComponent.h"
 
 
+#include <Source/ECS/Components/AnimationComponent.h>
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
@@ -118,9 +119,10 @@ void SetupEnemyTemplate()
 	enemyTemplate->AddComponent<RigidBodyComponent>();
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
 	enemyTemplate->AddComponent<HealthComponent>();
-	
+	enemyTemplate->AddComponent<Firelight::ECS::AnimationComponent>();
+
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
-	//AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) 

@@ -17,6 +17,7 @@ public:
 
 	void SaveAnimation(const char* fileName, rapidjson::StringBuffer* json);
 	void SaveFile(const char* animName);
+	void SaveFile(const char* animName, bool loop, int frameTime, int frameCount, std::vector<std::string> textureNames);
 	void GetAllAnimations();
 
 public:

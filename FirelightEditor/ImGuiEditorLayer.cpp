@@ -12,7 +12,6 @@ ImGuiEditorLayer::ImGuiEditorLayer()
 	m_inspectorPanel = new InspectorPanel();
 	m_viewportPanel = new ViewportPanel();
 	m_animationWindow = new AnimationWindow();
-	m_timelineWindow = new TimelineWindow();
 
 	m_selectionContextHierarchy = {};
 
@@ -93,9 +92,6 @@ void ImGuiEditorLayer::Render()
 	if (m_animationWindow->m_isOpen)
 		m_animationWindow->Draw();
 
-	if (m_timelineWindow->m_isOpen)
-		m_timelineWindow->Draw();
-
 	ImGui::End();
 }
 
@@ -130,10 +126,6 @@ void ImGuiEditorLayer::RenderMenuBar()
 			if (ImGui::MenuItem("Animation Window"))
 			{
 				m_animationWindow->m_isOpen = true;
-			}
-			if (ImGui::MenuItem("Timeline Window"))
-			{
-				m_timelineWindow->m_isOpen = true;
 			}
 			ImGui::EndMenu();
 		}
