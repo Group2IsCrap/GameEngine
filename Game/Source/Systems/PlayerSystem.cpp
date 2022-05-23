@@ -225,13 +225,13 @@ void PlayerSystem::Interact()
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
-		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
-		{
-			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
-			
-			audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
-			entitiesCollidedWith[0]->PlayAudioClip();
-		}
+		//if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
+		//{
+		//	/*AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
+		//	
+		//	audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
+		//	entitiesCollidedWith[0]->PlayAudioClip();*/
+		//}
 		//ckeck if it is a item
 		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
 

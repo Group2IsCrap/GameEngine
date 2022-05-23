@@ -37,7 +37,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
 
     for (int i = 0; i < layers.size(); i++)
     {
-        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(point + offset, 2.0f, layers[i]);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(point + offset, 5.0f, layers[i]);
         if (targets.empty())
         {
             continue;

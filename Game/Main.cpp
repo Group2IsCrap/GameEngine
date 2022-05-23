@@ -15,6 +15,7 @@
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/WorldEntities/ResourceDatabase.h"
 #include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
 
@@ -26,10 +27,7 @@
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
-#include "Source/WorldEntities/TreeEntity.h"
-#include "Source/WorldEntities/RockEntity.h"
-#include "Source/WorldEntities/BushEntity.h"
-#include "Source/WorldEntities/BerryBushEntity.h"
+
 
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
@@ -171,24 +169,15 @@ void ReAddToPlayer(void* toAdd)
 
 void SetupResourceTemplate()
 {
-	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
-	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
-	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
-	spriteComponent->pixelsPerUnit = 50;
-	spriteComponent->layer = static_cast<int>(RenderLayer::Items);
-	resourceTemplate->AddComponent<RigidBodyComponent>();
-	resourceTemplate->AddComponent<HealthComponent>();
+	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
+	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
+	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
+	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
+	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
+	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
+	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
+	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
 
-	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
-	entity1->GetIDComponent()->name = "Resource: Tree";
-	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
-	entity2->GetIDComponent()->name = "Resource: Rock";
-	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
-	entity3->GetIDComponent()->name = "Resource: Bush";
-	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
-	entity4->GetIDComponent()->name = "Resource: Berry Bush";
-	
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -215,6 +204,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		PlayerEntity* player = new PlayerEntity();
 
 		//AI
+		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemyTemplate();
 		SetupResourceTemplate();
 
@@ -266,6 +256,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+		
 
 
 		while (Engine::Instance().ProcessMessages())
