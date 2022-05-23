@@ -159,15 +159,11 @@ namespace Firelight::UI {
 
 			}
 			static bool check = false;
-			if (m_updateTime > 0.1 || m_clickTime > m_clickLengthTime || (/*eventMouse->GetType() != Events::Input::e_MouseEventType::Move &&*/ eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove))
+			if (m_updateTime > 0.1 || m_clickTime > m_clickLengthTime || (eventMouse->GetType() != Events::Input::e_MouseEventType::Move && eventMouse->GetType() != Events::Input::e_MouseEventType::RawMove))
 			{
-				if(/*eventMouse->GetType() == Events::Input::e_MouseEventType::Move ||*/ eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove)
+				if(eventMouse->GetType() == Events::Input::e_MouseEventType::Move || eventMouse->GetType() == Events::Input::e_MouseEventType::RawMove)
 				{
-				
-						m_updateTime = 0;
-						
-					
-					
+					m_updateTime = 0;
 				}
 				for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 				{
