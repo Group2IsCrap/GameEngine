@@ -19,6 +19,7 @@
     <ClCompile Include="Source\Core\ResourceEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
     <ClInclude Include="Source\Events\GameEvents.h" />
+    <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />

@@ -27,6 +27,7 @@
 #include "Source/Core/AIEntity.h"
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/Enemies/AISlimeEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
 
 
@@ -103,6 +104,7 @@ void SetupEnemyTemplate()
 
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+	AISlimeEntity* entity3 = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
