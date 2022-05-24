@@ -3,6 +3,8 @@
 #include "Includes/imgui/imgui.h"
 #include "Includes/imgui/imgui_internal.h"
 
+#include "Source/Engine.h"
+
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 
 using namespace Firelight::ECS;
@@ -51,6 +53,7 @@ void ImGuiDebugLayer::Render()
 	RenderKeyBindingPrototype();
 	RenderDebugInformation();
 	RenderECSDebug();
+	RenderControls();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -63,6 +66,16 @@ void ImGuiDebugLayer::RenderItemWindow()
 	if (ImGui::Button("Spawn All Items"))
 	{
 		spawnItemCommand[1]();
+	}
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderControls()
+{
+	ImGui::Begin("Debug Controls");
+	if (ImGui::Button("Play/Pause"))
+	{
+		Firelight::Engine::Instance().TogglePause();
 	}
 	ImGui::End();
 }

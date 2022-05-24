@@ -15,24 +15,31 @@
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/Items/CraftingRecipeDatabase.h"
 #include "Source/WorldEntities/ResourceDatabase.h"
 #include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/ImGuiDebugLayer.h"
+#include "Source/Events/GameEvents.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include "Source/Core/AIEntity.h"
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/Enemies/AISlimeEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
 
 
 #include <Source/ECS/Components/AnimationComponent.h>
 #include "Source/Inventory/InventoryEntity.h"
-#include "Source/Inventory/InventoryManager.h"
+#include "Source/Inventory/InventorySystem.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
+#include "Source/WorldEntities/EntitySpawnerComponent.h"
+#include "Source/WorldEntities/EntitySpawnerSystem.h"
+#include "Source/Events/PlayerEvents.h"
+
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -56,38 +63,16 @@ static void ToggleDebugLayer()
 	}
 }
 
-void BindDefaultKeys()
+
+void TogglePause()
 {
-	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
-	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
-
-
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
-
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
-
-	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
-
-
-	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
-
-	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
-
-	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
+	Engine::Instance().TogglePause();
 }
 
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(37);
+	ItemDatabase::Instance()->CreateInstanceOfItem(40);
 	
 }
 
@@ -108,22 +93,22 @@ void SetupDebugUI()
 	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
 }
 
-void SetupEnemyTemplate()
+void SetupEnemySpawner()
 {
-	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate("Enemy Template");
-	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
-	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
-	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
-	spriteComponent->pixelsPerUnit = 50;
-	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
-	enemyTemplate->AddComponent<RigidBodyComponent>();
-	enemyTemplate->AddComponent<AIBehaviourComponent>();
-	enemyTemplate->AddComponent<HealthComponent>();
-	enemyTemplate->AddComponent<Firelight::ECS::AnimationComponent>();
+	GameEntity* crocodileSpawner = new GameEntity("Crocodile Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Crocodile";
+	spawnerComponent->respawnCooldown = 3;
+	crocodileSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+}
 
-	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
-	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+void SetupResourceSpawner()
+{
+	GameEntity* treeSpawner = new GameEntity("Tree Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 0;
+	spawnerComponent->respawnCooldown = 3;
+	treeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
@@ -169,17 +154,61 @@ void ReAddToPlayer(void* toAdd)
 	}
 }
 
-void SetupResourceTemplate()
-{
-	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
-	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
-	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
-	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
-	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
-	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
-	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
-	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
+//void SetupResourceTemplate()
+//{
+//	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
+//	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
+//	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
+//	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
+//	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
+//	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
+//	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
+//	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
+//
+//}
 
+static UICanvas* canvas = nullptr;
+static PlayerEntity* player = nullptr;
+static PlayerHealthUI* playerHealthUI = nullptr;
+
+void PlayGame()
+{
+	if (playerHealthUI != nullptr && player != nullptr)
+	{
+		playerHealthUI->SetHealth(player->GetHealth());
+	}
+}
+
+
+void BindDefaultKeys()
+{
+	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
+
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
+
+	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(TogglePauseEvent::sm_descriptor, Keys::KEY_ESCAPE, KeyEventType::KeyPressSingle);
+
+
+	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
+
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
+	Firelight::Events::EventDispatcher::SubscribeFunction<PlayGameEvent>(std::bind(&PlayGame));
+	Firelight::Events::EventDispatcher::SubscribeFunction<TogglePauseEvent>(std::bind(&TogglePause));
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -188,12 +217,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Engine::Instance().Initialise(hInstance, "Don't Perish", "windowClass", Maths::Vec2i(1280, 720)))
+	if (Engine::Instance().Initialise(hInstance, "Firelight", "windowClass", Maths::Vec2i(1280, 720)))
 	{
 		// Register Systems
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventorySystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
-		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<EntitySpawnerSystem>();
 
 		// Register KeyBindings
 		BindDefaultKeys();
@@ -203,12 +233,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 
 		// Player
-		PlayerEntity* player = new PlayerEntity();
+		player = new PlayerEntity();
 
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
-		SetupEnemyTemplate();
-		SetupResourceTemplate();
+		SetupEnemySpawner();
+		SetupResourceSpawner();
 
 		//// Grass
 		//SpriteEntity* test2 = new SpriteEntity();
@@ -232,9 +262,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//collider->radius = 4.25f;
 
 		// UI
-		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
-		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
-		//MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
+		canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
+		playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
@@ -264,9 +294,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
 		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
 		
-		// Load All Items
+		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		
+		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
+
+		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
 
 
 		while (Engine::Instance().ProcessMessages())
@@ -284,3 +316,4 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return 0;
 }
+

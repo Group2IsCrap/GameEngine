@@ -1,7 +1,6 @@
 #include "ItemDatabase.h"
 
 #include <Source/ECS/EntityComponentSystem.h>
-#include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Components/RenderingComponents.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
@@ -85,12 +84,12 @@ void ItemDatabase::LoadItems(std::string filepath)
 
 		AudioComponent* audioComponent = new AudioComponent();
 		itemTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
-		audioComponent->soundName = "beeuuuuu.mp3";
+		audioComponent->soundName = "Item Pick-Up.wav";
 		audioComponent->soundPos = Vector3D(0, 0, 0);
 		audioComponent->looping = false;
 		audioComponent->is3d = false;
 		audioComponent->streaming = false;
-		audioComponent->channel = "UI";
+		audioComponent->channel = "Game";
 
 		AddExtraComponent(itemTemplate, WeaponData, ArmourData, foodData);
 
@@ -131,6 +130,42 @@ Entity* ItemDatabase::CreateInstanceOfItem(int itemID)
 	entity->GetComponent<IdentificationComponent>()->name = "Item: " + entity->GetComponent<ItemComponent>()->name;
 
 	return entity;
+}
+
+// Bad, should probably be optimised in some way
+int ItemDatabase::GetItemIdFromName(const std::string& name)
+{
+	for (auto& mapIter : itemTemplates)
+	{
+		if (ItemComponent* itemComponent = mapIter.second->GetComponent<ItemComponent>())
+		{
+			if (itemComponent->name == name)
+			{
+				return itemComponent->itemID;
+			}
+		}
+	}
+
+	return -1;
+}
+
+Template* ItemDatabase::GetItemTemplateFromId(int itemId)
+{
+	auto mapIter = itemTemplates.find(itemId);
+	if (mapIter != itemTemplates.end())
+	{
+		return mapIter->second;
+	}
+	return nullptr;
+}
+
+ItemComponent* ItemDatabase::GetItemComponentFromId(int itemId)
+{
+	if (Template* itemTemplate = GetItemTemplateFromId(itemId))
+	{
+		return itemTemplate->GetComponent<ItemComponent>();
+	}
+	return nullptr;
 }
 
 ItemDatabase::ItemDatabase()

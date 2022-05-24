@@ -47,27 +47,30 @@ namespace Firelight::ECS
 	/// Physics update
 	/// </summary>
 	/// <param name="fixeddt"></param>
-	void System::FixedUpdate(const Utils::Time& time)
+	void System::FixedUpdate(const Utils::Time& time, const bool& isPaused)
 	{
-		(void)time;
+		UNREFERENCED_PARAMETER(time);
+		UNREFERENCED_PARAMETER(isPaused);
 	}
 
 	/// <summary>
 	/// Primary update
 	/// </summary>
 	/// <param name="dt"></param>
-	void System::Update(const Utils::Time& time)
+	void System::Update(const Utils::Time& time, const bool& isPaused)
 	{
-		(void)time;
+		UNREFERENCED_PARAMETER(time);
+		UNREFERENCED_PARAMETER(isPaused);
 	}
 
 	/// <summary>
 	/// Secondary later update
 	/// </summary>
 	/// <param name="dt"></param>
-	void System::LateUpdate(const Utils::Time& time)
+	void System::LateUpdate(const Utils::Time& time, const bool& isPaused)
 	{
-		(void)time;
+		UNREFERENCED_PARAMETER(time);
+		UNREFERENCED_PARAMETER(isPaused);
 	}
 
 	/*

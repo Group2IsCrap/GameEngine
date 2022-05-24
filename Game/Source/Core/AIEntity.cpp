@@ -44,7 +44,7 @@ void AIEntity::RemoveHealth(int amount)
 
 void AIEntity::HealthBelowZero()
 {
-	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+	GetAIComponent()->isDead = true;
 }
 
 void AIEntity::FaceDirection()

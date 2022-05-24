@@ -21,4 +21,6 @@ namespace Firelight::Events::Inventory
 	NEW_EVENT(LoadInventoryGroup);
 	NEW_EVENT(UnloadInventoryGroup);
 	
+
+	NEW_EVENT(UpdateCraftableItemsEvent);
 }

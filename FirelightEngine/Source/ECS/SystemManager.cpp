@@ -19,27 +19,27 @@ namespace Firelight::ECS
 	{
 	}
 
-	void SystemManager::Update(const Utils::Time& time)
+	void SystemManager::Update(const Utils::Time& time, const bool& isPaused)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->Update(time);
+			m_systems[systemIndex]->Update(time, isPaused);
 		}
 	}
 
-	void SystemManager::FixedUpdate(const Utils::Time& time)
+	void SystemManager::FixedUpdate(const Utils::Time& time, const bool& isPaused)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->FixedUpdate(time);
+			m_systems[systemIndex]->FixedUpdate(time, isPaused);
 		}
 	}
 
-	void SystemManager::LateUpdate(const Utils::Time& time)
+	void SystemManager::LateUpdate(const Utils::Time& time, const bool& isPaused)
 	{
 		for (int systemIndex = 0; systemIndex < m_systems.size(); ++systemIndex)
 		{
-			m_systems[systemIndex]->LateUpdate(time);
+			m_systems[systemIndex]->LateUpdate(time, isPaused);
 		}
 	}
 

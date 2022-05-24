@@ -77,6 +77,10 @@ namespace Firelight::ECS
 		{
 			ImGuiVariable(varName, std::to_string(data));
 		}
+		static void ImGuiVariable(std::string varName, double data)
+		{
+			ImGuiVariable(varName, std::to_string(data));
+		}
 		static void ImGuiVariable(std::string varName, Maths::Vec2f data)
 		{
 			ImGuiVariable(varName, std::to_string(data.x) + ", " + std::to_string(data.y));

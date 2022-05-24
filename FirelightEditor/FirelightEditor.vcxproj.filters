@@ -39,9 +39,6 @@
     <ClCompile Include="Source\DrawHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Panels\Timeline\TimelineItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImGuiEditorLayer.h">
@@ -63,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\DrawHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Panels\Timeline\TimelineItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,7 @@ namespace Firelight::UI {
 	UISystem::~UISystem()
 	{
 	}
-	void UISystem::Update(const Utils::Time& time)
+	void UISystem::Update(const Utils::Time& time, const bool& isPaused)
 	{
 		if (m_Canvas == nullptr)
 			return;

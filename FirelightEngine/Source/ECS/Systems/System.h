@@ -16,9 +16,9 @@ namespace Firelight::ECS
 
 		std::vector<Entity*> GetEntities();
 
-		virtual void FixedUpdate(const Utils::Time& time);
-		virtual void Update(const Utils::Time& time);
-		virtual void LateUpdate(const Utils::Time& time);
+		virtual void FixedUpdate(const Utils::Time& time, const bool& isPaused);
+		virtual void Update(const Utils::Time& time, const bool& isPaused);
+		virtual void LateUpdate(const Utils::Time& time, const bool& isPaused);
 
 		template<typename T>
 		void AddWhitelistComponent()

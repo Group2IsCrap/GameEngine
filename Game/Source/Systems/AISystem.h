@@ -12,6 +12,6 @@ public:
 	AISystem();
 	~AISystem();
 
-	void Update(const Firelight::Utils::Time& time) override;
+	void Update(const Firelight::Utils::Time& time, const bool& isPaused) override;
 };
 

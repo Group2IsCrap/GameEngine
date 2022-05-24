@@ -24,7 +24,7 @@ namespace Firelight::UI {
 		~UISystem();
 
 
-		virtual void Update(const Utils::Time& time) override;
+		virtual void Update(const Utils::Time& time, const bool& isPaused) override;
 
 		void HandleEvents(const char* event,void* data);
 

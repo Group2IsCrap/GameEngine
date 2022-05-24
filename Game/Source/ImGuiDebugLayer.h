@@ -20,18 +20,15 @@ public:
 	~ImGuiDebugLayer();
 
 	void Initialize();
-
-	void RenderItemWindow();
-
-	void RenderECSDebug();
-
-	void RenderKeyBindingPrototype();
-
-	void RenderDebugInformation();
 private:
 	void SetupTheme();
 	void AddKeyBindingWidget(Firelight::KeyboardBindingData binding);
 	void AddButtonBindingWidget(Firelight::ControllerBindingData binding);
 
+	void RenderItemWindow();
+	void RenderControls();
+	void RenderECSDebug();
+	void RenderKeyBindingPrototype();
+	void RenderDebugInformation();
 private:
 };

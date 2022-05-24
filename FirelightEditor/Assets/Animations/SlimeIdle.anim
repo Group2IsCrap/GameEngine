@@ -1,0 +1,9 @@
+{
+    "AnimationName": "SlimeIdle",
+    "Loop": false,
+    "FrameTime": 1,
+    "FrameCount": 1,
+    "TextureNames": [
+        "Sprites\\Enemies\\Slime\\Slime_Idle_0000.png"
+    ]
+}

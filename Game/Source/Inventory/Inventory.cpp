@@ -399,7 +399,9 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						text->hidden = true;
 						text->text.SetTextHeight(30);
 						text->layer = 100000;
+						text->text.SetColour(Firelight::Graphics::Colours::sc_black);
 						text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_BotRight);
+						text->text.SetAnchorPosition(-1.0f, -1.0f);
 
 						if (inventoryData->isDisplay) {
 							icon->SetParent(slot->slotID);
@@ -550,6 +552,14 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 				0);
 
+			if (specialSlot)
+			{
+				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
+					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
+				}
+			}
+
+
 
 			isFail = false;
 			break;
@@ -567,13 +577,14 @@ bool Inventory::RemoveItem(Firelight::ECS::Entity* item)
 
 bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 {
+
 	bool isFail = true;
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
-
+		InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, slot->specialSlotIndex);
 		if (!slot->isUsed) {
 			continue;
 		}
@@ -592,6 +603,13 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
 						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 						text->hidden = true;
+					}
+
+					if (specialSlot)
+					{
+						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
+							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
+						}
 					}
 
 					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
@@ -728,12 +746,19 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 		{
 			if (specialSlot->slotName == name) 
 			{
-				return m_inventoryEntityID;
+				if (slotData->entityIDs.size() > 0)
+				{
+					return slotData->entityIDs[0];
+				}
+				else
+				{
+					return UINT16_MAX;
+				}
 			}
 		}
 
 	}
-	return -1;
+	return UINT16_MAX;
 }
 
 void Inventory::DropAllItems()
