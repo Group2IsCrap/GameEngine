@@ -353,14 +353,30 @@ void PlayerSystem::AddHealth(void* amount)
 }
 void PlayerSystem::SwitchWeapon()
 {
-	//Get current weapon from equipped & cooldown
-	//Swap currentWeaponCooldown
 	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Weapon");
  	WeaponComponent* weaponComponent = nullptr;
 	if (id != UINT16_MAX)
 	{
 		Entity activeWeapon = Entity(id);
 		weaponComponent = activeWeapon.GetComponent<WeaponComponent>();
+		if (activeWeapon.HasComponent<SpriteComponent>())
+		{
+			PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
+			if (playerComponent->weapon == nullptr)
+			{
+				SpriteEntity* weapon = new SpriteEntity();
+				playerComponent->weapon = weapon;
+			}
+			if (playerComponent->weapon != nullptr)
+			{
+				playerComponent->weaponSocket->GetComponent<TransformComponent>()->RemoveChild(playerComponent->weapon);
+			}
+
+			playerComponent->weapon->GetComponent<SpriteComponent>()->texture = activeWeapon.GetComponent<SpriteComponent>()->texture;
+			playerComponent->weapon->GetComponent<SpriteComponent>()->pixelsPerUnit = activeWeapon.GetComponent<SpriteComponent>()->pixelsPerUnit;
+			playerComponent->weapon->GetComponent<TransformComponent>()->SetPosition(playerComponent->weaponSocket->GetComponent<TransformComponent>()->GetPosition());
+			playerComponent->weaponSocket->GetComponent<TransformComponent>()->AddChild(playerComponent->weapon);
+		}
 	}
 	else
 	{
@@ -372,7 +388,7 @@ void PlayerSystem::SwitchWeapon()
 		m_currentWeaponCooldown = weaponComponent->Cooldown;
 
 		CombatCalculations::ChangeWeapon(weaponComponent);
-
+		
 	}
 }
 

@@ -23,12 +23,10 @@ PlayerEntity::PlayerEntity()
 	GetHealthComponent()->maxHealth = 5;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
 
-	SpriteEntity* stick = new SpriteEntity();
-	stick->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Weapons/StoneAxe.png");
-	stick->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
-	stick->GetSpriteComponent()->pixelsPerUnit *= 2;
-	stick->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
-	GetTransformComponent()->AddChild(stick);
+	GameEntity* weaponSocket = new GameEntity();
+	weaponSocket->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
+	GetTransformComponent()->AddChild(weaponSocket);
+	GetComponent<PlayerComponent>()->weaponSocket = weaponSocket;
 
 	SpriteEntity* hat = new SpriteEntity();
 	hat->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Items/Armor/LeatherHat.png");
