@@ -26,7 +26,5 @@ public:
 
 	void DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location);
 
-private:
-	Firelight::Maths::Vec3f savePos;
 	
 };

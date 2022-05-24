@@ -74,6 +74,13 @@ void AIAttackingBehaviour::Attack(Firelight::ECS::Entity* entity, Firelight::Mat
 		AnimationSystem::Instance()->Play(entity, m_attackAnimation);
 	}
 
+	
+
+	/*entity->GetComponent<AudioComponent>()->soundName = "Crocodile Attack.wav";
+	entity->GetComponent<AudioComponent>()->soundPos = Vector3D(entity->GetComponent<TransformComponent>()->GetPosition().x, entity->GetComponent<TransformComponent>()->GetPosition().y, entity->GetComponent<TransformComponent>()->GetPosition().z);
+
+	entity->PlayAudioClip();*/
+
 	m_isAttacking = true;
 	std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(attackPoint, m_attackRadius,
 		std::vector<int>

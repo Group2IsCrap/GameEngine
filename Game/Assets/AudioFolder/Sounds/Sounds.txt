@@ -16,3 +16,4 @@ UI Audio - Kenney - https://www.kenney.nl/assets/ui-audio - UI Sounds
 Pickaxe Mining Stone - Ryanconway - https://freesound.org/people/ryanconway/sounds/240801/ - Mining 2
 Rock Destroy - Bertsz - https://freesound.org/people/Bertsz/sounds/524312/ - Rock Breaking
 Bush7 - Schademans - https://freesound.org/people/schademans/sounds/2596/ - Bush Harvest
+Melee Attack 2 - unfa - https://freesound.org/people/unfa/sounds/221540/ - Attack

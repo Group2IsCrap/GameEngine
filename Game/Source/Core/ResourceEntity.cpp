@@ -5,6 +5,7 @@ ResourceEntity::ResourceEntity()
 {
 	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
+	
 	this->GetIDComponent()->name = "Resource";
 }
 
@@ -40,12 +41,50 @@ int ResourceEntity::GetHealth()
 void ResourceEntity::RemoveHealth(int amount)
 {
 	HealthComponent* component = GetComponent<HealthComponent>();
+	AudioComponent* audioComponent = this->GetComponent<AudioComponent>();
 	component->currentHealth -= amount;
 	if (component->currentHealth <= 0)
 	{
-		savePos = GetComponent<TransformComponent>()->GetPosition();
 		component->currentHealth = 0;
 		HealthBelowZero();
+	}
+	else
+	{
+		switch (GetComponent<ResourceComponent>()->resourceID)
+		{
+		case 0:
+			switch (Firelight::Maths::Random::RandomRange(0, 1))
+			{
+			case 0:
+				audioComponent->soundName = "Wood Chop 1.wav";
+				break;
+			case 1:
+				audioComponent->soundName = "Wood Chop 2.wav";
+				break;
+			}
+			break;
+		case 1:
+			switch (Firelight::Maths::Random::RandomRange(0, 1))
+			{
+			case 0:
+				audioComponent->soundName = "Mining.wav";
+				break;
+			case 1:
+				audioComponent->soundName = "Mining 2.wav";
+				break;
+			}
+			break;
+		case 2:
+			audioComponent->soundName = "Bush Harvest.wav";
+			break;
+		case 3:
+			audioComponent->soundName = "Bush Harvest.wav";
+			break;
+		}
+
+		audioComponent->soundPos = Vector3D(GetTransformComponent()->GetPosition().x, GetTransformComponent()->GetPosition().y, GetTransformComponent()->GetPosition().z);
+
+		this->PlayAudioClip();
 	}
 }
 
@@ -70,6 +109,19 @@ void ResourceEntity::HealthBelowZero()
 			}
 		}
 	}
+
+	switch (resourceComponent->resourceID)
+	{
+	case 0:
+		GetComponent<AudioComponent>()->soundName = "Tree Destroyed.wav";
+		break;
+	case 1:
+		GetComponent<AudioComponent>()->soundName = "Rock Breaking.wav";
+	}
+
+	GetComponent<AudioComponent>()->soundPos = Vector3D(GetTransformComponent()->GetPosition().x, GetTransformComponent()->GetPosition().y, GetTransformComponent()->GetPosition().z);
+
+	this->PlayAudioClip();
 
 	this->GetComponent<ResourceComponent>()->isDead = true;
 }
