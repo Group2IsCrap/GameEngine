@@ -1,19 +1,32 @@
 #include "EnvironmentGeneration.h"
 #include "BiomeInfo.h"
-#include "../Game/Source/WorldEntities/TreeEntity.h"
+#include "../Game/Source/WorldEntities/ResourceDatabase.h"
+
+EnvironmentGeneration* EnvironmentGeneration::sm_instance = nullptr;
 
 EnvironmentGeneration::EnvironmentGeneration()
 	: m_spawnRateNoise(nullptr)
+	, m_biomeInfo(nullptr)
+	, m_tileMap(nullptr)
 {}
 
-void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap)
+void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo)
 {
 	m_tileMap = tileMap;
-
+	m_biomeInfo = biomeInfo;
 	m_spawnRateNoise = new Noise();
 	m_spawnRateNoise->SetSeed(3007);
 	m_spawnRateNoise->SetNoiseScale(250.0f);
 	m_spawnRateNoise->CreateNoise();
+}
+
+EnvironmentGeneration* EnvironmentGeneration::Instance()
+{
+	if (sm_instance == nullptr)
+	{
+		sm_instance = new EnvironmentGeneration();
+	}
+	return sm_instance;
 }
 
 void EnvironmentGeneration::GenerateResources()
@@ -24,37 +37,45 @@ void EnvironmentGeneration::GenerateResources()
 
 	std::vector<std::vector<Firelight::TileMap::Tile*>> tiles = m_tileMap->GetTileMap();
 
-	int Noiseindex = 0;
+	int noiseTreeindex = 0;
+	int noiseRockindex = 10;
 	for (row = tiles.begin(); row != tiles.end(); row++)
 	{
 		for (column = row->begin(); column != row->end(); column++)
 		{
-			if (mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
+			if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
 			{
-				if ((*column)->IsOccupied())
+				if (!(*column)->IsOccupied())
 				{
-					Vec2f position = Vec2f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y);
-					if (CanSpawnTreeFromNoise(Noiseindex))
+					Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
+					if (CanSpawnTreeFromNoise(noiseTreeindex))
 					{
 						SpawnTree(position);
+						(*column)->SetIsOccupied(true);
+					}
+					else if (CanSpawnRockFromNoise(noiseRockindex))
+					{
+						SpawnRock(position);
+						(*column)->SetIsOccupied(true);
 					}
 				}
+				noiseRockindex = noiseRockindex + 10;
+				noiseTreeindex++;
 			}
-			Noiseindex++;
 		}
 	}
-
-
 }
 
-void EnvironmentGeneration::SpawnTree(Vec2f position)
+void EnvironmentGeneration::SpawnTree(Vec3f position)
 {
-	//TreeEntity* entity = new TreeEntity(true, resourceTemplate->GetTemplateID());
-	//entity->GetIDComponent()->name = "Resource: Tree";
+	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
+	treeEntity->GetTransformComponent()->SetPosition(position);
 }
 
-void EnvironmentGeneration::SpawnRocks()
+void EnvironmentGeneration::SpawnRock(Vec3f position)
 {
+	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
+	rockEntity->GetTransformComponent()->SetPosition(position);
 }
 
 bool EnvironmentGeneration::CanSpawnTreeFromNoise(int noiseIndex)
@@ -65,11 +86,13 @@ bool EnvironmentGeneration::CanSpawnTreeFromNoise(int noiseIndex)
 	float compareMin = -1.0f;
 	float compareMax = 1.0f;
 
-	if (data >= compareMin && data <= compareMin + (compareMin/2))
+	float spawnChance = 0.05f;
+
+	if (data >= compareMin && data <= compareMin + spawnChance)
 	{
 		return true;
 	}
-	if (data >= compareMax - (compareMin / 2) && data < compareMax)
+	if (data >= compareMin - spawnChance && data < compareMax)
 	{
 		return false;
 	}
@@ -84,11 +107,12 @@ bool EnvironmentGeneration::CanSpawnRockFromNoise(int noiseIndex)
 	float compareMin = -1.0f;
 	float compareMax = 1.0f;
 
-	if (data >= compareMin && data <= compareMin + (compareMin / 2))
+	float spawnChance = 0.05f;
+	if (data >= compareMin && data <= compareMin + spawnChance)
 	{
 		return true;
 	}
-	if (data >= compareMax - (compareMin / 2) && data < compareMax)
+	if (data >= compareMin - spawnChance && data < compareMax)
 	{
 		return false;
 	}

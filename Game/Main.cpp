@@ -35,7 +35,9 @@
 #include "Source/Inventory/InventoryManager.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
 
+#include "Source/PCG/BiomeInfo.h"
 #include "Source/PCG/BiomeGeneration.h"
+#include "Source/PCG/EnvironmentGeneration.h"
 #include "Source/TileMap/TileMap.h"
 
 using namespace Firelight;
@@ -254,11 +256,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		tileMap->UpdateTileMapPositions();
 
 		//Biome Generation
-		BiomeGeneration::Instance()->Initialise(tileMap);
+		BiomeInfo* biomeInfo = new BiomeInfo();
+		BiomeGeneration::Instance()->Initialise(tileMap, biomeInfo);
 		BiomeGeneration::Instance()->GenerateWorld();
 
 		tileMap->Render();
-		
+
+		//Resource PCG spawning
+		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
+		EnvironmentGeneration::Instance()->GenerateResources();
+
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);

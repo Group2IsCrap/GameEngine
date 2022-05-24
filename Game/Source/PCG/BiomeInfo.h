@@ -8,11 +8,11 @@ using namespace Firelight::ECS;
 
 enum class BiomeType
 {
+	Void,
 	Forest,
 	Swamp,
 	Snow,
-	Bridge,
-	Void
+	Bridge
 };
 
 struct BiomeInfo
@@ -20,8 +20,7 @@ struct BiomeInfo
 	std::vector<Entity*> possibleSpawnEntities;
 	Texture* mainTexture;
 	Texture* detailTexture;
+	std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
 };
-
-static std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
 
 static std::vector< Firelight::Graphics::Texture* > sbiomeTextures;

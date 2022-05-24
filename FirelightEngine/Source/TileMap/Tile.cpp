@@ -11,10 +11,10 @@ namespace Firelight::TileMap
 		: m_texture(Graphics::AssetManager::Instance().GetDefaultTexture())
 		, m_sourceRect(0.0f, 0.0f, -1.0f, -1.0f)
 		, m_destinationRect(0.0f, 0.0f, 1.0f, 1.0f)
-		, m_tileID(0)
+		, m_tileID(-1)
 		, m_layer(32)
 		, m_rotation(0.0)
-		, test(false)
+		, m_isOccupied(false)
 	{}
 
 	void Tile::DrawTile()
@@ -50,6 +50,11 @@ namespace Firelight::TileMap
 	void Tile::SetTileID(unsigned int tileID)
 	{
 		m_tileID = tileID;
+	}
+
+	void Tile::SetIsOccupied(bool occupied)
+	{
+		m_isOccupied = occupied;
 	}
 
 	unsigned int Tile::GetTileID() const

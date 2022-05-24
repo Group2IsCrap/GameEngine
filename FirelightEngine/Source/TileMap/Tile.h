@@ -38,12 +38,11 @@ namespace Firelight::TileMap
 		void SetLayer(int layer);
 		void SetRotation(double layer);
 		void SetTileID(unsigned int m_tileID);
+		void SetIsOccupied(bool occupied);
 
 		unsigned int GetTileID() const;
 		Maths::Rectf GetDestinationRect() const;
 		bool IsOccupied() const;
-
-		bool test;
 
 	private:
 

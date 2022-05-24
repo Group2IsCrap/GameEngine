@@ -27,7 +27,7 @@ public:
 	BiomeGeneration();
 
 	static BiomeGeneration* Instance();
-	void Initialise(Firelight::TileMap::TileMap* tileMap);
+	void Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo);
 	void Uninitialise();
 
 	unsigned int CalculateIslandShape(int perlinIndex);
@@ -49,6 +49,7 @@ private:
 	Noise* m_biomeNoise;
 	Noise* m_islandDirectionNoise;
 	Noise* m_islandShapeNoise;
+	BiomeInfo* m_biomeInfo;
 
 	Firelight::TileMap::TileMap* m_tileMap;
 

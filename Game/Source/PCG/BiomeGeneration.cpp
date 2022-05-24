@@ -34,14 +34,16 @@ BiomeGeneration* BiomeGeneration::Instance()
 	return sm_instance;
 }
 
-void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap)
+void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo)
 {
 	m_tileMap = tileMap;
+	m_biomeInfo = biomeInfo;
 
 	sbiomeTextures = { AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
-					    AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
-						AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
-						AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png") };
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png") };
 
 	m_biomeNoise = new Noise();
 	m_biomeNoise->SetSeed(3007);
@@ -116,9 +118,8 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 				if (tile != nullptr)
 				{
-					mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+					m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
 					tile->SetTileTexture(sbiomeTextures[(int)RandomBiomeType(index)]);
-					tile->test = true;
 				}
 			}
 			else
@@ -133,9 +134,8 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 					Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 					if (tile != nullptr)
 					{
-						mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+						m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
 						tile->SetTileTexture(sbiomeTextures[(int)RandomBiomeType(index)]);
-						tile->test = true;
 					}
 				}
 			}
@@ -235,7 +235,7 @@ void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf currentIslandCentre, Isl
 		for (size_t y = 0; y < m_bridgeWidth; ++y)
 		{
 			Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
-			mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Bridge;
+			m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Bridge;
 			tile->SetTileTexture(sbiomeTextures[(int)BiomeType::Bridge]);
 
 			switch (direction)
