@@ -384,7 +384,6 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						text->layer = 100000;
 						text->text.SetColour(Firelight::Graphics::Colours::sc_black);
 						text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_BotRight);
-						text->text.SetAnchorPosition(-1.0f, -1.0f);
 
 						if (inventoryData->isDisplay) {
 							icon->SetParent(slot->slotID);

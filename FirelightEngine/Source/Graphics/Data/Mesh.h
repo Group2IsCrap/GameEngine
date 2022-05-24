@@ -29,6 +29,8 @@ namespace Firelight::Graphics
 		template<typename VertexType>
 		Mesh(std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Texture* texture);
 		template<typename VertexType>
+		Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Texture* texture);
+		template<typename VertexType>
 		Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, const DirectX::XMMATRIX& transformMatrix);
 		template<typename VertexType>
 		Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Material* material, const DirectX::XMMATRIX& transformMatrix);
