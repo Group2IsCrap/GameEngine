@@ -233,23 +233,24 @@ namespace Firelight::Graphics
 
         SortQuads();
 
-        std::vector<UnlitColourVertex> vertices;
-        std::vector<DWORD> indices;
+        m_vertices.clear();
+        m_indices.clear();
+
         Texture* batchTexture = nullptr;
 
         auto drawCurrentBatchIfNecessary = [&]()
         {
-            if (indices.size() > 0)
+            if (m_indices.size() > 0)
             {
-                Mesh mesh = Mesh(vertices, indices, batchTexture);
+                Mesh mesh = Mesh(m_vertices, m_indices, batchTexture);
 
                 deviceContext->VSSetShader(AssetManager::Instance().GetVertexShader("$ENGINE/Shaders/Vertex/UnlitColour")->GetShader(), NULL, 0);
                 deviceContext->PSSetShader(AssetManager::Instance().GetPixelShader("$ENGINE/Shaders/Pixel/UnlitColour")->GetShader(), NULL, 0);
 
                 mesh.Draw(bindPSData);
 
-                vertices.clear();
-                indices.clear();
+                m_vertices.clear();
+                m_indices.clear();
             }
         };
 
@@ -273,21 +274,21 @@ namespace Firelight::Graphics
                 }
 
                 // Get vertex count before we add this quad
-                DWORD vertexCount = (DWORD)vertices.size();
+                DWORD vertexCount = (DWORD)m_vertices.size();
 
-                vertices.push_back(quadEntity->m_topLeft);
-                vertices.push_back(quadEntity->m_topRight);
-                vertices.push_back(quadEntity->m_bottomLeft);
-                vertices.push_back(quadEntity->m_bottomRight);
+                m_vertices.push_back(quadEntity->m_topLeft);
+                m_vertices.push_back(quadEntity->m_topRight);
+                m_vertices.push_back(quadEntity->m_bottomLeft);
+                m_vertices.push_back(quadEntity->m_bottomRight);
 
                 // Clockwise winding
-                indices.push_back(vertexCount);
-                indices.push_back(vertexCount + 1);
-                indices.push_back(vertexCount + 2);
+                m_indices.push_back(vertexCount);
+                m_indices.push_back(vertexCount + 1);
+                m_indices.push_back(vertexCount + 2);
 
-                indices.push_back(vertexCount + 2);
-                indices.push_back(vertexCount + 1);
-                indices.push_back(vertexCount + 3);
+                m_indices.push_back(vertexCount + 2);
+                m_indices.push_back(vertexCount + 1);
+                m_indices.push_back(vertexCount + 3);
             }
             else if (auto* textEntity = dynamic_cast<TextEntity*>(entity))
             {

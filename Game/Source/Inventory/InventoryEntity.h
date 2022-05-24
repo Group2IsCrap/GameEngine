@@ -13,6 +13,10 @@ public:
     void AddInventory(std::string name, std::string backgroundTexture, int rowCount, int columnCount, Firelight::Maths::Vec2f size, Firelight::Maths::Vec2f slotSize, Firelight::Maths::Vec2f border, Firelight::Maths::Vec2f slotMargin, Firelight::Maths::Vec2f offset, Firelight::ECS::e_AnchorSettings UIAnchor);
     void RemoveInventory(std::string name);
     void AddOutputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
+    void AddInputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
+
+    void AddKeyCommands(int invetoryNum,Firelight::Keys actionKey, std::string actionName);
+    
 
     void AddSpecialSlot(int InventoryNumber,std::string slotName, std::string slotTexture, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
 

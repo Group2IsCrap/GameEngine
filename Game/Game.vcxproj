@@ -194,7 +194,6 @@
     <ClInclude Include="Source\Events\GameEvents.h" />
     <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
     <ClInclude Include="Source\Combat\CombatCalculations.h" />
-    <ClInclude Include="Source\Combat\WeaponComponent.h" />
     <ClInclude Include="Source\AI\AIBehaviourComponent.h" />
     <ClInclude Include="Source\AI\AISpawner.h" />
     <ClInclude Include="Source\AI\AIStateBehaviour.h" />

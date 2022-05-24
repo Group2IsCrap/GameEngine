@@ -71,7 +71,7 @@ void ResourceEntity::HealthBelowZero()
 		}
 	}
 
-	Firelight::ECS::EntityComponentSystem::Instance()->RemoveEntity(GetEntityID());
+	this->GetComponent<ResourceComponent>()->isDead = true;
 }
 
 void ResourceEntity::DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location)

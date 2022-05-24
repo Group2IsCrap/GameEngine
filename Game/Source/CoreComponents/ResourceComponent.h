@@ -20,6 +20,7 @@ struct ResourceComponent : Firelight::ECS::BaseComponent
 
 	int resourceID;
 	std::string name;
+	bool isDead = false;
 
 	void Serialise() override
 	{
@@ -32,6 +33,7 @@ struct ResourceComponent : Firelight::ECS::BaseComponent
 		clone->itemDrops = itemDrops;
 		clone->resourceID = resourceID;
 		clone->name = name;
+		clone->isDead = false;
 		return clone;
 	}
 

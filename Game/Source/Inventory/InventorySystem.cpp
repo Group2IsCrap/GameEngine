@@ -24,6 +24,7 @@ namespace InventorySystem
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemType>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemTypeNumber>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::AddItem>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::GetSpecialSlot>(this);
 
         ECS::UIPanel* Slot;
         for (size_t i = 0; i < 100; i++)
@@ -32,7 +33,11 @@ namespace InventorySystem
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
-           
+            TextComponent* text = Slot->AddComponent<ECS::TextComponent>();
+            text->hidden = true;
+            text->text.SetTextHeight(30);
+            text->layer = 100000;
+            text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
             m_entityIDPanelSlot.push_back(Slot);
         }
     }
@@ -578,6 +583,8 @@ namespace InventorySystem
                 return inventory->GetSpecialSlot(slotName);
             }
         }
+
+        return UINT16_MAX;
     }
 
 }
