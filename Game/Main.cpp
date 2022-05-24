@@ -38,9 +38,6 @@
 #include "Source/PCG/BiomeGeneration.h"
 #include "Source/TileMap/TileMap.h"
 
-#include"Source/Inventory/InventoryManager.h"
-#include"Source/Inventory/InventoryWrapper.h"
-#include"Source/Inventory/InventoryFunctionsGlobal.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;

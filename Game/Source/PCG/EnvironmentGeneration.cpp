@@ -1,6 +1,6 @@
 #include "EnvironmentGeneration.h"
-#include "Noise.h"
 #include "BiomeInfo.h"
+#include "../Game/Source/WorldEntities/TreeEntity.h"
 
 EnvironmentGeneration::EnvironmentGeneration()
 	: m_spawnRateNoise(nullptr)
@@ -38,10 +38,6 @@ void EnvironmentGeneration::GenerateResources()
 					{
 						SpawnTree(position);
 					}
-					//else if (CanSpawnRockFromNoise(NoiseIndex))
-					//{
-					//	SpawnRocks();
-					//}
 				}
 			}
 			Noiseindex++;
@@ -53,7 +49,8 @@ void EnvironmentGeneration::GenerateResources()
 
 void EnvironmentGeneration::SpawnTree(Vec2f position)
 {
-	//Place tree down at position
+	TreeEntity* entity = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	entity->GetIDComponent()->name = "Resource: Tree";
 }
 
 void EnvironmentGeneration::SpawnRocks()

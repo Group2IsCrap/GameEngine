@@ -151,8 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EnvironmentGeneration.cpp" />
-    <ClCompile Include="IslandGeneration.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
@@ -162,6 +160,7 @@
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
     <ClCompile Include="Source\Core\ResourceEntity.cpp" />
+    <ClCompile Include="Source\PCG\EnvironmentGeneration.cpp" />
     <ClCompile Include="Source\Systems\AISystem.cpp" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\ImGuiPlayerLayer.cpp" />
@@ -185,8 +184,6 @@
     <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnvironmentGeneration.h" />
-    <ClInclude Include="IslandGeneration.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
     <ClInclude Include="Source\Combat\CombatCalculations.h" />
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
@@ -200,6 +197,7 @@
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
     <ClInclude Include="Source\Core\AIEntity.h" />
     <ClInclude Include="Source\Core\ResourceEntity.h" />
+    <ClInclude Include="Source\PCG\EnvironmentGeneration.h" />
     <ClInclude Include="Source\Systems\AISystem.h" />
     <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />

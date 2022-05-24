@@ -73,6 +73,8 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 
 void BiomeGeneration::GenerateWorld()
 {
+	m_tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-10.0f, -10.0f));
+
 	Rectf m_destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
 	Rectf m_centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
 	Rectf m_curIslandCentre = m_centre;
@@ -293,7 +295,7 @@ IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int 
 	{
 		return IslandSpawnDirection::North;
 	}
-	if (data > -0.5 && data <= -0.0)
+	if (data > -0.5 && data <= 0.0)
 	{
 		return IslandSpawnDirection::East;
 	}

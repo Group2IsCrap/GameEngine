@@ -21,6 +21,7 @@
     <ClCompile Include="Source\WorldEntities\RockEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\BushEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\BerryBushEntity.cpp" />
+    <ClCompile Include="Source\PCG\EnvironmentGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
@@ -36,15 +37,14 @@
     <ClInclude Include="Source\WorldEntities\BerryBushEntity.h" />
     <ClInclude Include="Source\WorldEntities\BushEntity.h" />
     <ClInclude Include="Source\WorldEntities\RockEntity.h" />
+    <ClInclude Include="Source\PCG\EnvironmentGeneration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
     <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
-    <ClCompile Include="IslandGeneration.cpp" />
     <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
     <ClCompile Include="Source\PCG\Noise.cpp" />
-    <ClCompile Include="EnvironmentGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
@@ -79,12 +79,10 @@
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
     <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
-    <ClInclude Include="IslandGeneration.h" />
     <ClInclude Include="Source\PCG\BiomeGeneration.h" />
     <ClInclude Include="Source\PCG\Biomes.h" />
     <ClInclude Include="Source\PCG\Noise.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
-    <ClInclude Include="EnvironmentGeneration.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../FirelightEngine/Source/TileMap/TileMap.h"
+#include "Noise.h"
 
 using namespace Firelight::Maths;
 

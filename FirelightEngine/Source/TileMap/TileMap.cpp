@@ -13,16 +13,17 @@ namespace Firelight::TileMap
         , m_tileMapHeight(50)
         , m_tileMapWidth(50)
         , m_tileDistance(1)
+        , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_tileMap()
     {
         UpdateTileMapSize();
 
-        newTilePtr = new Tile();
+        m_emptyTilePtr = new Tile();
     }
 
     TileMap::~TileMap()
     {
-        delete newTilePtr;
+        delete m_emptyTilePtr;
     }
 
     void TileMap::Render()
@@ -33,13 +34,14 @@ namespace Firelight::TileMap
     void TileMap::UpdateTileMapSize()
     {
         unsigned int tileNum = 0;
-        for (int x = 0; x < m_tileMapWidth; ++x)
+        for (int x = m_bottomLeftTilePos.x; x < m_tileMapWidth + m_bottomLeftTilePos.x; ++x)
         {
             std::vector<Tile*> vec;
-            for (int y = 0; y < m_tileMapHeight; ++y)
+            for (int y = m_bottomLeftTilePos.y; y < m_tileMapHeight + m_bottomLeftTilePos.y; ++y)
             {
                   Tile* newTile = new Tile();
                   newTile->SetTileTexture(Graphics::AssetManager::Instance().GetDefaultTexture());
+                  newTile->SetDestinationRect(x * m_tileDistance, y * m_tileDistance, m_tileWidth, m_tileHeight);
                   newTile->SetTileID(tileNum);
                   vec.emplace_back(newTile);
 
@@ -51,7 +53,7 @@ namespace Firelight::TileMap
 
     void TileMap::DrawTiles()
     {
-        int x = 0, y = 0;
+        int x = m_bottomLeftTilePos.x, y = m_bottomLeftTilePos.y;
         for (auto row = m_tileMap.begin(); row != m_tileMap.end(); ++row)
         {
             for (auto column = row->begin(); column != row->end(); ++column)
@@ -61,7 +63,7 @@ namespace Firelight::TileMap
                 ++x;
             }
             ++y;
-            x = 0;
+            x = m_bottomLeftTilePos.x;
         }
     }
 
@@ -91,21 +93,32 @@ namespace Firelight::TileMap
         {
             for (auto tile : tilesVec)
             {
-                if ((position.x > tile->GetDestinationRect().x) &&
-                    (position.x < tile->GetDestinationRect().x + tile->GetDestinationRect().w) &&
-                    (position.y > tile->GetDestinationRect().y) &&
-                    (position.y < tile->GetDestinationRect().y + tile->GetDestinationRect().h))
+                if (position.x >= tile->GetDestinationRect().x)
                 {
-                    return tile;
+                    if (position.x <= tile->GetDestinationRect().x + tile->GetDestinationRect().w)
+                    {
+                        if ((position.y >= tile->GetDestinationRect().y))
+                        {
+                            if ((position.y <= tile->GetDestinationRect().y + tile->GetDestinationRect().h))
+                            {
+                                return tile;
+                            }
+                        }
+                    }
                 }
             }
         }
-        newTilePtr->SetTileID(-1);
-        return newTilePtr;
+        m_emptyTilePtr->SetTileID(-1);
+        return m_emptyTilePtr;
     }
 
     std::vector<std::vector<Tile*>>& TileMap::GetTileMap()
     {
         return m_tileMap;
+    }
+
+    void TileMap::SetBottomLeftTilePos(Firelight::Maths::Vec2f position)
+    {
+        m_bottomLeftTilePos = position;
     }
 }
