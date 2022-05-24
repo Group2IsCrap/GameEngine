@@ -15,6 +15,7 @@
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/Items/CraftingRecipeDatabase.h"
 #include "Source/WorldEntities/ResourceDatabase.h"
 #include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
@@ -268,14 +269,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Hat.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
 		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/SlotIcon.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
 
-		
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
 		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
 		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
 		
-		// Load All Items
+		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
-		
+		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
 
 
 		while (Engine::Instance().ProcessMessages())

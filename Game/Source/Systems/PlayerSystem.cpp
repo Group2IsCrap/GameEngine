@@ -9,6 +9,7 @@
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
 #include "../Items/ItemDatabase.h"
+#include "../Items/CraftingRecipeDatabase.h"
 #include "../Core/Layers.h"
 #include "../Core/CharacterEntity.h"
 #include "../Combat/CombatCalculations.h"
@@ -16,7 +17,9 @@
 #include"../Inventory/InventoryFunctionsGlobal.h"
 #include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Systems/AnimationSystem.h>
+
 #include"../Events/PlayerEvents.h"
+
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -24,7 +27,7 @@ using namespace Firelight::Events::InputEvents;
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
-	playerEntity = nullptr;
+	m_playerEntity = nullptr;
 
 	m_playerEntityAddedCheckIndex = EventDispatcher::SubscribeFunction<ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
 	
@@ -50,9 +53,14 @@ PlayerSystem::PlayerSystem()
 	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
 	
 
-	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
+	m_updateCraftableItemsEventIndex = EventDispatcher::SubscribeFunction<Inventory::UpdateCraftableItemsEvent>(std::bind(&PlayerSystem::UpdateCraftableItems, this));
 
-	imguiLayer = new ImGuiPlayerLayer();
+	Firelight::Events::EventDispatcher::AddListener<InputEvents::OnPlayerMoveEvent>(this);
+	Firelight::Events::EventDispatcher::AddListener<Inventory::LoadInventoryGroup>(this);
+	Firelight::Events::EventDispatcher::AddListener<Inventory::UnloadInventoryGroup>(this);
+
+	m_imguiLayer = new ImGuiPlayerLayer();
+	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(m_imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -71,6 +79,12 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
+	
+	EventDispatcher::UnsubscribeFunction<Inventory::UpdateCraftableItemsEvent>(m_updateCraftableItemsEventIndex);
+	
+	Firelight::Events::EventDispatcher::RemoveListener<Inventory::LoadInventoryGroup>(this);
+	Firelight::Events::EventDispatcher::RemoveListener<Inventory::UnloadInventoryGroup>(this);
+
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 	EventDispatcher::UnsubscribeFunction<ReleaseAttackEvent>(m_releaseAttackIndex);
@@ -79,22 +93,21 @@ PlayerSystem::~PlayerSystem()
 
 void PlayerSystem::CheckForPlayer()
 {
-	if (playerEntity == nullptr && m_entities.size() > 0)
+	if (m_playerEntity == nullptr && m_entities.size() > 0)
 	{
-		playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
-		imguiLayer->SetPlayer(playerEntity);
+		m_playerEntity = new PlayerEntity(m_entities[0]->GetEntityID());
+		m_imguiLayer->SetPlayer(m_playerEntity);
 	}
 }
 
 void PlayerSystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
-{
+
 	if (!isPaused)
 	{
 		if (playerEntity == nullptr)
 		{
 			return;
 		}
-		
 
 		PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
 
@@ -129,22 +142,19 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 {
 	if (!isPaused)
 	{
-		if (m_moveUp)
-		{
-			playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
-		}
-		if (m_moveDown)
-		{
-			playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
-		}
-		if (m_moveLeft)
-		{
-			playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
-		}
-		if (m_moveRight)
-		{
-			playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
-		}
+		m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveDown)
+	{
+		m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveLeft)
+	{
+		m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveRight)
+	{
+		m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
 	}
 }
 
@@ -153,12 +163,36 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	if (event == Firelight::Events::InputEvents::OnPlayerMoveEvent::sm_descriptor)
 	{
 		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
+
+		m_playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
+		m_playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+	}
+	else if (event == Firelight::Events::Inventory::LoadInventoryGroup::sm_descriptor)
+	{
+		std::string inventoryGroupName = *reinterpret_cast<std::string*>(data);
+		
+		// When the main player opens their inventory, update what items they can craft
+		
+		if (inventoryGroupName == "PlayerInventory")
+		{
+			UpdateCraftableItems();
+			m_imguiLayer->SetDebugCraftingMenuEnabled(true);
+		}
+	}
+	else if (event == Firelight::Events::Inventory::UnloadInventoryGroup::sm_descriptor)
+	{
+		std::string inventoryGroupName = *reinterpret_cast<std::string*>(data);
+
+		if (inventoryGroupName == "PlayerInventory")
+		{
+			m_imguiLayer->SetDebugCraftingMenuEnabled(false);
+		}
 	}
 }
 
 float PlayerSystem::GetSpeed()
 {
-	return playerEntity->GetComponent<PlayerComponent>()->speed;
+	return m_playerEntity->GetComponent<PlayerComponent>()->speed;
 }
 
 void PlayerSystem::MovePlayerUp()
@@ -211,37 +245,51 @@ void PlayerSystem::MovePlayerRightRelease()
 
 void PlayerSystem::HandlePlayerAnimations()
 {
-	if (playerEntity == nullptr)
+	if (m_playerEntity == nullptr)
 	{
 		return;
 	}
 
 	if (m_moveRight)
 	{
-		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
-		playerEntity->GetSpriteComponent()->flipX = false;
+		Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerRunRight");
+		m_playerEntity->GetSpriteComponent()->flipX = false;
 	}
 	else if (m_moveLeft)
 	{
 		// Move left
-		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
-		playerEntity->GetSpriteComponent()->flipX = true;
+		Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerRunRight");
+		m_playerEntity->GetSpriteComponent()->flipX = true;
 	}
 	else if (m_moveUp || m_moveDown)
 	{
 		// Prioritize right side when moving
-		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
-		playerEntity->GetSpriteComponent()->flipX = false;
+		Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerRunRight");
+		m_playerEntity->GetSpriteComponent()->flipX = false;
 	}
 	else if (!m_isAttacking)
 	{
-		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerIdle");
+		Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerIdle");
 	}
+}
+
+void PlayerSystem::UpdateCraftableItems()
+{
+	m_availableCraftingRecipes.clear();
+	for (const auto* recipe : CraftingRecipeDatabase::Instance().GetAllCraftingRecipes())
+	{
+		if (recipe->CanCraft("PlayerInventory"))
+		{
+			m_availableCraftingRecipes.push_back(recipe);
+		}
+	}
+	m_imguiLayer->GiveAvailableCraftingRecipes(&m_availableCraftingRecipes);
 }
 
 void PlayerSystem::Interact()
 {
 	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->GetPosition(), 1.0f, static_cast<int>(GameLayer::Items));
+
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
@@ -266,18 +314,19 @@ void PlayerSystem::Interact()
 void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
+
 	itemEntity->GetComponent<TransformComponent>()->SetPosition(playerEntity->GetTransformComponent()->GetPosition());
 }
 
 void PlayerSystem::Attack()
 {
-	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
+	Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerAttack");
+	CombatCalculations::PlaceSphere(m_playerEntity->GetComponent<PlayerComponent>()->facing, m_playerEntity->GetRigidBodyComponent()->nextPos);
 }
 
 void PlayerSystem::RemoveHealth()
 {
-	playerEntity->RemoveHealth(1);
+	m_playerEntity->RemoveHealth(1);
 }
 void PlayerSystem::AddHealth(void* amount)
 {

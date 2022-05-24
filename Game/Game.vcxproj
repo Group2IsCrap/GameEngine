@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
+    <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
     <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
@@ -181,6 +183,8 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Items\CraftingRecipeDatabase.h" />
+    <ClInclude Include="Source\Items\CraftingRecipe.h" />
     <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />

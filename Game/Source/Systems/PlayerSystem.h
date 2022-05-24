@@ -8,6 +8,8 @@
 #include "../Events/InputEvents.h"
 #include "../ImGuiPlayerLayer.h"
 
+#include "../Items/CraftingRecipe.h"
+
 using DescriptorType = const char*;
 
 class PlayerSystem : public Firelight::ECS::System, Firelight::Events::Listener
@@ -37,6 +39,7 @@ private:
 	void MovePlayerRightRelease();
 
 	void HandlePlayerAnimations();
+	void UpdateCraftableItems();
 
 	void Interact();
 	void SpawnItem();
@@ -66,17 +69,21 @@ private:
 	size_t m_releaseAttackIndex;
 	size_t m_respawnIndex;
   
+	size_t m_updateCraftableItemsEventIndex;
 	size_t m_removeHealthEventIndex;
 	size_t m_addHealthEventIndex;
 
 	Firelight::Maths::Vec3f m_velocity;
-	PlayerEntity* playerEntity;
+	PlayerEntity* m_playerEntity;
   
 	bool m_moveUp;
 	bool m_moveDown;
 	bool m_moveLeft;
 	bool m_moveRight;
-	ImGuiPlayerLayer* imguiLayer = nullptr;
+
+	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
+
+	ImGuiPlayerLayer* m_imguiLayer = nullptr;
 	bool m_drawDebugUI;
 
 	bool m_isAttacking = false;
