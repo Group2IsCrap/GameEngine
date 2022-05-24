@@ -18,7 +18,7 @@ bool CraftingRecipe::CanCraft(const std::string& inventoryGroup) const
 {
     for (auto& requiredItem : m_requiredItems)
     {
-        if (InventorySystem::GlobalFunctions::GetItemTypeTotal(inventoryGroup, "MainIven", requiredItem.m_itemId) < requiredItem.m_numRequired)
+        if (InventorySystem::GlobalFunctions::GetItemTypeTotal(inventoryGroup, "MainInventory", requiredItem.m_itemId) < requiredItem.m_numRequired)
         {
             return false;
         }
@@ -31,12 +31,12 @@ void CraftingRecipe::Craft(const std::string& inventoryGroup) const
 {
     for (auto& requiredItem : m_requiredItems)
     {
-        InventorySystem::GlobalFunctions::RemoveItemType(inventoryGroup, "MainIven", requiredItem.m_numRequired, requiredItem.m_itemId);
+        InventorySystem::GlobalFunctions::RemoveItemType(inventoryGroup, "MainInventory", requiredItem.m_numRequired, requiredItem.m_itemId);
     }
 
     for (int itemIndex = 0; itemIndex < m_countMaking; ++itemIndex)
     {
-        InventorySystem::GlobalFunctions::AddItem(inventoryGroup, "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(m_itemToMake));
+        InventorySystem::GlobalFunctions::AddItem(inventoryGroup, "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(m_itemToMake));
     }
 }
 

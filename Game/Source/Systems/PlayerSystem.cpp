@@ -60,7 +60,6 @@ PlayerSystem::PlayerSystem()
 	Firelight::Events::EventDispatcher::AddListener<Inventory::UnloadInventoryGroup>(this);
 
 	m_imguiLayer = new ImGuiPlayerLayer();
-	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(m_imguiLayer);
 }
 
 PlayerSystem::~PlayerSystem()
@@ -101,15 +100,15 @@ void PlayerSystem::CheckForPlayer()
 }
 
 void PlayerSystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
-
+{
 	if (!isPaused)
 	{
-		if (playerEntity == nullptr)
+		if (m_playerEntity == nullptr)
 		{
 			return;
 		}
 
-		PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
+		PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
 
 		if (m_moveUp)
 		{
@@ -142,19 +141,22 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 {
 	if (!isPaused)
 	{
-		m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveDown)
-	{
-		m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveLeft)
-	{
-		m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveRight)
-	{
-		m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+		if (m_moveUp)
+		{
+			m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveDown)
+		{
+			m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveLeft)
+		{
+			m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveRight)
+		{
+			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+		}
 	}
 }
 
@@ -164,8 +166,13 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	{
 		Firelight::Maths::Vec2f axis = *(reinterpret_cast<Firelight::Maths::Vec2f*>(data));
 
-		m_playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
-		m_playerEntity->GetTransformComponent()->position.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+		if (auto* transformComponent = m_playerEntity->GetTransformComponent())
+		{
+			Firelight::Maths::Vec3f pos = transformComponent->GetPosition();
+			float xDiff = static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.x * 2;
+			float yDiff = static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed) * axis.y * 2;
+			transformComponent->SetPosition(pos + Firelight::Maths::Vec3f(xDiff, yDiff, 0.0f));
+		}
 	}
 	else if (event == Firelight::Events::Inventory::LoadInventoryGroup::sm_descriptor)
 	{
@@ -203,9 +210,9 @@ void PlayerSystem::MovePlayerLeft()
 {
 	if (!Firelight::Engine::Instance().GetPaused())
 	{
-		if (playerEntity != nullptr)
+		if (m_playerEntity != nullptr)
 		{
-			playerEntity->GetTransformComponent()->FlipX(true);
+			m_playerEntity->GetTransformComponent()->FlipX(true);
 		}
 		m_moveLeft = true;
 	}
@@ -218,9 +225,9 @@ void PlayerSystem::MovePlayerRight()
 {
 	if (!Firelight::Engine::Instance().GetPaused())
 	{
-		if (playerEntity != nullptr)
+		if (m_playerEntity != nullptr)
 		{
-			playerEntity->GetTransformComponent()->FlipX(false);
+			m_playerEntity->GetTransformComponent()->FlipX(false);
 		}
 		m_moveRight = true;
 	}
@@ -288,7 +295,7 @@ void PlayerSystem::UpdateCraftableItems()
 
 void PlayerSystem::Interact()
 {
-	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(playerEntity->GetTransformComponent()->GetPosition(), 1.0f, static_cast<int>(GameLayer::Items));
+	std::vector<Firelight::ECS::Entity*> entitiesCollidedWith = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_playerEntity->GetTransformComponent()->GetPosition(), 1.0f, static_cast<int>(GameLayer::Items));
 
 	if (entitiesCollidedWith.size() > 0)
 	{
@@ -315,7 +322,7 @@ void PlayerSystem::SpawnItem()
 {
 	Entity* itemEntity = ItemDatabase::Instance()->CreateInstanceOfItem(0);
 
-	itemEntity->GetComponent<TransformComponent>()->SetPosition(playerEntity->GetTransformComponent()->GetPosition());
+	itemEntity->GetComponent<TransformComponent>()->SetPosition(m_playerEntity->GetTransformComponent()->GetPosition());
 }
 
 void PlayerSystem::Attack()
@@ -331,7 +338,7 @@ void PlayerSystem::RemoveHealth()
 void PlayerSystem::AddHealth(void* amount)
 {
 	int amountAdd = (int)amount;
-	playerEntity->AddHealth(amountAdd);
+	m_playerEntity->AddHealth(amountAdd);
 }
 void PlayerSystem::SwitchWeapon()
 {
@@ -355,24 +362,24 @@ void PlayerSystem::ToggleDebug()
 
 	if (m_drawDebugUI)
 	{
-		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(imguiLayer);
+		Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(m_imguiLayer);
 	}
 	else
 	{
-		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(imguiLayer);
+		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(m_imguiLayer);
 	}
 }
 
 void PlayerSystem::Respawn()
 {
-	if (playerEntity != nullptr)
+	if (m_playerEntity != nullptr)
 	{
 		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
 		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "Equipment");
 
-		playerEntity->AddHealth(playerEntity->GetHealthComponent()->maxHealth);
+		m_playerEntity->AddHealth(m_playerEntity->GetHealthComponent()->maxHealth);
 
-		playerEntity->GetRigidBodyComponent()->nextPos = Vec3f(0.0f,0.0f,0.0f);
+		m_playerEntity->GetRigidBodyComponent()->nextPos = Vec3f(0.0f,0.0f,0.0f);
 
 	}
 }
