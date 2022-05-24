@@ -535,7 +535,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 
 			if (specialSlot)
 			{
-				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") == specialSlot->tags.end()) {
+				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
 					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
 				}
 			}
@@ -588,7 +588,7 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 
 					if (specialSlot)
 					{
-						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") == specialSlot->tags.end()) {
+						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
 							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
 						}
 					}

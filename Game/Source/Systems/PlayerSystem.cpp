@@ -371,10 +371,8 @@ void PlayerSystem::SwitchWeapon()
 	{
 		m_currentWeaponCooldown = weaponComponent->Cooldown;
 
-		if (weaponComponent != nullptr)
-		{
-			CombatCalculations::ChangeWeapon(weaponComponent);
-		}
+		CombatCalculations::ChangeWeapon(weaponComponent);
+
 	}
 }
 
