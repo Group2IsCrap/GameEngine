@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
     <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
     <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
