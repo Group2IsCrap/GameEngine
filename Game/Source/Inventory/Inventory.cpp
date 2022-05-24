@@ -176,6 +176,11 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				slot->GetWidgetComponent()->isActive = inventoryData->isDisplay;
 				slot->SetOffset(Maths::Vec2f(currX, currY) + inventoryData->slotMargin);
 				slot->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
+				TextComponent* text = slot->AddComponent<ECS::TextComponent>();
+				text->hidden = false;
+				text->text.SetTextHeight(30);
+				text->layer = 100000;
+				text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
 				panelToUse->push_back(slot);
 				nextFreePannle= panelToUse->size();
 			}
@@ -207,6 +212,12 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 
 		ECS::UIBaseWidgetComponent* slotWidget = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID);
 
+		if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+			TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+			textSlot->text.SetString(Action->DisplayText);
+			textSlot->hidden = false;
+			
+		}
 		if (data->entityIDs.size() >= 1) {
 			ECS::PixelSpriteComponent* iconSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID);
 			iconSprite->toDraw = true;
@@ -253,6 +264,11 @@ void Inventory::UnloadInventory()
 			sprite->toDraw = inventoryData->isDisplay;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->isActive = inventoryData->isDisplay;
 		}
+		if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+			TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+			//textSlot->hidden = true;
+			
+		}
 		slot->slotID = NULL;
 		if (ECS::PixelSpriteComponent* pix = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID))
 		{
@@ -261,6 +277,7 @@ void Inventory::UnloadInventory()
 			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(data->UITexID);
 			text->hidden = true;
 		}
+		
 	}
 	for (int i = 0; i < inventoryData->slotCount; i++)
 	{
