@@ -132,7 +132,7 @@ namespace InventorySystem::GlobalFunctions {
         Firelight::ECS::EntityID returnData;
     };
 
-    inline Firelight::ECS::EntityID GetSpecilaSlotEntity(std::string group, std::string name, std::string slotName)
+    inline Firelight::ECS::EntityID GetSpecialSlotEntity(std::string group, std::string name, std::string slotName)
     {
         SpecialItemSlotData specialItemSlotData;
         specialItemSlotData.groupName = group;

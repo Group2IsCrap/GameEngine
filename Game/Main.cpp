@@ -38,6 +38,8 @@
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
 #include "Source/WorldEntities/EntitySpawnerComponent.h"
 #include "Source/WorldEntities/EntitySpawnerSystem.h"
+#include "Source/Events/PlayerEvents.h"
+
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -70,8 +72,8 @@ void TogglePause()
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
+	ItemDatabase::Instance()->CreateInstanceOfItem(31);
+	//InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
 }
 
 void SpawnItem1()
@@ -98,6 +100,15 @@ void SetupEnemySpawner()
 	spawnerComponent->enemyName = "Crocodile";
 	spawnerComponent->respawnCooldown = 3;
 	crocodileSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+}
+
+void SetupResourceSpawner()
+{
+	GameEntity* treeSpawner = new GameEntity("Tree Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 0;
+	spawnerComponent->respawnCooldown = 3;
+	treeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
@@ -143,18 +154,18 @@ void ReAddToPlayer(void* toAdd)
 	}
 }
 
-void SetupResourceTemplate()
-{
-	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
-	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
-	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
-	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
-	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
-	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
-	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
-	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
-
-}
+//void SetupResourceTemplate()
+//{
+//	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
+//	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
+//	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
+//	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
+//	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
+//	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
+//	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
+//	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
+//
+//}
 
 static UICanvas* canvas = nullptr;
 static PlayerEntity* player = nullptr;
@@ -209,10 +220,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	if (Engine::Instance().Initialise(hInstance, "Firelight", "windowClass", Maths::Vec2i(1280, 720)))
 	{
 		// Register Systems
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventorySystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<EntitySpawnerSystem>();
-		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventorySystem>();
 
 		// Register KeyBindings
 		BindDefaultKeys();
@@ -227,7 +238,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemySpawner();
-		SetupResourceTemplate();
+		SetupResourceSpawner();
 
 		//// Grass
 		//SpriteEntity* test2 = new SpriteEntity();
@@ -276,6 +287,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
+
+		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
 
 
 		while (Engine::Instance().ProcessMessages())

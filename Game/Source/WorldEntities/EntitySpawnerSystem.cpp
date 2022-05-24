@@ -34,12 +34,27 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 		EntitySpawnerComponent* entitySpawnerComponent = currentEntity.GetComponent<EntitySpawnerComponent>();
 		if (entitySpawnerComponent->spawnedEntity != nullptr)
 		{
-			if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>()->isDead)
+			if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>() != nullptr)
 			{
-				entitySpawnerComponent->spawnedEntity->Destroy();
-				entitySpawnerComponent->spawnedEntity = nullptr;
-				continue;
+				if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>()->isDead)
+				{
+					entitySpawnerComponent->spawnedEntity->Destroy();
+					entitySpawnerComponent->spawnedEntity = nullptr;
+					continue;
+				}
 			}
+
+			if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
+			{
+				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>()->isDead)
+				{
+					entitySpawnerComponent->spawnedEntity->Destroy();
+					entitySpawnerComponent->spawnedEntity = nullptr;
+					continue;
+				}
+			}
+
+			
 
 			continue;
 		}
@@ -76,6 +91,7 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 			{
 				// Spawn new resource
 				ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(entitySpawnerComponent->resourceID);
+				entitySpawnerComponent->spawnedEntity = resourceEntity;
 				resourceEntity->GetRigidBodyComponent()->nextPos = spawnPos;
 			}
 		}

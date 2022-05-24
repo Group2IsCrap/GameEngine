@@ -24,6 +24,7 @@ namespace InventorySystem
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemType>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemTypeNumber>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::AddItem>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::GetSpecialSlot>(this);
 
         ECS::UIPanel* Slot;
         for (size_t i = 0; i < 100; i++)
@@ -578,6 +579,8 @@ namespace InventorySystem
                 return inventory->GetSpecialSlot(slotName);
             }
         }
+
+        return UINT16_MAX;
     }
 
 }
