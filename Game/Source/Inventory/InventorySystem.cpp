@@ -27,17 +27,18 @@ namespace InventorySystem
         Events::EventDispatcher::AddListener<Events::Inventory::GetSpecialSlot>(this);
 
         ECS::UIPanel* Slot;
-        for (size_t i = 0; i < 100; i++)
+        for (size_t i = 0; i < 20; i++)
         {
             Slot = new ECS::UIPanel("Inventory Slot");
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
-            TextComponent* text = Slot->AddComponent<ECS::TextComponent>();
+            /*TextComponent* text = Slot->AddComponent<ECS::TextComponent>();
             text->hidden = true;
+            text->text.SetString("N/A");
             text->text.SetTextHeight(30);
             text->layer = 100000;
-            text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
+            text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);*/
             m_entityIDPanelSlot.push_back(Slot);
         }
     }
