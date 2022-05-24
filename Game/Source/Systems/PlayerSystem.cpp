@@ -40,11 +40,12 @@ PlayerSystem::PlayerSystem()
 	
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
-	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
+	m_respawnIndex = EventDispatcher::SubscribeFunction<RespawnEvent>(std::bind(&PlayerSystem::Respawn, this));
 
 	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
+	
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 
@@ -66,9 +67,9 @@ PlayerSystem::~PlayerSystem()
 
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
-	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
-	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_releaseAttackIndex);
+	EventDispatcher::UnsubscribeFunction<ReleaseAttackEvent>(m_releaseAttackIndex);
+	EventDispatcher::UnsubscribeFunction<RespawnEvent>(m_respawnIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -255,11 +256,6 @@ void PlayerSystem::Attack()
 	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
 }
 
-void PlayerSystem::RemoveHealth()
-{
-	playerEntity->RemoveHealth(1);
-}
-
 void PlayerSystem::SwitchWeapon()
 {
 	//Get current weapon from equipped & cooldown
@@ -287,5 +283,16 @@ void PlayerSystem::ToggleDebug()
 	else
 	{
 		Firelight::ImGuiUI::ImGuiManager::Instance()->RemoveRenderLayer(imguiLayer);
+	}
+}
+
+void PlayerSystem::Respawn()
+{
+	if (playerEntity != nullptr)
+	{
+		playerEntity->GetHealthComponent()->currentHealth = playerEntity->GetHealthComponent()->maxHealth;
+
+		playerEntity->GetRigidBodyComponent()->nextPos = Vec3f(0.0f,0.0f,0.0f);
+
 	}
 }

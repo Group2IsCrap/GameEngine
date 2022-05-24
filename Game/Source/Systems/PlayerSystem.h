@@ -41,10 +41,10 @@ private:
 	void Interact();
 	void SpawnItem();
 	void Attack();
-	void RemoveHealth();
 
 	void StartAttack();
 	void StopAttack();
+	void Respawn();
 
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -62,7 +62,7 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_attackIndex;
 	size_t m_releaseAttackIndex;
-	size_t m_removeHealthEventIndex;
+	size_t m_respawnIndex;
   
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* playerEntity;
