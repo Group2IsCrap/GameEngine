@@ -16,7 +16,7 @@
 #include"../Inventory/InventoryFunctionsGlobal.h"
 #include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Systems/AnimationSystem.h>
-
+#include"../Events/PlayerEvents.h"
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
@@ -40,6 +40,9 @@ PlayerSystem::PlayerSystem()
 	
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
+	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
+	m_addHealthEventIndex = EventDispatcher::SubscribeFunction<Firelight::Events::PlayerEvents::AddHealth>(std::bind(&PlayerSystem::AddHealth, this, std::placeholders::_1));
+
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 	m_respawnIndex = EventDispatcher::SubscribeFunction<RespawnEvent>(std::bind(&PlayerSystem::Respawn, this));
@@ -67,6 +70,8 @@ PlayerSystem::~PlayerSystem()
 
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
+	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
+	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 	EventDispatcher::UnsubscribeFunction<ReleaseAttackEvent>(m_releaseAttackIndex);
 	EventDispatcher::UnsubscribeFunction<RespawnEvent>(m_respawnIndex);
@@ -256,6 +261,15 @@ void PlayerSystem::Attack()
 	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
 }
 
+void PlayerSystem::RemoveHealth()
+{
+	playerEntity->RemoveHealth(1);
+}
+void PlayerSystem::AddHealth(void* amount)
+{
+	int amountAdd = (int)amount;
+	playerEntity->AddHealth(amountAdd);
+}
 void PlayerSystem::SwitchWeapon()
 {
 	//Get current weapon from equipped & cooldown

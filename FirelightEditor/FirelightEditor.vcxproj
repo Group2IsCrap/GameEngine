@@ -158,7 +158,6 @@
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="Source\Panels\HierarchyPanel.cpp" />
     <ClCompile Include="Source\Panels\InspectorPanel.cpp" />
-    <ClCompile Include="Source\Panels\Timeline\TimelineItem.cpp" />
     <ClCompile Include="Source\Panels\ViewportPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +167,6 @@
     <ClInclude Include="ImGuiEditorLayer.h" />
     <ClInclude Include="Source\Panels\HierarchyPanel.h" />
     <ClInclude Include="Source\Panels\InspectorPanel.h" />
-    <ClInclude Include="Source\Panels\Timeline\TimelineItem.h" />
     <ClInclude Include="Source\Panels\ViewportPanel.h" />
   </ItemGroup>
   <ItemGroup>

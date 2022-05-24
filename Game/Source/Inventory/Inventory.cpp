@@ -1,7 +1,7 @@
 #include "Inventory.h"
 #include "Source/Graphics/AssetManager.h"
 #include"Source/ECS/Components/ItemComponents.h"
-
+#include"../Events/PlayerEvents.h"
 Inventory::Inventory():
 	m_inventoryEntityID(-1),
 	m_inventorySpace(nullptr)
@@ -286,10 +286,13 @@ void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
 	for (ECS::EntityID itemID: *id)
 	{
 		ECS::ItemComponent* itemData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(itemID);
-		bool isUsed = true;
+		bool isUsed = false;
 		for (std::string tag : itemData->tags) {
 			if (tag == "Food") {
 				//health up event
+				ECS::FoodComponent* FoodData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::FoodComponent>(itemID);
+				int healthadd = FoodData->HealthRegeneration;
+				Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::AddHealth::sm_descriptor,(void*)healthadd);
 				isUsed = true;
 				break;
 			}
@@ -381,15 +384,17 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 								0));
-							
+
 							text->hidden = false;
-							
+
 						}
 						icon->AddComponent<ECS::UIDraggableComponent>();
 						icon->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						icon->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, icon->GetEntityID()));
-						UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
-						press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+						if (inventoryData->name=="MainInventory"){
+							UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
+							press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+						}
 						slotData->UITexID = icon->GetEntityID();
 					}
 					if (inventoryData->isDisplay) {
