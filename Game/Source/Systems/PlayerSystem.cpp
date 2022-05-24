@@ -34,6 +34,7 @@ PlayerSystem::PlayerSystem()
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::Inventory::LoadInventoryGroup>(this);
+	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::Inventory::UnloadInventoryGroup>(this);
 
 	m_imguiLayer = new ImGuiPlayerLayer();
 	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(m_imguiLayer);
@@ -99,6 +100,15 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 
 			m_imguiLayer->SetDebugCraftingMenuEnabled(true);
 			m_imguiLayer->GiveAvailableCraftingRecipes(&m_availableCraftingRecipes);
+		}
+	}
+	else if (event == Firelight::Events::Inventory::UnloadInventoryGroup::sm_descriptor)
+	{
+		std::string inventoryGroupName = *reinterpret_cast<std::string*>(data);
+
+		if (inventoryGroupName == "PlayerInventory")
+		{
+			m_imguiLayer->SetDebugCraftingMenuEnabled(false);
 		}
 	}
 }
