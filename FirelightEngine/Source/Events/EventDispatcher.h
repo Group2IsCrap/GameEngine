@@ -11,7 +11,7 @@ namespace Firelight::Events
 	class EventDispatcher
 	{
 	public:
-		using CallbackFunctionType = std::function< void() >;
+		using CallbackFunctionType = std::function< void(void*) >;
 		using DescriptorType = const char*;
 
 		//Listener Events
@@ -32,11 +32,15 @@ namespace Firelight::Events
 		static size_t SubscribeFunction(CallbackFunctionType&& callbackFunction);
 		template<typename EventType>
 		static void UnsubscribeFunction(const size_t index);
+		static void UnsubscribeFunction(DescriptorType descriptor, const size_t index);
 		template<typename EventType>
 		static void UnsubscribeAllFunctions();
 		template<typename EventType>
 		static void InvokeFunctions();
+		template<typename EventType>
+		static void InvokeFunctions(void* data);
 		static void InvokeFunctions(DescriptorType descriptor);
+		static void InvokeFunctions(DescriptorType descriptor, void* data);
 		static size_t SubscribeFunction(DescriptorType descriptor,CallbackFunctionType&& callbackFunction);
 	private:
 		static std::map<Event::DescriptorType, std::vector<Listener*>> sm_listeners;

@@ -8,6 +8,8 @@ namespace Firelight::ECS
 	public:
 		UIPanel();
 
+		UIPanel(std::string name);
+
 		UIContainerComponent* GetContainerComponent();
 	};
 }

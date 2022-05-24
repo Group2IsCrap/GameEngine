@@ -7,14 +7,18 @@
 #include "../Core/Layers.h"
 
 #include "PlayerComponent.h"
+#include <Source/ECS/Components/AnimationComponent.h>
 
 PlayerEntity::PlayerEntity()
 {
+	GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Player";
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
 	AddComponent<PlayerComponent>();
-	AddComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
+	GetComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
 	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player);
 	GetLayerComponent()->layer = static_cast<int>(GameLayer::Player);
+	GetSpriteComponent()->pixelsPerUnit *= 2;
+	AddComponent<Firelight::ECS::AnimationComponent>();
 
 	GetHealthComponent()->maxHealth = 5;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;

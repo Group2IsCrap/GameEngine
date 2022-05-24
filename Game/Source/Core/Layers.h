@@ -5,15 +5,17 @@ enum class GameLayer : int
 {
 	Player = 0,
 	Items = 1,
-	Enemies = 2
+	Enemy = 2,
+	Resource = 3
 };
 
 // The layer of which the entity should render on
 enum class RenderLayer : int
 {
 	World = 0,
+	Foreground = 1000,
 	Player = 999,
 	Enemy = 998,
 	Items = 997,
-	UI = 1000
+	UI = 2000
 };

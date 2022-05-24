@@ -124,13 +124,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib</AdditionalDependencies>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

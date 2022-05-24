@@ -85,7 +85,7 @@ namespace Firelight::ECS
 	struct UIDraggableComponent : BaseComponent
 	{
 		std::vector<CallbackFunctionType> onPickUpFunctions;
-		std::vector<CallbackFunctionType> onDropUpFunctions;
+		std::vector<CallbackFunctionType> onDropFunctions;
 	};
 
 	struct UIContainerComponent : BaseComponent
@@ -137,8 +137,9 @@ namespace Firelight::ECS
 
 	struct UIBordreComponent : BaseComponent
 	{
-		Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
-		float width;
+		//Graphics::Colour::RGBA colour= Firelight::Graphics::Colours::sc_white;
+		float widthTopBot;
+		float widthLeftRight;
 
 		void Serialise() override
 		{

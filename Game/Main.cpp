@@ -9,17 +9,28 @@
 #include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "Source/Systems/PlayerSystem.h"
+#include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
 #include "Source/Items/CraftingRecipeDatabase.h"
+#include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/ImGuiDebugLayer.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
+#include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
+#include "Source/Core/AIEntity.h"
+#include "Source/AI/Enemies/AICrocodileEntity.h"
+#include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/AIBehaviourComponent.h"
+#include "Source/WorldEntities/TreeEntity.h"
+#include "Source/WorldEntities/RockEntity.h"
+#include "Source/WorldEntities/BushEntity.h"
+#include "Source/WorldEntities/BerryBushEntity.h"
 
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
@@ -33,27 +44,40 @@ using namespace snowFallAudio::FModAudio;
 void BindDefaultKeys()
 {
 	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
+
+
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S);
 	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D);
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
+
+
 	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
-	keyBinder->BindKeyboardActionEvent(RemoveHealthEvent::sm_descriptor, Keys::KEY_T, KeyEventType::KeyPressSingle);
 
 	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
 }
 
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(0)->GetEntityID();
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
 }
 
 void SpawnItem1()
 {
-	//ItemDatabase::Instance()->CreateInstanceOfItem(1);
-	ItemDatabase::Instance()->CreateInstanceOfItem(3)->GetEntityID();
+	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	ItemDatabase::Instance()->CreateInstanceOfItem(1);
+	ItemDatabase::Instance()->CreateInstanceOfItem(2);
+	ItemDatabase::Instance()->CreateInstanceOfItem(3);
+	ItemDatabase::Instance()->CreateInstanceOfItem(4);
 }
 
 void SetupDebugUI()
@@ -65,32 +89,121 @@ void SetupDebugUI()
 	Firelight::ImGuiUI::ImGuiManager::Instance()->AddRenderLayer(itemTestLayer);
 }
 
+void SetupEnemyTemplate()
+{
+	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate("Enemy Template");
+	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
+	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
+	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
+	enemyTemplate->AddComponent<RigidBodyComponent>();
+	enemyTemplate->AddComponent<AIBehaviourComponent>();
+	enemyTemplate->AddComponent<HealthComponent>();
+	
+	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
+	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+}
+
+void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
+
+	Maths::Vec3f atPos= at;
+	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(toDrop);
+	if (toDropData) {
+		toDropData->position = Maths::Random::RandomPointInCircle(atPos, 3);
+	}
+	
+}
+void DropItemAtPlayer(void* toDrop, EntityID player) {
+	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
+
+	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
+	for (EntityID DropID : DropIDs) {
+		DropItemAt(toDropData->position, DropID);
+	}
+}
+
+void ReAddToPlayer(void* toAdd) {
+	std::vector<EntityID>* AddIDs = (std::vector <EntityID>*)toAdd;
+	std::vector<EntityID> toRemove;
+	for (size_t i = 0; i < AddIDs->size(); i++)
+	{
+		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", AddIDs->at(i))) {
+			toRemove.push_back(AddIDs->at(i));
+		}
+	}
+	//fun remove loops 
+	for (size_t i = 0; i < toRemove.size(); i++)
+	{
+		for (size_t j = 0; j < AddIDs->size(); j++)
+		{
+			if (AddIDs->at(j) == toRemove[i]) {
+				AddIDs->erase(AddIDs->begin() + j);
+				break;
+			}
+		}
+	}
+}
+void SetupResourceTemplate()
+{
+	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
+	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
+	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
+	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
+	spriteComponent->pixelsPerUnit = 50;
+	spriteComponent->layer = static_cast<int>(RenderLayer::Items);
+	resourceTemplate->AddComponent<RigidBodyComponent>();
+	resourceTemplate->AddComponent<HealthComponent>();
+
+	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	entity1->GetIDComponent()->name = "Resource: Tree";
+	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
+	entity2->GetIDComponent()->name = "Resource: Rock";
+	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
+	entity3->GetIDComponent()->name = "Resource: Bush";
+	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
+	entity4->GetIDComponent()->name = "Resource: Berry Bush";
+	
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Engine::Instance().Initialise(hInstance, "Game Name", "windowClass", Maths::Vec2i(1280, 720)))
+	if (Engine::Instance().Initialise(hInstance, "Don't Perish", "windowClass", Maths::Vec2i(1280, 720)))
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
 
 		// Register KeyBindings
 		BindDefaultKeys();
 
 		// Camera
-		CameraEntity* camera = new CameraEntity();
-		Engine::Instance().SetActiveCamera(camera);
+		CameraEntity* camera = Engine::Instance().GetActiveCamera();
+		
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
 
+		//AI
+		SetupEnemyTemplate();
+		SetupResourceTemplate();
+
+
+		//// Grass
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
 		// World
 		WorldEntity* world = new WorldEntity();
 
-		SpriteEntity* barn = new SpriteEntity();
+		SpriteEntity* barn = new SpriteEntity("Barn");
 		barn->GetComponent<TransformComponent>()->position.x = 10.0f;
 		barn->GetComponent<TransformComponent>()->position.y = 10.0f;
 		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
@@ -100,7 +213,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		barn->GetComponent<StaticComponent>()->isStatic = true;
 		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
 		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
-		boxCollider->drawCollider = true;
 		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
 		//collider->drawCollider = true;
 		//collider->radius = 4.25f;
@@ -108,7 +220,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// UI
 		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
 		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
-		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
+		//MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
@@ -117,10 +229,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();
 		InventoryEntity* inv1 = new InventoryEntity("PlayerInventory", false, true, Keys::KEY_B);
-		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, (1080 / 2)), ECS::e_AnchorSettings::TopRight);
-		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(300, 1080 / 2), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("MainIven", 10, 3, Maths::Vec2f(400, (1080 / 2)+200), Maths::Vec2f(0, (1080 / 2)-200), ECS::e_AnchorSettings::TopRight);
+		inv1->AddInventory("Equipment", 8, 1, Maths::Vec2f(400, (1080 / 2)-200), Maths::Vec2f(0, 0), ECS::e_AnchorSettings::TopRight);
+
 		inv1->AddSpecialSlot(1, "Weapon", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopRight, std::vector<std::string>{ "Weapon" });
-		inv1->AddSpecialSlot(1, "Head", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>{ "Head" });
+		inv1->AddSpecialSlot(1, "Head", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::TopLeft, std::vector<std::string>{ "Helm" });
 		inv1->AddSpecialSlot(1, "Body", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Top, std::vector<std::string>{ "Chest" });
 		inv1->AddSpecialSlot(1, "legs", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Left, std::vector<std::string>{ "Legs" });
 		inv1->AddSpecialSlot(1, "feet", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Right, std::vector<std::string>{ "Back" });
@@ -128,6 +241,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "b", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::Bottom, std::vector<std::string>{ "b" });
 		inv1->AddSpecialSlot(1, "c", Maths::Vec2f(0, 0), Maths::Vec2f(100, 100), ECS::e_AnchorSettings::BottomRight, std::vector<std::string>{ "c" });
 
+		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
+		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
+		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
+		
 		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");

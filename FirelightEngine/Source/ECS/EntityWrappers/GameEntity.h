@@ -9,7 +9,9 @@ namespace Firelight::ECS
     {
     public:
         GameEntity();
+        GameEntity(std::string name);
         GameEntity(Firelight::ECS::EntityID entityID);
+        GameEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
         IdentificationComponent* GetIDComponent();
         StaticComponent*         GetStaticComponent();

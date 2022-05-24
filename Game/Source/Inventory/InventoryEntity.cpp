@@ -2,15 +2,18 @@
 #include"Source/Events/EventDispatcher.h"
 #include"InventoryEvents.h"
 
-InventoryEntity::InventoryEntity()
+InventoryEntity::InventoryEntity() : Entity()
 {
-    AddComponent<InventoryComponentGroupID>(); 
+    AddComponent<IdentificationComponent>()->name = "Inventory";
+    AddComponent<InventoryComponentGroupID>();
+
 }
 
-InventoryEntity::InventoryEntity(std::string name, bool isDisplayButtons, bool isDisplayAll, Firelight::Keys keyToActivate)
+InventoryEntity::InventoryEntity(std::string name, bool isDisplayButtons, bool isDisplayAll, Firelight::Keys keyToActivate) : InventoryEntity()
 {
-    AddComponent<InventoryComponentGroupID>();
-    
+
+    this->GetComponent<IdentificationComponent>()->name = name;
+
     GetInventoryGroup()->group = name;
     GetInventoryGroup()->isDisplayButtons = isDisplayButtons;
     GetInventoryGroup()->isDisplayAll = isDisplayAll;
@@ -28,6 +31,9 @@ void InventoryEntity::AddInventory(std::string name, int rowCount, int columnCou
 {
     AddComponent<InventoryComponent>();
     AddComponent<InventoryComponentButtonLayout>();
+    AddComponent<InventoryComponentOutPut>();
+    AddComponent<InventoryComponentInPut>();
+
     GetInventoryGroup()->numberOfInventories++;
 
     this->GetInventoryComponent(GetInventoryGroup()->numberOfInventories - 1)->name = name;
@@ -78,6 +84,11 @@ void InventoryEntity::RemoveInventory(std::string name)
     data.push_back(name);
     Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::Inventory::RemoveInventory>((void*)&data);
 
+}
+
+void InventoryEntity::AddOutputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction)
+{
+    GetComponent<InventoryComponentOutPut>(invetoryNum)->outputCommand.push_back(callbackFunction);
 }
 
 void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags)

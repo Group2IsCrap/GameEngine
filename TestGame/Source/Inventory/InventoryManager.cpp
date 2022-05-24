@@ -117,14 +117,14 @@ void InventoryManager::ItemChangeInventory()
 void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
 {
     Inventory* newInv = new Inventory(InvName);
-    newInv->CreateInventoryNoPanel(size, columnRows, parent, anc, offSet);
+    newInv->CreateInventory(size, columnRows, parent, anc, offSet);
     m_inventory[group].emplace_back(newInv);
 }
 
 void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
 {
     Inventory* newInv = new Inventory(InvName);
-    newInv->CreateInventoryNoPanel(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
+    newInv->CreateInventory(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
     m_inventory[group].emplace_back(newInv);
 }
 

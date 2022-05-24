@@ -12,11 +12,15 @@
 #include "../Items/ItemDatabase.h"
 #include "../Items/CraftingRecipeDatabase.h"
 #include "../Core/Layers.h"
+#include "../Core/CharacterEntity.h"
+#include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
+#include <Source/ECS/Systems/AnimationSystem.h>
 
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
+
 
 PlayerSystem::PlayerSystem()
 {
@@ -24,13 +28,22 @@ PlayerSystem::PlayerSystem()
 	m_playerEntity = nullptr;
 
 	m_playerEntityAddedCheckIndex = EventDispatcher::SubscribeFunction<ECS::OnEntityCreatedEvent>(std::bind(&PlayerSystem::CheckForPlayer, this));
+	
 	m_playerMoveUpIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEvent>(std::bind(&PlayerSystem::MovePlayerUp, this));
 	m_playerMoveLeftIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveLeftEvent>(std::bind(&PlayerSystem::MovePlayerLeft, this));
 	m_playerMoveRightIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveDownEvent>(std::bind(&PlayerSystem::MovePlayerDown, this));
 	m_playerMoveDownIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveRightEvent>(std::bind(&PlayerSystem::MovePlayerRight, this));
+
+	m_playerMoveUpReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveUpEventRelease>(std::bind(&PlayerSystem::MovePlayerUpRelease, this));
+	m_playerMoveLeftReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveLeftEventRelease>(std::bind(&PlayerSystem::MovePlayerLeftRelease, this));
+	m_playerMoveRightReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveDownEventRelease>(std::bind(&PlayerSystem::MovePlayerDownRelease, this));
+	m_playerMoveDownReleaseIndex = EventDispatcher::SubscribeFunction<OnPlayerMoveRightEventRelease>(std::bind(&PlayerSystem::MovePlayerRightRelease, this));
+	
 	m_interactionEventIndex = EventDispatcher::SubscribeFunction<OnInteractEvent>(std::bind(&PlayerSystem::Interact, this));
 	m_spawnItemEventIndex = EventDispatcher::SubscribeFunction<SpawnItemEvent>(std::bind(&PlayerSystem::SpawnItem, this));
 	m_removeHealthEventIndex = EventDispatcher::SubscribeFunction<RemoveHealthEvent>(std::bind(&PlayerSystem::RemoveHealth, this));
+	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
+	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::InputEvents::OnPlayerMoveEvent>(this);
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::Inventory::LoadInventoryGroup>(this);
@@ -47,12 +60,20 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveLeftEvent>(m_playerMoveLeftIndex);
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveDownEvent>(m_playerMoveRightIndex);
 	EventDispatcher::UnsubscribeFunction<OnPlayerMoveRightEvent>(m_playerMoveDownIndex);
+
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveUpEvent>(m_playerMoveUpReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveLeftEvent>(m_playerMoveLeftReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveDownEvent>(m_playerMoveRightReleaseIndex);
+	EventDispatcher::UnsubscribeFunction<OnPlayerMoveRightEvent>(m_playerMoveDownReleaseIndex);
+
 	EventDispatcher::UnsubscribeFunction<OnInteractEvent>(m_interactionEventIndex);
 	EventDispatcher::UnsubscribeFunction<SpawnItemEvent>(m_spawnItemEventIndex);
 	EventDispatcher::UnsubscribeFunction<RemoveHealthEvent>(m_removeHealthEventIndex);
 
 	Firelight::Events::EventDispatcher::RemoveListener<Firelight::Events::Inventory::LoadInventoryGroup>(this);
 	Firelight::Events::EventDispatcher::RemoveListener<Firelight::Events::Inventory::UnloadInventoryGroup>(this);
+
+	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -69,6 +90,52 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time)
 	if (m_playerEntity == nullptr)
 	{
 		return;
+	}
+	PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
+
+	if (m_moveUp)
+	{
+		playerComponent->facing = Facing::Up;
+	}
+	else if (m_moveDown)
+	{
+		playerComponent->facing = Facing::Down;
+	}
+	else if (m_moveLeft)
+	{
+		playerComponent->facing = Facing::Left;
+	}
+	else if (m_moveRight)
+	{
+		playerComponent->facing = Facing::Right;
+	}
+	m_attackCooldown += time.GetDeltaTime();
+	if (m_attackCooldown >= m_currentWeaponCooldown && m_isAttacking)
+	{
+		m_attackCooldown = 0.0f;
+		Attack();
+	}
+
+	HandlePlayerAnimations();
+}
+
+void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
+{
+	if (m_moveUp)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveDown)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveLeft)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+	}
+	if (m_moveRight)
+	{
+		playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
 	}
 }
 
@@ -113,24 +180,73 @@ void PlayerSystem::HandleEvents(DescriptorType event, void* data)
 	}
 }
 
+float PlayerSystem::GetSpeed()
+{
+	return playerEntity->GetComponent<PlayerComponent>()->speed;
+}
+
 void PlayerSystem::MovePlayerUp()
 {
-	m_playerEntity->GetRigidBodyComponent()->velocity.y += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_moveUp = true;
 }
 void PlayerSystem::MovePlayerLeft()
 {
-	m_playerEntity->GetRigidBodyComponent()->velocity.x -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
-
+	m_moveLeft = true;
 }
 void PlayerSystem::MovePlayerDown()
 {
-	m_playerEntity->GetRigidBodyComponent()->velocity.y -= static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
-
+	m_moveDown = true;
 }
 void PlayerSystem::MovePlayerRight()
 {
-	m_playerEntity->GetRigidBodyComponent()->velocity.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * m_playerEntity->GetComponent<PlayerComponent>()->speed);
+	m_moveRight = true;
+}
 
+void PlayerSystem::MovePlayerUpRelease()
+{
+	m_moveUp = false;
+}
+void PlayerSystem::MovePlayerLeftRelease()
+{
+	m_moveLeft = false;
+}
+void PlayerSystem::MovePlayerDownRelease()
+{
+	m_moveDown = false;
+}
+void PlayerSystem::MovePlayerRightRelease()
+{
+	m_moveRight = false;
+}
+
+void PlayerSystem::HandlePlayerAnimations()
+{
+	if (playerEntity == nullptr)
+	{
+		return;
+	}
+
+	if (m_moveRight)
+	{
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = false;
+	}
+	else if (m_moveLeft)
+	{
+		// Move left
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = true;
+	}
+	else if (m_moveUp || m_moveDown)
+	{
+		// Prioritize right side when moving
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerRunRight");
+		playerEntity->GetSpriteComponent()->flipX = false;
+	}
+	else if (!m_isAttacking)
+	{
+		Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerIdle");
+	}
 }
 
 void PlayerSystem::Interact()
@@ -154,7 +270,6 @@ void PlayerSystem::Interact()
 				transformComponent->position = Vec3f(100000, 0, 0);
 			}
 		}
-		//playerEntity->GetTransformComponent()->position.x += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime() * playerEntity->GetComponent<PlayerComponent>()->speed);
 	}
 }
 
@@ -164,8 +279,29 @@ void PlayerSystem::SpawnItem()
 	itemEntity->GetComponent<TransformComponent>()->position = m_playerEntity->GetTransformComponent()->position;
 }
 
+void PlayerSystem::Attack()
+{
+	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
+}
+
 void PlayerSystem::RemoveHealth()
 {
 	m_playerEntity->RemoveHealth(1);
 }
 
+void PlayerSystem::SwitchWeapon()
+{
+	//Get current weapon from equipped & cooldown
+	//Swap currentWeaponCooldown
+}
+
+void PlayerSystem::StartAttack()
+{
+	m_isAttacking = true;
+}
+
+void PlayerSystem::StopAttack()
+{
+	m_isAttacking = false;
+}

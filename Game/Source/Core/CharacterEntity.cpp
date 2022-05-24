@@ -1,8 +1,16 @@
 #include "CharacterEntity.h"
 
-CharacterEntity::CharacterEntity()
+CharacterEntity::CharacterEntity() : Firelight::ECS::SpriteEntity()
 {
+	AddComponent<Firelight::ECS::RigidBodyComponent>();
 	AddComponent<HealthComponent>();
+	this->GetIDComponent()->name = "Character Entity";
+}
+
+
+CharacterEntity::CharacterEntity(std::string name) : CharacterEntity()
+{
+	this->GetIDComponent()->name = name;
 }
 
 CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)
@@ -10,7 +18,9 @@ CharacterEntity::CharacterEntity(Firelight::ECS::EntityID entityID) : Firelight:
 
 }
 
-
+CharacterEntity::CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : SpriteEntity(isTemplate, entityID)
+{
+}
 
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
@@ -27,6 +37,11 @@ int CharacterEntity::GetHealth()
 	return GetComponent<HealthComponent>()->currentHealth;
 }
 
+int CharacterEntity::GetMaxHealth()
+{
+	return GetHealthComponent()->maxHealth;
+}
+
 void CharacterEntity::RemoveHealth(int amount)
 {
 	HealthComponent* component = GetComponent<HealthComponent>();
@@ -40,5 +55,4 @@ void CharacterEntity::RemoveHealth(int amount)
 
 void CharacterEntity::HealthBelowZero()
 {
-	
 }

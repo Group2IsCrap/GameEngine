@@ -67,6 +67,7 @@ namespace InventorySystem
 		//inv list
 		std::map<GroupName, std::vector<Inventory*>> m_inventory;
 		std::map<GroupName, bool> m_inventoryLoaded;
+		std::map<GroupName, size_t> m_inventoryEventsIDs;
 	};
 
 }
