@@ -23,6 +23,7 @@
     <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
+    <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\AIEntity.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Source\Systems\AISystem.h" />
     <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
+    <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />

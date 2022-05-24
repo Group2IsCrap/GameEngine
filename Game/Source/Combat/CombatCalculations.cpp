@@ -4,9 +4,11 @@
 #include "../Core/AIEntity.h"
 #include "../Core/ResourceEntity.h"
 
+#include <Source/Maths/Random.h>
+
 Firelight::ECS::WeaponComponent* CombatCalculations::activeComponent = nullptr;
 
-void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
+void CombatCalculations::PlaceSphere(Facing dir, Vec3f point, PlayerEntity* m_player)
 {
     /*float directionalAngle = 0.0f;
     float weaponAngle;*/
@@ -64,6 +66,11 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
                 }
                 else if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Enemy))
                 {
+                    m_player->GetComponent<AudioComponent>()->soundName = "Attack.wav";
+                    m_player->GetComponent<AudioComponent>()->soundPos = Vector3D(m_player->GetTransformComponent()->GetPosition().x, m_player->GetTransformComponent()->GetPosition().y, m_player->GetTransformComponent()->GetPosition().z);
+
+                    m_player->PlayAudioClip();
+
                     AIEntity* aiEntity = new AIEntity(target->GetEntityID());
                     aiEntity->RemoveHealth(static_cast<int>(activeComponent->Damage));
                 }

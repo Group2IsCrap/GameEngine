@@ -24,7 +24,6 @@
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
 
-
 PlayerSystem::PlayerSystem()
 {
 	AddWhitelistComponent<PlayerComponent>();
@@ -268,7 +267,6 @@ void PlayerSystem::HandlePlayerAnimations()
 	{
 		return;
 	}
-
 	if (m_moveRight)
 	{
 		Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerRunRight");
@@ -340,16 +338,42 @@ void PlayerSystem::SpawnItem()
 void PlayerSystem::Attack()
 {
 	Firelight::ECS::AnimationSystem::Instance()->Play(m_playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(m_playerEntity->GetComponent<PlayerComponent>()->facing, m_playerEntity->GetRigidBodyComponent()->nextPos);
+	
+
+	CombatCalculations::PlaceSphere(m_playerEntity->GetComponent<PlayerComponent>()->facing, m_playerEntity->GetRigidBodyComponent()->nextPos, m_playerEntity);
 }
 
 void PlayerSystem::RemoveHealth()
 {
+	AudioComponent* audioComponent = m_playerEntity->GetComponent<AudioComponent>();
+
+	switch (Firelight::Maths::Random::RandomRange(0, 1))
+	{
+	case 0:
+		audioComponent->soundName = "Hurt 1.wav";
+		break;
+	case 1:
+		audioComponent->soundName = "Hurt 2.wav";
+		break;
+	}
+
+	audioComponent->soundPos = Vector3D(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, m_playerEntity->GetTransformComponent()->GetPosition().z);
+
+	m_playerEntity->PlayAudioClip();
+
 	m_playerEntity->RemoveHealth(1);
 }
 
 void PlayerSystem::AddHealth(void* amount)
 {
+	AudioComponent* audioComponent = m_playerEntity->GetComponent<AudioComponent>();
+
+	audioComponent->soundName = "Cheerful Character 1.wav";
+
+	audioComponent->soundPos = Vector3D(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, m_playerEntity->GetTransformComponent()->GetPosition().z);
+
+	m_playerEntity->PlayAudioClip();
+
 	int amountAdd = (int)amount;
 	m_playerEntity->AddHealth(amountAdd);
 }
@@ -428,6 +452,15 @@ void PlayerSystem::Respawn()
 {
 	if (m_playerEntity != nullptr)
 	{
+
+		AudioComponent* audioComponent = m_playerEntity->GetComponent<AudioComponent>();
+
+		audioComponent->soundName = "Respawn.wav";
+
+		audioComponent->soundPos = Vector3D(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, m_playerEntity->GetTransformComponent()->GetPosition().z);
+
+		m_playerEntity->PlayAudioClip();
+
 		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
 		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "Equipment");
 

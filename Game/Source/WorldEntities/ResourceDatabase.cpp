@@ -83,6 +83,13 @@ void ResourceDatabase::LoadResources(std::string filepath)
 		resourceTemplate->AddComponent<HealthComponent>()->currentHealth = std::stoi(resourceData[i][3]);
 		resourceTemplate->AddComponent<RigidBodyComponent>();
 
+		AudioComponent* audioComponent = new AudioComponent();
+		resourceTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);	
+		audioComponent->looping = false;
+		audioComponent->is3d = false;
+		audioComponent->streaming = false;
+		audioComponent->channel = "Game";
+
 		resourceTemplates.insert(std::make_pair(resourceComponent->resourceID, resourceTemplate));
 
 	}
