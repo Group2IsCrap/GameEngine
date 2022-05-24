@@ -1,6 +1,7 @@
 #include "CraftingRecipe.h"
 
 #include "../Inventory/InventoryFunctionsGlobal.h"
+#include "ItemDatabase.h"
 
 CraftingRecipe::CraftingRecipe(int itemToMake, int countMaking, const std::vector<ItemRequirement>& requiredItems) :
     m_itemToMake(itemToMake),
@@ -31,6 +32,11 @@ void CraftingRecipe::Craft(const std::string& inventoryGroup) const
     for (auto& requiredItem : m_requiredItems)
     {
         InventorySystem::GlobalFunctions::RemoveItemType(inventoryGroup, "MainIven", requiredItem.m_numRequired, requiredItem.m_itemId);
+    }
+
+    for (int itemIndex = 0; itemIndex < m_countMaking; ++itemIndex)
+    {
+        InventorySystem::GlobalFunctions::AddItem(inventoryGroup, "MainIven", ItemDatabase::Instance()->CreateInstanceOfItem(m_itemToMake));
     }
 }
 

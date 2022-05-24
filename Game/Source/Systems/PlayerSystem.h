@@ -22,9 +22,6 @@ public:
 	void FixedUpdate(const Firelight::Utils::Time& time) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
-	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
-	ImGuiPlayerLayer*                  m_imguiLayer = nullptr;
-
 	void SwitchWeapon();
 
 private:
@@ -41,6 +38,7 @@ private:
 	void MovePlayerRightRelease();
 
 	void HandlePlayerAnimations();
+	void UpdateCraftableItems();
 
 	void Interact();
 	void SpawnItem();
@@ -68,14 +66,18 @@ private:
 	size_t m_releaseAttackIndex;
 	size_t m_removeHealthEventIndex;
   
+	size_t m_updateCraftableItemsEventIndex;
+
 	Firelight::Maths::Vec3f m_velocity;
-	PlayerEntity* playerEntity;
+	PlayerEntity* m_playerEntity;
   
 	bool m_moveUp;
 	bool m_moveDown;
 	bool m_moveLeft;
 	bool m_moveRight;
-	ImGuiPlayerLayer* imguiLayer = nullptr;
+	ImGuiPlayerLayer* m_imguiLayer = nullptr;
+
+	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
 
 	bool m_isAttacking = false;
 	float m_attackCooldown = 0.0f;

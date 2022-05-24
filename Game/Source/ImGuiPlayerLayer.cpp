@@ -9,6 +9,8 @@
 
 #include "Items/ItemDatabase.h"
 
+#include "Inventory/InventoryEvents.h"
+
 ImGuiPlayerLayer::ImGuiPlayerLayer() :
 	m_debugCraftingMenuEnabled(false),
 	m_craftingRecipes(nullptr)
@@ -54,6 +56,7 @@ void ImGuiPlayerLayer::RenderDebugCraftingMenu()
 	{
 		ImGui::Begin("Crafting");
 
+		int recipeIndex = 0;
 		for (auto* recipe : *m_craftingRecipes)
 		{
 			if (auto* itemComponent = ItemDatabase::Instance()->GetItemComponentFromId(recipe->GetItemToMake()))
@@ -75,7 +78,7 @@ void ImGuiPlayerLayer::RenderDebugCraftingMenu()
 
 				if (auto* requiredItemComponent = ItemDatabase::Instance()->GetItemComponentFromId(itemRequirement.m_itemId))
 				{
-					ImGui::Text((std::to_string(itemRequirement.m_numRequired) + " " + requiredItemComponent->name).c_str());
+					ImGui::Text((std::to_string(itemRequirement.m_numRequired) + " " + requiredItemComponent->name).c_str()); ImGui::SameLine();
 				}
 
 				if (itemIndex < requiredItems.size() - 1)
@@ -89,6 +92,20 @@ void ImGuiPlayerLayer::RenderDebugCraftingMenu()
 			ImGui::SameLine();
 
 			ImGui::Text("]");
+
+			ImGui::SameLine();
+
+			ImGui::PushID(recipeIndex);
+
+			if (ImGui::Button("Craft"))
+			{
+				recipe->Craft("PlayerInventory");
+				Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::Inventory::UpdateCraftableItemsEvent>();
+			}
+
+			ImGui::PopID();
+
+			++recipeIndex;
 		}
 
 		ImGui::End();
