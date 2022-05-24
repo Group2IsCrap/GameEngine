@@ -26,7 +26,7 @@ void AISystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
 			AIEntity* currentEntity = new AIEntity(m_entities[entityIndex]->GetEntityID());
 			AIBehaviourComponent* aiBehaviourComponment = currentEntity->GetComponent<AIBehaviourComponent>();
 			aiBehaviourComponment->m_CurrentTransitions->HandleTransition(time);
-			aiBehaviourComponment->m_CurrentState->HandleState(time);
+			aiBehaviourComponment->m_CurrentState->HandleState(currentEntity, time);
 			currentEntity->FaceDirection();
 
 			AIComponent* aiComponent = currentEntity->GetAIComponent();
