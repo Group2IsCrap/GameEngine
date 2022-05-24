@@ -33,7 +33,11 @@ namespace InventorySystem
             Slot->GetWidgetComponent()->hasParent = false;
             Slot->GetSpriteComponent()->toDraw = false;
             Slot->GetWidgetComponent()->isActive = false;
-           
+            TextComponent* text = Slot->AddComponent<ECS::TextComponent>();
+            text->hidden = true;
+            text->text.SetTextHeight(30);
+            text->layer = 100000;
+            text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
             m_entityIDPanelSlot.push_back(Slot);
         }
     }
