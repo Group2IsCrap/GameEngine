@@ -131,7 +131,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)x64\Debug\;$(SolutionDir)Libs\x64\Debug\;$(SolutionDir)Libs\Shared\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>FirelightEngine.lib;d3d11.lib;DXGI.lib;D3DCompiler.lib;assimp-vc140-mt.lib;DirectXTK.lib;SnowfallEngine.lib;fmod_vc.lib;fmodstudio_vc.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
