@@ -1,4 +1,4 @@
-#include "InventoryManager.h"
+#include "InventorySystem.h"
 #include"InventoryComponents.h"
 #include"Source/ECS/ECSEvents.h"
 #include"Source/Events/Event.h"
@@ -9,14 +9,14 @@
 
 namespace InventorySystem 
 {
-    InventoryManager::InventoryManager()
+    InventorySystem::InventorySystem()
     {
         //AddWhitelistComponent<InventoryComponent>();
         AddWhitelistComponent<InventoryComponentGroupID>();
 
         //sub to this event
-        Events::EventDispatcher::SubscribeFunction<Events::Inventory::UpdateInventory>(std::bind(&InventoryManager::ItemChangeInventory, this));
-        Events::EventDispatcher::SubscribeFunction<Events::Inventory::AddNewInventory>(std::bind(&InventoryManager::CreateNewInventory, this));
+        Events::EventDispatcher::SubscribeFunction<Events::Inventory::UpdateInventory>(std::bind(&InventorySystem::ItemChangeInventory, this));
+        Events::EventDispatcher::SubscribeFunction<Events::Inventory::AddNewInventory>(std::bind(&InventorySystem::CreateNewInventory, this));
 
        
         Events::EventDispatcher::AddListener<Events::Inventory::RemoveItemType>(this);
@@ -37,12 +37,12 @@ namespace InventorySystem
         }
     }
 
-    InventoryManager::~InventoryManager()
+    InventorySystem::~InventorySystem()
     {
       
     }
 
-    void InventoryManager::HandleEvents(const char* event, void* eventData)
+    void InventorySystem::HandleEvents(const char* event, void* eventData)
     {
       
         //item control
@@ -97,7 +97,7 @@ namespace InventorySystem
             }
         }
     }
-    void InventoryManager::GroupLoadOrUnload(std::string group)
+    void InventorySystem::GroupLoadOrUnload(std::string group)
     {
         if (!m_inventoryLoaded[group]) 
         {
@@ -112,7 +112,7 @@ namespace InventorySystem
 
     }
 
-    void InventoryManager::CreateNewInventory()
+    void InventorySystem::CreateNewInventory()
     {
         for (size_t i = 0; i < m_entities.size(); i++)
         {
@@ -124,7 +124,7 @@ namespace InventorySystem
                 if (m_inventory[inventoryGroupData->group].size() == 0 && inventoryGroupData->keyToActivate != Keys::KEY_INVALID)
                 {
                  
-                    m_inventoryEventsIDs[inventoryGroupData->group]=Events::EventDispatcher::SubscribeFunction(inventoryGroupData->group.c_str(), std::bind(&InventoryManager::GroupLoadOrUnload, this, inventoryGroupData->group));
+                    m_inventoryEventsIDs[inventoryGroupData->group]=Events::EventDispatcher::SubscribeFunction(inventoryGroupData->group.c_str(), std::bind(&InventorySystem::GroupLoadOrUnload, this, inventoryGroupData->group));
                     Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(inventoryGroupData->group.c_str(), inventoryGroupData->keyToActivate, Firelight::KeyEventType::KeyPressSingle);
                 
                 }
@@ -154,7 +154,7 @@ namespace InventorySystem
         
     }
 
-    void InventoryManager::RemoveInventory(std::string groupName,std::string inventoryName)
+    void InventorySystem::RemoveInventory(std::string groupName,std::string inventoryName)
     {
         int index = 0;
         for (auto& inventoryData : m_inventory[groupName]) 
@@ -183,7 +183,7 @@ namespace InventorySystem
 
     }
 
-    void InventoryManager::ItemChangeInventory()
+    void InventorySystem::ItemChangeInventory()
     {
         //change inventorys
         bool toDrop = true;
@@ -273,21 +273,21 @@ namespace InventorySystem
 
     }
 
-    void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+    void InventorySystem::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
         newInventory->CreateInventory(size, columnRows, margin, parent, anc, offSet);
         m_inventory[group].emplace_back(newInventory);
     }
 
-    void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+    void InventorySystem::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
         newInventory->CreateInventory(size, slotCont, margin, parent, ECS::e_AnchorSettings::Top, 0);
         m_inventory[group].emplace_back(newInventory);
     }
 
-    void InventoryManager::LoadInventory(GroupName group, std::string name)
+    void InventorySystem::LoadInventory(GroupName group, std::string name)
     {
         //create Group
         for (auto Inventory : m_inventory[group]) {
@@ -298,7 +298,7 @@ namespace InventorySystem
 
     }
 
-    void InventoryManager::LoadInventoryGroup(std::string group)
+    void InventorySystem::LoadInventoryGroup(std::string group)
     {
         //create Group
         int index = 0;
@@ -433,7 +433,7 @@ namespace InventorySystem
         Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
     }
 
-    void InventoryManager::UnloadInventory(GroupName group, std::string name)
+    void InventorySystem::UnloadInventory(GroupName group, std::string name)
     {
         //unloade Group
         for (auto inventory : m_inventory[group]) 
@@ -445,7 +445,7 @@ namespace InventorySystem
         }
     }
 
-    void InventoryManager::UnloadInventoryGroup(std::string group)
+    void InventorySystem::UnloadInventoryGroup(std::string group)
     {
         //unloade Group
         int index = 0;
@@ -468,7 +468,7 @@ namespace InventorySystem
 
 
     //item data controll
-    void InventoryManager::AddItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
+    void InventorySystem::AddItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
     {
         //Add Item
         for (auto inventory : m_inventory[group]) 
@@ -481,7 +481,7 @@ namespace InventorySystem
         }
     }
 
-    bool InventoryManager::AddItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
+    bool InventorySystem::AddItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
     {
         //Add Item
         for (auto inventory : m_inventory[group]) 
@@ -494,7 +494,7 @@ namespace InventorySystem
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
+    bool InventorySystem::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
     {
         for (auto inventory : m_inventory[group]) 
         {
@@ -506,7 +506,7 @@ namespace InventorySystem
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
+    bool InventorySystem::RemoveItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
     {
         for (auto inventory : m_inventory[group]) 
         {
@@ -518,7 +518,7 @@ namespace InventorySystem
         }
     }
 
-    bool InventoryManager::RemoveItem(GroupName group, std::string name, int item, int howMany)
+    bool InventorySystem::RemoveItem(GroupName group, std::string name, int item, int howMany)
     {
         for (auto inventory : m_inventory[group]) 
         {
@@ -530,7 +530,7 @@ namespace InventorySystem
         }
     }
 
-    std::vector<ECS::EntityID> InventoryManager::GetItems(GroupName group, std::string name, int item, int howMany)
+    std::vector<ECS::EntityID> InventorySystem::GetItems(GroupName group, std::string name, int item, int howMany)
     {
         for (auto inventory : m_inventory[group]) 
         {
@@ -541,7 +541,7 @@ namespace InventorySystem
         }
     }
 
-    bool InventoryManager::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
+    bool InventorySystem::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
     {
         
         for (auto inventory : m_inventory[group]) 
@@ -555,7 +555,7 @@ namespace InventorySystem
         
     }
 
-    int InventoryManager::GetNumberOfItemInInventory(GroupName group, std::string name, int item)
+    int InventorySystem::GetNumberOfItemInInventory(GroupName group, std::string name, int item)
     {
         for (auto inventory : m_inventory[group]) 
         {
@@ -566,7 +566,7 @@ namespace InventorySystem
         }
     }
 
-    ECS::EntityID InventoryManager::GetSpecialSlot(GroupName group, std::string name, std::string slotName)
+    ECS::EntityID InventorySystem::GetSpecialSlot(GroupName group, std::string name, std::string slotName)
     {
         for (auto inventory : m_inventory[group]) 
         {

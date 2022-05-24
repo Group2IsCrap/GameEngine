@@ -9,11 +9,11 @@
 
 typedef std::string GroupName;
 inline ECS::EntityID ParentID;
-class InventoryManager:public Firelight::Events::Listener , public Firelight::ECS::System
+class InventorySystem:public Firelight::Events::Listener , public Firelight::ECS::System
 {
 public:
-	InventoryManager();
-	~InventoryManager();
+	InventorySystem();
+	~InventorySystem();
 	
 	void HandleEvents(const char* event, void* data);
 

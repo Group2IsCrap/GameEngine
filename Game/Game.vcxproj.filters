@@ -7,7 +7,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
-    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
+    <ClCompile Include="Source\Inventory\InventorySystem.cpp" />
     <ClCompile Include="Source\Inventory\InventoryEntity.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
@@ -57,7 +57,7 @@
     <ClInclude Include="Source\Inventory\InventoryComponents.h" />
     <ClInclude Include="Source\Inventory\InventoryEvents.h" />
     <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h" />
-    <ClInclude Include="Source\Inventory\InventoryManager.h" />
+    <ClInclude Include="Source\Inventory\InventorySystem.h" />
     <ClInclude Include="Source\Inventory\InventoryEntity.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />

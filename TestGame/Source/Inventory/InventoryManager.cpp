@@ -1,27 +1,27 @@
-#include "InventoryManager.h"
+#include "InventorySystem.h"
 #include"InventoryComponents.h"
 #include"Source/ECS/ECSEvents.h"
-InventoryManager::InventoryManager()
+InventorySystem::InventorySystem()
 {
     AddWhitelistComponent<InventoryComponent>();
     AddWhitelistComponent<InventoryComponentGroupID>();
 
     //sub to this event
-    Events::EventDispatcher::SubscribeFunction<Events::Inventory::UpdateInventory>(std::bind(&InventoryManager::ItemChangeInventory, this));
-    Events::EventDispatcher::SubscribeFunction<Events::Inventory::AddNewInventory>(std::bind(&InventoryManager::CreateNewInventory, this));
+    Events::EventDispatcher::SubscribeFunction<Events::Inventory::UpdateInventory>(std::bind(&InventorySystem::ItemChangeInventory, this));
+    Events::EventDispatcher::SubscribeFunction<Events::Inventory::AddNewInventory>(std::bind(&InventorySystem::CreateNewInventory, this));
 
-    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(std::bind(&InventoryManager::CreateNewInventory, this));
-    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityDestroyedEvent>(std::bind(&InventoryManager::RemoveInventory, this));
+    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityCreatedEvent>(std::bind(&InventorySystem::CreateNewInventory, this));
+    //Events::EventDispatcher::SubscribeFunction<Firelight::Events::ECS::OnEntityDestroyedEvent>(std::bind(&InventorySystem::RemoveInventory, this));
 
     Events::EventDispatcher::AddListener<Events::Inventory::LoadInventoryGroup>(this);
     Events::EventDispatcher::AddListener<Events::Inventory::UnloadInventoryGroup>(this);
 }
 
-InventoryManager::~InventoryManager()
+InventorySystem::~InventorySystem()
 {
 }
 
-void InventoryManager::HandleEvents(const char* event, void* data)
+void InventorySystem::HandleEvents(const char* event, void* data)
 {
     if (event == Events::Inventory::LoadInventoryGroup::sm_descriptor) {
         const char* ab = (const char*)data;
@@ -37,7 +37,7 @@ void InventoryManager::HandleEvents(const char* event, void* data)
 
 
 
-void InventoryManager::CreateNewInventory()
+void InventorySystem::CreateNewInventory()
 {
     for (size_t i = 0; i < m_entities.size(); i++)
     {
@@ -58,14 +58,14 @@ void InventoryManager::CreateNewInventory()
     }
 }
 
-void InventoryManager::RemoveInventory()
+void InventorySystem::RemoveInventory()
 {
 
 
 
 }
 
-void InventoryManager::ItemChangeInventory()
+void InventorySystem::ItemChangeInventory()
 {
     //cheage inventorys
     bool toDrop = true;
@@ -114,28 +114,28 @@ void InventoryManager::ItemChangeInventory()
 
 }
 
-void InventoryManager::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+void InventorySystem::CreateInventory(GroupName group, std::string InvName, Maths::Vec2f size, Maths::Vec2f columnRows, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
 {
     Inventory* newInv = new Inventory(InvName);
     newInv->CreateInventory(size, columnRows, parent, anc, offSet);
     m_inventory[group].emplace_back(newInv);
 }
 
-void InventoryManager::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
+void InventorySystem::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
 {
     Inventory* newInv = new Inventory(InvName);
     newInv->CreateInventory(size, slotCont, parent, ECS::e_AnchorSettings::Top, 0);
     m_inventory[group].emplace_back(newInv);
 }
 
-void InventoryManager::GroupLoadOrUnload(std::string group)
+void InventorySystem::GroupLoadOrUnload(std::string group)
 {
 
 
 
 }
 
-void InventoryManager::LoadInventory(GroupName group, std::string name)
+void InventorySystem::LoadInventory(GroupName group, std::string name)
 {
     //create Group
    for (auto In : m_inventory[group]) {
@@ -146,7 +146,7 @@ void InventoryManager::LoadInventory(GroupName group, std::string name)
  
 }
 
-void InventoryManager::LoadInventoryGroup(std::string group)
+void InventorySystem::LoadInventoryGroup(std::string group)
 {
         //create Group
         int index = 0;
@@ -253,7 +253,7 @@ void InventoryManager::LoadInventoryGroup(std::string group)
 
 }
 
-void InventoryManager::UnloadInventory(GroupName group, std::string name)
+void InventorySystem::UnloadInventory(GroupName group, std::string name)
 {
     //unloade Group
     for (auto In : m_inventory[group]) {
@@ -263,7 +263,7 @@ void InventoryManager::UnloadInventory(GroupName group, std::string name)
     }
 }
 
-void InventoryManager::UnloadInventoryGroup(std::string group)
+void InventorySystem::UnloadInventoryGroup(std::string group)
 {
       //unloade Group
     int index = 0;
@@ -284,7 +284,7 @@ void InventoryManager::UnloadInventoryGroup(std::string group)
 
 
 //item data controll
-void InventoryManager::AddItem(GroupName group,std::string name, Firelight::ECS::Entity* item)
+void InventorySystem::AddItem(GroupName group,std::string name, Firelight::ECS::Entity* item)
 {
     //Add Item
     for (auto In : m_inventory[group]) {
@@ -295,7 +295,7 @@ void InventoryManager::AddItem(GroupName group,std::string name, Firelight::ECS:
     }
 }
 
-void InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
+void InventorySystem::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
 {
     for (auto In : m_inventory[group]) {
         if (In->GetName() == name) {
@@ -305,7 +305,7 @@ void InventoryManager::RemoveItem(GroupName group, std::string name, Firelight::
     }
 }
 
-void InventoryManager::RemoveItem(GroupName group, std::string name, int item, int howMany)
+void InventorySystem::RemoveItem(GroupName group, std::string name, int item, int howMany)
 {
     for (auto In : m_inventory[group]) {
         if (In->GetName() == name) {
@@ -315,7 +315,7 @@ void InventoryManager::RemoveItem(GroupName group, std::string name, int item, i
     }
 }
 
-std::vector<ECS::EntityID> InventoryManager::GetItems(GroupName group, std::string name, int item, int howMany)
+std::vector<ECS::EntityID> InventorySystem::GetItems(GroupName group, std::string name, int item, int howMany)
 {
     for (auto In : m_inventory[group]) {
         if (In->GetName() == name) {
@@ -324,7 +324,7 @@ std::vector<ECS::EntityID> InventoryManager::GetItems(GroupName group, std::stri
     }
 }
 
-bool InventoryManager::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
+bool InventorySystem::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
 {
     bool isThere = false;
     for (auto In : m_inventory[group]) {

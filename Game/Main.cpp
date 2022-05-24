@@ -33,7 +33,7 @@
 
 #include <Source/ECS/Components/AnimationComponent.h>
 #include "Source/Inventory/InventoryEntity.h"
-#include "Source/Inventory/InventoryManager.h"
+#include "Source/Inventory/InventorySystem.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
 #include "Source/WorldEntities/EntitySpawnerComponent.h"
 #include "Source/WorldEntities/EntitySpawnerSystem.h"
@@ -211,7 +211,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<EntitySpawnerSystem>();
-		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventorySystem>();
 
 		// Register KeyBindings
 		BindDefaultKeys();
