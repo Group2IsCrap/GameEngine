@@ -17,7 +17,7 @@ PlayerHealthUI::PlayerHealthUI(Firelight::ECS::Entity* canvas, int startHealth)
 
 	this->GetIDComponent()->name = "Player Health UI";
 
-	for (unsigned int i = 0; i < m_startHealth; ++i)
+	for (int i = 0; i < m_startHealth; ++i)
 	{
 		Firelight::ECS::UIPanel* heartUIEntity = new Firelight::ECS::UIPanel("Heart UI " + std::to_string(i));
 		heartUIEntity->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
@@ -41,7 +41,7 @@ void PlayerHealthUI::HandleEvents(const char* event, void* data)
 
 void PlayerHealthUI::SetHealth(int health)
 {
-	for (unsigned int i = 0; i < m_startHealth; ++i)
+	for (int i = 0; i < m_startHealth; ++i)
 	{
 		m_healthUIEntities[i]->GetSpriteComponent()->toDraw = health == 0 ? false : health - 1 >= i;
 	}

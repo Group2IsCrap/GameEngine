@@ -46,7 +46,7 @@ bool AITransitionBehaviour::IdleToWander()
 
 bool AITransitionBehaviour::WanderToAttack(float searchRadius, std::vector<int> layers, std::vector<std::string> enemiesToTarget)
 {
-	m_wanderTimer += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+	m_wanderTimer += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime());
 
 	if (m_wanderTimer >= 2.0f)
 	{
@@ -74,7 +74,7 @@ bool AITransitionBehaviour::WanderToAttack(float searchRadius, std::vector<int> 
 
 bool AITransitionBehaviour::WanderToFlee(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom)
 {
-	m_fleeTimer += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+	m_fleeTimer += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime());
 
 	if (m_fleeTimer >= 1.0f)
 	{
@@ -110,7 +110,7 @@ bool AITransitionBehaviour::AttackToWander(RigidBodyComponent* rigidbodyComponen
 
 bool AITransitionBehaviour::FleeToWander(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom)
 {
-	m_fleeToWanderTimer += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+	m_fleeToWanderTimer += static_cast<float>(Firelight::Engine::Instance().GetTime().GetDeltaTime());
 
 	if (m_fleeToWanderTimer >= 2.0f)
 	{

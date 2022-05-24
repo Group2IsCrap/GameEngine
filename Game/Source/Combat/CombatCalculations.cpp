@@ -52,13 +52,10 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
                 if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Resource))
                 {
                     ResourceEntity* resourceEntity = new ResourceEntity(target->GetEntityID());
-                    if (activeComponent->HarvestType == Firelight::ECS::e_HarvestType(0) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 0)
+                    if ((activeComponent->HarvestType == Firelight::ECS::e_HarvestType(0) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 0) ||
+                        (activeComponent->HarvestType == Firelight::ECS::e_HarvestType(1) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 1))
                     {
-                        resourceEntity->RemoveHealth(activeComponent->HarvestDamage);
-                    }
-                    else if (activeComponent->HarvestType == Firelight::ECS::e_HarvestType(1) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 1)
-                    {
-                        resourceEntity->RemoveHealth(activeComponent->HarvestDamage);
+                        resourceEntity->RemoveHealth(static_cast<int>(activeComponent->HarvestDamage));
                     }
                     else
                     {
@@ -68,7 +65,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
                 else if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Enemy))
                 {
                     AIEntity* aiEntity = new AIEntity(target->GetEntityID());
-                    aiEntity->RemoveHealth(activeComponent->Damage);
+                    aiEntity->RemoveHealth(static_cast<int>(activeComponent->Damage));
                 }
             }
             break;

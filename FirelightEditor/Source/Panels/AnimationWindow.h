@@ -3,6 +3,8 @@
 #include "../Includes/imgui/imgui.h"
 #include "../FirelightEngine/Source/Animation/Animation.h"
 
+struct ImGuiWindow;
+
 class AnimationWindow
 {
 public:
@@ -10,7 +12,7 @@ public:
 	~AnimationWindow();
 
 	void Draw();
-	void DrawMenuBar(class ImGuiWindow* window);
+	void DrawMenuBar(ImGuiWindow* window);
 	void CreateAnimation();
 
 	void DrawAnimation();

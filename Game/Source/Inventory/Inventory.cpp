@@ -107,12 +107,12 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 	float currX = 0;
 	float currY = 0;
 	int currentPos = inventoryData->slotStartPositon;
-	int nextFreePannle = -1;
+	int nextFreePanel = -1;
 	for (size_t i = 0; i < panelToUse->size(); i++)
 	{
 		if (!panelToUse->at(i)->GetSpriteComponent()->toDraw) 
 		{
-			nextFreePannle = i;
+			nextFreePanel = static_cast<int>(i);
 			break;
 		}
 
@@ -124,10 +124,10 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		{
 			ECS::UIPanel* slot;
 			//panel to use
-			if (panelToUse->size() - 1 >= nextFreePannle && nextFreePannle != -1)
+			if (panelToUse->size() - 1 >= nextFreePanel && nextFreePanel != -1)
 			{
 				//use exsting pannle
-				slot = panelToUse->at(nextFreePannle);
+				slot = panelToUse->at(nextFreePanel);
 				ECS::PixelSpriteComponent* Sprite = slot->GetSpriteComponent();
 
 				Sprite->toDraw = inventoryData->isDisplay;
@@ -156,14 +156,14 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				{
 					if (!panelToUse->at(k)->GetSpriteComponent()->toDraw) 
 					{
-						nextFreePannle = k;
+						nextFreePanel = static_cast<int>(k);
 						isFound = true;
 						break;
 					}
 
 				}
 				if (!isFound) {
-					nextFreePannle++;
+					nextFreePanel++;
 				}
 			}
 			else
@@ -182,7 +182,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				text->layer = 100000;
 				text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
 				panelToUse->push_back(slot);
-				nextFreePannle= panelToUse->size();
+				nextFreePanel= static_cast<int>(panelToUse->size());
 			}
 			currX += sizeX + inventoryData->slotMargin.x;
 			InventorySlots* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, currentPos);
@@ -254,7 +254,7 @@ void Inventory::UnloadInventory()
 	inventoryData->isDisplay = false;
 	m_inventorySpace->GetSpriteComponent()->toDraw = inventoryData->isDisplay;
 	m_inventorySpace->GetWidgetComponent()->isActive = inventoryData->isDisplay;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon+inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon+static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* data = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, data->slotIndex);
@@ -279,7 +279,7 @@ void Inventory::UnloadInventory()
 		}
 		
 	}
-	for (int i = 0; i < inventoryData->slotCount; i++)
+	for (int i = 0; i < static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, i);
 		if (ECS::PixelSpriteComponent* sprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slot->slotID)) 
@@ -333,7 +333,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	InventoryComponentInPut* inputCommands = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentInPut>(m_inventoryEntityID);
 
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -458,7 +458,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	
 	
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -634,7 +634,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 	InventorySlots* currSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
 
 
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* placeSlotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* placeSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, placeSlotData->slotIndex);
@@ -736,7 +736,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 {
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -763,7 +763,7 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 void Inventory::DropAllItems()
 {
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -835,7 +835,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> dataToRemove;
 	int countToRemove = howMany;
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -843,7 +843,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 		{
 			continue;
 		}
-		countToRemove -= slotData->entityIDs.size();
+		countToRemove -= static_cast<int>(slotData->entityIDs.size());
 		dataToRemove.push_back(slotData);
 
 		if (countToRemove <= 0) {
@@ -880,7 +880,7 @@ int Inventory::GetItemTypeTotal(int type)
 {
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	int total = 0;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -888,7 +888,7 @@ int Inventory::GetItemTypeTotal(int type)
 		{
 			continue;
 		}
-		total += slotData->entityIDs.size();
+		total += static_cast<int>(slotData->entityIDs.size());
 	}
 	return total;
 }
@@ -899,7 +899,7 @@ std::vector<ECS::EntityID> Inventory::GetItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> dataToGet;
 	std::vector<ECS::EntityID> returnIDData;
 	int countToAdd = howMany;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -907,7 +907,7 @@ std::vector<ECS::EntityID> Inventory::GetItemType(int howMany, int type)
 		{
 			continue;
 		}
-		countToAdd -= slotData->entityIDs.size();
+		countToAdd -= static_cast<int>(slotData->entityIDs.size());
 		dataToGet.push_back(slotData);
 
 		if (countToAdd <= 0)

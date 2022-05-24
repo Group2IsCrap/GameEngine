@@ -151,8 +151,8 @@ namespace InventorySystem
                 }
                 if (toAdd) 
                 {
-                    CreateInventory(inventoryGroupData->group, inventoryData[i]->name, inventoryData[i]->size, Maths::Vec2f(inventoryData[i]->columnCount, inventoryData[i]->rowCount), inventoryData[i]->margin, UIParentID, inventoryData[i]->offset, inventoryData[i]->anchorSettings);
-                    m_inventory[inventoryGroupData->group].back()->SetEntityData(m_entities.back()->GetEntityID(),i);
+                    CreateInventory(inventoryGroupData->group, inventoryData[i]->name, inventoryData[i]->size, Maths::Vec2f(static_cast<float>(inventoryData[i]->columnCount), static_cast<float>(inventoryData[i]->rowCount)), inventoryData[i]->margin, UIParentID, inventoryData[i]->offset, inventoryData[i]->anchorSettings);
+                    m_inventory[inventoryGroupData->group].back()->SetEntityData(m_entities.back()->GetEntityID(),static_cast<int>(i));
                 }
             }
 
@@ -289,7 +289,7 @@ namespace InventorySystem
     void InventorySystem::CreateInventory(std::string group, std::string InvName, Maths::Vec2f size, unsigned int slotCont, Maths::Vec2f margin, ECS::EntityID parent, Maths::Vec2f offSet, ECS::e_AnchorSettings anc)
     {
         Inventory* newInventory = new Inventory(InvName);
-        newInventory->CreateInventory(size, slotCont, margin, parent, ECS::e_AnchorSettings::Top, 0);
+        newInventory->CreateInventory(size, static_cast<float>(slotCont), margin, parent, ECS::e_AnchorSettings::Top, 0);
         m_inventory[group].emplace_back(newInventory);
     }
 
@@ -501,6 +501,7 @@ namespace InventorySystem
                 break;
             }
         }
+        return false;
     }
 
     bool InventorySystem::RemoveItem(GroupName group, std::string name, Firelight::ECS::Entity* item)
@@ -513,6 +514,7 @@ namespace InventorySystem
                 break;
             }
         }
+        return false;
     }
 
     bool InventorySystem::RemoveItem(GroupName group, std::string name, Firelight::ECS::EntityID item)
@@ -525,6 +527,7 @@ namespace InventorySystem
                 break;
             }
         }
+        return false;
     }
 
     bool InventorySystem::RemoveItem(GroupName group, std::string name, int item, int howMany)
@@ -537,6 +540,7 @@ namespace InventorySystem
                 break;
             }
         }
+        return false;
     }
 
     std::vector<ECS::EntityID> InventorySystem::GetItems(GroupName group, std::string name, int item, int howMany)
@@ -548,6 +552,7 @@ namespace InventorySystem
                 return inventory->GetItemType(howMany, item);
             }
         }
+        return {};
     }
 
     bool InventorySystem::CheckInventory(ECS::EntityID ID, std::string InvName, GroupName group)
@@ -561,6 +566,7 @@ namespace InventorySystem
                 break;
             }
         }
+        return false;
         
     }
 
@@ -573,6 +579,7 @@ namespace InventorySystem
                 return inventory->GetItemTypeTotal(item);
             }
         }
+        return -1;
     }
 
     ECS::EntityID InventorySystem::GetSpecialSlot(GroupName group, std::string name, std::string slotName)

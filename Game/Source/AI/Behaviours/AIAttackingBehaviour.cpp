@@ -48,7 +48,7 @@ void AIAttackingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils:
 	if ((Firelight::Maths::Vec3f::Dist(m_rigidBodyComponent->nextPos + targetDir, targetRigidbody->nextPos)) <= m_attackRange || m_isAttacking)
 	{
 		// Increase timer, attack if cooldown is reached
-		m_attackTimer += time.GetDeltaTime();
+		m_attackTimer += static_cast<float>(time.GetDeltaTime());
 		if (m_attackTimer >= m_attackCooldown)
 		{
 			m_attackTimer = 0.0f;
@@ -58,7 +58,7 @@ void AIAttackingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils:
 	else
 	{
 		// Out of range, move to target
-		m_rigidBodyComponent->velocity += dir * m_speed * time.GetDeltaTime();
+		m_rigidBodyComponent->velocity += dir * m_speed * static_cast<float>(time.GetDeltaTime());
 		float magnitude = m_rigidBodyComponent->velocity.Length();
 		if (m_walkAnimation != "" && magnitude > 0.05f)
 		{

@@ -155,19 +155,19 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 	{
 		if (m_moveUp)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+			m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
 		if (m_moveDown)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+			m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
 		if (m_moveLeft)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+			m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
 		if (m_moveRight)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
 	}
 }
@@ -376,7 +376,7 @@ void PlayerSystem::SwitchWeapon()
 			SpriteComponent* weaponSpriteComponent = playerComponent->weapon->GetComponent<SpriteComponent>();
 			weaponSpriteComponent->texture = activeWeapon.GetComponent<SpriteComponent>()->texture;
 			weaponSpriteComponent->pixelsPerUnit = activeWeapon.GetComponent<SpriteComponent>()->pixelsPerUnit;
-			weaponSpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255.0f, 255.0f, 255.0f, 255.0f);
+			weaponSpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255, 255, 255, 255);
 
 			playerComponent->weapon->GetComponent<TransformComponent>()->SetPosition(playerComponent->weaponSocket->GetComponent<TransformComponent>()->GetPosition());
 			playerComponent->weapon->GetComponent<TransformComponent>()->FlipX(playerComponent->weaponSocket->GetComponent<TransformComponent>()->GetFlipped(), false);
@@ -387,7 +387,7 @@ void PlayerSystem::SwitchWeapon()
 		weaponComponent = fists;
 		if (playerComponent->weapon != nullptr)
 		{
-			playerComponent->weapon->GetComponent<SpriteComponent>()->colour = Firelight::Graphics::Colour::RGBA(0.0f, 0.0f, 0.0f, 0.0f);
+			playerComponent->weapon->GetComponent<SpriteComponent>()->colour = Firelight::Graphics::Colour::RGBA(0, 0, 0, 0);
 		}
 	}
 

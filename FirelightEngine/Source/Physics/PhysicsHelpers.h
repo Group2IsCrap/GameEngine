@@ -12,8 +12,6 @@
 #include <vector>
 #include <math.h>
 
-#define PI 3.14159265
-
 using namespace Firelight::ECS;
 using namespace Firelight::Maths;
 
@@ -104,7 +102,7 @@ namespace Firelight::Physics
 						if (circleDistance.x <= (boxCollider->rect.w / 2)) { entities.push_back(entity); break; }
 						if (circleDistance.y <= (boxCollider->rect.h / 2)) { entities.push_back(entity); break; }
 
-						float cornerDistanceSquared = std::pow((circleDistance.x - boxCollider->rect.w / 2), 2) + std::pow((circleDistance.y - boxCollider->rect.h / 2), 2);
+						float cornerDistanceSquared = std::powf((circleDistance.x - boxCollider->rect.w / 2), 2) + std::powf((circleDistance.y - boxCollider->rect.h / 2), 2);
 						if (cornerDistanceSquared <= (radius * radius))
 						{
 							entities.push_back(entity);
@@ -174,15 +172,15 @@ namespace Firelight::Physics
 
 					Firelight::ECS::CircleColliderComponent* circleCollider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(collider);
 					Firelight::ECS::BoxColliderComponent* boxCollider = dynamic_cast<Firelight::ECS::BoxColliderComponent*>(collider);
-					float thetaRadPos = (directionalAngle + theta) * (PI / 180);
+					float thetaRadPos = (directionalAngle + theta) * (PI / 180.0f);
 					float thetaRadNeg;
 					if (directionalAngle == 0)
 					{
-						thetaRadNeg = (360.0f - theta) * (PI / 180);
+						thetaRadNeg = (360.0f - theta) * (PI / 180.0f);
 					}
 					else
 					{
-						thetaRadNeg = (directionalAngle - theta) * (PI / 180);
+						thetaRadNeg = (directionalAngle - theta) * (PI / 180.0f);
 					}
 
 					if (circleCollider != nullptr)
@@ -195,15 +193,15 @@ namespace Firelight::Physics
 
 						if (distSquared < radiusSquared)
 						{
-							float x1 = std::cos(thetaRadPos);
-							float y1 = std::sin(thetaRadPos);
+							float x1 = std::cosf(thetaRadPos);
+							float y1 = std::sinf(thetaRadPos);
 							Vec3f vector1 = Vec3f(x1, y1, 0.0f);
 							Vec3f normal1 = Vec3f(-vector1.y, vector1.x, 0.0f);
 
 							if (normal1.Dot(transform->GetPosition() - point) <= 0)
 							{
-								float x2 = std::cos(thetaRadNeg);
-								float y2 = std::sin(thetaRadNeg);
+								float x2 = std::cosf(thetaRadNeg);
+								float y2 = std::sinf(thetaRadNeg);
 								Vec3f vector2 = Vec3f(x2, y2, 0.0f);
 								Vec3f normal2 = Vec3f(-vector2.y, vector2.x, 0.0f);
 
@@ -282,9 +280,9 @@ namespace Firelight::Physics
 								Vec3f intersection = LineIntersects(point, points[j], corners[i], corners[next]);
 								if (intersection != Vec3f(FLT_MAX, FLT_MAX, FLT_MAX))
 								{
-									if (smallerX <= intersection.x <= biggerX)
+									if (smallerX <= intersection.x && intersection.x <= biggerX)
 									{
-										if (smallerY <= intersection.y <= biggerY)
+										if (smallerY <= intersection.y && intersection.y <= biggerY)
 										{
 											doesLineIntersect = true;
 											entities.push_back(entity);

@@ -32,7 +32,7 @@ void AISystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
 			AIComponent* aiComponent = currentEntity.GetAIComponent();
 			if (aiComponent->m_tint)
 			{
-				aiComponent->m_tintTimer += time.GetDeltaTime();
+				aiComponent->m_tintTimer += static_cast<float>(time.GetDeltaTime());
 				if (aiComponent->m_tintTimer >= aiComponent->m_tintTime)
 				{
 					aiComponent->m_tintTimer = 0.0f;

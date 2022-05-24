@@ -66,7 +66,7 @@ void ResourceDatabase::LoadResources(std::string filepath)
 		{
 			spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
 		}
-		spriteComponent->pixelsPerUnit = std::stoi(resourceData[i][6]);
+		spriteComponent->pixelsPerUnit = std::stof(resourceData[i][6]);
 		int layer = std::stoi(resourceData[i][7]);
 		spriteComponent->layer = layer == 0 ? static_cast<int>(RenderLayer::Items) : layer;
 
