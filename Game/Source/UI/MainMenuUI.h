@@ -14,6 +14,8 @@ public:
 
 	void PlayFunction();
 
+	void ExitFunction();
+
 private:
 	std::vector<Firelight::ECS::UIEntity*> m_UIEntities;
 };

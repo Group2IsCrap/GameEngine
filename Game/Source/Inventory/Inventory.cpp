@@ -212,12 +212,12 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 
 		ECS::UIBaseWidgetComponent* slotWidget = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID);
 
-		if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
-			TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
-			textSlot->text.SetString(Action->DisplayText);
-			textSlot->hidden = false;
-			
-		}
+		//if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+		//	TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+		//	textSlot->text.SetString(Action->DisplayText);
+		//	textSlot->hidden = false;
+		//	
+		//}
 		if (data->entityIDs.size() >= 1) {
 			ECS::PixelSpriteComponent* iconSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID);
 			iconSprite->toDraw = true;
@@ -264,11 +264,11 @@ void Inventory::UnloadInventory()
 			sprite->toDraw = inventoryData->isDisplay;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->isActive = inventoryData->isDisplay;
 		}
-		if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
-			TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
-			//textSlot->hidden = true;
-			
-		}
+		//if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+		//	TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+		//	//textSlot->hidden = true;
+		//	
+		//}
 		slot->slotID = NULL;
 		if (ECS::PixelSpriteComponent* pix = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID))
 		{
