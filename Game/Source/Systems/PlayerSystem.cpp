@@ -88,6 +88,8 @@ void PlayerSystem::Update(const Firelight::Utils::Time& time, const bool& isPaus
 		{
 			return;
 		}
+		
+
 		PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
 
 		if (m_moveUp)

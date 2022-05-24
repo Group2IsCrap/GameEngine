@@ -25,4 +25,6 @@ namespace Firelight::Events::InputEvents
 	NEW_EVENT(ReleaseAttackEvent);
 
 	NEW_EVENT(ShowDebugEvent);
+
+	NEW_EVENT(TogglePauseEvent);
 }
