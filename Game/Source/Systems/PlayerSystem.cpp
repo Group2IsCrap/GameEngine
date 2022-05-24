@@ -304,6 +304,9 @@ void PlayerSystem::Respawn()
 {
 	if (playerEntity != nullptr)
 	{
+		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
+		InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "Equipment");
+
 		playerEntity->AddHealth(playerEntity->GetHealthComponent()->maxHealth);
 
 		playerEntity->GetRigidBodyComponent()->nextPos = Vec3f(0.0f,0.0f,0.0f);

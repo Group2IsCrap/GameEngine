@@ -3,7 +3,6 @@
 #include "Vec3.h"
 
 #include <DirectXMath.h>
-#include <../Source/Engine.h>
 
 #include "Random.h"
 #include "../Utils/ErrorManager.h"
@@ -275,7 +274,7 @@ namespace Firelight::Maths
     }
 
     template<typename T>
-    inline Vec3<T> Vec3<T>::SmoothDamp(const Vec3<T>& Vector1, const Vec3<T>& Vector2, const Vec3<T>& currentVelocity, float smoothTime, float maxSpeed)
+    inline Vec3<T> Vec3<T>::SmoothDamp(const Vec3<T>& Vector1, const Vec3<T>& Vector2, const Vec3<T>& currentVelocity, float smoothTime, float maxSpeed, double deltaTime)
     {
         float output_x = 0.0f;
         float output_y = 0.0f;
@@ -284,7 +283,7 @@ namespace Firelight::Maths
         smoothTime = (0.0001f > smoothTime) ? 0.0001f : smoothTime;
         float omega = 2.0f / smoothTime;
 
-        float x = omega * Firelight::Engine::Instance().GetTime().GetDeltaTime();
+        float x = omega * deltaTime;
         float exp = 1.0f / ((1.0f + x + (0.48f * std::powf(x, 2)) + (0.235f * std::powf(x, 3))));
 
         float change_x = Vector1.x - Vector2.x;
@@ -310,9 +309,9 @@ namespace Firelight::Maths
         Vector2.y = Vector1.y - change_y;
         Vector2.z = Vector1.z - change_z;
 
-        float temp_x = (currentVelocity.x + omega * change_x) * Firelight::Engine::Instance().GetTime().GetDeltaTime();
-        float temp_y = (currentVelocity.y + omega * change_y) * Firelight::Engine::Instance().GetTime().GetDeltaTime();
-        float temp_z = (currentVelocity.z + omega * change_z) * Firelight::Engine::Instance().GetTime().GetDeltaTime();
+        float temp_x = (currentVelocity.x + omega * change_x) * deltaTime;
+        float temp_y = (currentVelocity.y + omega * change_y) * deltaTime;
+        float temp_z = (currentVelocity.z + omega * change_z) * deltaTime;
 
         currentVelocity.x = (currentVelocity.x - omega * temp_x) * exp;
         currentVelocity.y = (currentVelocity.y - omega * temp_y) * exp;
@@ -335,9 +334,9 @@ namespace Firelight::Maths
             output_y = originalTo.y;
             output_z = originalTo.z;
 
-            currentVelocity.x = (output_x - originalTo.x) / Firelight::Engine::Instance().GetTime().GetDeltaTime();
-            currentVelocity.y = (output_y - originalTo.y) / Firelight::Engine::Instance().GetTime().GetDeltaTime();
-            currentVelocity.z = (output_z - originalTo.z) / Firelight::Engine::Instance().GetTime().GetDeltaTime();
+            currentVelocity.x = (output_x - originalTo.x) / deltaTime;
+            currentVelocity.y = (output_y - originalTo.y) / deltaTime;
+            currentVelocity.z = (output_z - originalTo.z) / deltaTime;
         }
 
         return Vec3f(output_x, output_y, output_z);
