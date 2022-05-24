@@ -15,7 +15,7 @@ public:
     void AddOutputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
     void AddInputCommands(int invetoryNum, std::function< void(void*) >&& callbackFunction);
 
-    void AddKeyCommands(int invetoryNum,Firelight::Keys actionKey, std::string actionName);
+    void AddKeyCommands(int invetoryNum,Firelight::Keys actionKey, std::string actionName, std::string show);
     
 
     void AddSpecialSlot(int InventoryNumber,std::string slotName, std::string slotTexture, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags);
