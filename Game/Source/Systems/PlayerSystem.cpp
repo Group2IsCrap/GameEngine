@@ -5,6 +5,7 @@
 #include <Source/Engine.h>
 #include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
+#include <Source/Graphics/Data/Colour.h>
 
 #include "../Player/PlayerComponent.h"
 #include "../Player/PlayerEntity.h"
@@ -346,41 +347,48 @@ void PlayerSystem::RemoveHealth()
 {
 	m_playerEntity->RemoveHealth(1);
 }
+
 void PlayerSystem::AddHealth(void* amount)
 {
 	int amountAdd = (int)amount;
 	m_playerEntity->AddHealth(amountAdd);
 }
+
 void PlayerSystem::SwitchWeapon()
 {
 	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Weapon");
  	WeaponComponent* weaponComponent = nullptr;
+	PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
+
 	if (id != UINT16_MAX)
 	{
 		Entity activeWeapon = Entity(id);
 		weaponComponent = activeWeapon.GetComponent<WeaponComponent>();
 		if (activeWeapon.HasComponent<SpriteComponent>())
 		{
-			PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
 			if (playerComponent->weapon == nullptr)
 			{
 				SpriteEntity* weapon = new SpriteEntity();
 				playerComponent->weapon = weapon;
-			}
-			if (playerComponent->weapon != nullptr)
-			{
-				playerComponent->weaponSocket->GetComponent<TransformComponent>()->RemoveChild(playerComponent->weapon);
+				playerComponent->weaponSocket->GetComponent<TransformComponent>()->AddChild(playerComponent->weapon);
 			}
 
-			playerComponent->weapon->GetComponent<SpriteComponent>()->texture = activeWeapon.GetComponent<SpriteComponent>()->texture;
-			playerComponent->weapon->GetComponent<SpriteComponent>()->pixelsPerUnit = activeWeapon.GetComponent<SpriteComponent>()->pixelsPerUnit;
+			SpriteComponent* weaponSpriteComponent = playerComponent->weapon->GetComponent<SpriteComponent>();
+			weaponSpriteComponent->texture = activeWeapon.GetComponent<SpriteComponent>()->texture;
+			weaponSpriteComponent->pixelsPerUnit = activeWeapon.GetComponent<SpriteComponent>()->pixelsPerUnit;
+			weaponSpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255.0f, 255.0f, 255.0f, 255.0f);
+
 			playerComponent->weapon->GetComponent<TransformComponent>()->SetPosition(playerComponent->weaponSocket->GetComponent<TransformComponent>()->GetPosition());
-			playerComponent->weaponSocket->GetComponent<TransformComponent>()->AddChild(playerComponent->weapon);
+			playerComponent->weapon->GetComponent<TransformComponent>()->FlipX(playerComponent->weaponSocket->GetComponent<TransformComponent>()->GetFlipped(), false);
 		}
 	}
 	else
 	{
 		weaponComponent = fists;
+		if (playerComponent->weapon != nullptr)
+		{
+			playerComponent->weapon->GetComponent<SpriteComponent>()->colour = Firelight::Graphics::Colour::RGBA(0.0f, 0.0f, 0.0f, 0.0f);
+		}
 	}
 
 	if (weaponComponent != nullptr)
