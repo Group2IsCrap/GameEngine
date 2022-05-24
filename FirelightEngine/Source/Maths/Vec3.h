@@ -63,6 +63,8 @@ namespace Firelight::Maths
         static Vec3<T>    GetRandomDirection();
         static Vec3<T>    Lerp(const Vec3<T>& vector1, const Vec3<T>& Vec3, T delta);
 
+        static Vec3<T>    SmoothDamp(const Vec3<T>& Vector1, const Vec3<T>& Vector2, const Vec3<T>& currentVelocity, float smoothTime, float maxSpeed);
+
         // XMVECTOR
         static Vec3<T>    MakeFromXMVECTOR(const DirectX::XMVECTOR& vector);
         static Vec3<T>    MakeFromXMFLOAT3(const DirectX::XMFLOAT3& float3);
