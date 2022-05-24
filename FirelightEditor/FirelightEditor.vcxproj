@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -158,8 +158,6 @@
     <ClCompile Include="LevelEditor.cpp" />
     <ClCompile Include="Source\Panels\HierarchyPanel.cpp" />
     <ClCompile Include="Source\Panels\InspectorPanel.cpp" />
-    <ClCompile Include="Source\Panels\TimelineWindow.cpp" />
-    <ClCompile Include="Source\Panels\Timeline\TimelineItem.cpp" />
     <ClCompile Include="Source\Panels\ViewportPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,13 +167,14 @@
     <ClInclude Include="ImGuiEditorLayer.h" />
     <ClInclude Include="Source\Panels\HierarchyPanel.h" />
     <ClInclude Include="Source\Panels\InspectorPanel.h" />
-    <ClInclude Include="Source\Panels\TimelineWindow.h" />
-    <ClInclude Include="Source\Panels\Timeline\TimelineItem.h" />
     <ClInclude Include="Source\Panels\ViewportPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
       <Project>{ea744fde-6588-4aa7-94ba-318d00e409dc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SnowfallEngine\SnowfallEngine.vcxproj">
+      <Project>{2e6e55df-89ad-461d-8acc-b73399320c31}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

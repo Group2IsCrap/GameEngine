@@ -51,6 +51,9 @@ namespace Firelight
 
         void   RenderFrame();
 
+        const bool& GetPaused();
+        void TogglePause();
+
     private:
         Engine();
 
@@ -71,5 +74,7 @@ namespace Firelight
 
         double             m_physicsTimeStep;
         double             m_physicsTime;
+
+        bool isPaused = true;
     };
 }

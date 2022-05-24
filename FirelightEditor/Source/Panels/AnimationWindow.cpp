@@ -248,7 +248,8 @@ void AnimationWindow::CreateAnimation()
 		{
 			if (!std::filesystem::is_directory(newPath))
 			{
-				SaveFile(s_animationName.c_str());
+				std::vector<std::string> textureNames;
+				SaveFile(s_animationName.c_str(), true, 1.0f, 0, textureNames);
 			}
 			s_animationName = "";
 			ImGui::CloseCurrentPopup();
@@ -303,6 +304,12 @@ void AnimationWindow::SaveAnimation(const char* fileName, rapidjson::StringBuffe
 
 void AnimationWindow::SaveFile(const char* animName)
 {
+	SaveFile(m_selectedAnimation->m_animationName.c_str(), m_selectedAnimation->m_loop, m_selectedAnimation->m_frameTime,
+		m_selectedAnimation->m_frameCount, m_selectedAnimation->m_textureNames);
+}
+
+void AnimationWindow::SaveFile(const char* animName, bool loop, int frameTime, int frameCount, std::vector<std::string> textureNames)
+{
 	std::string fileName = animName;
 	if (fileName.length() <= 0)
 		return;
@@ -314,18 +321,32 @@ void AnimationWindow::SaveFile(const char* animName)
 	Serialiser::Writer = new rapidjson::PrettyWriter<rapidjson::StringBuffer>(*buffer);
 
 	Serialiser::StartObject();
-	Serialiser::Serialise("AnimationName", m_selectedAnimation->m_animationName);
-	Serialiser::Serialise("Loop", m_selectedAnimation->m_loop);
-	Serialiser::Serialise("FrameTime", m_selectedAnimation->m_frameTime);
-	Serialiser::Serialise("FrameCount", m_selectedAnimation->m_frameCount);
+	Serialiser::Serialise("AnimationName", animName);
+	Serialiser::Serialise("Loop", loop);
+	Serialiser::Serialise("FrameTime", frameTime);
+	Serialiser::Serialise("FrameCount", frameCount);
 	Serialiser::StartArray("TextureNames");
-	for (int i = 0; i < m_selectedAnimation->m_textureNames.size(); i++)
+	for (int i = 0; i < textureNames.size(); i++)
 	{
-		Serialiser::Serialise(m_selectedAnimation->m_textureNames[i]);
+		Serialiser::Serialise(textureNames[i]);
 	}
 	Serialiser::EndArray();
 	Serialiser::EndObject();
 	SaveAnimation(newPath.c_str(), buffer);
+
+	if (std::find(m_animationNames.begin(), m_animationNames.end(), animName) == m_animationNames.end())
+	{
+		Firelight::Animation::Animation* animation = new Firelight::Animation::Animation();
+		animation->m_animationName = animName;
+		animation->m_loop = loop;
+		animation->m_frameTime = frameTime;
+		animation->m_frameCount = frameCount;
+		animation->m_textureNames = textureNames;
+
+		m_animations.push_back(animation);
+		m_animationNames.push_back(animName);
+		m_selectedAnimation = animation;
+	}
 }
 
 void AnimationWindow::GetAllAnimations()
@@ -351,10 +372,10 @@ void AnimationWindow::GetAllAnimations()
 			if (Serialiser::LoadFile(path.string().c_str()))
 			{
 				Firelight::Animation::Animation* animation = new Firelight::Animation::Animation();
-				Serialiser::Deserialize("AnimationName", animation->m_animationName);
-				Serialiser::Deserialize("Loop", animation->m_loop);
-				Serialiser::Deserialize("FrameTime", animation->m_frameTime);
-				Serialiser::Deserialize("FrameCount", animation->m_frameCount);
+				Serialiser::Deserialise("AnimationName", animation->m_animationName);
+				Serialiser::Deserialise("Loop", animation->m_loop);
+				Serialiser::Deserialise("FrameTime", animation->m_frameTime);
+				Serialiser::Deserialise("FrameCount", animation->m_frameCount);
 				auto genericArray = (*Serialiser::FileDocument)["TextureNames"].GetArray();
 				for (auto& value : genericArray)
 				{

@@ -1,0 +1,9 @@
+{
+    "AnimationName": "CrocodileIdle",
+    "Loop": false,
+    "FrameTime": 1,
+    "FrameCount": 1,
+    "TextureNames": [
+        "Sprites\\Enemies\\CrocIdle.png"
+    ]
+}

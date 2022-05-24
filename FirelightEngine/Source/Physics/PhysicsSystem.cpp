@@ -109,28 +109,34 @@ namespace Firelight::Physics
 		}
 	}
 
-	void PhysicsSystem::Update(const Utils::Time& time)
+	void PhysicsSystem::Update(const Utils::Time& time, const bool& isPaused)
 	{
 
-		for (int i = 0; i < m_entities.size(); ++i)
+		if (!isPaused)
 		{
-			Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
-			Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
-
-			if (rigidBodyComponent->interpolate)
+			for (int i = 0; i < m_entities.size(); ++i)
 			{
-				float timeVal = rigidBodyComponent->interpolationTime / time.GetPhysicsTimeStep();
+				Firelight::ECS::RigidBodyComponent* rigidBodyComponent = m_entities[i]->GetComponent<Firelight::ECS::RigidBodyComponent>();
+				Firelight::ECS::TransformComponent* transformComponent = m_entities[i]->GetComponent<Firelight::ECS::TransformComponent>();
 
-				transformComponent->SetPosition(Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal));
-				rigidBodyComponent->interpolationTime += time.GetDeltaTime();
+				if (rigidBodyComponent->interpolate)
+				{
+					float timeVal = rigidBodyComponent->interpolationTime / time.GetPhysicsTimeStep();
+
+					transformComponent->SetPosition(Maths::Vec3f::Lerp(rigidBodyComponent->lastPos, rigidBodyComponent->nextPos, timeVal));
+					rigidBodyComponent->interpolationTime += time.GetDeltaTime();
+				}
 			}
 		}
 	}
 
-	void PhysicsSystem::FixedUpdate(const Utils::Time& time)
+	void PhysicsSystem::FixedUpdate(const Utils::Time& time, const bool& isPaused)
 	{
-		ApplyForces(time.GetPhysicsTimeStep());
-		HandleCollisions();
+		if (!isPaused)
+		{
+			ApplyForces(time.GetPhysicsTimeStep());
+			HandleCollisions();
+		}
 	}
 
 	void PhysicsSystem::ApplyForces(double fixedDeltaTime)

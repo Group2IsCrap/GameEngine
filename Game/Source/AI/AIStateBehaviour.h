@@ -10,5 +10,5 @@ class AIStateBehaviour
 public:
 	AIStateBehaviour();
 
-	virtual void HandleState(const Firelight::Utils::Time& time);
+	virtual void HandleState(class AIEntity* entity, const Firelight::Utils::Time& time);
 };

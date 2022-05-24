@@ -44,7 +44,11 @@ struct AIComponent : Firelight::ECS::BaseComponent
 	void RenderDebugUI() override
 	{
 		ImGuiVariable("Type", (int)m_Type);
-		ImGuiVariable("Target", (int)m_Target->GetEntityID());
+		if (m_Target != nullptr)
+			ImGuiVariable("Target", (int)m_Target->GetEntityID());
+		else 
+			ImGuiVariable("Target", 0);
+
 		ImGuiVariable("TintTime", m_tintTime);
 		ImGuiVariable("TintTimer", m_tintTimer);
 		ImGuiVariable("Tint", m_tint);

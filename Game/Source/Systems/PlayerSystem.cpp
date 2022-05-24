@@ -80,57 +80,63 @@ void PlayerSystem::CheckForPlayer()
 	}
 }
 
-void PlayerSystem::Update(const Firelight::Utils::Time& time)
+void PlayerSystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
 {
-	if (playerEntity == nullptr)
+	if (!isPaused)
 	{
-		return;
-	}
-	PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
+		if (playerEntity == nullptr)
+		{
+			return;
+		}
+		PlayerComponent* playerComponent = playerEntity->GetComponent<PlayerComponent>();
 
-	if (m_moveUp)
-	{
-		playerComponent->facing = Facing::Up;
-	}
-	else if (m_moveDown)
-	{
-		playerComponent->facing = Facing::Down;
-	}
-	else if (m_moveLeft)
-	{
-		playerComponent->facing = Facing::Left;
-	}
-	else if (m_moveRight)
-	{
-		playerComponent->facing = Facing::Right;
-	}
-	m_attackCooldown += time.GetDeltaTime();
-	if (m_attackCooldown >= m_currentWeaponCooldown && m_isAttacking)
-	{
-		m_attackCooldown = 0.0f;
-		Attack();
-	}
+		if (m_moveUp)
+		{
+			playerComponent->facing = Facing::Up;
+		}
+		else if (m_moveDown)
+		{
+			playerComponent->facing = Facing::Down;
+		}
+		else if (m_moveLeft)
+		{
+			playerComponent->facing = Facing::Left;
+		}
+		else if (m_moveRight)
+		{
+			playerComponent->facing = Facing::Right;
+		}
+		m_attackCooldown += time.GetDeltaTime();
+		if (m_attackCooldown >= m_currentWeaponCooldown && m_isAttacking)
+		{
+			m_attackCooldown = 0.0f;
+			Attack();
+		}
 
-	HandlePlayerAnimations();
+		HandlePlayerAnimations();
+	}
 }
 
-void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time)
+void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& isPaused)
 {
-	if (m_moveUp)
+	if (!isPaused)
 	{
-		playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveDown)
-	{
-		playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveLeft)
-	{
-		playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
-	}
-	if (m_moveRight)
-	{
-		playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+		if (m_moveUp)
+		{
+			playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveDown)
+		{
+			playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveLeft)
+		{
+			playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * time.GetPhysicsTimeStep();
+		}
+		if (m_moveRight)
+		{
+			playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
+		}
 	}
 }
 
@@ -153,11 +159,14 @@ void PlayerSystem::MovePlayerUp()
 }
 void PlayerSystem::MovePlayerLeft()
 {
-	if (playerEntity != nullptr)
+	if (!Firelight::Engine::Instance().GetPaused())
 	{
-		playerEntity->GetTransformComponent()->FlipX(true);
+		if (playerEntity != nullptr)
+		{
+			playerEntity->GetTransformComponent()->FlipX(true);
+		}
+		m_moveLeft = true;
 	}
-	m_moveLeft = true;
 }
 void PlayerSystem::MovePlayerDown()
 {
@@ -165,11 +174,14 @@ void PlayerSystem::MovePlayerDown()
 }
 void PlayerSystem::MovePlayerRight()
 {
-	if (playerEntity != nullptr)
+	if (!Firelight::Engine::Instance().GetPaused())
 	{
-		playerEntity->GetTransformComponent()->FlipX(false);
+		if (playerEntity != nullptr)
+		{
+			playerEntity->GetTransformComponent()->FlipX(false);
+		}
+		m_moveRight = true;
 	}
-	m_moveRight = true;
 }
 
 void PlayerSystem::MovePlayerUpRelease()
@@ -225,17 +237,17 @@ void PlayerSystem::Interact()
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
-		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
-		{
-			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
-			
-			audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
-			entitiesCollidedWith[0]->PlayAudioClip();
-		}
+		//if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
+		//{
+		//	/*AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
+		//	
+		//	audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
+		//	entitiesCollidedWith[0]->PlayAudioClip();*/
+		//}
 		//ckeck if it is a item
 		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
 
-			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", entitiesCollidedWith[0])) {
+			if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainInventory", entitiesCollidedWith[0])) {
 				//hide item
 				transformComponent->SetPosition(Vec3f(100000, 0, 0));
 			}
@@ -252,7 +264,7 @@ void PlayerSystem::SpawnItem()
 void PlayerSystem::Attack()
 {
 	Firelight::ECS::AnimationSystem::Instance()->Play(playerEntity, "PlayerAttack");
-	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetTransformComponent()->GetPosition());
+	CombatCalculations::PlaceSphere(playerEntity->GetComponent<PlayerComponent>()->facing, playerEntity->GetRigidBodyComponent()->nextPos);
 }
 
 void PlayerSystem::RemoveHealth()

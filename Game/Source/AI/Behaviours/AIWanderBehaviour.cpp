@@ -12,7 +12,7 @@ AIWanderBehaviour::AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent, flo
 	m_spawnpoint = rigidbodyComponent->nextPos;
 }
 
-void AIWanderBehaviour::HandleState(const Firelight::Utils::Time& time)
+void AIWanderBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::Time& time)
 {
 	if (m_radii.empty())
 		return;

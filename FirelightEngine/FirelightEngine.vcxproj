@@ -376,6 +376,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\ECS\Components\TilemapComponent.h" />
+    <ClInclude Include="Source\ECS\Components\TransformData.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\GameEntityTemplate.h" />
     <ClInclude Include="Source\ECS\EntityWrappers\SpriteEntityTemplate.h" />
     <ClInclude Include="Source\ECS\HashCaching.h" />
@@ -486,6 +487,7 @@
     <ClInclude Include="Source\ECS\Systems\TextSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ECS\Components\TransformData.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\GameEntityTemplate.cpp" />
     <ClCompile Include="Source\ECS\EntityWrappers\SpriteEntityTemplate.cpp" />
     <ClCompile Include="Source\ECS\HashCaching.cpp" />

@@ -15,7 +15,7 @@ public:
 
 	void RemoveHealth(int amount) override;
 	void HealthBelowZero() override;
-	void FaceDirection();
+	virtual void FaceDirection();
 
 	AIComponent* GetAIComponent();
 

@@ -16,8 +16,8 @@ public:
 	PlayerSystem();
 	~PlayerSystem();
 	void CheckForPlayer();
-	void Update(const Firelight::Utils::Time& time) override;
-	void FixedUpdate(const Firelight::Utils::Time& time) override;
+	void Update(const Firelight::Utils::Time& time, const bool& isPaused) override;
+	void FixedUpdate(const Firelight::Utils::Time& time, const bool& isPaused) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	void SwitchWeapon();

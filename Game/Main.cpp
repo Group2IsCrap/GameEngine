@@ -15,6 +15,7 @@
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
+#include "Source/WorldEntities/ResourceDatabase.h"
 #include "Source/CoreComponents/AIComponent.h"
 #include "Source/Core//WorldEntity.h"
 
@@ -25,12 +26,11 @@
 #include "Source/Core/AIEntity.h"
 #include "Source/AI/Enemies/AICrocodileEntity.h"
 #include "Source/AI/Enemies/AIDeerEntity.h"
+#include "Source/AI/Enemies/AISlimeEntity.h"
 #include "Source/AI/AIBehaviourComponent.h"
-#include "Source/WorldEntities/TreeEntity.h"
-#include "Source/WorldEntities/RockEntity.h"
-#include "Source/WorldEntities/BushEntity.h"
-#include "Source/WorldEntities/BerryBushEntity.h"
 
+
+#include <Source/ECS/Components/AnimationComponent.h>
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
@@ -100,7 +100,7 @@ void SpawnItem1()
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
 	ItemDatabase::Instance()->CreateInstanceOfItem(2);
 	ItemDatabase::Instance()->CreateInstanceOfItem(3);
-	ItemDatabase::Instance()->CreateInstanceOfItem(4);
+	ItemDatabase::Instance()->CreateInstanceOfItem(21);
 }
 
 void GenerateBiomeUI()
@@ -129,12 +129,15 @@ void SetupEnemyTemplate()
 	enemyTemplate->AddComponent<RigidBodyComponent>();
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
 	enemyTemplate->AddComponent<HealthComponent>();
-	
+	enemyTemplate->AddComponent<Firelight::ECS::AnimationComponent>();
+
 	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
+	AISlimeEntity* entity3 = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
 }
 
-void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
+void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
+{
 
 	Maths::Vec3f atPos= at;
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(toDrop);
@@ -142,9 +145,10 @@ void DropItemAt(Maths::Vec3f at, EntityID toDrop) {
 	{
 		toDropData->SetPosition(Maths::Random::RandomPointInCircle(atPos, 3));
 	}
-	
 }
-void DropItemAtPlayer(void* toDrop, EntityID player) {
+
+void DropItemAtPlayer(void* toDrop, EntityID player)
+{
 	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
 
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
@@ -153,12 +157,13 @@ void DropItemAtPlayer(void* toDrop, EntityID player) {
 	}
 }
 
-void ReAddToPlayer(void* toAdd) {
+void ReAddToPlayer(void* toAdd) 
+{
 	std::vector<EntityID>* AddIDs = (std::vector <EntityID>*)toAdd;
 	std::vector<EntityID> toRemove;
 	for (size_t i = 0; i < AddIDs->size(); i++)
 	{
-		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainIven", AddIDs->at(i))) {
+		if (!InventorySystem::GlobalFunctions::AddItem("PlayerInventory", "MainInventory", AddIDs->at(i))) {
 			toRemove.push_back(AddIDs->at(i));
 		}
 	}
@@ -174,26 +179,18 @@ void ReAddToPlayer(void* toAdd) {
 		}
 	}
 }
+
 void SetupResourceTemplate()
 {
-	SpriteEntityTemplate* resourceTemplate = new SpriteEntityTemplate("Resource Template");
-	resourceTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Resource);
-	SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/ObjectSprites/Tree.png");
-	spriteComponent->pixelsPerUnit = 50;
-	spriteComponent->layer = static_cast<int>(RenderLayer::Items);
-	resourceTemplate->AddComponent<RigidBodyComponent>();
-	resourceTemplate->AddComponent<HealthComponent>();
+	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
+	treeEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, 5.0f, 0.0f));
+	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
+	rockEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, 5.0f, 0.0f));
+	ResourceEntity* bushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(2);
+	bushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(5.0f, -5.0f, 0.0f));
+	ResourceEntity* berryBushEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(3);
+	berryBushEntity->GetTransformComponent()->SetPosition(Maths::Vec3f(-5.0f, -5.0f, 0.0f));
 
-	TreeEntity* entity1 = new TreeEntity(true, resourceTemplate->GetTemplateID());
-	entity1->GetIDComponent()->name = "Resource: Tree";
-	RockEntity* entity2 = new RockEntity(true, resourceTemplate->GetTemplateID());
-	entity2->GetIDComponent()->name = "Resource: Rock";
-	BushEntity* entity3 = new BushEntity(true, resourceTemplate->GetTemplateID());
-	entity3->GetIDComponent()->name = "Resource: Bush";
-	BerryBushEntity* entity4 = new BerryBushEntity(true, resourceTemplate->GetTemplateID());
-	entity4->GetIDComponent()->name = "Resource: Berry Bush";
-	
 }
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
@@ -226,9 +223,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		test2->GetSpriteComponent()->layer = 16;
 		
 		//AI
+		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemyTemplate();
 		SetupResourceTemplate();
-
 
 		//// Grass
 		//SpriteEntity* test2 = new SpriteEntity();
@@ -277,9 +274,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddInventory("MainInventory", "Sprites/UI/PlayerInventory.png", 1, 10, Maths::Vec2f(1000, 100), Maths::Vec2f(75, 75), Maths::Vec2f(0, 0), Maths::Vec2f(12.5f, 12.5f), Maths::Vec2f(-100, 0), ECS::e_AnchorSettings::Bottom);
 		inv1->AddInventory("Equipment", "Sprites/UI/PlayerInventory1.png", 1, 3, Maths::Vec2f(300 - 12.5f, 100), Maths::Vec2f(0, 0), Maths::Vec2f(25, 0), Maths::Vec2f(75 * 4 + (25.0f * 3) - 12.5f + 50, 0), ECS::e_AnchorSettings::Bottom);
 
-		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
-		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
-		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/Slot_Icon_100x100.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
+		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Weapon.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
+		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Hat.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
+		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/SlotIcon.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
 
 		
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
@@ -288,6 +285,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 		// Load All Items
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
+		
 
 
 		while (Engine::Instance().ProcessMessages())
@@ -301,8 +299,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
 		}
-
-		Serialiser::SaveSceneJSON();
 	}
 
 	return 0;
