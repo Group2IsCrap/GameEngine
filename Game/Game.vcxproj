@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
     <ClInclude Include="Source\Items\CraftingRecipeDatabase.h" />
     <ClInclude Include="Source\Items\CraftingRecipe.h" />
     <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />

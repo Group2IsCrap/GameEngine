@@ -111,4 +111,10 @@ void EntitySpawnerSystem::SetupEntityTemplate()
 	enemyTemplate->AddComponent<AIBehaviourComponent>();
 	enemyTemplate->AddComponent<HealthComponent>();
 	enemyTemplate->AddComponent<Firelight::ECS::AnimationComponent>();
+	AudioComponent* audioComponent = new AudioComponent();
+	enemyTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
+	audioComponent->looping = false;
+	audioComponent->is3d = false;
+	audioComponent->streaming = false;
+	audioComponent->channel = "Enemies";
 }

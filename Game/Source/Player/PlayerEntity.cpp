@@ -35,6 +35,13 @@ PlayerEntity::PlayerEntity()
 	hat->GetTransformComponent()->SetPosition({ 0.0f, 1.0f, 0.0f });
 	GetTransformComponent()->AddChild(hat);
 
+	AudioComponent* audioComponent = new AudioComponent();
+	AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
+	audioComponent->looping = false;
+	audioComponent->is3d = false;
+	audioComponent->streaming = false;
+	audioComponent->channel = "Player";
+
 	Firelight::ECS::BoxColliderComponent* boxCollider = dynamic_cast<Firelight::ECS::BoxColliderComponent*>(AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::BoxColliderComponent()));
 	boxCollider->rect = Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 2.0f);
 }
