@@ -38,8 +38,8 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	borderPanel->GetSpriteComponent()->toDraw = true;
 	borderPanel->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	borderPanel->SetParent(backgroundPanel->GetEntityID());
-	borderPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(800, 500, 0));
-	borderPanel->SetOffset(Firelight::Maths::Vec2f(0, 200));
+	borderPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(750, 150, 0));
+	borderPanel->SetOffset(Firelight::Maths::Vec2f(0, 100));
 	m_UIEntities.push_back(borderPanel);
 
 	Firelight::ECS::UIButton* playButton = new Firelight::ECS::UIButton("Play Button");
@@ -49,30 +49,37 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	playButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	playButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
 	playButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
-	playButton->SetOffset(Firelight::Maths::Vec2f(0, 0));
 	playButton->GetComponent<Firelight::ECS::UIPressableComponent>()->onLeftPressFunctions.push_back(std::bind(&MainMenuUI::PlayFunction, this));
 	Firelight::ECS::TextComponent* playText = playButton->AddComponent<Firelight::ECS::TextComponent>();
 	playText->text.SetString("Play");	
-	playText->text.SetTextHeight(100.0f);
+	playText->text.SetTextHeight(110.0f);
 	playText->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
 	playText->layer = 100000;
 	m_UIEntities.push_back(playButton);
 
-	//Firelight::ECS::UIButton* exitButton = new Firelight::ECS::UIButton("Exit Button");
-	//exitButton->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
-	//exitButton->GetSpriteComponent()->toDraw = true;
-	//exitButton->SetParent(borderPanel->GetEntityID());
-	//exitButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
-	//exitButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
-	//exitButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
-	//exitButton->SetOffset(Firelight::Maths::Vec2f(0, 200));
-	//Firelight::ECS::TextComponent* exitText = exitButton->AddComponent<Firelight::ECS::TextComponent>();
-	//playButton->GetComponent<Firelight::ECS::UIPressableComponent>()->onLeftPressFunctions.push_back(std::bind(&MainMenuUI::ExitFunction, this));
-	//exitText->text.SetString("Exit");
-	//exitText->text.SetTextHeight(80.0f);
-	//exitText->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
-	//exitText->layer = 100000;
-	//m_UIEntities.push_back(exitButton);
+	Firelight::ECS::UIPanel* borderPanel2 = new Firelight::ECS::UIPanel("Main Menu Button Panel 2");
+	borderPanel2->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
+	borderPanel2->GetSpriteComponent()->toDraw = true;
+	borderPanel2->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
+	borderPanel2->SetParent(backgroundPanel->GetEntityID());
+	borderPanel2->SetDefaultDimensions(Firelight::Maths::Vec3f(750, 150, 0));
+	borderPanel2->SetOffset(Firelight::Maths::Vec2f(0, 300));
+	m_UIEntities.push_back(borderPanel2);
+
+	Firelight::ECS::UIButton* exitButton = new Firelight::ECS::UIButton("Exit Button");
+	exitButton->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
+	exitButton->GetSpriteComponent()->toDraw = true;
+	exitButton->SetParent(borderPanel2->GetEntityID());
+	exitButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
+	exitButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
+	exitButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
+	Firelight::ECS::TextComponent* exitText = exitButton->AddComponent<Firelight::ECS::TextComponent>();
+	exitButton->GetComponent<Firelight::ECS::UIPressableComponent>()->onLeftPressFunctions.push_back(std::bind(&MainMenuUI::ExitFunction, this));
+	exitText->text.SetString("Exit");
+	exitText->text.SetTextHeight(110.0f);
+	exitText->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
+	exitText->layer = 100000;
+	m_UIEntities.push_back(exitButton);
 
 
 }
