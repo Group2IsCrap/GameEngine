@@ -52,6 +52,8 @@ public:
 
 	ECS::EntityID GetSpecialSlot(std::string name);
 
+	void DropAllItems();
+
 	std::vector <InventoryStoreData>* GetNullSlotData() { return &m_outOfInventoryData; }
 	ECS::UIPanel* GetInventorySpace() { return m_inventorySpace; }
 	std::string GetName() { return ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID)->name; }
