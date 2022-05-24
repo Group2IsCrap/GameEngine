@@ -15,7 +15,7 @@ namespace Firelight::ECS
 		AnimationSystem();
 		~AnimationSystem();
 
-		void Update(const Utils::Time& time) override;
+		void Update(const Utils::Time& time, const bool& isPaused) override;
 
 		static AnimationSystem* Instance();
 

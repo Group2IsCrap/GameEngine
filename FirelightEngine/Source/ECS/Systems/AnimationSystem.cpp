@@ -71,63 +71,66 @@ namespace Firelight::ECS
 
 	}
 	
-	void AnimationSystem::Update(const Utils::Time& time)
+	void AnimationSystem::Update(const Utils::Time& time, const bool& isPaused)
 	{
-		if (m_entities.size() <= 0)
+		if (!isPaused)
 		{
-			return;
-		}
-
-		for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
-		{
-			auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
-			auto* animatorComponent = m_entities[entityIndex]->GetComponent<AnimationComponent>();
-
-			if (spriteComponent == nullptr || animatorComponent == nullptr)
+			if (m_entities.size() <= 0)
 			{
-				continue;
+				return;
 			}
 
-			if (animatorComponent->currentAnimation == nullptr || !animatorComponent->shouldPlay)
+			for (int entityIndex = 0; entityIndex < m_entities.size(); ++entityIndex)
 			{
-				continue;
-			}
+				auto* spriteComponent = m_entities[entityIndex]->GetComponent<SpriteComponent>();
+				auto* animatorComponent = m_entities[entityIndex]->GetComponent<AnimationComponent>();
 
-			Firelight::Animation::Animation* currentAnimation = animatorComponent->currentAnimation;
-
-			if (animatorComponent->currentFrameIndex > currentAnimation->m_frameCount)
-			{
-				if (!currentAnimation->m_loop)
+				if (spriteComponent == nullptr || animatorComponent == nullptr)
 				{
 					continue;
 				}
-			}
 
-			if (currentAnimation == nullptr || currentAnimation->m_textures.size() < 1)
-				return;
-
-
-			animatorComponent->currentFrameCount += (float)time.GetDeltaTime() * 1000.0f;
-
-			if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
-			{
-				if (!currentAnimation->m_loop && animatorComponent->currentFrameIndex < currentAnimation->m_frameCount - 1 || currentAnimation->m_loop)
-					animatorComponent->currentFrameIndex++;
-
-				if (animatorComponent->currentFrameIndex >= currentAnimation->m_frameCount && currentAnimation->m_loop)
+				if (animatorComponent->currentAnimation == nullptr || !animatorComponent->shouldPlay)
 				{
-					animatorComponent->currentFrameIndex = 0;
+					continue;
 				}
-				animatorComponent->currentFrameCount = 0.0f;
+
+				Firelight::Animation::Animation* currentAnimation = animatorComponent->currentAnimation;
+
+				if (animatorComponent->currentFrameIndex > currentAnimation->m_frameCount)
+				{
+					if (!currentAnimation->m_loop)
+					{
+						continue;
+					}
+				}
+
+				if (currentAnimation == nullptr || currentAnimation->m_textures.size() < 1)
+					return;
+
+
+				animatorComponent->currentFrameCount += (float)time.GetDeltaTime() * 1000.0f;
+
+				if (animatorComponent->currentFrameCount > currentAnimation->m_frameTime)
+				{
+					if (!currentAnimation->m_loop && animatorComponent->currentFrameIndex < currentAnimation->m_frameCount - 1 || currentAnimation->m_loop)
+						animatorComponent->currentFrameIndex++;
+
+					if (animatorComponent->currentFrameIndex >= currentAnimation->m_frameCount && currentAnimation->m_loop)
+					{
+						animatorComponent->currentFrameIndex = 0;
+					}
+					animatorComponent->currentFrameCount = 0.0f;
+				}
+
+				Firelight::Graphics::Texture* texture = currentAnimation->m_textures[animatorComponent->currentFrameIndex];
+				if (texture == nullptr)
+					return;
+
+				Firelight::Maths::Vec3i imageDimensions = texture->GetDimensions();
+
+				spriteComponent->texture = texture;
 			}
-
-			Firelight::Graphics::Texture* texture = currentAnimation->m_textures[animatorComponent->currentFrameIndex];
-			if (texture == nullptr)
-				return;
-
-			Firelight::Maths::Vec3i imageDimensions = texture->GetDimensions();
-
-			spriteComponent->texture = texture;
 		}
 	}
 	

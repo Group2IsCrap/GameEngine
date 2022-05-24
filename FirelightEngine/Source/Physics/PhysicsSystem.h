@@ -24,8 +24,8 @@ namespace Firelight::Physics
 		~PhysicsSystem() override;
 
 		void Render();
-		void Update(const Utils::Time& time) override;
-		void FixedUpdate(const Utils::Time& time) override;
+		void Update(const Utils::Time& time, const bool& isPaused) override;
+		void FixedUpdate(const Utils::Time& time, const bool& isPaused) override;
 
 		void ApplyForces(double fixedDeltaTime);
 		void Simulate(double fixedDeltaTime);
