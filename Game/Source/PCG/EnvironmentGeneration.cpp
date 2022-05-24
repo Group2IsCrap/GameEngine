@@ -80,41 +80,47 @@ void EnvironmentGeneration::SpawnRock(Vec3f position)
 
 bool EnvironmentGeneration::CanSpawnTreeFromNoise(int noiseIndex)
 {
-	float* noiseData = m_spawnRateNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	float compareMin = -1.0f;
-	float compareMax = 1.0f;
-
-	float spawnChance = 0.05f;
-
-	if (data >= compareMin && data <= compareMin + spawnChance)
+	if (noiseIndex > NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
-		return true;
-	}
-	if (data >= compareMin - spawnChance && data < compareMax)
-	{
-		return false;
+		float* noiseData = m_spawnRateNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
+
+		float compareMin = -1.0f;
+		float compareMax = 1.0f;
+
+		float spawnChance = 0.05f;
+
+		if (data >= compareMin && data <= compareMin + spawnChance)
+		{
+			return true;
+		}
+		if (data >= compareMin - spawnChance && data < compareMax)
+		{
+			return false;
+		}
 	}
 	return false;
 }
 
 bool EnvironmentGeneration::CanSpawnRockFromNoise(int noiseIndex)
 {
-	float* noiseData = m_spawnRateNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	float compareMin = -1.0f;
-	float compareMax = 1.0f;
-
-	float spawnChance = 0.05f;
-	if (data >= compareMin && data <= compareMin + spawnChance)
+	if (noiseIndex > NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
-		return true;
-	}
-	if (data >= compareMin - spawnChance && data < compareMax)
-	{
-		return false;
+		float* noiseData = m_spawnRateNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
+
+		float compareMin = -1.0f;
+		float compareMax = 1.0f;
+
+		float spawnChance = 0.05f;
+		if (data >= compareMin && data <= compareMin + spawnChance)
+		{
+			return true;
+		}
+		if (data >= compareMin - spawnChance && data < compareMax)
+		{
+			return false;
+		}
 	}
 	return false;
 }

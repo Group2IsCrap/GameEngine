@@ -14,6 +14,7 @@ namespace Firelight::TileMap
         , m_tileMapWidth(100)
         , m_tileDistance(1)
         , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
+        , m_topRightTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_tileMap()
     {
         PopulateTileMap();
@@ -40,7 +41,6 @@ namespace Firelight::TileMap
             for (int y = m_bottomLeftTilePos.y; y < m_tileMapHeight + m_bottomLeftTilePos.y; ++y)
             {
                   Tile* newTile = new Tile();
-                  newTile->SetTileTexture(Graphics::AssetManager::Instance().GetDefaultTexture());
                   newTile->SetDestinationRect(x * m_tileDistance, y * m_tileDistance, m_tileWidth, m_tileHeight);
                   newTile->SetTileID(tileNum);
                   vec.emplace_back(newTile);
@@ -124,5 +124,18 @@ namespace Firelight::TileMap
     void TileMap::SetBottomLeftTilePos(Firelight::Maths::Vec2f position)
     {
         m_bottomLeftTilePos = position;
+
+        m_topRightTilePos.x = (m_bottomLeftTilePos.x + m_tileMapWidth) * m_tileWidth;
+        m_topRightTilePos.y = (m_bottomLeftTilePos.y + m_tileMapHeight) * m_tileHeight;
+
+    }
+
+    Firelight::Maths::Vec2f TileMap::GetBottomLeftTilePos()
+    {
+        return m_bottomLeftTilePos;
+    }
+    Firelight::Maths::Vec2f TileMap::GetTopRightTilePos()
+    {
+        return m_topRightTilePos;
     }
 }

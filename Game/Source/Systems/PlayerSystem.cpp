@@ -3,7 +3,7 @@
 #include <Source/Input/GetInput.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
-#include <Source/Physics/PhysicsHelpers.h>
+#include <Source/Physics/PhysicsHelpers.h>s
 #include <Source/ImGuiUI/ImGuiManager.h>
 
 #include "../Player/PlayerComponent.h"
@@ -16,6 +16,8 @@
 #include"../Inventory/InventoryFunctionsGlobal.h"
 #include <Source/ECS/Components/ItemComponents.h>
 #include <Source/ECS/Systems/AnimationSystem.h>
+
+#include "../PCG/BiomeGeneration.h"
 
 using namespace Firelight::Events;
 using namespace Firelight::Events::InputEvents;
@@ -137,6 +139,8 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 		{
 			playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
 		}
+		BiomeGeneration::Instance()->testPosition.x = playerEntity->GetRigidBodyComponent()->nextPos.x;
+		BiomeGeneration::Instance()->testPosition.y = playerEntity->GetRigidBodyComponent()->nextPos.y;
 	}
 }
 

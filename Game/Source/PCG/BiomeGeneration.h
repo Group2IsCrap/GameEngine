@@ -8,6 +8,8 @@
 #include "..\FirelightEngine\Source\TileMap\TileMap.h"
 #include "BiomeInfo.h"
 
+#include "Source/ImGuiUI/ImGuiLayer.h"
+
 #include <map>
 
 using namespace Firelight::Graphics;
@@ -21,10 +23,12 @@ enum class IslandSpawnDirection
 	West
 };
 
-class BiomeGeneration
+class BiomeGeneration : public Firelight::ImGuiUI::ImGuiLayer
 {
 public:
 	BiomeGeneration();
+
+	virtual void Render() override;
 
 	static BiomeGeneration* Instance();
 	void Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo);
@@ -34,6 +38,9 @@ public:
 
 	void GenerateWorld();
 
+	Firelight::Maths::Rectf testPosition;
+
+	bool IsInVoid(Rectf position);
 private:
 
 	void DrawIslandCircles(Rectf& destRect, Rectf currentIslandCentre, int index);
@@ -46,24 +53,27 @@ private:
 	void FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpawnDirection& direction, Rectf& destRect, int& iterator);
 	BiomeType RandomBiomeType(unsigned int noiseIndex);
 
+	void OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal);
+	bool IsPositionBetweenTwoPoints(Rectf position, Vec2f point1, Vec2f point2);
+
 	Noise* m_biomeNoise;
 	Noise* m_islandDirectionNoise;
 	Noise* m_islandShapeNoise;
 	BiomeInfo* m_biomeInfo;
 
 	Firelight::TileMap::TileMap* m_tileMap;
-
 	static BiomeGeneration* sm_instance;
-	static unsigned int mapSeed;
+
+	static unsigned int sm_mapSeed;
+
+	std::vector<Rectf> m_walkableBoxZones;
+	std::vector<Rectf> m_islandCentres;
 
 	std::vector< Vec2i > m_OccupiedIslandSpaces;
 	std::vector< Texture*> sm_biomeMap;
-
 	unsigned int m_biomeCount;
-
 	unsigned int m_bridgeWidth;
 	unsigned int m_bridgeLength;
-
-	int m_radius;
+	int m_islandRadii;
 
 };

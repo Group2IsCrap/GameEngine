@@ -13,7 +13,7 @@ PlayerEntity::PlayerEntity()
 {
 	GetComponent<Firelight::ECS::IdentificationComponent>()->name = "Player";
 	GetComponent<Firelight::ECS::SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PlayerIdle.png");
-	AddComponent<PlayerComponent>();
+	AddComponent<PlayerComponent>()->speed;
 	GetComponent<Firelight::ECS::RigidBodyComponent>()->interpolate = true;
 	GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player);
 	GetLayerComponent()->layer = static_cast<int>(GameLayer::Player);

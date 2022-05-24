@@ -12,6 +12,7 @@
 #include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
+#include "Source/Player/PlayerComponent.h"
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
@@ -217,6 +218,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Player
 		PlayerEntity* player = new PlayerEntity();
+		//player->GetRigidBodyComponent()->velocity = -20;
 
 		// Grass
 		SpriteEntity* test2 = new SpriteEntity();

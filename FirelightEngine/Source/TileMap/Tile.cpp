@@ -14,12 +14,16 @@ namespace Firelight::TileMap
 		, m_tileID(-1)
 		, m_layer(32)
 		, m_rotation(0.0)
+		, m_isDrawn(false)
 		, m_isOccupied(false)
 	{}
 
 	void Tile::DrawTile()
 	{
-		Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(m_destinationRect, m_texture, m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, m_sourceRect);
+		if (m_isDrawn)
+		{
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(m_destinationRect, m_texture, m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, m_sourceRect);
+		}
 	}
 
 	void Tile::SetTileTexture(Graphics::Texture* texture)
@@ -32,24 +36,14 @@ namespace Firelight::TileMap
 		m_destinationRect = Maths::Rectf(x, y, w, h);
 	}
 
-	void Tile::SetSourceRect(float x, float y, float w, float h)
-	{
-		m_sourceRect = Maths::Rectf(x, y, w, h);
-	}
-
-	void Tile::SetLayer(int layer)
-	{
-		m_layer = layer;
-	}
-
-	void Tile::SetRotation(double rotation)
-	{
-		m_rotation = rotation;
-	}
-
 	void Tile::SetTileID(unsigned int tileID)
 	{
 		m_tileID = tileID;
+	}
+
+	void Tile::SetIsDrawn(bool isDrawn)
+	{
+		m_isDrawn = isDrawn;
 	}
 
 	void Tile::SetIsOccupied(bool occupied)
@@ -66,6 +60,7 @@ namespace Firelight::TileMap
 	{
 		return m_destinationRect;
 	}
+
 
 	bool Tile::IsOccupied() const
 	{

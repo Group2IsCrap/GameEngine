@@ -28,6 +28,8 @@ namespace Firelight::TileMap
 		void SetBottomLeftTilePos(Firelight::Maths::Vec2f position);
 
 		Tile* GetTileAtPosition(Maths::Vec2f position);
+		Firelight::Maths::Vec2f GetBottomLeftTilePos();
+		Firelight::Maths::Vec2f GetTopRightTilePos();
 
 		std::vector<std::vector<Tile*>>& GetTileMap();
 
@@ -39,6 +41,7 @@ namespace Firelight::TileMap
 		int m_tileDistance;
 
 		Firelight::Maths::Vec2f m_bottomLeftTilePos;
+		Firelight::Maths::Vec2f m_topRightTilePos;
 
 		std::vector<std::vector<Tile*>> m_tileMap;
 
