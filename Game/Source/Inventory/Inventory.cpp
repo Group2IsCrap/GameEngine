@@ -2,6 +2,7 @@
 #include "Source/Graphics/AssetManager.h"
 #include"Source/ECS/Components/ItemComponents.h"
 #include"../Events/PlayerEvents.h"
+#include<Source/Engine.h>
 Inventory::Inventory():
 	m_inventoryEntityID(-1),
 	m_inventorySpace(nullptr)
@@ -59,6 +60,8 @@ void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, Maths::Vec
 	border->widthLeftRight = margin.x;
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
+
+	
 }
 
 //draw on screen
@@ -204,7 +207,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 
 		ECS::UIBaseWidgetComponent* slotWidget = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID);
 
-		if (data->stackSize > 1) {
+		if (data->entityIDs.size() >= 1) {
 			ECS::PixelSpriteComponent* iconSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID);
 			iconSprite->toDraw = true;
 			
@@ -223,6 +226,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 			text->hidden = false;
 			text->text.SetString(std::to_string(data->entityIDs.size()));
 			
+
 
 		}
 	}
@@ -299,8 +303,10 @@ void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
 		}
 		if (isUsed) {
 			RemoveItem(itemID);
-			continue;
+
+			return;
 		}
+
 	}
 }
 
@@ -394,6 +400,11 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						if (inventoryData->name=="MainInventory"){
 							UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
 							press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+
+							InventoryComponentKeyPressAction* actionData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID,slot->ActionIndex);
+							actionData->EventID= Events::EventDispatcher::SubscribeFunction(actionData->ActionName.c_str(), std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+							Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(actionData->ActionName.c_str(), actionData->keyToActivate, Firelight::KeyEventType::KeyPressSingle);
+							
 						}
 						slotData->UITexID = icon->GetEntityID();
 					}
@@ -459,6 +470,8 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				for (size_t j = 0; j < specialSlot->tags.size(); j++)
 				{
 					if (std::find(tagData.begin(), tagData.end(), specialSlot->tags[j]) == tagData.end()) {
+
+
 						isGood = false;
 						
 					} 
@@ -467,6 +480,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 			if (!isGood) {
 				if (useSlotPlacement) {
 					isFail = AddItem(item, false);
+
 					break;
 				}
 
@@ -518,6 +532,8 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 				0);
+
+
 			isFail = false;
 			break;
 		}
@@ -560,6 +576,10 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 						text->hidden = true;
 					}
+
+					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+					text->text.SetString( std::to_string(slotData->entityIDs.size()));
+				 
 					isFail = false;
 					
 				}
@@ -803,6 +823,9 @@ bool Inventory::RemoveItemType(int howMany, int type)
 						text->hidden = true;
 						break;
 					}
+					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+					text->hidden = false;
+					text->text.SetString(std::to_string(slotData->entityIDs.size()));
 				}
 			}
 			isFail = false;

@@ -87,8 +87,8 @@ void BindDefaultKeys()
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
+	ItemDatabase::Instance()->CreateInstanceOfItem(37);
+	
 }
 
 void SpawnItem1()
@@ -249,7 +249,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddSpecialSlot(1, "Weapon", "Sprites/UI/Slot_Weapon.png", Maths::Vec2f(-75 - 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Weapon" });
 		inv1->AddSpecialSlot(1, "Head", "Sprites/UI/Slot_Hat.png", Maths::Vec2f(0, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Helm" });
 		inv1->AddSpecialSlot(1, "Body", "Sprites/UI/SlotIcon.png", Maths::Vec2f(75 + 12.5f, 0), Maths::Vec2f(75, 75), ECS::e_AnchorSettings::Center, std::vector<std::string>{ "Chest" });
-
+		Keys key = Keys::KEY_1;
+		for (int i = 0; i < 10; i++)
+		{
+			std::string ActionName = "Action" + std::to_string(i);
+			inv1->AddKeyCommands(0, key, ActionName);
+			key = (Keys)((int)key + 1);
+			if (i == 8) {
+				key= Keys::KEY_0;
+			}
+		}
 		
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
 		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));

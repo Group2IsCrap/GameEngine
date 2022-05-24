@@ -108,6 +108,7 @@ struct InventorySlots : Firelight::ECS::BaseComponent
 	EntityID slotID = NULL;
 	bool isUsed = false;
 	int specialSlotIndex = -1;
+	int ActionIndex = -1;
 	void Serialise() override
 	{
 		//to store
@@ -201,4 +202,18 @@ struct InventoryComponentButtonLayout : Firelight::ECS::BaseComponent
 	}
 };
 
+/// <summary>
+/// specilal slot
+/// creator is responsible for overlaps and if it looks bad
+/// </summary>
+struct InventoryComponentKeyPressAction : Firelight::ECS::BaseComponent
+{
+	Firelight::Keys keyToActivate = Firelight::Keys::KEY_INVALID;
+	std::string ActionName;
+	size_t EventID;
 
+	void Serialise() override
+	{
+
+	}
+};
