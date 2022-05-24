@@ -36,12 +36,12 @@
 34,Scale   Chest,,Sprites/Items/Feather.png,1,Armor;Chest
 35,Scale   Legs,,Sprites/Items/Feather.png,1,Armor;Legs
 36,Scale   Helm,,Sprites/Items/Feather.png,1,Armor;Helm
-37,Stone Pickaxe,,Sprites/Weapon/Stone_Pickaxe.png,1,Tool;Pickaxe
-38,Metal Pickaxe,,Sprites/Weapon/Metal_Pickaxe.png,1,Tool;Pickaxe
-39,Infused Pickaxe,,Sprites/Weapon/Infused_Pickaxe.png,1,Tool;Pickaxe
-40,Stone Axe,,Sprites/Weapon/Stone_Axe.png,1,Tool;Axe
-41,Metal Axe,,Sprites/Weapon/Metal_Axe.png,1,Tool;Axe
-42,Infused Axe,,Sprites/Weapon/Infused_Axe.png,1,Tool;Axe
+37,Stone Pickaxe,,Sprites/Weapon/Stone_Pickaxe.png,1,Weapon;Pickaxe
+38,Metal Pickaxe,,Sprites/Weapon/Metal_Pickaxe.png,1,Weapon;Pickaxe
+39,Infused Pickaxe,,Sprites/Weapon/Infused_Pickaxe.png,1,Weapon;Pickaxe
+40,Stone Axe,,Sprites/Weapon/Stone_Axe.png,1,Weapon;Axe
+41,Metal Axe,,Sprites/Weapon/Metal_Axe.png,1,Weapon;Axe
+42,Infused Axe,,Sprites/Weapon/Infused_Axe.png,1,Weapon;Axe
 43,Stone_Sword,,Sprites/Weapon/Stone_Sword.png,1,Weapon
 44,Metal_Sword,,Sprites/Weapon/Metal_Sword.png,1,Weapon
 45,Croc_Sword,,Sprites/Weapon/Croc_Sword.png,1,Weapon

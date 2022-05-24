@@ -28,4 +28,5 @@ public:
 
 private:
 	Firelight::Maths::Vec3f savePos;
+	
 };

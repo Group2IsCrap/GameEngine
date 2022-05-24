@@ -12,6 +12,8 @@ namespace Firelight::ECS
 {
 
 	enum class e_HarvestType {
+		Tree,
+		Rock,
 		invalid
 	};
 
@@ -108,6 +110,8 @@ namespace Firelight::ECS
 			clone->Cooldown = Cooldown;
 			clone->Radius = Radius;
 			clone->Angle = Angle;
+			clone->HarvestType = HarvestType;
+			clone->HarvestDamage=HarvestDamage;
 			return clone;
 		}
 	};

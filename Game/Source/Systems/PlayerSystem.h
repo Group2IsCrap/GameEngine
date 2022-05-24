@@ -3,6 +3,7 @@
 #include <Source/ECS/Systems/System.h>
 #include <Source/ECS/Components/UIComponents.h>
 #include <Source/Maths/Vec3.h>
+#include <Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
@@ -72,6 +73,7 @@ private:
 	size_t m_updateCraftableItemsEventIndex;
 	size_t m_removeHealthEventIndex;
 	size_t m_addHealthEventIndex;
+	size_t m_changeWeaponIndex;
 
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* m_playerEntity;
@@ -90,4 +92,6 @@ private:
 	float m_attackCooldown = 0.0f;
 	float m_currentWeaponCooldown = 1.0f;
 	bool m_canAttack = true;
+
+	WeaponComponent* fists;
 };

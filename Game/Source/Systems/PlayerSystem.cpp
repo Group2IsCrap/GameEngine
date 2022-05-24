@@ -15,7 +15,7 @@
 #include "../Combat/CombatCalculations.h"
 
 #include"../Inventory/InventoryFunctionsGlobal.h"
-#include <Source/ECS/Components/ItemComponents.h>
+
 #include <Source/ECS/Systems/AnimationSystem.h>
 
 #include"../Events/PlayerEvents.h"
@@ -49,6 +49,7 @@ PlayerSystem::PlayerSystem()
 	m_attackIndex = EventDispatcher::SubscribeFunction<AttackEvent>(std::bind(&PlayerSystem::StartAttack, this));
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 	m_respawnIndex = EventDispatcher::SubscribeFunction<RespawnEvent>(std::bind(&PlayerSystem::Respawn, this));
+	m_changeWeaponIndex = EventDispatcher::SubscribeFunction<Firelight::Events::PlayerEvents::ChangeWeapon>(std::bind(&PlayerSystem::SwitchWeapon, this));
 
 	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
 	
@@ -60,6 +61,15 @@ PlayerSystem::PlayerSystem()
 	Firelight::Events::EventDispatcher::AddListener<Inventory::UnloadInventoryGroup>(this);
 
 	m_imguiLayer = new ImGuiPlayerLayer();
+
+	fists = new WeaponComponent;
+	fists->Radius = 2.0f;
+	fists->Angle = 40.0f;
+	fists->Damage = 1.0f;
+	fists->Cooldown = 1.0f;
+	fists->HarvestType = Firelight::ECS::e_HarvestType(0);
+	fists->HarvestDamage = 1.0f;
+
 }
 
 PlayerSystem::~PlayerSystem()
@@ -88,6 +98,7 @@ PlayerSystem::~PlayerSystem()
 	EventDispatcher::UnsubscribeFunction<AttackEvent>(m_attackIndex);
 	EventDispatcher::UnsubscribeFunction<ReleaseAttackEvent>(m_releaseAttackIndex);
 	EventDispatcher::UnsubscribeFunction<RespawnEvent>(m_respawnIndex);
+	EventDispatcher::UnsubscribeFunction<Firelight::Events::PlayerEvents::ChangeWeapon>(m_changeWeaponIndex);
 }
 
 void PlayerSystem::CheckForPlayer()
@@ -300,13 +311,13 @@ void PlayerSystem::Interact()
 	if (entitiesCollidedWith.size() > 0)
 	{
 		TransformComponent* transformComponent = entitiesCollidedWith[0]->GetComponent<TransformComponent>();
-		//if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
-		//{
-		//	/*AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
-		//	
-		//	audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
-		//	entitiesCollidedWith[0]->PlayAudioClip();*/
-		//}
+		if (entitiesCollidedWith[0]->HasComponent<AudioComponent>())
+		{
+			AudioComponent* audioComponent = entitiesCollidedWith[0]->GetComponent<AudioComponent>();
+			
+			audioComponent->soundPos = { transformComponent->GetPosition().x,  transformComponent->GetPosition().y,  transformComponent->GetPosition().z};
+			entitiesCollidedWith[0]->PlayAudioClip();
+		}
 		//ckeck if it is a item
 		if (entitiesCollidedWith[0]->HasComponent<Firelight::ECS::ItemComponent>()) {
 
@@ -344,6 +355,25 @@ void PlayerSystem::SwitchWeapon()
 {
 	//Get current weapon from equipped & cooldown
 	//Swap currentWeaponCooldown
+	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Weapon");
+ 	WeaponComponent* weaponComponent = nullptr;
+	if (id != UINT16_MAX)
+	{
+		Entity activeWeapon = Entity(id);
+		weaponComponent = activeWeapon.GetComponent<WeaponComponent>();
+	}
+	else
+	{
+		weaponComponent = fists;
+	}
+
+	if (weaponComponent != nullptr)
+	{
+		m_currentWeaponCooldown = weaponComponent->Cooldown;
+
+		CombatCalculations::ChangeWeapon(weaponComponent);
+
+	}
 }
 
 void PlayerSystem::StartAttack()

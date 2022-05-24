@@ -84,12 +84,12 @@ void ItemDatabase::LoadItems(std::string filepath)
 
 		AudioComponent* audioComponent = new AudioComponent();
 		itemTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
-		audioComponent->soundName = "beeuuuuu.mp3";
+		audioComponent->soundName = "Item Pick-Up.wav";
 		audioComponent->soundPos = Vector3D(0, 0, 0);
 		audioComponent->looping = false;
 		audioComponent->is3d = false;
 		audioComponent->streaming = false;
-		audioComponent->channel = "UI";
+		audioComponent->channel = "Game";
 
 		AddExtraComponent(itemTemplate, WeaponData, ArmourData, foodData);
 

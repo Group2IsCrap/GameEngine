@@ -85,7 +85,7 @@ namespace snowFallAudio
 			AudioChannel getChannel(std::string ChannelName);
 
 		private:
-			std::string audioFolder = "AudioFolder/";
+			std::string audioFolder = "Assets/AudioFolder/";
 			std::string newString;
 
 		};
