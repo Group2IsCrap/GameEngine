@@ -14,6 +14,7 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	SetDefaultDimensions(Firelight::Maths::Vec3f(128, 100, 0));
 	this->GetIDComponent()->name = "Main Menu UI";
 
+
 	Firelight::ECS::UIPanel* backgroundPanel = new Firelight::ECS::UIPanel("Background Main Menu Panel");
 	backgroundPanel->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetColourTexture(Firelight::Graphics::Colours::sc_black);
 	backgroundPanel->GetSpriteComponent()->toDraw = true;
@@ -23,12 +24,22 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	backgroundPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(1920, 1080, 0));
 	m_UIEntities.push_back(backgroundPanel);
 
+	Firelight::ECS::UIPanel* titlePanel = new Firelight::ECS::UIPanel("Main Menu Title Image");
+	titlePanel->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/UI/TitleScreen.png");
+	titlePanel->GetSpriteComponent()->toDraw = true;
+	titlePanel->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
+	titlePanel->SetParent(backgroundPanel->GetEntityID());
+	titlePanel->SetDefaultDimensions(Firelight::Maths::Vec3f(1237, 453, 0));
+	titlePanel->SetOffset(Firelight::Maths::Vec2f(0, -300));
+	m_UIEntities.push_back(titlePanel);
+
 	Firelight::ECS::UIPanel* borderPanel = new Firelight::ECS::UIPanel("Main Menu Button Panel");
 	borderPanel->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/PanelTest.png");
 	borderPanel->GetSpriteComponent()->toDraw = true;
 	borderPanel->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	borderPanel->SetParent(backgroundPanel->GetEntityID());
-	borderPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(800, 800, 0));
+	borderPanel->SetDefaultDimensions(Firelight::Maths::Vec3f(800, 500, 0));
+	borderPanel->SetOffset(Firelight::Maths::Vec2f(0, 200));
 	m_UIEntities.push_back(borderPanel);
 
 	Firelight::ECS::UIButton* playButton = new Firelight::ECS::UIButton("Play Button");
@@ -38,11 +49,11 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	playButton->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	playButton->SetScaleSettings(Firelight::ECS::e_Scale::Absolute);
 	playButton->SetDefaultDimensions(Firelight::Maths::Vec3f(700, 100, 0));
-	playButton->SetOffset(Firelight::Maths::Vec2f(0, -300));
+	playButton->SetOffset(Firelight::Maths::Vec2f(0, -150));
 	playButton->GetComponent<Firelight::ECS::UIPressableComponent>()->onLeftPressFunctions.push_back(std::bind(&MainMenuUI::PlayFunction, this));
 	Firelight::ECS::TextComponent* text = playButton->AddComponent<Firelight::ECS::TextComponent>();
 	text->text.SetString("Play");	
-	text->text.SetTextHeight(80.0f);
+	text->text.SetTextHeight(100.0f);
 	text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_MidMid);
 	text->layer = 100000;
 	m_UIEntities.push_back(playButton);

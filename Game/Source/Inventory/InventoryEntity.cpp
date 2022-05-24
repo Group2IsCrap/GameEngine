@@ -101,7 +101,7 @@ void InventoryEntity::AddOutputCommands(int invetoryNum, std::function< void(voi
     GetComponent<InventoryComponentOutPut>(invetoryNum)->outputCommand.push_back(callbackFunction);
 }
 
-void InventoryEntity::AddKeyCommands(int invetoryNum, Firelight::Keys actionKey,std::string actionName)
+void InventoryEntity::AddKeyCommands(int invetoryNum, Firelight::Keys actionKey,std::string actionName, std::string show)
 {
     for (size_t i = GetInventoryComponent(invetoryNum)->slotStartPositon; i < GetInventoryComponent(invetoryNum)->slotStartPositon + (int)GetInventoryComponent(invetoryNum)->slotCount; i++)
     {
@@ -114,7 +114,7 @@ void InventoryEntity::AddKeyCommands(int invetoryNum, Firelight::Keys actionKey,
            
             Action->ActionName = actionName;
             Action->keyToActivate = actionKey;
-           
+            Action->DisplayText = show;
             GetSlot(i)->ActionIndex = GetComponents<InventoryComponentKeyPressAction>().size() - 1;
 
             break;

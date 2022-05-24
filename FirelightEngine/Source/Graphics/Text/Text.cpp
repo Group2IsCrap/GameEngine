@@ -192,7 +192,7 @@ namespace Firelight::Graphics
         {
             delete m_mesh;
         }
-        m_mesh = new Mesh(vertices, indices, m_font->GetTexture());
+        m_mesh = new Mesh(m_string, vertices, indices, m_font->GetTexture());
 
         UpdateScale();
 
