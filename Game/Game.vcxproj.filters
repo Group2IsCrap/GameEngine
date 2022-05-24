@@ -21,9 +21,10 @@
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
+    <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
+    <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Combat\WeaponComponent.h" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
@@ -40,6 +41,8 @@
     <ClInclude Include="Source\WorldEntities\EntitySpawner.h" />
     <ClInclude Include="Source\WorldEntities\EntitySpawnerComponent.h" />
     <ClInclude Include="Source\WorldEntities\EntitySpawnerSystem.h" />
+    <ClInclude Include="Source\Items\CraftingRecipeDatabase.h" />
+    <ClInclude Include="Source\Items\CraftingRecipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
