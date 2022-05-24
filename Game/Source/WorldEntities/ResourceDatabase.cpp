@@ -62,7 +62,10 @@ void ResourceDatabase::LoadResources(std::string filepath)
 		Template* resourceTemplate = new SpriteEntityTemplate("Resource Template - " + resourceData[i][1]);
 
 		SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
-		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
+		if (resourceData[i][2] != "")
+		{
+			spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
+		}
 		spriteComponent->pixelsPerUnit = std::stoi(resourceData[i][6]);
 		int layer = std::stoi(resourceData[i][7]);
 		spriteComponent->layer = layer == 0 ? static_cast<int>(RenderLayer::Items) : layer;

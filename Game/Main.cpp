@@ -34,6 +34,8 @@
 #include "Source/Inventory/InventoryEntity.h"
 #include "Source/Inventory/InventoryManager.h"
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
+#include "Source/WorldEntities/EntitySpawnerComponent.h"
+#include "Source/WorldEntities/EntitySpawnerSystem.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -108,23 +110,13 @@ void SetupDebugUI()
 	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
 }
 
-void SetupEnemyTemplate()
+void SetupEnemySpawner()
 {
-	SpriteEntityTemplate* enemyTemplate = new SpriteEntityTemplate("Enemy Template");
-	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
-	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
-	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
-	spriteComponent->pixelsPerUnit = 50;
-	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
-	enemyTemplate->AddComponent<RigidBodyComponent>();
-	enemyTemplate->AddComponent<AIBehaviourComponent>();
-	enemyTemplate->AddComponent<HealthComponent>();
-	enemyTemplate->AddComponent<Firelight::ECS::AnimationComponent>();
-
-	AIDeerEntity* entity1 = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
-	AICrocodileEntity* entity2 = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
-	AISlimeEntity* entity3 = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
+	GameEntity* crocodileSpawner = new GameEntity("Crocodile Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Crocodile";
+	spawnerComponent->respawnCooldown = 3;
+	crocodileSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 }
 
 void DropItemAt(Maths::Vec3f at, EntityID toDrop) 
@@ -195,6 +187,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<AISystem>();
+		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<EntitySpawnerSystem>();
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem::InventoryManager>();
 
 		// Register KeyBindings
@@ -209,7 +202,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
-		SetupEnemyTemplate();
+		SetupEnemySpawner();
 		SetupResourceTemplate();
 
 		//// Grass

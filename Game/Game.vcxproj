@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
+    <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
     <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
@@ -183,6 +184,9 @@
     <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawner.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerComponent.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerSystem.h" />
     <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
     <ClInclude Include="Source\Combat\CombatCalculations.h" />
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
