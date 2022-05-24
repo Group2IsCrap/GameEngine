@@ -43,6 +43,7 @@ void ResourceEntity::RemoveHealth(int amount)
 	component->currentHealth -= amount;
 	if (component->currentHealth <= 0)
 	{
+		savePos = GetComponent<TransformComponent>()->GetPosition();
 		component->currentHealth = 0;
 		HealthBelowZero();
 	}

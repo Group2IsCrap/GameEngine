@@ -1,7 +1,7 @@
 #include "Inventory.h"
 #include "Source/Graphics/AssetManager.h"
 #include"Source/ECS/Components/ItemComponents.h"
-
+#include"../Events/PlayerEvents.h"
 Inventory::Inventory():
 	m_inventoryEntityID(-1),
 	m_inventorySpace(nullptr)
@@ -290,6 +290,9 @@ void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
 		for (std::string tag : itemData->tags) {
 			if (tag == "Food") {
 				//health up event
+				ECS::FoodComponent* FoodData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::FoodComponent>(itemID);
+				int healthadd = FoodData->HealthRegeneration;
+				Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::AddHealth::sm_descriptor,(void*)healthadd);
 				isUsed = true;
 				break;
 			}
@@ -381,15 +384,17 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 								0));
-							
+
 							text->hidden = false;
-							
+
 						}
 						icon->AddComponent<ECS::UIDraggableComponent>();
 						icon->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						icon->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, icon->GetEntityID()));
-						UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
-						press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+						if (inventoryData->name=="MainInventory"){
+							UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
+							press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+						}
 						slotData->UITexID = icon->GetEntityID();
 					}
 					if (inventoryData->isDisplay) {
@@ -565,6 +570,7 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 			}
 		}
 	}
+	
 	return isFail;
 }
 
@@ -691,6 +697,45 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 
 	}
 	return -1;
+}
+
+void Inventory::DropAllItems()
+{
+	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	{
+		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
+		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
+
+		if (!slot->isUsed) {
+			continue;
+		}
+		else
+		{
+			//drop code here
+			InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(m_inventoryEntityID, m_groupInventoryID);
+
+			if (data) {
+				InventoryStoreData a = *slotData;
+				for (auto& out : data->outputCommand)
+				{
+					out((void*)&a.entityIDs);
+				}
+			}
+
+			slot->isUsed = false;
+			slotData->stackSize = -1;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = false;
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
+			text->hidden = true;
+
+			slotData->stackSize = -1;
+			slotData->entityIDs.clear();
+		}
+	}
+
 }
 
 bool Inventory::FindItem(Firelight::ECS::Entity* item)

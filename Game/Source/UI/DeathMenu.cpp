@@ -2,6 +2,7 @@
 
 #include <Source/Events/Event.h>
 #include <Source/Events/UIEvents.h>
+#include "../Events/InputEvents.h"
 #include "../Player/PlayerEntity.h"
 #include "../Events/PlayerEvents.h"
 #include "../Core/Layers.h"
@@ -86,5 +87,8 @@ void DeathMenu::OpenMenu(bool opened)
 
 void DeathMenu::Respawn()
 {
+	EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::RespawnEvent>();
+
+
 	OpenMenu(false);
 }
