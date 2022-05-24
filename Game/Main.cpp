@@ -253,7 +253,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		for (int i = 0; i < 10; i++)
 		{
 			std::string ActionName = "Action" + std::to_string(i);
-			inv1->AddKeyCommands(0, key, ActionName);
+			inv1->AddKeyCommands(0, key, ActionName, std::to_string(i));
 			key = (Keys)((int)key + 1);
 			if (i == 8) {
 				key= Keys::KEY_0;

@@ -211,7 +211,7 @@ struct InventoryComponentKeyPressAction : Firelight::ECS::BaseComponent
 	Firelight::Keys keyToActivate = Firelight::Keys::KEY_INVALID;
 	std::string ActionName;
 	size_t EventID;
-
+	std::string DisplayText;
 	void Serialise() override
 	{
 
