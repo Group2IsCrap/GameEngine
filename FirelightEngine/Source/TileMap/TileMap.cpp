@@ -10,13 +10,13 @@ namespace Firelight::TileMap
     TileMap::TileMap()
         : m_tileHeight(1)
         , m_tileWidth(1)
-        , m_tileMapHeight(50)
-        , m_tileMapWidth(50)
+        , m_tileMapHeight(100)
+        , m_tileMapWidth(100)
         , m_tileDistance(1)
         , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_tileMap()
     {
-        UpdateTileMapSize();
+        PopulateTileMap();
 
         m_emptyTilePtr = new Tile();
     }
@@ -31,7 +31,7 @@ namespace Firelight::TileMap
         Events::EventDispatcher::SubscribeFunction<Events::Graphics::OnEarlyRender>(std::bind(&TileMap::DrawTiles, this));
     }
 
-    void TileMap::UpdateTileMapSize()
+    void TileMap::PopulateTileMap()
     {
         unsigned int tileNum = 0;
         for (int x = m_bottomLeftTilePos.x; x < m_tileMapWidth + m_bottomLeftTilePos.x; ++x)
@@ -51,19 +51,29 @@ namespace Firelight::TileMap
         }
     }
 
-    void TileMap::DrawTiles()
+    void TileMap::UpdateTileMapPositions()
     {
-        int x = m_bottomLeftTilePos.x, y = m_bottomLeftTilePos.y;
+        int x = 0, y = 0;
         for (auto row = m_tileMap.begin(); row != m_tileMap.end(); ++row)
         {
             for (auto column = row->begin(); column != row->end(); ++column)
             {
-                (*column)->SetDestinationRect(x * m_tileDistance, y * m_tileDistance, m_tileWidth, m_tileHeight);
-                (*column)->DrawTile();
+                (*column)->SetDestinationRect(x + m_bottomLeftTilePos.x * m_tileDistance, y + m_bottomLeftTilePos.y * m_tileDistance, m_tileWidth, m_tileHeight);
                 ++x;
             }
             ++y;
             x = m_bottomLeftTilePos.x;
+        }
+    }
+
+    void TileMap::DrawTiles()
+    {
+        for (auto row = m_tileMap.begin(); row != m_tileMap.end(); ++row)
+        {
+            for (auto column = row->begin(); column != row->end(); ++column)
+            {
+                (*column)->DrawTile();
+            }
         }
     }
 
@@ -93,18 +103,12 @@ namespace Firelight::TileMap
         {
             for (auto tile : tilesVec)
             {
-                if (position.x >= tile->GetDestinationRect().x)
+                if ((position.x >= tile->GetDestinationRect().x) &&
+                    (position.x <= tile->GetDestinationRect().x + tile->GetDestinationRect().w) &&
+                    (position.y >= tile->GetDestinationRect().y) &&
+                    (position.y <= tile->GetDestinationRect().y + tile->GetDestinationRect().h))
                 {
-                    if (position.x <= tile->GetDestinationRect().x + tile->GetDestinationRect().w)
-                    {
-                        if ((position.y >= tile->GetDestinationRect().y))
-                        {
-                            if ((position.y <= tile->GetDestinationRect().y + tile->GetDestinationRect().h))
-                            {
-                                return tile;
-                            }
-                        }
-                    }
+                    return tile;
                 }
             }
         }

@@ -16,7 +16,8 @@ namespace Firelight::TileMap
 		~TileMap();
 		void Render();
 
-		void UpdateTileMapSize();
+		void PopulateTileMap();
+		void UpdateTileMapPositions();
 		void DrawTiles();
 
 		void SetTileHeight(int tileHeight);

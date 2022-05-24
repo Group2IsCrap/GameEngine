@@ -253,7 +253,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Tilemap
 		Firelight::TileMap::TileMap* tileMap = new Firelight::TileMap::TileMap();
-		tileMap->UpdateTileMapSize();
+		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-20.0f, -20.0f));
+		tileMap->UpdateTileMapPositions();
 
 		//Biome Generation
 		BiomeGeneration::Instance()->Initialise(tileMap);

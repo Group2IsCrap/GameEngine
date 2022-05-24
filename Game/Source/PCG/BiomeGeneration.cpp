@@ -73,13 +73,11 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 
 void BiomeGeneration::GenerateWorld()
 {
-	m_tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-10.0f, -10.0f));
-
 	Rectf m_destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
 	Rectf m_centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
 	Rectf m_curIslandCentre = m_centre;
 	size_t numberOfIslands = 6;
-	m_radius = 6;
+	m_radius = 12;
 
 	//for each island
 	Rectf newDestRect = Rectf(0.0f, 0.0f, 1.0f, 1.0f);
@@ -126,14 +124,20 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 			else
 			{
 				// This is adding variety to the island shapes
-				//int numberOfExtraTiles = CalculateIslandShape(rand() + index);
-				//for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
-				//{
-				//	int extraX = x + i;
-				//	int extraY = y + i;
-				//	destRect = Firelight::Maths::Rectf(currentIslandCentre.x + extraX, currentIslandCentre.y + extraY, 1.0f, 1.0f);
-				//	Firelight::Graphics::GraphicsHandler::Instance().GetSpriteBatch()->WorldDraw(destRect, sm_biomeMap[RandomBiomeIndex(index)], m_layer, m_rotation, Firelight::Graphics::Colours::sc_white, sourceRect);
-				//}
+				int numberOfExtraTiles = CalculateIslandShape(rand() + index);
+				for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
+				{
+					int extraX = x + i;
+					int extraY = y + i;
+					destRect = Firelight::Maths::Rectf(currentIslandCentre.x + extraX, currentIslandCentre.y + extraY, 1.0f, 1.0f);
+					Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
+					if (tile != nullptr)
+					{
+						mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+						tile->SetTileTexture(sbiomeTextures[(int)RandomBiomeType(index)]);
+						tile->test = true;
+					}
+				}
 			}
 		}
 	}

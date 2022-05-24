@@ -49,8 +49,8 @@ void EnvironmentGeneration::GenerateResources()
 
 void EnvironmentGeneration::SpawnTree(Vec2f position)
 {
-	TreeEntity* entity = new TreeEntity(true, resourceTemplate->GetTemplateID());
-	entity->GetIDComponent()->name = "Resource: Tree";
+	//TreeEntity* entity = new TreeEntity(true, resourceTemplate->GetTemplateID());
+	//entity->GetIDComponent()->name = "Resource: Tree";
 }
 
 void EnvironmentGeneration::SpawnRocks()
