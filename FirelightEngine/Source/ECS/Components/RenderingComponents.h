@@ -203,6 +203,7 @@ namespace Firelight::ECS
 			ImGuiVariable("Texture", texture != nullptr ? "Assigned" : "Nullptr");
 			ImGuiVariable("DrawOffset", drawOffset);
 			ImGuiVariable("Colour", colour);
+			ImGuiVariable("To Draw", toDraw);
 			ImGuiVariable("SourceRect", sourceRect);
 			ImGuiVariable("FlipX", flipX);
 			ImGuiVariable("FlipY", flipY);

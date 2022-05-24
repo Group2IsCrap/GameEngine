@@ -20,6 +20,7 @@
 #include "Source/Core//WorldEntity.h"
 
 #include "Source/ImGuiDebugLayer.h"
+#include "Source/Events/GameEvents.h"
 #include "Source/Events/InputEvents.h"
 #include "Source/Core/Layers.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
@@ -56,32 +57,10 @@ static void ToggleDebugLayer()
 	}
 }
 
-void BindDefaultKeys()
+
+void TogglePause()
 {
-	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
-	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
-
-
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
-
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
-	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
-
-	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
-
-
-	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
-
-	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
-	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
-
-	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
+	Engine::Instance().TogglePause();
 }
 
 void SpawnItem0()
@@ -106,6 +85,7 @@ void SetupDebugUI()
 	g_debugLayer->spawnItemCommand[0] = std::bind(SpawnItem0);
 	g_debugLayer->spawnItemCommand[1] = std::bind(SpawnItem1);
 }
+
 
 void SetupEnemyTemplate()
 {
@@ -182,13 +162,57 @@ void SetupResourceTemplate()
 
 }
 
+static UICanvas* canvas = nullptr;
+static PlayerEntity* player = nullptr;
+static PlayerHealthUI* playerHealthUI = nullptr;
+
+void PlayGame()
+{
+	if (playerHealthUI != nullptr && player != nullptr)
+	{
+		playerHealthUI->SetHealth(player->GetHealth());
+	}
+}
+
+
+void BindDefaultKeys()
+{
+	KeyBinder* keyBinder = &Engine::Instance().GetKeyBinder();
+	keyBinder->BindKeyboardActionEvent(AttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(ReleaseAttackEvent::sm_descriptor, Keys::KEY_E, KeyEventType::KeyRelease);
+
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEvent::sm_descriptor, Keys::KEY_W, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEvent::sm_descriptor, Keys::KEY_A, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEvent::sm_descriptor, Keys::KEY_S, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEvent::sm_descriptor, Keys::KEY_D, KeyEventType::KeyPressSingle);
+
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveUpEventRelease::sm_descriptor, Keys::KEY_W, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveLeftEventRelease::sm_descriptor, Keys::KEY_A, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveDownEventRelease::sm_descriptor, Keys::KEY_S, KeyEventType::KeyRelease);
+	keyBinder->BindKeyboardActionEvent(OnPlayerMoveRightEventRelease::sm_descriptor, Keys::KEY_D, KeyEventType::KeyRelease);
+
+	keyBinder->BindKeyboardActionEvent(ShowDebugEvent::sm_descriptor, Keys::KEY_FUNCTION_2, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(TogglePauseEvent::sm_descriptor, Keys::KEY_ESCAPE, KeyEventType::KeyPressSingle);
+
+
+	keyBinder->BindControllerAxisEvent(OnPlayerMoveEvent::sm_descriptor, ControllerThumbsticks::LEFT);
+
+	keyBinder->BindKeyboardActionEvent(OnInteractEvent::sm_descriptor, Keys::KEY_I, KeyEventType::KeyPressSingle);
+	keyBinder->BindKeyboardActionEvent(SpawnItemEvent::sm_descriptor, Keys::KEY_M, KeyEventType::KeyPressSingle);
+
+	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&ToggleDebugLayer));
+	Firelight::Events::EventDispatcher::SubscribeFunction<PlayGameEvent>(std::bind(&PlayGame));
+	Firelight::Events::EventDispatcher::SubscribeFunction<TogglePauseEvent>(std::bind(&TogglePause));
+}
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
-	if (Engine::Instance().Initialise(hInstance, "Don't Perish", "windowClass", Maths::Vec2i(1280, 720)))
+	if (Engine::Instance().Initialise(hInstance, "Firelight", "windowClass", Maths::Vec2i(1280, 720)))
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
@@ -203,7 +227,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		
 
 		// Player
-		PlayerEntity* player = new PlayerEntity();
+		player = new PlayerEntity();
 
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
@@ -232,9 +256,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//collider->radius = 4.25f;
 
 		// UI
-		UICanvas* canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
-		PlayerHealthUI* playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
-		//MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
+		canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
+		playerHealthUI = new PlayerHealthUI(canvas, player->GetHealthComponent()->maxHealth);
+		MainMenuUI* mainMenuUI = new MainMenuUI(canvas);
 		DeathMenu* deathMenu = new DeathMenu(canvas);
 
 		// Debug UI
@@ -275,3 +299,4 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	return 0;
 }
+

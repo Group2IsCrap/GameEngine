@@ -21,7 +21,7 @@ PlayerHealthUI::PlayerHealthUI(Firelight::ECS::Entity* canvas, int startHealth)
 	{
 		Firelight::ECS::UIPanel* heartUIEntity = new Firelight::ECS::UIPanel("Heart UI " + std::to_string(i));
 		heartUIEntity->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/UI/Heart.png");
-		heartUIEntity->GetSpriteComponent()->toDraw = true;
+		heartUIEntity->GetSpriteComponent()->toDraw = false;
 		heartUIEntity->SetAnchorSettings(Firelight::ECS::e_AnchorSettings::TopLeft);
 		heartUIEntity->SetOffset(Firelight::Maths::Vec2f((i * 75.0f), 10.0f));
 		heartUIEntity->SetParent(canvas->GetEntityID());
