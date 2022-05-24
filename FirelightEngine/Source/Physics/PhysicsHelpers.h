@@ -80,9 +80,10 @@ namespace Firelight::Physics
 
 					if (circleCollider != nullptr)
 					{
-						float radiusSquared = radius + circleCollider->radius;
+						float radiusSquared = circleCollider->radius + radius;
 						radiusSquared *= radiusSquared;
-						float distSquared = Vec3f::DistSquared(point, entity->GetComponent<TransformComponent>()->GetPosition());
+						float distSquared = Firelight::Maths::Vec3f::DistSquared(point, entity->GetComponent<TransformComponent>()->GetPosition() + Maths::Vec3f(circleCollider->offset.x, circleCollider->offset.y, 0.0f));
+
 						if (distSquared < radiusSquared)
 						{
 							// Add to list
@@ -94,24 +95,16 @@ namespace Firelight::Physics
 					else if (boxCollider != nullptr)
 					{
 						Maths::Vec2f circleDistance;
-						TransformComponent* transform = entity->GetComponent<TransformComponent>();
-						circleDistance.x = std::abs(transform->GetPosition().x - point.x);
-						circleDistance.y = std::abs(transform->GetPosition().y - point.y);
+						circleDistance.x = abs((point.x) - (entity->GetComponent<TransformComponent>()->GetPosition().x + boxCollider->rect.x));
+						circleDistance.y = abs((point.y) - (entity->GetComponent<TransformComponent>()->GetPosition().y + boxCollider->rect.y));
 
-						if (circleDistance.x > (boxCollider->rect.w / 2 + radius) || circleDistance.y > (boxCollider->rect.h / 2 + radius))
-						{
-							continue;
-						}
+						if (circleDistance.x > (boxCollider->rect.w / 2 + radius)) { continue; }
+						if (circleDistance.y > (boxCollider->rect.h / 2 + radius)) { continue; }
 
-						if (circleDistance.x <= (boxCollider->rect.w / 2) || circleDistance.y <= (boxCollider->rect.h / 2))
-						{
-							entities.push_back(entity);
-							break;
-						}
+						if (circleDistance.x <= (boxCollider->rect.w / 2)) { entities.push_back(entity); break; }
+						if (circleDistance.y <= (boxCollider->rect.h / 2)) { entities.push_back(entity); break; }
 
-						float cornerDistanceSquared = std::pow((circleDistance.x - boxCollider->rect.w / 2), 2) +
-							std::pow((circleDistance.y - boxCollider->rect.h / 2), 2);
-
+						float cornerDistanceSquared = std::pow((circleDistance.x - boxCollider->rect.w / 2), 2) + std::pow((circleDistance.y - boxCollider->rect.h / 2), 2);
 						if (cornerDistanceSquared <= (radius * radius))
 						{
 							entities.push_back(entity);
