@@ -121,9 +121,9 @@ void ImGuiEditorLayer::RenderMenuBar()
 			ImGui::MenuItem("Reset Camera Position");
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Window"))
+		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::MenuItem("Animation"))
+			if (ImGui::MenuItem("Animation Window"))
 			{
 				m_animationWindow->m_isOpen = true;
 			}

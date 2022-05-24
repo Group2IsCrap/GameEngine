@@ -1,6 +1,7 @@
 #include "EntityComponentSystem.h"
 #include "../Events/EventDispatcher.h"
 #include "ECSEvents.h"
+#include "../Utils/ErrorManager.h"
 
 #include <windows.h> 
 #include <debugapi.h> 
@@ -144,5 +145,37 @@ namespace Firelight::ECS
 	void EntityComponentSystem::Serialise()
 	{
 		m_componentManager->SerialiseAllComponents();
+	}
+
+	void EntityComponentSystem::Deserialise(rapidjson::Value& sceneRoot)
+	{
+		// Clear all entities and components and unregister everything?
+
+
+		// Construct Component String Map
+		std::unordered_map<std::string, ComponentTypeID> componentIDMap;
+
+		if (sceneRoot.HasMember("ComponentTypeReference"))
+		{
+			rapidjson::Value& componentTypeReference = sceneRoot["ComponentTypeReference"];
+			if (!componentTypeReference.IsArray())
+			{
+				ERROR_STANDARD("Component Type Reference is not Array");
+			}
+
+			for (auto it = componentTypeReference.Begin(); it != componentTypeReference.End(); ++it)
+			{
+				rapidjson::Value& name = (*it)["ComponentTypeName"];
+				rapidjson::Value& id = (*it)["ComponentTypeID"];
+
+				componentIDMap.insert(std::make_pair(name.GetString(), id.GetUint()));
+			}
+		}
+		else
+		{
+			ERROR_STANDARD("Component Type Reference not found");
+		}
+
+		int x = 0;
 	}
 }

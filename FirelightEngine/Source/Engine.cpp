@@ -75,6 +75,8 @@ namespace Firelight
 
         m_initialised = true;
 
+        IdentificationComponent::RegisterComponent();
+
         return true;
     }
 
@@ -140,7 +142,7 @@ namespace Firelight
     {
         if (m_activeCamera != nullptr)
         {
-            const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->position;
+            const Maths::Vec3f& cameraPos = m_activeCamera->GetTransformComponent()->GetPosition();
             const Maths::Vec2f& windowDimensions = GetWindowDimensionsFloat();
             const float aspectRatio = windowDimensions.x / windowDimensions.y;
 
@@ -173,7 +175,7 @@ namespace Firelight
         // Do as many physics updates as are neccessary this frame
         for (int i = 0; i < m_time.GetNumPhysicsUpdatesThisFrame(); ++i)
         {
-            m_systemManager.FixedUpdate(m_time);
+            m_systemManager.FixedUpdate(m_time, isPaused);
             Input::ProcessInput::Instance()->TestInput();
         }
 
@@ -182,9 +184,9 @@ namespace Firelight
 
         m_time.Update();
 
-        m_systemManager.Update(m_time);
+        m_systemManager.Update(m_time, isPaused);
 
-        m_systemManager.LateUpdate(m_time);
+        m_systemManager.LateUpdate(m_time, isPaused);
 
         UpdateActiveCamera2DRect();
        
@@ -195,5 +197,13 @@ namespace Firelight
         Events::EventDispatcher::InvokeFunctions<Events::Graphics::OnEarlyRender>();
 
         Graphics::GraphicsHandler::Instance().Render();
+    }
+    const bool& Engine::GetPaused()
+    {
+        return isPaused;
+    }
+    void Engine::TogglePause()
+    {
+        this->isPaused = !isPaused;
     }
 }

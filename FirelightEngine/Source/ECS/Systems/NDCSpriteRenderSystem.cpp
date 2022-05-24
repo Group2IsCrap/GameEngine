@@ -39,7 +39,7 @@ namespace Firelight::ECS
 				texture = Graphics::AssetManager::Instance().GetDefaultTexture();
 			}	
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(nDCspriteComponent->descRect, texture, nDCspriteComponent->layer,(0,0), nDCspriteComponent->colour, nDCspriteComponent->sourceRect, nDCspriteComponent->flipX, nDCspriteComponent->flipY);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->NDCDraw(nDCspriteComponent->destRect, texture, nDCspriteComponent->layer,(0,0), nDCspriteComponent->colour, nDCspriteComponent->sourceRect, nDCspriteComponent->flipX, nDCspriteComponent->flipY);
 
 		}
 

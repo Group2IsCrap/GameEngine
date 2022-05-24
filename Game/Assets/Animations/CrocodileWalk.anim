@@ -1,0 +1,11 @@
+{
+    "AnimationName": "CrocodileWalk",
+    "Loop": true,
+    "FrameTime": 128,
+    "FrameCount": 3,
+    "TextureNames": [
+        "Sprites\\Enemies\\CrocWalk1.png",
+        "Sprites\\Enemies\\CrocWalk2.png",
+        "Sprites\\Enemies\\CrocWalk3.png"
+    ]
+}

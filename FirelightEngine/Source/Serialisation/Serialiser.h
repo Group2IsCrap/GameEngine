@@ -46,10 +46,12 @@ namespace Firelight::Serialisation
 		static void Serialise(std::string name, const Firelight::Graphics::Colour::RGBA& value);
 		static void Serialise(std::string name, const Firelight::Graphics::Text& value);
 
-		static void Deserialize(std::string name, int& value);
-		static void Deserialize(std::string name, float& value);
-		static void Deserialize(std::string name, std::string& value);
-		static void Deserialize(std::string name, bool& value);
+		static void LoadSceneJSON();
+
+		static void Deserialise(std::string name, int& value);
+		static void Deserialise(std::string name, float& value);
+		static void Deserialise(std::string name, std::string& value);
+		static void Deserialise(std::string name, bool& value);
 
 		static void StartArray(std::string key);
 		static void EndArray();

@@ -219,6 +219,12 @@ namespace Firelight::Maths
     }
 
     template<typename T>
+    inline Vec3<T> Vec3<T>::Invert(const Vec3<T>& vector1)
+    {
+        return Vec3<T>(1 / vector1.x, 1 / vector1.y, 1 / vector1.z);
+    }
+
+    template<typename T>
     inline T Vec3<T>::Length(const Vec3<T>& vector)
     {
         return vector.Length();
@@ -265,6 +271,75 @@ namespace Firelight::Maths
     inline Vec3<T> Vec3<T>::Lerp(const Vec3<T>& vector1, const Vec3<T>& vector2, T delta)
     {
         return vector1 + (vector2 - vector1) * delta;
+    }
+
+    template<typename T>
+    inline Vec3<T> Vec3<T>::SmoothDamp(const Vec3<T>& Vector1, const Vec3<T>& Vector2, const Vec3<T>& currentVelocity, float smoothTime, float maxSpeed, double deltaTime)
+    {
+        float output_x = 0.0f;
+        float output_y = 0.0f;
+        float output_z = 0.0f;
+
+        smoothTime = (0.0001f > smoothTime) ? 0.0001f : smoothTime;
+        float omega = 2.0f / smoothTime;
+
+        float x = omega * deltaTime;
+        float exp = 1.0f / ((1.0f + x + (0.48f * std::powf(x, 2)) + (0.235f * std::powf(x, 3))));
+
+        float change_x = Vector1.x - Vector2.x;
+        float change_y = Vector1.y - Vector2.y;
+        float change_z = Vector1.z - Vector2.z;
+        Vec3f originalTo = Vector2;
+
+        float maxChange = maxSpeed * smoothTime;
+
+        float maxChangeSq = maxChange * maxChange;
+        float sqrmag = change_x * change_x + change_y * change_y + change_z * change_z;
+
+        if (sqrmag > maxChangeSq)
+        {
+            float mag = (float)std::sqrtf(sqrmag);
+            change_x = change_x / mag * maxChange;
+            change_y = change_y / mag * maxChange;
+            change_z = change_z / mag * maxChange;
+
+        }
+
+        Vector2.x = Vector1.x - change_x;
+        Vector2.y = Vector1.y - change_y;
+        Vector2.z = Vector1.z - change_z;
+
+        float temp_x = (currentVelocity.x + omega * change_x) * deltaTime;
+        float temp_y = (currentVelocity.y + omega * change_y) * deltaTime;
+        float temp_z = (currentVelocity.z + omega * change_z) * deltaTime;
+
+        currentVelocity.x = (currentVelocity.x - omega * temp_x) * exp;
+        currentVelocity.y = (currentVelocity.y - omega * temp_y) * exp;
+        currentVelocity.z = (currentVelocity.z - omega * temp_z) * exp;
+
+        output_x = Vector2.x + (change_x + temp_x) * exp;
+        output_y = Vector2.y + (change_y + temp_y) * exp;
+        output_z = Vector2.z + (change_z + temp_z) * exp;
+
+        float origMinusCurrent_x = originalTo.x - Vector1.x;
+        float origMinusCurrent_y = originalTo.y - Vector1.y;
+        float origMinusCurrent_z = originalTo.z - Vector1.z;
+        float outMinusOrig_x = output_x - originalTo.x;
+        float outMinusOrig_y = output_y - originalTo.y;
+        float outMinusOrig_z = output_z - originalTo.z;
+
+        if ((origMinusCurrent_x * outMinusOrig_x + origMinusCurrent_y * outMinusOrig_y + origMinusCurrent_z * outMinusOrig_z) > 0)
+        {
+            output_x = originalTo.x;
+            output_y = originalTo.y;
+            output_z = originalTo.z;
+
+            currentVelocity.x = (output_x - originalTo.x) / deltaTime;
+            currentVelocity.y = (output_y - originalTo.y) / deltaTime;
+            currentVelocity.z = (output_z - originalTo.z) / deltaTime;
+        }
+
+        return Vec3f(output_x, output_y, output_z);
     }
 
     template<typename T>

@@ -18,12 +18,13 @@ public:
 	PlayerSystem();
 	~PlayerSystem();
 	void CheckForPlayer();
-	void Update(const Firelight::Utils::Time& time) override;
-	void FixedUpdate(const Firelight::Utils::Time& time) override;
+	void Update(const Firelight::Utils::Time& time, const bool& isPaused) override;
+	void FixedUpdate(const Firelight::Utils::Time& time, const bool& isPaused) override;
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	void SwitchWeapon();
-
+	void ToggleDebug();
+	void AddHealth(void* amount);
 private:
 	float GetSpeed();
 
@@ -44,9 +45,11 @@ private:
 	void SpawnItem();
 	void Attack();
 	void RemoveHealth();
+	
 
 	void StartAttack();
 	void StopAttack();
+	void Respawn();
 
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -64,9 +67,11 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_attackIndex;
 	size_t m_releaseAttackIndex;
-	size_t m_removeHealthEventIndex;
+	size_t m_respawnIndex;
   
 	size_t m_updateCraftableItemsEventIndex;
+	size_t m_removeHealthEventIndex;
+	size_t m_addHealthEventIndex;
 
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* m_playerEntity;
@@ -75,9 +80,11 @@ private:
 	bool m_moveDown;
 	bool m_moveLeft;
 	bool m_moveRight;
-	ImGuiPlayerLayer* m_imguiLayer = nullptr;
 
 	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
+
+	ImGuiPlayerLayer* m_imguiLayer = nullptr;
+	bool m_drawDebugUI;
 
 	bool m_isAttacking = false;
 	float m_attackCooldown = 0.0f;

@@ -20,7 +20,7 @@ class AIWanderBehaviour : public AIStateBehaviour
 public:
 	AIWanderBehaviour(RigidBodyComponent* rigidbodyComponent, float wanderInterval, float speed, std::vector<std::pair<float, float>> radii);
 
-	void HandleState(const Firelight::Utils::Time& time) override;
+	void HandleState(AIEntity* entity, const Firelight::Utils::Time& time) override;
 
 	
 private:

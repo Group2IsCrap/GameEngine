@@ -7,7 +7,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
-    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
+    <ClCompile Include="Source\Inventory\InventorySystem.cpp" />
     <ClCompile Include="Source\Inventory\InventoryEntity.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
@@ -16,11 +16,11 @@
     <ClCompile Include="Source\UI\PlayerHealthUI.cpp" />
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
-    <ClCompile Include="Source\WorldEntities\TreeEntity.cpp" />
     <ClCompile Include="Source\Core\ResourceEntity.cpp" />
-    <ClCompile Include="Source\WorldEntities\RockEntity.cpp" />
-    <ClCompile Include="Source\WorldEntities\BushEntity.cpp" />
-    <ClCompile Include="Source\WorldEntities\BerryBushEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
+    <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Combat\WeaponComponent.h" />
@@ -31,11 +31,15 @@
     <ClCompile Include="Source\AI\Behaviours\AIWanderBehaviour.cpp" />
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
-    <ClInclude Include="Source\WorldEntities\TreeEntity.h" />
     <ClInclude Include="Source\Core\ResourceEntity.h" />
-    <ClInclude Include="Source\WorldEntities\BerryBushEntity.h" />
-    <ClInclude Include="Source\WorldEntities\BushEntity.h" />
-    <ClInclude Include="Source\WorldEntities\RockEntity.h" />
+    <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
+    <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
+    <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
+    <ClInclude Include="Source\Events\GameEvents.h" />
+    <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawner.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerComponent.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
@@ -53,7 +57,7 @@
     <ClInclude Include="Source\Inventory\InventoryComponents.h" />
     <ClInclude Include="Source\Inventory\InventoryEvents.h" />
     <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h" />
-    <ClInclude Include="Source\Inventory\InventoryManager.h" />
+    <ClInclude Include="Source\Inventory\InventorySystem.h" />
     <ClInclude Include="Source\Inventory\InventoryEntity.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />

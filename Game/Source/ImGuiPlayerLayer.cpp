@@ -41,8 +41,8 @@ void ImGuiPlayerLayer::RenderInformation()
 	if (playerEntity != nullptr)
 	{
 		ImGui::Text("Position: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::TransformComponent>()->position.x).c_str());  ImGui::SameLine();
-		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::TransformComponent>()->position.y).c_str());
+		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::TransformComponent>()->GetPosition().x).c_str());  ImGui::SameLine();
+		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::TransformComponent>()->GetPosition().y).c_str());
 		ImGui::Text("Velocity: "); ImGui::SameLine();
 		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::RigidBodyComponent>()->velocity.x).c_str());  ImGui::SameLine();
 		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::RigidBodyComponent>()->velocity.y).c_str());

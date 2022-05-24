@@ -3,8 +3,12 @@
 #include <string>
 
 #include "../ECSDefines.h"
+#include "../EntityWrappers/Entity.h"
 #include "../../Maths/Vec3.h"
 #include "../../Serialisation/Serialiser.h"
+#include "TransformData.h"
+
+#include <map>
 
 using namespace Firelight::Serialisation;
 
@@ -13,8 +17,8 @@ namespace Firelight::ECS
 	/// <summary>
 	/// Simple ID component used for testing
 	/// </summary>
-	struct IdentificationComponent : BaseComponent
-	{
+	
+	DEFINE_COMPONENT(IdentificationComponent, BaseComponent)
 		std::string name;
 
 		void Serialise() override
@@ -28,6 +32,11 @@ namespace Firelight::ECS
 			clone->name = name;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Name", name);
 		}
 	};
 
@@ -49,6 +58,11 @@ namespace Firelight::ECS
 			clone->isStatic = isStatic;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("IsStatic", isStatic ? "true" : "false");
 		}
 	};
 
@@ -72,6 +86,12 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Layer", layer);
+		}
+
 	};
 
 	/// <summary>
@@ -79,26 +99,51 @@ namespace Firelight::ECS
 	/// </summary>
 	struct TransformComponent : BaseComponent
 	{
-		Firelight::Maths::Vec3f position;
-		Firelight::Maths::Vec3f scale;
-		float                   rotation = 0.0f;
+	public:
+		
+		Firelight::Maths::Vec3f GetPosition() { return transformData->GetPosition(); }
+		void SetPosition(const Firelight::Maths::Vec3f& pos) { transformData->SetPosition(pos); }
+
+		float GetRotation() { return transformData->GetRotation(); }
+		void SetRotation(float rot) { transformData->SetRotation(rot); };
+
+		Firelight::Maths::Vec3f GetScale() { return transformData->GetScale(); }
+		void SetScale(const Firelight::Maths::Vec3f& scale) { transformData->SetScale(scale); }
+
+		void FlipX(bool flip, bool flipPos = true) { transformData->FlipX(flip, flipPos); }
+		bool GetFlipped() { return transformData->GetFlipped(); }
+
+		void SetParent(Entity* parent) { transformData->SetParent(parent); }
+		void AddChild(Entity* child) { transformData->AddChild(child); }
+		void RemoveChild(Entity* child) { transformData->RemoveChild(child); }
+		Entity* GetChild(int index) { transformData->GetChild(index); }
+		std::map<EntityID, Entity*> GetChildren() { transformData->GetChildren(); }
 
 		void Serialise() override
 		{
-			Serialiser::Serialise("Rotation", rotation);
-			Serialiser::Serialise("Position", position);
-			Serialiser::Serialise("Scale", scale);
+			Serialiser::Serialise("Rotation", GetRotation());
+			Serialiser::Serialise("Position", GetPosition());
+			Serialiser::Serialise("Scale", GetScale());
 		}
 
 		TransformComponent* Clone() override
 		{
 			TransformComponent* clone = new TransformComponent();
-			clone->position = position;
-			clone->scale = scale;
-			clone->rotation = rotation;
+			clone->SetPosition(GetPosition());
+			clone->transformData->SetRotation(GetRotation());
+			clone->transformData->SetScale(GetScale());
 
 			return clone;
 		}
-	};
 
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Position", GetPosition());
+			ImGuiVariable("Rotation", GetRotation());
+			ImGuiVariable("Scale", GetScale());
+		}
+	private:
+		TransformData* transformData = new TransformData();
+	};
 }

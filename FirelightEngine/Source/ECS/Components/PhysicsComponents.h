@@ -47,6 +47,16 @@ namespace Firelight::ECS
 
 			return clone;
 		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("Velocity", velocity);
+			ImGuiVariable("LastPos", lastPos);
+			ImGuiVariable("InterpolationTime", interpolationTime);
+			ImGuiVariable("Interpolate", interpolate ? "true" : "false");
+			ImGuiVariable("NextPos", nextPos);
+			ImGuiVariable("Layer", layer);
+		}
 	};
 
 	struct ColliderComponent : BaseComponent
@@ -64,8 +74,17 @@ namespace Firelight::ECS
 		{
 			ColliderComponent* clone = new ColliderComponent();
 			clone->isEnabled = isEnabled;
+			clone->drawCollider = drawCollider;
+			clone->isTrigger = isTrigger;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("IsEnabled", isEnabled ? "true" : "false");
+			ImGuiVariable("DrawCollider", drawCollider);
+			ImGuiVariable("IsTrigger", isTrigger ? "true" : "false");
 		}
 	};
 
@@ -81,9 +100,18 @@ namespace Firelight::ECS
 		BoxColliderComponent* Clone() override
 		{
 			BoxColliderComponent* clone = new BoxColliderComponent();
+			clone->isEnabled = isEnabled;
+			clone->drawCollider = drawCollider;
+			clone->isTrigger = isTrigger;
 			clone->rect = rect;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ColliderComponent::RenderDebugUI();
+			ImGuiVariable("IsEnabled", isEnabled ? "true" : "false");
 		}
 	};
 
@@ -101,10 +129,20 @@ namespace Firelight::ECS
 		CircleColliderComponent* Clone() override
 		{
 			CircleColliderComponent* clone = new CircleColliderComponent();
+			clone->isEnabled = isEnabled;
+			clone->drawCollider = drawCollider;
+			clone->isTrigger = isTrigger;
 			clone->radius = radius;
 			clone->offset = offset;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ColliderComponent::RenderDebugUI();
+			ImGuiVariable("Radius", radius);
+			ImGuiVariable("Offset", offset);
 		}
 	};
 }

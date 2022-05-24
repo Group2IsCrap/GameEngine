@@ -25,16 +25,13 @@ enum class AIState
 
 struct AIComponent : Firelight::ECS::BaseComponent
 {
-public:
-
 	AIType m_Type;
 	Entity* m_Target;
+	bool isDead;
 
 	float m_tintTime = 0.2f;
 	float m_tintTimer;
 	bool m_tint = false;
-
-public:
 
 	AIComponent* Clone() override
 	{
@@ -44,5 +41,17 @@ public:
 
 		return clone;
 	}
-	
+
+	void RenderDebugUI() override
+	{
+		ImGuiVariable("Type", (int)m_Type);
+		if (m_Target != nullptr)
+			ImGuiVariable("Target", (int)m_Target->GetEntityID());
+		else 
+			ImGuiVariable("Target", 0);
+
+		ImGuiVariable("TintTime", m_tintTime);
+		ImGuiVariable("TintTimer", m_tintTimer);
+		ImGuiVariable("Tint", m_tint);
+	}
 };

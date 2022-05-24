@@ -21,11 +21,14 @@ struct InventoryComponent : Firelight::ECS::BaseComponent
 	//global positonal settings
 	Firelight::Maths::Vec2f size;
 	Firelight::Maths::Vec2f offset;
+	Firelight::Maths::Vec2f slotSize;
+	Firelight::Maths::Vec2f margin;
+	Firelight::Maths::Vec2f slotMargin;
 	Firelight::ECS::e_AnchorSettings anchorSettings;
 
 	//textuer
-	std::string backgroundTexture= "Sprites/UI/Invetory_Back_V1_30_100.png";
-	std::string slotTexture= "Sprites/UI/Slot_Icon_100x100.png";
+	std::string backgroundTexture = "Sprites/UI/Invetory_Back_V1_30_100.png";
+	std::string slotTexture = "Sprites/UI/SlotIcon.png";
 
 	//slot data
 	UINT slotCount = 0;
@@ -172,6 +175,7 @@ struct InventoryComponentInPut : Firelight::ECS::BaseComponent
 struct InventoryComponentSpecialSlot : Firelight::ECS::BaseComponent
 {
 	std::string slotName;
+	Firelight::Graphics::Texture* slotTexture;
 	Firelight::Maths::Vec2f offset;
 	Firelight::Maths::Vec2f size;
 	Firelight::ECS::e_AnchorSettings anchorSettings;

@@ -124,7 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\FirelightEngine\;$(SolutionDir)\FirelightEngine\Includes\imgui\;$(SolutionDir)\FirelightEngine\Includes\;$(SolutionDir)\SnowfallEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -172,6 +172,9 @@
   <ItemGroup>
     <ProjectReference Include="..\FirelightEngine\FirelightEngine.vcxproj">
       <Project>{ea744fde-6588-4aa7-94ba-318d00e409dc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SnowfallEngine\SnowfallEngine.vcxproj">
+      <Project>{2e6e55df-89ad-461d-8acc-b73399320c31}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

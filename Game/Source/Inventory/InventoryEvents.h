@@ -16,7 +16,7 @@ namespace Firelight::Events::Inventory
 	NEW_EVENT(GetItemType);
 	NEW_EVENT(GetItemTypeNumber);
 	NEW_EVENT(GetSpecialSlot);
-	
+	NEW_EVENT(DropAll);
 
 	NEW_EVENT(LoadInventoryGroup);
 	NEW_EVENT(UnloadInventoryGroup);

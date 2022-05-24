@@ -11,6 +11,7 @@ using namespace Firelight::Serialisation;
 
 #include <string>
 #include <map>
+#include <vector>
 
 namespace Firelight::ECS
 {
@@ -45,6 +46,16 @@ namespace Firelight::ECS
 			clone->animations = animations;
 
 			return clone;
+		}
+
+		void RenderDebugUI() override
+		{
+			ImGuiVariable("CurrentAnimation", currentAnimation != nullptr ? currentAnimation->m_animationName : "nullptr");
+			ImGuiVariable("CurrentFrameCount", currentFrameCount);
+			ImGuiVariable("CurrentFrameIndex", currentFrameIndex);
+			ImGuiVariable("PlayOnStart", playOnStart);
+			ImGuiVariable("ShouldPlay", shouldPlay);
+			ImGuiVariable("Animations", (int)animations.size());
 		}
 	};
 }

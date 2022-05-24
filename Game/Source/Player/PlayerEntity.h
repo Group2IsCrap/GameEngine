@@ -13,6 +13,7 @@ public:
 
 	void HealthBelowZero() override;
 	void RemoveHealth(int amount) override;
+	void AddHealth(int amount) override;
 	void PlayerHealthUpdated();
 };
 

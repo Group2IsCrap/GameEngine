@@ -8,8 +8,7 @@
 
 AICrocodileEntity::AICrocodileEntity() : AIEntity()
 {
-	GetComponent<TransformComponent>()->position = { 10.0f, 0.0f, 0.0f };
-	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitCroc.png");
+	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/CrocIdle.png");
 	
 }
 
@@ -21,8 +20,9 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 {
 	GetIDComponent()->name = "Crocodile";
 	//GetComponent<RigidBodyComponent>()->nextPos = { 2.0f, 0.0f, 0.0f };
-	GetSpriteComponent()->pixelsPerUnit = 35;
-	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitCroc.png");
+	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/CrocIdle.png");
+	GetSpriteComponent()->pixelsPerUnit = 100;
+	
 	GetRigidBodyComponent()->interpolate = true;
 
 	GetComponent<HealthComponent>()->maxHealth = 5;
@@ -40,11 +40,12 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 		std::make_pair(0.8f, 0.2f)
 	};
 
+
 	aiBehaviourComponent->m_CurrentTransitions = new AITransitionBehaviour(aiBehaviourComponent, GetAIComponent(), GetRigidBodyComponent(), AIState::None);
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 0.5f, radii);
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 
-	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), 1, 0.8f, 4.5f, 2.0f, 1.0f);
+	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "CrocodileIdle", "CrocodileWalk", 1, 0.8f, 2.0f, 2.0f, 1.0f);
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Attacking] = attackingBehaviour;
 
 	std::map<AIState, std::function<bool()>> idleTransitions;
@@ -63,3 +64,5 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 
 	aiBehaviourComponent->m_CurrentTransitions->SetState(AIState::Idle);
 }
+
+

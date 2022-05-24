@@ -15,7 +15,7 @@ public:
 
 	void RemoveHealth(int amount) override;
 	void HealthBelowZero() override;
-	void FaceDirection();
+	virtual void FaceDirection();
 
 	AIComponent* GetAIComponent();
 
@@ -27,4 +27,5 @@ private:
 	AIComponent* m_AIComponent;
 	RigidBodyComponent* m_rigidbodyComponent;
 	SpriteComponent* m_spriteComponent;
+	TransformComponent* m_transformComponent;
 };

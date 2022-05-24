@@ -3,19 +3,26 @@
 #include "Includes/imgui/imgui.h"
 #include "Includes/imgui/imgui_internal.h"
 
+#include "Source/Engine.h"
+
 #include "Source/ECS/EntityWrappers/GameEntity.h"
 
 using namespace Firelight::ECS;
 
 ImGuiDebugLayer::ImGuiDebugLayer()
 {
-	SetupTheme();
-	spawnItemCommand = std::vector<CallbackFunctionType>(5);
+	
 }
 
 ImGuiDebugLayer::~ImGuiDebugLayer()
 {
 
+}
+
+void ImGuiDebugLayer::Initialize()
+{
+	SetupTheme();
+	spawnItemCommand = std::vector<CallbackFunctionType>(5);
 }
 
 void ImGuiDebugLayer::Render()
@@ -46,6 +53,7 @@ void ImGuiDebugLayer::Render()
 	RenderKeyBindingPrototype();
 	RenderDebugInformation();
 	RenderECSDebug();
+	RenderControls();
 }
 
 void ImGuiDebugLayer::RenderItemWindow()
@@ -55,9 +63,19 @@ void ImGuiDebugLayer::RenderItemWindow()
 	{
 		spawnItemCommand[0]();
 	}
-	if (ImGui::Button("Spawn Stick"))
+	if (ImGui::Button("Spawn All Items"))
 	{
 		spawnItemCommand[1]();
+	}
+	ImGui::End();
+}
+
+void ImGuiDebugLayer::RenderControls()
+{
+	ImGui::Begin("Debug Controls");
+	if (ImGui::Button("Play/Pause"))
+	{
+		Firelight::Engine::Instance().TogglePause();
 	}
 	ImGui::End();
 }
@@ -65,6 +83,15 @@ void ImGuiDebugLayer::RenderItemWindow()
 void ImGuiDebugLayer::RenderECSDebug()
 {
 	ImGui::Begin("ECS Debug");
+	if (ImGui::Button("Save ECS"))
+	{
+		Serialiser::SaveSceneJSON();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load ECS"))
+	{
+		Serialiser::LoadSceneJSON();
+	}
 	std::vector<EntityID> entities = EntityComponentSystem::Instance()->GetEntities();
 	ImGui::SetNextItemOpen(true);
 	if (ImGui::TreeNode(("Entities (" + std::to_string(entities.size()) + ")").c_str()))
@@ -93,7 +120,11 @@ void ImGuiDebugLayer::RenderECSDebug()
 					{
 						componentTypeString = componentTypeString.substr(16);
 					}
-					ImGui::Text(("    " + componentTypeString).c_str());
+					if (ImGui::TreeNode(componentTypeString.c_str()))
+					{
+						component->RenderDebugUI();
+						ImGui::TreePop();
+					}
 				}
 				ImGui::TreePop();
 			}

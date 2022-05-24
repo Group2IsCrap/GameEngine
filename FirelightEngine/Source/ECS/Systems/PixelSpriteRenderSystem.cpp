@@ -43,14 +43,15 @@ namespace Firelight::ECS
 			}
 			
 			
-			float width = Engine::Instance().GetWindowDimensionsFloat().x * transformComponent->scale.x;
-			float Hight = Engine::Instance().GetWindowDimensionsFloat().y * transformComponent->scale.y;
+			float width = Engine::Instance().GetWindowDimensionsFloat().x * transformComponent->GetScale().x;
+			float Hight = Engine::Instance().GetWindowDimensionsFloat().y * transformComponent->GetScale().y;
+			Firelight::Maths::Vec3f position = transformComponent->GetPosition();
 			Maths::Rectf destRect(
-				transformComponent->position.x- width * 0.5f,
-				transformComponent->position.y- Hight * 0.5f,
+				position.x- width * 0.5f,
+				position.y- Hight * 0.5f,
 				width, Hight);
 
-			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixelSpriteComponentItem->layer, transformComponent->rotation, pixelSpriteComponentItem->colour, pixelSpriteComponentItem->sourceRect, pixelSpriteComponentItem->flipX, pixelSpriteComponentItem->flipY);
+			Graphics::GraphicsHandler::Instance().GetSpriteBatch()->PixelDraw(destRect, texture, pixelSpriteComponentItem->layer, transformComponent->GetRotation(), pixelSpriteComponentItem->colour, pixelSpriteComponentItem->sourceRect, pixelSpriteComponentItem->flipX, pixelSpriteComponentItem->flipY);
 
 		}
 	}

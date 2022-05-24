@@ -4,6 +4,10 @@
 #include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../CoreComponents/HealthComponent.h"
+#include "../CoreComponents/ResourceComponent.h"
+
+#include <Source/ECS/ECSDefines.h>
+#include <Source/Maths/Vec3.h>
 
 class ResourceEntity : public Firelight::ECS::SpriteEntity
 {
@@ -19,4 +23,9 @@ public:
 	int GetHealth();
 	virtual void RemoveHealth(int amount);
 	virtual void HealthBelowZero();
+
+	void DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location);
+
+private:
+	Firelight::Maths::Vec3f savePos;
 };
