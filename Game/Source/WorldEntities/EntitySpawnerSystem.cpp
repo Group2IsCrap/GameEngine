@@ -37,7 +37,6 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 			if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>()->isDead)
 			{
 				entitySpawnerComponent->spawnedEntity->Destroy();
-				delete entitySpawnerComponent->spawnedEntity;
 				entitySpawnerComponent->spawnedEntity = nullptr;
 				continue;
 			}
