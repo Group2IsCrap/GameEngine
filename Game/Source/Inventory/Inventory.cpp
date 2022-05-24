@@ -286,7 +286,7 @@ void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
 	for (ECS::EntityID itemID: *id)
 	{
 		ECS::ItemComponent* itemData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::ItemComponent>(itemID);
-		bool isUsed = true;
+		bool isUsed = false;
 		for (std::string tag : itemData->tags) {
 			if (tag == "Food") {
 				//health up event
