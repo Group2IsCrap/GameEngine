@@ -20,6 +20,7 @@ namespace InventorySystem
 
        
         Events::EventDispatcher::AddListener<Events::Inventory::RemoveItemType>(this);
+        Events::EventDispatcher::AddListener<Events::Inventory::DropAll>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemType>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::GetItemTypeNumber>(this);
         Events::EventDispatcher::AddListener<Events::Inventory::AddItem>(this);
@@ -38,6 +39,7 @@ namespace InventorySystem
 
     InventoryManager::~InventoryManager()
     {
+      
     }
 
     void InventoryManager::HandleEvents(const char* event, void* eventData)
@@ -84,6 +86,15 @@ namespace InventorySystem
         {
             GlobalFunctions::RemoveInvetoryData* data = (GlobalFunctions::RemoveInvetoryData*)eventData;
             RemoveInventory(data->groupName, data->inventoryName);
+        }
+        else if (event == Events::Inventory::DropAll::sm_descriptor)
+        {
+            GlobalFunctions::RemoveInvetoryData* data = (GlobalFunctions::RemoveInvetoryData*)eventData;
+            for (auto Inventory : m_inventory[data->groupName]) {
+                if  (Inventory->GetName() == data->inventoryName) {
+                    Inventory->DropAllItems();
+                }
+            }
         }
     }
     void InventoryManager::GroupLoadOrUnload(std::string group)

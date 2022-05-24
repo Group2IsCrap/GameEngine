@@ -570,6 +570,7 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 			}
 		}
 	}
+	
 	return isFail;
 }
 
@@ -696,6 +697,45 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 
 	}
 	return -1;
+}
+
+void Inventory::DropAllItems()
+{
+	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	{
+		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
+		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
+
+		if (!slot->isUsed) {
+			continue;
+		}
+		else
+		{
+			//drop code here
+			InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(m_inventoryEntityID, m_groupInventoryID);
+
+			if (data) {
+				InventoryStoreData a = *slotData;
+				for (auto& out : data->outputCommand)
+				{
+					out((void*)&a.entityIDs);
+				}
+			}
+
+			slot->isUsed = false;
+			slotData->stackSize = -1;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = false;
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
+			text->hidden = true;
+
+			slotData->stackSize = -1;
+			slotData->entityIDs.clear();
+		}
+	}
+
 }
 
 bool Inventory::FindItem(Firelight::ECS::Entity* item)

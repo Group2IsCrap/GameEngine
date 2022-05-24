@@ -88,6 +88,7 @@ void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
 	ItemDatabase::Instance()->CreateInstanceOfItem(0);
+	InventorySystem::GlobalFunctions::RemoveAllItems("PlayerInventory", "MainInventory");
 }
 
 void SpawnItem1()
@@ -139,7 +140,6 @@ void DropItemAt(Maths::Vec3f at, EntityID toDrop)
 void DropItemAtPlayer(void* toDrop, EntityID player)
 {
 	std::vector<EntityID> DropIDs= *(std::vector <EntityID>*)toDrop;
-
 	ECS::TransformComponent* toDropData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TransformComponent>(player);
 	for (EntityID DropID : DropIDs) {
 		DropItemAt(toDropData->GetPosition(), DropID);

@@ -163,4 +163,12 @@ namespace InventorySystem::GlobalFunctions {
         //return specialItemSlotData.returnData;
     }
 
+
+    inline void RemoveAllItems(std::string group, std::string name) {
+        RemoveInvetoryData removeInvetoryData;
+        removeInvetoryData.groupName = group;
+        removeInvetoryData.inventoryName = name;
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::DropAll::sm_descriptor, &removeInvetoryData);
+    }
+
  }
