@@ -22,7 +22,7 @@ public:
 
 	void SwitchWeapon();
 	void ToggleDebug();
-
+	void AddHealth(void* amount);
 private:
 	float GetSpeed();
 
@@ -42,9 +42,11 @@ private:
 	void SpawnItem();
 	void Attack();
 	void RemoveHealth();
+	
 
 	void StartAttack();
 	void StopAttack();
+	void Respawn();
 
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -62,8 +64,11 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_attackIndex;
 	size_t m_releaseAttackIndex;
-	size_t m_removeHealthEventIndex;
+	size_t m_respawnIndex;
   
+	size_t m_removeHealthEventIndex;
+	size_t m_addHealthEventIndex;
+
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* playerEntity;
   

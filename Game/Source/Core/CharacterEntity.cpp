@@ -53,6 +53,15 @@ void CharacterEntity::RemoveHealth(int amount)
 	}
 }
 
+void CharacterEntity::AddHealth(int amount)
+{
+	HealthComponent* component = GetComponent<HealthComponent>();
+	if (component->maxHealth >= amount)
+	{
+		component->currentHealth += amount;
+	}
+}
+
 void CharacterEntity::HealthBelowZero()
 {
 }
