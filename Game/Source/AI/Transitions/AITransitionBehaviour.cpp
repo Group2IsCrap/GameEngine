@@ -64,6 +64,35 @@ bool AITransitionBehaviour::WanderToAttack(float searchRadius, std::vector<int> 
 			if (it != enemiesToTarget.end())
 			{
 				m_AIComponent->m_Target = target;
+				m_wanderTimer = 0.0f;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool AITransitionBehaviour::WanderToFlee(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom)
+{
+	m_fleeTimer += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+
+	if (m_fleeTimer >= 1.0f)
+	{
+		m_fleeTimer = 0.0f;
+
+		std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_rigidBodyComponent->nextPos, fleeingSearchRadius,
+			std::vector<int>
+			{
+				static_cast<int>(GameLayer::Player),
+				static_cast<int>(GameLayer::Enemy)
+			});
+		for (auto* target : targets)
+		{
+			auto it = std::find(targetsToFleeFrom.begin(), targetsToFleeFrom.end(), target->GetComponent<IdentificationComponent>()->name);
+			if (it != targetsToFleeFrom.end())
+			{
+				m_AIComponent->m_Target = target;
+				m_fleeTimer = 0.0f;
 				return true;
 			}
 		}
@@ -77,4 +106,35 @@ bool AITransitionBehaviour::AttackToWander(RigidBodyComponent* rigidbodyComponen
 		return true;
 
 	return Firelight::Maths::Vec3f::Dist(rigidbodyComponent->nextPos, aiComponent->m_Target->GetComponent<RigidBodyComponent>()->nextPos) >= aggroRadius;
+}
+
+bool AITransitionBehaviour::FleeToWander(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom)
+{
+	m_fleeToWanderTimer += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+
+	if (m_fleeToWanderTimer >= 2.0f)
+	{
+		m_fleeToWanderTimer = 0.0f;
+
+		std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(m_rigidBodyComponent->nextPos, fleeingSearchRadius,
+			std::vector<int>
+			{
+				static_cast<int>(GameLayer::Player),
+				static_cast<int>(GameLayer::Enemy)
+			});
+		for (auto* target : targets)
+		{
+			auto it = std::find(targetsToFleeFrom.begin(), targetsToFleeFrom.end(), target->GetComponent<IdentificationComponent>()->name);
+			if (it != targetsToFleeFrom.end())
+			{
+				return false;
+			}
+		}
+
+		m_AIComponent->m_Target = nullptr;
+		m_fleeToWanderTimer = 0.0f;
+		return true;
+	}
+
+	return false;
 }

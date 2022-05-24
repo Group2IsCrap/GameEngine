@@ -64,16 +64,18 @@ void ResourceDatabase::LoadResources(std::string filepath)
 		SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
 		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
 		spriteComponent->pixelsPerUnit = std::stoi(resourceData[i][6]);
-		spriteComponent->layer = static_cast<int>(RenderLayer::Items);
-
-		addColliders(resourceTemplate, resourceData[i][5]);
+		int layer = std::stoi(resourceData[i][7]);
+		spriteComponent->layer = layer == 0 ? static_cast<int>(RenderLayer::Items) : layer;
 
 		ResourceComponent* resourceComponent = resourceTemplate->AddComponent<ResourceComponent>();
 		resourceComponent->resourceID = std::stoi(resourceData[i][0]);
 
 		resourceComponent->name = resourceData[i][1];
 
-		addDrops(resourceComponent, resourceData[i][4]);
+		AddColliders(resourceTemplate, resourceData[i][5]);
+
+
+		AddDrops(resourceComponent, resourceData[i][4]);
 
 		resourceTemplate->AddComponent<HealthComponent>()->currentHealth = std::stoi(resourceData[i][3]);
 		resourceTemplate->AddComponent<RigidBodyComponent>();
@@ -107,7 +109,7 @@ ResourceDatabase::~ResourceDatabase()
 	resourceTemplates.clear();
 }
 
-void ResourceDatabase::addColliders(Template* resourceTemplate, std::string colliderData)
+void ResourceDatabase::AddColliders(Template* resourceTemplate, std::string colliderData)
 {
 	if (colliderData.length() > 0)
 	{
@@ -155,7 +157,7 @@ void ResourceDatabase::addColliders(Template* resourceTemplate, std::string coll
 
 }
 
-void ResourceDatabase::addDrops(ResourceComponent* resourceComponent, std::string dropData)
+void ResourceDatabase::AddDrops(ResourceComponent* resourceComponent, std::string dropData)
 {
 	if (dropData.length() > 0)
 	{

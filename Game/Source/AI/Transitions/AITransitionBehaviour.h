@@ -26,8 +26,11 @@ public:
 	bool IdleToWander();
 
 	bool WanderToAttack(float searchRadius, std::vector<int> layers, std::vector<std::string> enemiesToTarget);
+	bool WanderToFlee(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom);
 
 	bool AttackToWander(RigidBodyComponent* rigidbodyComponent, AIComponent* aiComponent, float aggroRadius);
+
+	bool FleeToWander(float fleeingSearchRadius, std::vector<std::string> targetsToFleeFrom);
 
 public:
 	std::map<AIState, std::map<AIState, std::function<bool()>>> m_Transitions;
@@ -39,4 +42,6 @@ public:
 
 private:
 	float m_wanderTimer;
+	float m_fleeTimer;
+	float m_fleeToWanderTimer;
 };

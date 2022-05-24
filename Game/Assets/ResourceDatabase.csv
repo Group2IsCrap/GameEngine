@@ -1,5 +1,5 @@
-﻿ResourceID,ResourceName,Sprite,Health,Drops,Hitboxes,PixelsPerUnit
-0,Tree,Sprites/ObjectSprites/Tree.png,3,1:80:1:2;3:100:1:3;,Box:0.0:-3.5:2.0:2.0:0;,35
-1,Rock,Sprites/ObjectSprites/Rock.png,4,0:80:2:4;,Box:0.0:0.0:5.5:3.0:0;,35
-2,Bush,Sprites/ObjectSprites/Bush.png,1,1:30:1:2;5:50:3:5;,Box:0.0:-0.2:3.0:1.0:1;,35
-3,BerryBush,Sprites/ObjectSprites/BerryBush.png,2,1:30:1:2;5:50:3:5;45:50:3:5;,Box:0.0:-0.2:3.0:1.0:1;,35
+﻿ResourceID,ResourceName,Sprite,Health,Drops,Hitboxes,PixelsPerUnit,RenderLayer
+0,Tree,Sprites/ObjectSprites/Tree.png,3,1:80:1:2;3:100:1:3;,Box:0.0:-3.5:2.0:2.0:0;,35,1200
+1,Rock,Sprites/ObjectSprites/Rock.png,4,0:80:2:4;,Box:0.0:0.0:5.5:3.0:0;,35,0
+2,Bush,Sprites/ObjectSprites/Bush.png,1,1:30:1:2;5:50:3:5;,Box:0.0:-0.2:3.0:1.0:1;,35,0
+3,BerryBush,Sprites/ObjectSprites/BerryBush.png,2,1:30:1:2;5:50:3:5;47:50:3:5;,Box:0.0:-0.2:3.0:1.0:1;,35,0
