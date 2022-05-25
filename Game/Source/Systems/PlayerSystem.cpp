@@ -3,7 +3,7 @@
 #include <Source/Input/GetInput.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
-#include <Source/Physics/PhysicsHelpers.h>s
+#include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
 #include <Source/Graphics/Data/Colour.h>
 
@@ -378,8 +378,6 @@ void PlayerSystem::SwitchHat()
 	PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
 
 	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Head");
-	ArmourComponent* armourComponent = nullptr;
-	//EntityID id2 = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Body");
 
 	ArmourComponent* armour = nullptr;
 
