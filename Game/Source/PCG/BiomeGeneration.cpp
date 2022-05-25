@@ -21,6 +21,7 @@ BiomeGeneration::BiomeGeneration()
 	, m_bridgeLength(3)
 	, m_islandRadii(15)
 	, m_numberOfIslands(6)
+	, m_playerWasOnBridge(false)
 	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 {}
 
@@ -406,6 +407,11 @@ void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
 		if (IsPositionBetweenTwoPoints(playerPosition, position1, position2))
 		{
+			m_playerWasOnBridge = true;
+		}
+		else if (m_playerWasOnBridge)
+		{
+			m_playerWasOnBridge = false;
 			unsigned int tileID = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y))->GetTileID();
 			BiomeMusicData biomeMusicData;
 			biomeMusicData.biome = m_biomeInfo->mapOfBiomesOnTileIDs[tileID];

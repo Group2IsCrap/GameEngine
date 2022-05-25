@@ -74,5 +74,5 @@ private:
 	unsigned int m_bridgeLength;
 	int m_islandRadii;
 	size_t m_numberOfIslands;
-
+	bool m_playerWasOnBridge;
 };
