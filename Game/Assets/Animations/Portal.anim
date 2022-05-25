@@ -1,0 +1,13 @@
+{
+    "AnimationName": "Portal",
+    "Loop": true,
+    "FrameTime": 200,
+    "FrameCount": 5,
+    "TextureNames": [
+        "Sprites\\Portal\\Portal_0000.png",
+        "Sprites\\Portal\\Portal_0001.png",
+        "Sprites\\Portal\\Portal_0002.png",
+        "Sprites\\Portal\\Portal_0003.png",
+        "Sprites\\Portal\\Portal_0004.png"
+    ]
+}

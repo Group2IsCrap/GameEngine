@@ -4,6 +4,6 @@
 
 namespace Firelight::Events::InputEvents
 {
-
+	NEW_EVENT(GameStartEvent);
 	NEW_EVENT(PlayGameEvent);
 }
