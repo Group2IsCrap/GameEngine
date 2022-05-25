@@ -45,7 +45,7 @@ AICrocodileEntity::AICrocodileEntity(bool isTemplate, Firelight::ECS::EntityID e
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 0.5f, radii);
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 
-	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "CrocodileIdle", "CrocodileWalk", 4, 0.8f, 2.0f, 2.0f, 1.0f, "Crocodile Attack.wav");
+	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "CrocodileIdle", "CrocodileWalk", 3, 0.8f, 2.0f, 2.0f, 1.0f, "Crocodile Attack.wav");
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Attacking] = attackingBehaviour;
 
 	std::map<AIState, std::function<bool()>> idleTransitions;
