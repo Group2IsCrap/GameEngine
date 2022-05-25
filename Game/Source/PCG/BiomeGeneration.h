@@ -36,11 +36,11 @@ public:
 	Firelight::Maths::Rectf testPosition;
 
 	bool IsInVoid(Rectf position);
-	BiomeType CheckCurrentPlayerBiomeType(Rectf playerPosition);
+	void CheckCurrentPlayerBiomeType(Rectf playerPosition);
 
 private:
 
-	void DrawIslandCircles(Rectf& destRect, Rectf currentIslandCentre, int index);
+	void DrawIslandCircles(Rectf& destRect, const Rectf currentIslandCentre, int index);
 	void DrawBridge(Rectf& destRect, Rectf currentIslandCentre, IslandSpawnDirection direction);
 
 	bool IsIslandSpaceFree(Vec2i newIslandPosition);

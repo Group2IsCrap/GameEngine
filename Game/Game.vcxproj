@@ -188,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
+    <ClInclude Include="Source\PCG\PCGEvents.h" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
     <ClInclude Include="Source\Items\CraftingRecipeDatabase.h" />
     <ClInclude Include="Source\Items\CraftingRecipe.h" />

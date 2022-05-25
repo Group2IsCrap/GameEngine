@@ -24,6 +24,8 @@ BackgroundMusicEntity::BackgroundMusicEntity(bool isTemplate, Firelight::ECS::En
 {
 }
 
+
+
 void BackgroundMusicEntity::ChangeMusic(int biome, Vector3D playerPos)
 {
 	if (biome == 0)

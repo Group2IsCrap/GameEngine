@@ -3,6 +3,8 @@
 #include "../FirelightEngine/Source/Graphics/GraphicsHandler.h"
 #include "../FirelightEngine/Source/Graphics/AssetManager.h"
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
+#include <../FirelightEngine/Source/Events/EventDispatcher.h>
+#include "PCGEvents.h"
 
 using namespace Firelight::Events;
 
@@ -86,15 +88,15 @@ void BiomeGeneration::GenerateWorld()
 	for (size_t index = 0; index < m_numberOfIslands; ++index)
 	{
 		m_islandCentres.emplace_back(curIslandCentre);
-		DrawIslandCircles(newDestRect, curIslandCentre, index);
+		DrawIslandCircles(newDestRect, curIslandCentre, (int)index);
 
 		if (index == m_numberOfIslands - 1)
 			continue;
 
 		//randomly pick an island centre from occupied islands
 		int randomIndex = CalculateRandomIslandIndex();
-		curIslandCentre.x = m_OccupiedIslandSpaces[randomIndex].x;
-		curIslandCentre.y = m_OccupiedIslandSpaces[randomIndex].y;
+		curIslandCentre.x = (float)m_OccupiedIslandSpaces[randomIndex].x;
+		curIslandCentre.y = (float)m_OccupiedIslandSpaces[randomIndex].y;
 
 		FindNextIslandCentre(curIslandCentre, direction, destinationRect, iterator);
 	}
@@ -102,7 +104,7 @@ void BiomeGeneration::GenerateWorld()
 	m_OccupiedIslandSpaces.clear();
 }
 
-void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCentre, int index)
+void BiomeGeneration::DrawIslandCircles(Rectf& destRect, const Rectf currentIslandCentre, int index)
 {
 	m_OccupiedIslandSpaces.push_back(Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
 
@@ -111,7 +113,7 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 		for (int y = -m_islandRadii; y <= m_islandRadii; ++y)
 		{
 			destRect = Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
-			if (Vec2i::Dist(Vec2i((int)destRect.x, destRect.y), Vec2i(currentIslandCentre.x, currentIslandCentre.y)) <= m_islandRadii)
+			if (Vec2i::Dist(Vec2i((int)destRect.x, (int)destRect.y), Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y)) <= m_islandRadii)
 			{
 				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 				if (tile != nullptr)
@@ -124,7 +126,7 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 			else
 			{
 				// This is adding variety to the island outlines
-				int numberOfExtraTiles = CalculateIslandShape(rand() + index);
+				unsigned int numberOfExtraTiles = CalculateIslandShape(rand() + index);
 				for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
 				{
 					int extraX = x + i;
@@ -155,43 +157,43 @@ void BiomeGeneration::FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpa
 		switch (direction)
 		{
 		case IslandSpawnDirection::North:
-			potentialNewIslandPosition.y = currentIslandCentre.y + (m_islandRadii * 2) + m_bridgeLength + 1;
+			potentialNewIslandPosition.y = (int)(currentIslandCentre.y + (m_islandRadii * 2) + m_bridgeLength + 1);
 			if (IsIslandSpaceFree(potentialNewIslandPosition))
 			{
 				DrawBridge(destRect, currentIslandCentre, direction);
-				currentIslandCentre.y = potentialNewIslandPosition.y;
+				currentIslandCentre.y = (float)potentialNewIslandPosition.y;
 				isIslandPositionEmpty = true;
 			}
 
 			break;
 		case IslandSpawnDirection::East:
-			potentialNewIslandPosition.x = currentIslandCentre.x + (m_islandRadii * 2) + m_bridgeLength + 1;
+			potentialNewIslandPosition.x = (int)(currentIslandCentre.x + (m_islandRadii * 2) + m_bridgeLength + 1);
 			if (IsIslandSpaceFree(potentialNewIslandPosition))
 			{
 				DrawBridge(destRect, currentIslandCentre, direction);
-				currentIslandCentre.x = potentialNewIslandPosition.x;
+				currentIslandCentre.x = (float)potentialNewIslandPosition.x;
 				isIslandPositionEmpty = true;
 			}
 
 			break;
 
 		case IslandSpawnDirection::South:
-			potentialNewIslandPosition.y = currentIslandCentre.y - (m_islandRadii * 2) - m_bridgeLength - 1;
+			potentialNewIslandPosition.y = (int)(currentIslandCentre.y - (m_islandRadii * 2) - m_bridgeLength - 1);
 			if (IsIslandSpaceFree(potentialNewIslandPosition))
 			{
 				DrawBridge(destRect, currentIslandCentre, direction);
-				currentIslandCentre.y = potentialNewIslandPosition.y;
+				currentIslandCentre.y = (float)potentialNewIslandPosition.y;
 				isIslandPositionEmpty = true;
 			}
 
 			break;
 
 		case IslandSpawnDirection::West:
-			potentialNewIslandPosition.x = currentIslandCentre.x - (m_islandRadii * 2) - m_bridgeLength - 1;
+			potentialNewIslandPosition.x = (int)(currentIslandCentre.x - (m_islandRadii * 2) - m_bridgeLength - 1);
 			if (IsIslandSpaceFree(potentialNewIslandPosition))
 			{
 				DrawBridge(destRect, currentIslandCentre, direction);
-				currentIslandCentre.x = potentialNewIslandPosition.x;
+				currentIslandCentre.x = (float)potentialNewIslandPosition.x;
 				isIslandPositionEmpty = true;
 			}
 
@@ -313,6 +315,7 @@ IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int 
 	{
 		return IslandSpawnDirection::West;
 	}
+	return IslandSpawnDirection::North;
 }
 
 unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
@@ -387,7 +390,7 @@ bool BiomeGeneration::IsInVoid(Rectf position)
 
 	for (auto centre : m_islandCentres)
 	{
-		if (Vec2i::Dist(Vec2i((int)position.x, position.y), Vec2i(centre.x, centre.y)) <= m_islandRadii)
+		if (Vec2i::Dist(Vec2i((int)position.x, (int)position.y), Vec2i((int)centre.x, (int)centre.y)) <= m_islandRadii)
 		{
 			return false;
 		}
@@ -395,7 +398,7 @@ bool BiomeGeneration::IsInVoid(Rectf position)
 	return false;
 }
 
-BiomeType BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
+void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 {
 	for (auto box : m_walkableBoxZones)
 	{
@@ -404,7 +407,7 @@ BiomeType BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 		if (IsPositionBetweenTwoPoints(playerPosition, position1, position2))
 		{
 			unsigned int tileID = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y))->GetTileID();
-			return m_biomeInfo->mapOfBiomesOnTileIDs[tileID];
+			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)m_biomeInfo->mapOfBiomesOnTileIDs[tileID]);
 		}
 	}
 }

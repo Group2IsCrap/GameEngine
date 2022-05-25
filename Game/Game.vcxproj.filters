@@ -54,6 +54,7 @@
     <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
     <ClCompile Include="Source\PCG\Noise.cpp" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
+    <ClInclude Include="Source\PCG\PCGEvents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
