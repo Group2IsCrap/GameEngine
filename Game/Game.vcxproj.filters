@@ -25,6 +25,7 @@
     <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
     <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\PortalEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\AIEntity.cpp" />
@@ -55,6 +56,7 @@
     <ClCompile Include="Source\PCG\Noise.cpp" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
     <ClInclude Include="Source\PCG\PCGEvents.h" />
+    <ClInclude Include="Source\WorldEntities\PortalEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
