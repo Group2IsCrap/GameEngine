@@ -89,7 +89,6 @@
     <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
     <ClInclude Include="Source\PCG\BiomeGeneration.h" />
-    <ClInclude Include="Source\PCG\Biomes.h" />
     <ClInclude Include="Source\PCG\Noise.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
   </ItemGroup>

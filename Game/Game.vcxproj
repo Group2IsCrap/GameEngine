@@ -228,7 +228,6 @@
     <ClInclude Include="Source\Inventory\InventoryEntity.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\PCG\BiomeGeneration.h" />
-    <ClInclude Include="Source\PCG\Biomes.h" />
     <ClInclude Include="Source\PCG\Noise.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />
     <ClInclude Include="Source\CoreComponents\HealthComponent.h" />

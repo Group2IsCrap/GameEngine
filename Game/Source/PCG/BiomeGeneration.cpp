@@ -1,12 +1,8 @@
 #include "BiomeGeneration.h"
+
 #include "../FirelightEngine/Source/Graphics/GraphicsHandler.h"
-#include "../FirelightEngine/Source/Graphics/Data/Texture.h"
 #include "../FirelightEngine/Source/Graphics/AssetManager.h"
-#include "../FirelightEngine/Source/Maths/Rect.h"
-#include "../FirelightEngine/Source/Graphics/GraphicsEvents.h"
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
-#include "../FirelightEngine/Source/Events/EventDispatcher.h"
-#include "../FirelightEngine/Source/ECS/Systems/TilemapSystem.h"
 
 using namespace Firelight::Events;
 
@@ -21,7 +17,8 @@ BiomeGeneration::BiomeGeneration()
 	, m_biomeCount((unsigned int)BiomeType::Bridge)
 	, m_bridgeWidth(2)
 	, m_bridgeLength(3)
-	, m_islandRadii(3)
+	, m_islandRadii(15)
+	, m_numberOfIslands(6)
 	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 {}
 
@@ -77,31 +74,29 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 
 void BiomeGeneration::GenerateWorld()
 {
-	Rectf m_destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
-	Rectf m_centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
-	Rectf m_curIslandCentre = m_centre;
-	size_t numberOfIslands = 6;
-	m_islandRadii = 12;
+	Rectf destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
+	Rectf centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
+	Rectf curIslandCentre = centre;
 
 	//for each island
 	Rectf newDestRect = Rectf(0.0f, 0.0f, 1.0f, 1.0f);
 	int iterator = 0;
 	IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
 
-	for (size_t index = 0; index < numberOfIslands; ++index)
+	for (size_t index = 0; index < m_numberOfIslands; ++index)
 	{
-		m_islandCentres.emplace_back(m_curIslandCentre);
-		DrawIslandCircles(newDestRect, m_curIslandCentre, index);
+		m_islandCentres.emplace_back(curIslandCentre);
+		DrawIslandCircles(newDestRect, curIslandCentre, index);
 
-		if (index == numberOfIslands - 1)
+		if (index == m_numberOfIslands - 1)
 			continue;
 
 		//randomly pick an island centre from occupied islands
 		int randomIndex = CalculateRandomIslandIndex();
-		m_curIslandCentre.x = m_OccupiedIslandSpaces[randomIndex].x;
-		m_curIslandCentre.y = m_OccupiedIslandSpaces[randomIndex].y;
+		curIslandCentre.x = m_OccupiedIslandSpaces[randomIndex].x;
+		curIslandCentre.y = m_OccupiedIslandSpaces[randomIndex].y;
 
-		FindNextIslandCentre(m_curIslandCentre, direction, m_destinationRect, iterator);
+		FindNextIslandCentre(curIslandCentre, direction, destinationRect, iterator);
 	}
 
 	m_OccupiedIslandSpaces.clear();

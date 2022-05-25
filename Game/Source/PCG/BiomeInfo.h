@@ -17,9 +17,6 @@ enum class BiomeType
 
 struct BiomeInfo
 {
-	std::vector<Entity*> possibleSpawnEntities;
-	Texture* mainTexture;
-	Texture* detailTexture;
 	std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
 };
 

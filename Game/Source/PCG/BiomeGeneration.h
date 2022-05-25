@@ -1,13 +1,10 @@
 #pragma once
 #include "Noise.h"
-#include "Biomes.h"
+#include "BiomeInfo.h"
+
 #include "..\FirelightEngine\Source\Maths\Rect.h"
 #include "..\FirelightEngine\Source\TileMap\TileMap.h"
 #include "..\FirelightEngine\Source\Graphics\Data\Texture.h"
-
-#include "..\FirelightEngine\Source\TileMap\TileMap.h"
-#include "BiomeInfo.h"
-
 #include "Source/ImGuiUI/ImGuiLayer.h"
 
 #include <map>
@@ -23,7 +20,7 @@ enum class IslandSpawnDirection
 	West
 };
 
-class BiomeGeneration : public Firelight::ImGuiUI::ImGuiLayer
+class BiomeGeneration
 {
 public:
 	BiomeGeneration();
@@ -75,5 +72,6 @@ private:
 	unsigned int m_bridgeWidth;
 	unsigned int m_bridgeLength;
 	int m_islandRadii;
+	size_t m_numberOfIslands;
 
 };

@@ -1,5 +1,4 @@
 #include "EnvironmentGeneration.h"
-#include "BiomeInfo.h"
 #include "../Game/Source/WorldEntities/ResourceDatabase.h"
 
 EnvironmentGeneration* EnvironmentGeneration::sm_instance = nullptr;
