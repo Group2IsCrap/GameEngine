@@ -251,21 +251,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		player = new PlayerEntity();
 
 		// Grass
-		SpriteEntity* test2 = new SpriteEntity();
-		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		test2->GetSpriteComponent()->layer = 16;
-		
+		//SpriteEntity* test2 = new SpriteEntity();
+		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		//test2->GetSpriteComponent()->layer = 16;
+		//
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemySpawner();
 		SetupResourceSpawner();
 
-		//// Grass
-		//SpriteEntity* test2 = new SpriteEntity();
-		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		//test2->GetSpriteComponent()->layer = 16;
 		// World
 		WorldEntity* world = new WorldEntity();
 
@@ -284,7 +279,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Tilemap
 		Firelight::TileMap::TileMap* tileMap = new Firelight::TileMap::TileMap();
-		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-20.0f, -20.0f));
+		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-100.0f, -100.0f));
 		tileMap->UpdateTileMapPositions();
 
 		//Biome Generation
