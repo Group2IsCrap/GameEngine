@@ -7,6 +7,14 @@ namespace Firelight::ECS
 		AddComponent<UIHoverableComponent>();
 		AddComponent<UIPressableComponent>();
 		AddComponent<UIButtonComponent>();
+		AudioComponent* audioComponent = new AudioComponent();
+		AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
+		audioComponent->looping = false;
+		audioComponent->is3d = false;
+		audioComponent->streaming = false;
+		audioComponent->channel = "UI";
+		audioComponent->soundName = "click1.wav";
+		audioComponent->soundPos = Vector3D(0.0f, 0.0f, 0.0f);
 		this->GetIDComponent()->name = "UI Button";
 	}
 

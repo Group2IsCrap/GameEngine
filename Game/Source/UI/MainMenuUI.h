@@ -18,4 +18,5 @@ public:
 
 private:
 	std::vector<Firelight::ECS::UIEntity*> m_UIEntities;
+	Firelight::ECS::UIButton* playButton;
 };

@@ -19,7 +19,7 @@ using namespace Firelight::Maths;
 class AIAttackingBehaviour : public AIStateBehaviour
 {
 public:
-	AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string attackAnimation, std::string walkAnimation, int damage, float speed, float attackRange, float attackCooldown, float attackRadius);
+	AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string attackAnimation, std::string walkAnimation, int damage, float speed, float attackRange, float attackCooldown, float attackRadius, std::string attackSound);
 
 	void HandleState(AIEntity* entity, const Firelight::Utils::Time& time) override;
 
@@ -36,6 +36,8 @@ private:
 	std::string m_attackAnimation;
 	std::string m_walkAnimation;
 	bool m_isAttacking;
+	std::string m_attackSound;
+	
 
 
 	float m_speed;

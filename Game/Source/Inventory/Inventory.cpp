@@ -639,7 +639,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 		InventoryStoreData* placeSlotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* placeSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, placeSlotData->slotIndex);
 		InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, placeSlot->specialSlotIndex);
-	
+
 		if (placeSlot->slotID == ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->parentID)
 		{
 
@@ -703,6 +703,9 @@ void Inventory::Place(InventoryStoreData* slotData)
 			{
 				currSlot->isUsed = false;
 			}
+
+			
+
 
 			return;
 
