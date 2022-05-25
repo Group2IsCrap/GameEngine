@@ -20,4 +20,10 @@ struct BiomeInfo
 	std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
 };
 
+struct BiomeMusicData
+{
+	Vector3D playerPosition;
+	BiomeType biome;
+};
+
 static std::vector< Firelight::Graphics::Texture* > sbiomeTextures;

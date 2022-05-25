@@ -407,7 +407,10 @@ void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 		if (IsPositionBetweenTwoPoints(playerPosition, position1, position2))
 		{
 			unsigned int tileID = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y))->GetTileID();
-			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)m_biomeInfo->mapOfBiomesOnTileIDs[tileID]);
+			BiomeMusicData biomeMusicData;
+			biomeMusicData.biome = m_biomeInfo->mapOfBiomesOnTileIDs[tileID];
+			biomeMusicData.playerPosition = Vector3D(playerPosition.x, playerPosition.y, 0.0f);
+			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
 		}
 	}
 }

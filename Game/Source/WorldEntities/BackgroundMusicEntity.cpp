@@ -1,4 +1,7 @@
 #include "BackgroundMusicEntity.h"
+#include "../PCG/BiomeInfo.h"
+#include "../PCG/PCGEvents.h"
+#include "../Source/Events/EventDispatcher.h"
 
 using namespace Firelight::ECS;
 
@@ -10,6 +13,8 @@ BackgroundMusicEntity::BackgroundMusicEntity()
 	audioComponent->is3d = false;
 	audioComponent->streaming = true;
 	audioComponent->channel = "Background";
+
+	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::PCGEvents::OnPlayerCrossBridge>(this);
 }
 
 BackgroundMusicEntity::BackgroundMusicEntity(std::string name) : BackgroundMusicEntity()
@@ -24,7 +29,25 @@ BackgroundMusicEntity::BackgroundMusicEntity(bool isTemplate, Firelight::ECS::En
 {
 }
 
+void BackgroundMusicEntity::HandleEvents(DescriptorType event, void* data)
+{
+	BiomeMusicData biomeMusicData = *(reinterpret_cast<BiomeMusicData*>(data));
 
+	switch (biomeMusicData.biome)
+	{
+	case BiomeType::Forest:
+		audioComponent->soundName = "Forest Music.wav";
+		break;
+	case BiomeType::Swamp:
+		audioComponent->soundName = "Swamp Music.wav";
+		break;
+	case BiomeType::Snow:
+		break;
+	}
+
+	audioComponent->soundPos = biomeMusicData.playerPosition;
+	this->PlayAudioClip();
+}
 
 void BackgroundMusicEntity::ChangeMusic(int biome, Vector3D playerPos)
 {

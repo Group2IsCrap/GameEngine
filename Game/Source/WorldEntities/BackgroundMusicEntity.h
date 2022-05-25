@@ -4,6 +4,8 @@
 #include <Source/ECS/EntityWrappers/Entity.h>
 #include <Source/ECS/Components/AudioComponents.h>
 
+using DescriptorType = const char*;
+
 class BackgroundMusicEntity : public Firelight::ECS::Entity
 							, public Firelight::Events::Listener
 {
@@ -14,8 +16,7 @@ public:
 	BackgroundMusicEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
 	void ChangeMusic(int biome, Vector3D playerPos);
-	//virtual void HandleEvents(DescriptorType event, void* data) override;
-
+	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	Firelight::ECS::AudioComponent* audioComponent;
 };
