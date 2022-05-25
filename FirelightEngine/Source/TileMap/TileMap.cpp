@@ -99,6 +99,11 @@ namespace Firelight::TileMap
         m_tileMapWidth = tileMapWidth;
     }
 
+    void TileMap::SetTileMap(std::vector<std::vector<Tile*>> tileMap)
+    {
+        m_tileMap = tileMap;
+    }
+
     Tile* TileMap::GetTileAtPosition(Maths::Vec2f position)
     {
         for (auto& tilesVec : m_tileMap)

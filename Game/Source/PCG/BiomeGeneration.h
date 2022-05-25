@@ -39,6 +39,8 @@ public:
 	bool IsInVoid(Rectf position);
 	void CheckCurrentPlayerBiomeType(Rectf playerPosition);
 
+	void KillVoidTiles();
+
 private:
 
 	void DrawFirstIsland(Rectf& destRect, const Rectf currentIslandCentre, int index);
