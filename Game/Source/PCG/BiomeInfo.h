@@ -26,4 +26,4 @@ struct BiomeMusicData
 	BiomeType biome;
 };
 
-static std::vector< Firelight::Graphics::Texture* > sbiomeTextures;
+static std::vector< Firelight::Graphics::Texture* > sm_biomeTextures;
