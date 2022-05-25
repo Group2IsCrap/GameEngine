@@ -9,7 +9,6 @@
 AICrocodileEntity::AICrocodileEntity() : AIEntity()
 {
 	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/CrocIdle.png");
-	
 }
 
 AICrocodileEntity::AICrocodileEntity(Firelight::ECS::EntityID entityID) : AIEntity(entityID)

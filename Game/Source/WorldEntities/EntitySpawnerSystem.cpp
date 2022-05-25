@@ -54,8 +54,6 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				}
 			}
 
-			
-
 			continue;
 		}
 

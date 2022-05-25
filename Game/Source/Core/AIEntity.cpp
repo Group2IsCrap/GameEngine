@@ -1,5 +1,7 @@
 #include "AIEntity.h"
 #include "Layers.h"
+#include "../Core/ResourceEntity.h"
+#include "../WorldEntities/ResourceDatabase.h"
 
 AIEntity::AIEntity() : CharacterEntity()
 {
@@ -47,7 +49,25 @@ void AIEntity::HealthBelowZero()
 	if (this->GetIDComponent()->name == "Deer")
 	{
 		this->GetComponent<AudioComponent>()->soundName = "Deer.wav";
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(5);
+		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
+		resourceEntity->RemoveHealth(1);
 	}
+	if (this->GetIDComponent()->name == "Crocodile")
+	{
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(4);
+		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
+		resourceEntity->RemoveHealth(1);
+	}
+	if (this->GetIDComponent()->name == "Slime")
+	{
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(6);
+		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
+		resourceEntity->RemoveHealth(1);
+	}
+
+	
+
 	this->GetComponent<AudioComponent>()->soundPos = Vector3D(GetTransformComponent()->GetPosition().x, GetTransformComponent()->GetPosition().y, GetTransformComponent()->GetPosition().z);
 	this->PlayAudioClip();
 
