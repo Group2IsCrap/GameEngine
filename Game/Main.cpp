@@ -267,22 +267,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		SetupEnemySpawner();
 		SetupResourceSpawner();
 
-		// World
-		WorldEntity* world = new WorldEntity();
-
-		SpriteEntity* barn = new SpriteEntity("Barn");
-		barn->GetComponent<TransformComponent>()->SetPosition(Firelight::Maths::Vec3f(10.0f, 10.0f, 0.0f));
-		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		barn->GetComponent<SpriteComponent>()->layer = 33;
-		barn->AddComponent<RigidBodyComponent>();
-		barn->GetComponent<StaticComponent>()->isStatic = true;
-		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
-		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
-		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
-		//collider->drawCollider = true;
-		//collider->radius = 4.25f;
-
 		// Tilemap
 		Firelight::TileMap::TileMap* tileMap = new Firelight::TileMap::TileMap();
 		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-100.0f, -100.0f));
@@ -298,6 +282,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//Resource PCG spawning
 		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
 		EnvironmentGeneration::Instance()->GenerateResources();
+
+		BiomeGeneration::Instance()->KillVoidTiles();
 
 		// UI
 		canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
