@@ -122,12 +122,12 @@ void AudioEngine::Initialise()
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
-	AudioChannel UIchannel("UI", 1, 1.0f);
-	AudioChannel GameplayChannel("Game", 2, 0.6f);
-	AudioChannel PlayerChannel("Player", 3, 0.75f);
-	AudioChannel AmbienceChannel("Ambience", 2, 0.5f);
-	AudioChannel backgroundMusicChannel("Background", 2, 0.5f);
-	AudioChannel enemiesChannel("Enemies", 3, 0.7f);
+	AudioChannel UIchannel("UI", 1, 100);
+	AudioChannel GameplayChannel("Game", 2, 60);
+	AudioChannel PlayerChannel("Player", 3, 75);
+	AudioChannel AmbienceChannel("Ambience", 2, 50);
+	AudioChannel backgroundMusicChannel("Background", 2, 50);
+	AudioChannel enemiesChannel("Enemies", 3, 70);
 	AudioEngine::engine->Update();
 }
 

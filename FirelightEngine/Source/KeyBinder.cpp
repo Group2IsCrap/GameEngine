@@ -13,8 +13,6 @@ namespace Firelight
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyPress>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyPressNonRepeat>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnKeyRelease>(this);
-		//Events::EventDispatcher::AddListener<Events::Input::KeyIsPressed>(this);
-		//Events::EventDispatcher::AddListener<Events::Input::ControllerEvent>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnButtonPressed>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnButtonPressedSingle>(this);
 		Events::EventDispatcher::AddListener<Events::Input::OnButtonReleased>(this);
@@ -538,6 +536,8 @@ namespace Firelight
 			return "RIGHT";
 		case Keys::KEY_DOWN_ARROW:
 			return "DOWN";
+		case Keys::KEY_SPACE:
+			return "SPACE";
 		}
 	}
 
@@ -689,6 +689,8 @@ namespace Firelight
 			return Keys::KEY_RIGHT_ARROW;
 		if (key == "DOWN")
 			return Keys::KEY_DOWN_ARROW;
+		if (key == "SPACE")
+			return Keys::KEY_SPACE;
 
 		return Keys::KEY_A;
 	}
@@ -1070,6 +1072,7 @@ namespace Firelight
 		m_keyMap[Keys::KEY_DELETE] = 46;
 		m_keyMap[Keys::KEY_HOME] = 36;
 		m_keyMap[Keys::KEY_END] = 35;
+		m_keyMap[Keys::KEY_SPACE] = 32;
 		m_keyMap[Keys::KEY_PAGE_UP] = 33;
 		m_keyMap[Keys::KEY_PAGE_DOWN] = 34;
 		m_keyMap[Keys::KEY_PRINT_SCREEN] = 44;
@@ -1169,6 +1172,7 @@ namespace Firelight
 		m_charMap[46] = Keys::KEY_DELETE;				
 		m_charMap[36] = Keys::KEY_HOME;					
 		m_charMap[35] = Keys::KEY_END;					
+		m_charMap[32] = Keys::KEY_SPACE;				
 		m_charMap[33] = Keys::KEY_PAGE_UP;				
 		m_charMap[34] = Keys::KEY_PAGE_DOWN;			
 		m_charMap[44] = Keys::KEY_PRINT_SCREEN;			

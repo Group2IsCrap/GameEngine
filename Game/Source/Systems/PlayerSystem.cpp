@@ -51,6 +51,8 @@ PlayerSystem::PlayerSystem()
 	m_releaseAttackIndex = EventDispatcher::SubscribeFunction<ReleaseAttackEvent>(std::bind(&PlayerSystem::StopAttack, this));
 	m_respawnIndex = EventDispatcher::SubscribeFunction<RespawnEvent>(std::bind(&PlayerSystem::Respawn, this));
 	m_changeWeaponIndex = EventDispatcher::SubscribeFunction<Firelight::Events::PlayerEvents::ChangeWeapon>(std::bind(&PlayerSystem::SwitchWeapon, this));
+	m_changeHatIndex = EventDispatcher::SubscribeFunction<Firelight::Events::PlayerEvents::ChangeHat>(std::bind(&PlayerSystem::SwitchHat, this));
+	m_changeArmourIndex = EventDispatcher::SubscribeFunction<Firelight::Events::PlayerEvents::ChangeArmour>(std::bind(&PlayerSystem::SwitchArmour, this));
 
 	Firelight::Events::EventDispatcher::SubscribeFunction<ShowDebugEvent>(std::bind(&PlayerSystem::ToggleDebug, this));
 	
@@ -70,7 +72,6 @@ PlayerSystem::PlayerSystem()
 	fists->Cooldown = 1.0f;
 	fists->HarvestType = Firelight::ECS::e_HarvestType(0);
 	fists->HarvestDamage = 1.0f;
-
 }
 
 PlayerSystem::~PlayerSystem()
@@ -169,6 +170,13 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 		{
 			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
+
+		if (BiomeGeneration::Instance()->IsInVoid(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f)))
+		{
+			//m_playerEntity->GetRigidBodyComponent()->velocity.x = -m_playerEntity->GetRigidBodyComponent()->velocity.x + 0.2;
+			//m_playerEntity->GetRigidBodyComponent()->velocity.y = -m_playerEntity->GetRigidBodyComponent()->velocity.y +0.2;
+		}
+		BiomeGeneration::Instance()->CheckCurrentPlayerBiomeType(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f));
 	}
 }
 
@@ -365,6 +373,69 @@ void PlayerSystem::AddHealth(void* amount)
 	m_playerEntity->AddHealth(amountAdd);
 }
 
+void PlayerSystem::SwitchHat()
+{
+	PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
+
+	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Head");
+	ArmourComponent* armourComponent = nullptr;
+	//EntityID id2 = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Body");
+
+	ArmourComponent* armour = nullptr;
+
+	if (id != UINT16_MAX)
+	{
+		Entity activeHat = Entity(id);
+		armour = activeHat.GetComponent<ArmourComponent>();
+		if (playerComponent->hat == nullptr)
+		{
+			SpriteEntity* hat = new SpriteEntity();
+			playerComponent->hat = hat;
+			playerComponent->hatSocket->GetComponent<TransformComponent>()->AddChild(playerComponent->hat);
+		}
+
+		SpriteComponent* hatSpriteComponent = playerComponent->hat->GetComponent<SpriteComponent>();
+		hatSpriteComponent->texture = activeHat.GetComponent<SpriteComponent>()->texture;
+		hatSpriteComponent->layer = static_cast<int>(RenderLayer::Player) + 1;
+		hatSpriteComponent->pixelsPerUnit = activeHat.GetComponent<SpriteComponent>()->pixelsPerUnit;
+		hatSpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255, 255, 255, 255);
+
+		playerComponent->hat->GetComponent<TransformComponent>()->SetPosition(playerComponent->hatSocket->GetComponent<TransformComponent>()->GetPosition());
+		playerComponent->hat->GetComponent<TransformComponent>()->FlipX(playerComponent->hatSocket->GetComponent<TransformComponent>()->GetFlipped(), false);
+	}
+}
+
+void PlayerSystem::SwitchArmour()
+{
+	PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
+
+	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Body");
+	ArmourComponent* armourComponent = nullptr;
+
+	ArmourComponent* armour = nullptr;
+
+	if (id != UINT16_MAX)
+	{
+		Entity activeArmour = Entity(id);
+		armour = activeArmour.GetComponent<ArmourComponent>();
+		if (playerComponent->body == nullptr)
+		{
+			SpriteEntity* body = new SpriteEntity();
+			playerComponent->body = body;
+			playerComponent->bodySocket->GetComponent<TransformComponent>()->AddChild(playerComponent->body);
+		}
+
+		SpriteComponent* bodySpriteComponent = playerComponent->body->GetComponent<SpriteComponent>();
+		bodySpriteComponent->texture = activeArmour.GetComponent<SpriteComponent>()->texture;
+		bodySpriteComponent->layer = static_cast<int>(RenderLayer::Player) + 1;
+		bodySpriteComponent->pixelsPerUnit = activeArmour.GetComponent<SpriteComponent>()->pixelsPerUnit;
+		bodySpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255, 255, 255, 255);
+
+		playerComponent->body->GetComponent<TransformComponent>()->SetPosition(playerComponent->bodySocket->GetComponent<TransformComponent>()->GetPosition());
+		playerComponent->body->GetComponent<TransformComponent>()->FlipX(playerComponent->bodySocket->GetComponent<TransformComponent>()->GetFlipped(), false);
+	}
+}
+
 void PlayerSystem::SwitchWeapon()
 {
 	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Weapon");
@@ -386,6 +457,7 @@ void PlayerSystem::SwitchWeapon()
 
 			SpriteComponent* weaponSpriteComponent = playerComponent->weapon->GetComponent<SpriteComponent>();
 			weaponSpriteComponent->texture = activeWeapon.GetComponent<SpriteComponent>()->texture;
+			weaponSpriteComponent->layer = static_cast<int>(RenderLayer::Player) + 2;
 			weaponSpriteComponent->pixelsPerUnit = activeWeapon.GetComponent<SpriteComponent>()->pixelsPerUnit;
 			weaponSpriteComponent->colour = Firelight::Graphics::Colour::RGBA(255, 255, 255, 255);
 

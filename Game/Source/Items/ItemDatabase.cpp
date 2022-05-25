@@ -72,7 +72,15 @@ void ItemDatabase::LoadItems(std::string filepath)
 
 		SpriteComponent* spriteComponent = itemTemplate->GetComponent<SpriteComponent>();
 		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(itemComponent->iconPath);
-		spriteComponent->pixelsPerUnit = 50;
+		if (itemData[i][6] != "0")
+		{
+			spriteComponent->pixelsPerUnit = std::stof(itemData[i][6]);
+		}
+		else
+		{
+			spriteComponent->pixelsPerUnit = 50;
+		}
+		
 		spriteComponent->layer = static_cast<int>(RenderLayer::Items);
 
 		itemTemplate->GetComponent<StaticComponent>()->isStatic = false;

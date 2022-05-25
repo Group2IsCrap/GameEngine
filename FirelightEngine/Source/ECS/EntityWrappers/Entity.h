@@ -107,6 +107,7 @@ namespace Firelight::ECS
 		EntityID GetEntityID();
 		Signature GetSignature();
 		void PlayAudioClip();
+		void StopAudio();
 	private:
 		Entity(const Entity&) = delete;
 		Entity& operator=(const Entity&) = delete;

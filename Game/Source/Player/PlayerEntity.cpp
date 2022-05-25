@@ -27,16 +27,19 @@ PlayerEntity::PlayerEntity()
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
 
 	GameEntity* weaponSocket = new GameEntity();
-	weaponSocket->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
+	weaponSocket->GetTransformComponent()->SetPosition({ 0.825f, -0.225f, 0.0f });
 	GetTransformComponent()->AddChild(weaponSocket);
 	GetComponent<PlayerComponent>()->weaponSocket = weaponSocket;
 
-	SpriteEntity* hat = new SpriteEntity();
-	hat->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Items/Armor/LeatherHat.png");
-	hat->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
-	hat->GetSpriteComponent()->pixelsPerUnit *= 3;
-	hat->GetTransformComponent()->SetPosition({ 0.0f, 1.0f, 0.0f });
-	GetTransformComponent()->AddChild(hat);
+	GameEntity* hatSocket = new GameEntity();
+	hatSocket->GetTransformComponent()->SetPosition({ -0.05f, 0.25f, 0.0f });
+	GetTransformComponent()->AddChild(hatSocket);
+	GetComponent<PlayerComponent>()->hatSocket = hatSocket;
+
+	GameEntity* bodySocket = new GameEntity();
+	bodySocket->GetTransformComponent()->SetPosition({ -0.025f, -0.70f, 0.0f });
+	GetTransformComponent()->AddChild(bodySocket);
+	GetComponent<PlayerComponent>()->bodySocket = bodySocket;
 
 	AudioComponent* audioComponent = new AudioComponent();
 	AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
@@ -100,8 +103,18 @@ void PlayerEntity::RemoveHealth(int amount)
 
 	audioComponent->soundPos = Vector3D(this->GetTransformComponent()->GetPosition().x, this->GetTransformComponent()->GetPosition().y, this->GetTransformComponent()->GetPosition().z);
 
+	int damage = 0;
+
 	this->PlayAudioClip();
-	CharacterEntity::RemoveHealth(amount-reduction);
+	if ((amount - reduction) <= 1)
+	{
+		damage = 1;
+	}
+	else
+	{
+		damage = amount - reduction;
+	}
+	CharacterEntity::RemoveHealth(damage);
 	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)GetHealth());
 }
 
