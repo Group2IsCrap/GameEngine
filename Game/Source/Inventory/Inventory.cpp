@@ -556,6 +556,12 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
 					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
 				}
+				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Helm") != specialSlot->tags.end()) {
+					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeHat::sm_descriptor);
+				}
+				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Chest") != specialSlot->tags.end()) {
+					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeArmour::sm_descriptor);
+				}
 			}
 
 

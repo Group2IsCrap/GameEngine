@@ -79,7 +79,9 @@ void TogglePause()
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(40);
+	ItemDatabase::Instance()->CreateInstanceOfItem(31);
+	ItemDatabase::Instance()->CreateInstanceOfItem(33);
+	ItemDatabase::Instance()->CreateInstanceOfItem(43);
 	
 }
 

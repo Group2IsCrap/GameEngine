@@ -24,6 +24,8 @@ public:
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	void SwitchWeapon();
+	void SwitchHat();
+	void SwitchArmour();
 	void ToggleDebug();
 	void AddHealth(void* amount);
 private:
@@ -74,6 +76,8 @@ private:
 	size_t m_removeHealthEventIndex;
 	size_t m_addHealthEventIndex;
 	size_t m_changeWeaponIndex;
+	size_t m_changeHatIndex;
+	size_t m_changeArmourIndex;
 
 	Firelight::Maths::Vec3f m_velocity;
 	PlayerEntity* m_playerEntity;

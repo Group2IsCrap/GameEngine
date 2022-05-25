@@ -25,6 +25,8 @@ struct PlayerComponent : Firelight::ECS::BaseComponent
 	Entity* weaponSocket;
 	Entity* hatSocket;
 	Entity* hat;
+	Entity* bodySocket;
+	Entity* body;
 
 	void Serialise() override
 	{

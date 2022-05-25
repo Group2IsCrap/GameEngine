@@ -1,56 +1,56 @@
-﻿ItemID,ItemName,ItemDescription,IconPath,StackSize,Tags
-0,Rock,It's a stone,Sprites/Items/Rock_Item.png,30,Ingredient
-1,Stick, A piece of a tree,Sprites/Items/Sticks.png,30,Ingredient
-2,Leather,Skin of an animal,Sprites/Items/LeatherSmall_Stack.png,10,Ingredient
-3,Wood,Tastes like plant,Sprites/Items/wood_1.png,10,Ingredient
-4,Planks,Refined Wood,Sprites/Items/wood_2_stack.png,20,Ingredient
-5,Fibre,,Sprites/Items/fiber.png,30,Ingredient
-6,Fur,,Sprites/Items/Fur.png,30,Ingredient
-7,Shell ,,Sprites/Items/shell.png,5,Ingredient
-8,Feather ,,Sprites/Items/Feather.png,30,Ingredient
-9,Scales ,,Sprites/Items/Scale.png,25,Ingredient
-10,Metal Scrap ,,Sprites/Items/Metal_Scrap.png,20,Ingredient
-11,Infused Wood ,,Sprites/Items/Infused_Wood.png,20,Ingredient
-12,Crocodile Teeth ,,Sprites/Items/Croc_Tooth.png,30,Ingredient
-13,Frog Saliva ,,Sprites/Items/Frog_Saliva.png,5,Ingredient
-14,Frog Eye ,,Sprites/Items/Frog_eye.png,30,Ingredient
-15,Bug Wings ,,Sprites/Items/bug_wing.png,30,Ingredient
-16,Slime Clump ,,Sprites/Items/Feather.png,30,Ingredient
-17,Tongue,,Sprites/Items/Tongue.png,30,Ingredient
-18,Stinger,,Sprites/Items/Feather.png,30,Ingredient
-19,Poison,,Sprites/Items/Feather.png,30,Ingredient
-20,Bone,,Sprites/Items/Feather.png,30,Ingredient
-21,Potions 1,,Sprites/Items/Potion_Blue_V1.png,5,Food;Potions
-22,Potions 2,,Sprites/Items/Potion_Blue_V2.png,5,Food;Potions
-23,Potions 3,,Sprites/Items/Potion_Green_V1.png,5,Food;Potions
-24,Potions 4,,Sprites/Items/Potion_Green_V2.png,5,Food;Potions
-25,Potions 5,,Sprites/Items/Potion_Red_V1.png,5,Food;Potions
-26,Potions 6,,Sprites/Items/Potion_Red_V2.png,5,Food;Potions
-27,Bag 1,,Sprites/Items/Feather.png,1,Bag
-28,Bag 2,,Sprites/Items/Feather.png,1,Bag
-29,Bag 3,,Sprites/Items/Feather.png,1,Bag
-30,Bag 4,,Sprites/Items/Feather.png,1,Bag
-31,Metal  Chest,,Sprites/Items/Feather.png,1,Armor;Chest
-32,Metal  Legs,,Sprites/Items/Feather.png,1,Armor;Legs
-33,Metal  Helm,,Sprites/Items/Feather.png,1,Armor;Helm
-34,Scale   Chest,,Sprites/Items/Feather.png,1,Armor;Chest
-35,Scale   Legs,,Sprites/Items/Feather.png,1,Armor;Legs
-36,Scale   Helm,,Sprites/Items/Feather.png,1,Armor;Helm
-37,Stone Pickaxe,,Sprites/Weapon/Stone_Pickaxe.png,1,Weapon;Pickaxe
-38,Metal Pickaxe,,Sprites/Weapon/Metal_Pickaxe.png,1,Weapon;Pickaxe
-39,Infused Pickaxe,,Sprites/Weapon/Infused_Pickaxe.png,1,Weapon;Pickaxe
-40,Stone Axe,,Sprites/Weapon/Stone_Axe.png,1,Weapon;Axe
-41,Metal Axe,,Sprites/Weapon/Metal_Axe.png,1,Weapon;Axe
-42,Infused Axe,,Sprites/Weapon/Infused_Axe.png,1,Weapon;Axe
-43,Stone_Sword,,Sprites/Weapon/Stone_Sword.png,1,Weapon
-44,Metal_Sword,,Sprites/Weapon/Metal_Sword.png,1,Weapon
-45,Croc_Sword,,Sprites/Weapon/Croc_Sword.png,1,Weapon
-46,sword4,,Sprites/Items/Feather.png,1,Weapon
-47,Berry,,Sprites/Items/Feather.png,5,Food
-48,Meat ,,Sprites/Items/Feather.png,5,Food
-49,combo 1,,Sprites/Items/Feather.png,5,Food
-50,combo 2,,Sprites/Items/Feather.png,5,Food
-51,combo 3,,Sprites/Items/Feather.png,5,Food
-52,combo 4,,Sprites/Items/Feather.png,5,Food
-53,combo 5,,Sprites/Items/Feather.png,5,Food
-54,combo 6,,Sprites/Items/Feather.png,5,Food
+﻿ItemID,ItemName,ItemDescription,IconPath,StackSize,Tags,PixelsPerUnit
+0,Rock,It's a stone,Sprites/Items/Rock_Item.png,30,Ingredient,0
+1,Stick, A piece of a tree,Sprites/Items/Sticks.png,30,Ingredient,0
+2,Leather,Skin of an animal,Sprites/Items/LeatherSmall_Stack.png,10,Ingredient,0
+3,Wood,Tastes like plant,Sprites/Items/wood_1.png,10,Ingredient,0
+4,Planks,Refined Wood,Sprites/Items/wood_2_stack.png,20,Ingredient,0
+5,Fibre,,Sprites/Items/fiber.png,30,Ingredient,0
+6,Fur,,Sprites/Items/Fur.png,30,Ingredient,0
+7,Shell ,,Sprites/Items/shell.png,5,Ingredient,0
+8,Feather ,,Sprites/Items/Feather.png,30,Ingredient,0
+9,Scales ,,Sprites/Items/Scale.png,25,Ingredient,0
+10,Metal Scrap ,,Sprites/Items/Metal_Scrap.png,20,Ingredient,0
+11,Infused Wood ,,Sprites/Items/Infused_Wood.png,20,Ingredient,0
+12,Crocodile Teeth ,,Sprites/Items/Croc_Tooth.png,30,Ingredient,0
+13,Frog Saliva ,,Sprites/Items/Frog_Saliva.png,5,Ingredient,0
+14,Frog Eye ,,Sprites/Items/Frog_eye.png,30,Ingredient,0
+15,Bug Wings ,,Sprites/Items/bug_wing.png,30,Ingredient,0
+16,Slime Clump ,,Sprites/Items/Feather.png,30,Ingredient,0
+17,Tongue,,Sprites/Items/Tongue.png,30,Ingredient,0
+18,Stinger,,Sprites/Items/Feather.png,30,Ingredient,0
+19,Poison,,Sprites/Items/Feather.png,30,Ingredient,0
+20,Bone,,Sprites/Items/Feather.png,30,Ingredient,0
+21,Potions 1,,Sprites/Items/Potion_Blue_V1.png,5,Food;Potions,0
+22,Potions 2,,Sprites/Items/Potion_Blue_V2.png,5,Food;Potions,0
+23,Potions 3,,Sprites/Items/Potion_Green_V1.png,5,Food;Potions,0
+24,Potions 4,,Sprites/Items/Potion_Green_V2.png,5,Food;Potions,0
+25,Potions 5,,Sprites/Items/Potion_Red_V1.png,5,Food;Potions,0
+26,Potions 6,,Sprites/Items/Potion_Red_V2.png,5,Food;Potions,0
+27,Bag 1,,Sprites/Items/Feather.png,1,Bag,0
+28,Bag 2,,Sprites/Items/Feather.png,1,Bag,0
+29,Bag 3,,Sprites/Items/Feather.png,1,Bag,0
+30,Bag 4,,Sprites/Items/Feather.png,1,Bag,0
+31,Metal  Chest,,Sprites/Items/Armor/Metal-Armour.png,1,Armor;Chest,175
+32,Metal  Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
+33,Metal  Helm,,Sprites/Items/Armor/Metal-Helmet.png,1,Armor;Helm,130
+34,Scale   Chest,,Sprites/Items/Feather.png,1,Armor;Chest,0
+35,Scale   Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
+36,Scale   Helm,,Sprites/Items/Feather.png,1,Armor;Helm,0
+37,Stone Pickaxe,,Sprites/Weapons/StonePickaxe.png,1,Weapon;Pickaxe,130
+38,Metal Pickaxe,,Sprites/Weapon/Metal_Pickaxe.png,1,Weapon;Pickaxe,0
+39,Infused Pickaxe,,Sprites/Weapon/Infused_Pickaxe.png,1,Weapon;Pickaxe,0
+40,Stone Axe,,Sprites/Weapons/StoneAxe.png,1,Weapon;Axe,130
+41,Metal Axe,,Sprites/Weapon/Metal_Axe.png,1,Weapon;Axe,0
+42,Infused Axe,,Sprites/Weapon/Infused_Axe.png,1,Weapon;Axe,0
+43,Stone_Sword,,Sprites/Weapons/StoneSword.png,1,Weapon,130
+44,Metal_Sword,,Sprites/Weapon/Metal_Sword.png,1,Weapon,0
+45,Croc_Sword,,Sprites/Weapon/Croc_Sword.png,1,Weapon,0
+46,sword4,,Sprites/Items/Feather.png,1,Weapon,0
+47,Berry,,Sprites/Items/Feather.png,5,Food,0
+48,Meat ,,Sprites/Items/Feather.png,5,Food,0
+49,combo 1,,Sprites/Items/Feather.png,5,Food,0
+50,combo 2,,Sprites/Items/Feather.png,5,Food,0
+51,combo 3,,Sprites/Items/Feather.png,5,Food,0
+52,combo 4,,Sprites/Items/Feather.png,5,Food,0
+53,combo 5,,Sprites/Items/Feather.png,5,Food,0
+54,combo 6,,Sprites/Items/Feather.png,5,Food,0

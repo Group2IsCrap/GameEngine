@@ -27,21 +27,19 @@ PlayerEntity::PlayerEntity()
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
 
 	GameEntity* weaponSocket = new GameEntity();
-	weaponSocket->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
+	weaponSocket->GetTransformComponent()->SetPosition({ 0.825f, -0.225f, 0.0f });
 	GetTransformComponent()->AddChild(weaponSocket);
 	GetComponent<PlayerComponent>()->weaponSocket = weaponSocket;
 
 	GameEntity* hatSocket = new GameEntity();
-	hatSocket->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
+	hatSocket->GetTransformComponent()->SetPosition({ -0.05f, 0.25f, 0.0f });
 	GetTransformComponent()->AddChild(hatSocket);
 	GetComponent<PlayerComponent>()->hatSocket = hatSocket;
 
-	SpriteEntity* hat = new SpriteEntity();
-	hat->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Items/Armor/LeatherHat.png");
-	hat->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
-	hat->GetSpriteComponent()->pixelsPerUnit *= 3;
-	hat->GetTransformComponent()->SetPosition({ 0.0f, 1.0f, 0.0f });
-	GetTransformComponent()->AddChild(hat);
+	GameEntity* bodySocket = new GameEntity();
+	bodySocket->GetTransformComponent()->SetPosition({ -0.025f, -0.70f, 0.0f });
+	GetTransformComponent()->AddChild(bodySocket);
+	GetComponent<PlayerComponent>()->bodySocket = bodySocket;
 
 	AudioComponent* audioComponent = new AudioComponent();
 	AddComponent<Firelight::ECS::AudioComponent>(audioComponent);
@@ -108,7 +106,7 @@ void PlayerEntity::RemoveHealth(int amount)
 	int damage = 0;
 
 	this->PlayAudioClip();
-	if (reduction >= amount)
+	if ((amount - reduction) <= 1)
 	{
 		damage = 1;
 	}
@@ -116,7 +114,7 @@ void PlayerEntity::RemoveHealth(int amount)
 	{
 		damage = amount - reduction;
 	}
-	CharacterEntity::RemoveHealth(amount-reduction);
+	CharacterEntity::RemoveHealth(damage);
 	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)GetHealth());
 }
 
