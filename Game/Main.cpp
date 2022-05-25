@@ -115,6 +115,8 @@ void SetupEnemySpawner()
 	spawnerComponent->enemyName = "Crocodile";
 	spawnerComponent->respawnCooldown = 3;
 	crocodileSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+
+	crocodileSpawner->GetTransformComponent()->SetPosition(Vec3f(50.0f, 0.0f, 0.0f));
 }
 
 void SetupResourceSpawner()

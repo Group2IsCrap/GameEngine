@@ -10,8 +10,8 @@ namespace Firelight::TileMap
     TileMap::TileMap()
         : m_tileHeight(1)
         , m_tileWidth(1)
-        , m_tileMapHeight(400)
-        , m_tileMapWidth(400)
+        , m_tileMapHeight(100)
+        , m_tileMapWidth(100)
         , m_tileDistance(1)
         , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_topRightTilePos(Maths::Vec2f(0.0f, 0.0f))
@@ -112,7 +112,7 @@ namespace Firelight::TileMap
                 }
             }
         }
-        m_emptyTilePtr->SetTileID(-1);
+        m_emptyTilePtr->SetTileID(0);
         return m_emptyTilePtr;
     }
 
@@ -123,7 +123,7 @@ namespace Firelight::TileMap
 
     void TileMap::SetBottomLeftTilePos(Firelight::Maths::Vec2f position)
     {
-        m_bottomLeftTilePos = position;
+        m_bottomLeftTilePos = Firelight::Maths::Vec2f(-10, -10);// position;
 
         m_topRightTilePos.x = (m_bottomLeftTilePos.x + m_tileMapWidth) * m_tileWidth;
         m_topRightTilePos.y = (m_bottomLeftTilePos.y + m_tileMapHeight) * m_tileHeight;
