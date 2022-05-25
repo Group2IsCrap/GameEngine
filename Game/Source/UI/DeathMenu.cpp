@@ -72,16 +72,6 @@ DeathMenu::DeathMenu(Firelight::ECS::Entity* canvas)
 	respawnText->layer = 100000;
 	m_UIEntities.push_back(respawnButton);
 
-
-	//// TODO : Draw text on top of UI? Text should really be part of UI system so that it also scales
-	//m_text = new GameEntity("YouDied Text");
-	//TextComponent* textComponent = m_text->AddComponent<TextComponent>(new TextComponent());
-	//textComponent->text.SetString("You Died!");
-	//textComponent->text.SetTextHeight(150.0f);
-	//textComponent->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-	//textComponent->layer = 100000;
-	//m_text->GetComponent<TransformComponent>()->SetPosition(Maths::Vec3f(640.0f, 150.0f, 0.0f));
-
 	SetAnchorSettings(Firelight::ECS::e_AnchorSettings::Center);
 	OpenMenu(false);
 }
@@ -109,32 +99,6 @@ void DeathMenu::OpenMenu(bool opened)
 	}
 
 	EventDispatcher::InvokeFunctions<UI::UpdateUIEvent>();
-
-	//GetSpriteComponent()->toDraw = opened;
-	//m_respawnBtn->GetSpriteComponent()->toDraw = opened;
-
-	//if (opened)
-	//{
-	//	// TODO : Draw text on top of UI? Text should really be part of UI system so that it also scales
-	//	m_text->AddComponent<TextComponent>(new TextComponent());
-	//	TextComponent* textC = m_text->GetComponent<TextComponent>();
-	//	textC->text.SetString("You Died!");
-	//	textC->text.SetTextHeight(150.0f);
-	//	textC->text.SetTextAnchor(Graphics::TextAnchor::e_MidMid);
-	//	textC->layer = 100000;
-	//	m_text->GetComponent<TransformComponent>()->SetPosition(Maths::Vec3f(640.0f, 150.0f, 0.0f));
-	//}
-	//else
-	//{
-	//	if (m_text->HasComponent<TextComponent>())
-	//	{
-	//		m_text->RemoveComponent<TextComponent>();
-	//		return;
-	//	}
-	//}
-
-	//m_text->GetComponent<TextComponent>()->hidden = !opened;
-
 }
 
 void DeathMenu::Respawn()
