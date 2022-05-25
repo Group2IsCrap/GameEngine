@@ -4,7 +4,6 @@
 #include "../FirelightEngine/Source/Graphics/AssetManager.h"
 #include "../FirelightEngine/Source/Graphics/SpriteBatch.h"
 #include <../FirelightEngine/Source/Events/EventDispatcher.h>
-#include <../FirelightEngine/Source/Maths/Random.h>
 #include "PCGEvents.h"
 
 using namespace Firelight::Events;
@@ -17,15 +16,10 @@ BiomeGeneration::BiomeGeneration()
 	, m_islandShapeNoise(nullptr)
 	, m_biomeInfo(nullptr)
 	, m_tileMap(nullptr)
-	, m_walkableBoxZones()
-	, m_islandCentres()
-	, m_OccupiedIslandSpaces()
-	, m_initialCentre(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 	, m_biomeCount((unsigned int)BiomeType::Bridge)
 	, m_bridgeWidth(2)
 	, m_bridgeLength(3)
 	, m_islandRadii(15)
-	, m_seed(0)
 	, m_numberOfIslands(6)
 	, m_playerWasOnBridge(false)
 	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
@@ -44,25 +38,23 @@ BiomeGeneration* BiomeGeneration::Instance()
 
 void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo)
 {
-	m_seed = Firelight::Maths::Random::RandomRange(100, 2000);
-
 	m_tileMap = tileMap;
 	m_biomeInfo = biomeInfo;
 
-	sm_biomeTextures = { AssetManager::Instance().GetTexture("Sprites/Terrain/water.png"),
-					   AssetManager::Instance().GetTexture("Sprites/Terrain/grass.png"),
-					   AssetManager::Instance().GetTexture("Sprites/Terrain/swamp.png"),
-					   AssetManager::Instance().GetTexture("Sprites/Terrain/snow.png"),
+	sm_biomeTextures = { AssetManager::Instance().GetTexture("Sprites/grassTexture.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/green.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/brown.png"),
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/white.png"),
 					   AssetManager::Instance().GetTexture("$ENGINE/Textures/tempbridgge.png"),
-					   AssetManager::Instance().GetTexture("Sprites/Terrain/bridge.png") };
+					   AssetManager::Instance().GetTexture("$ENGINE/Textures/bridge1.png") };
 
 	m_biomeNoise = new Noise();
-	m_biomeNoise->SetSeed(m_seed);
+	m_biomeNoise->SetSeed(3007);
 	m_biomeNoise->SetNoiseScale(250.0f);
 	m_biomeNoise->CreateNoise();
 
 	m_islandDirectionNoise = new Noise();
-	m_islandDirectionNoise->SetSeed(m_seed);
+	m_islandDirectionNoise->SetSeed(3007);
 	m_islandDirectionNoise->SetNoiseScale(250.0f);
 	m_islandDirectionNoise->CreateNoise();
 
@@ -87,18 +79,13 @@ unsigned int BiomeGeneration::CalculateRandomIslandIndex()
 void BiomeGeneration::GenerateWorld()
 {
 	Rectf destinationRect = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
-	Rectf curIslandCentre = m_initialCentre;
+	Rectf centre = Rectf(10.0f, 10.0f, 1.0f, 1.0f);
+	Rectf curIslandCentre = centre;
 
 	//for each island
 	Rectf newDestRect = Rectf(0.0f, 0.0f, 1.0f, 1.0f);
 	int iterator = 0;
-	DrawFirstIsland(newDestRect, curIslandCentre, 0);
-	m_islandCentres.emplace_back(curIslandCentre);
 	IslandSpawnDirection direction = CalculateNextIslandDirection(iterator);
-	int randomIndex = CalculateRandomIslandIndex();
-	curIslandCentre.x = (float)m_OccupiedIslandSpaces[randomIndex].x;
-	curIslandCentre.y = (float)m_OccupiedIslandSpaces[randomIndex].y;
-	FindNextIslandCentre(curIslandCentre, direction, destinationRect, iterator);
 
 	for (size_t index = 0; index < m_numberOfIslands; ++index)
 	{
@@ -117,47 +104,6 @@ void BiomeGeneration::GenerateWorld()
 	}
 
 	m_OccupiedIslandSpaces.clear();
-}
-
-void BiomeGeneration::DrawFirstIsland(Rectf& destRect, const Rectf currentIslandCentre, int index)
-{
-	m_OccupiedIslandSpaces.push_back(Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y));
-
-	for (int x = -m_islandRadii; x <= m_islandRadii; ++x)
-	{
-		for (int y = -m_islandRadii; y <= m_islandRadii; ++y)
-		{
-			destRect = Rectf(currentIslandCentre.x + x, currentIslandCentre.y + y, 1.0f, 1.0f);
-			if (Vec2i::Dist(Vec2i((int)destRect.x, (int)destRect.y), Vec2i((int)currentIslandCentre.x, (int)currentIslandCentre.y)) <= m_islandRadii)
-			{
-				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
-				if (tile != nullptr)
-				{
-					m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
-					tile->SetTileTexture(sm_biomeTextures[(int)BiomeType::Forest]);
-					tile->SetIsDrawn(true);
-				}
-			}
-			else
-			{
-				// This is adding variety to the island outlines
-				unsigned int numberOfExtraTiles = CalculateIslandShape(rand() + index);
-				for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
-				{
-					int extraX = x + i;
-					int extraY = y + i;
-					destRect = Firelight::Maths::Rectf(currentIslandCentre.x + extraX, currentIslandCentre.y + extraY, 1.0f, 1.0f);
-					Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
-					if (tile != nullptr)
-					{
-						m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
-						tile->SetTileTexture(sm_biomeTextures[(int)BiomeType::Forest]);
-						tile->SetIsDrawn(true);
-					}
-				}
-			}
-		}
-	}
 }
 
 void BiomeGeneration::DrawIslandCircles(Rectf& destRect, const Rectf currentIslandCentre, int index)

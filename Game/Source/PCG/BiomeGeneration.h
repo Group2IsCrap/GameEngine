@@ -41,7 +41,6 @@ public:
 
 private:
 
-	void DrawFirstIsland(Rectf& destRect, const Rectf currentIslandCentre, int index);
 	void DrawIslandCircles(Rectf& destRect, const Rectf currentIslandCentre, int index);
 	void DrawBridge(Rectf& destRect, Rectf currentIslandCentre, IslandSpawnDirection direction);
 
@@ -69,14 +68,11 @@ private:
 	std::vector<Rectf> m_islandCentres;
 
 	std::vector< Vec2i > m_OccupiedIslandSpaces;
-
-	Rectf m_initialCentre;
-
+	std::vector< Texture*> sm_biomeMap;
 	unsigned int m_biomeCount;
 	unsigned int m_bridgeWidth;
 	unsigned int m_bridgeLength;
 	int m_islandRadii;
-	int m_seed;
 	size_t m_numberOfIslands;
 	bool m_playerWasOnBridge;
 };
