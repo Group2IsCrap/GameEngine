@@ -3,7 +3,7 @@
 #include <Source/Input/GetInput.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
-#include <Source/Physics/PhysicsHelpers.h>
+#include <Source/Physics/PhysicsHelpers.h>s
 #include <Source/ImGuiUI/ImGuiManager.h>
 #include <Source/Graphics/Data/Colour.h>
 
@@ -19,6 +19,7 @@
 
 #include <Source/ECS/Systems/AnimationSystem.h>
 
+#include "../PCG/BiomeGeneration.h"
 #include"../Events/PlayerEvents.h"
 
 using namespace Firelight::Events;

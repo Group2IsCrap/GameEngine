@@ -12,6 +12,7 @@
 #include "Source/Systems/AISystem.h"
 #include "Source/Player/PlayerEntity.h"
 #include "Source/UI/PlayerHealthUI.h"
+#include "Source/Player/PlayerComponent.h"
 #include "Source/UI/MainMenuUI.h"
 #include "Source/UI/DeathMenu.h"
 #include "Source/Items/ItemDatabase.h"
@@ -40,6 +41,11 @@
 #include "Source/WorldEntities/EntitySpawnerSystem.h"
 #include "Source/Events/PlayerEvents.h"
 
+
+#include "Source/PCG/BiomeInfo.h"
+#include "Source/PCG/BiomeGeneration.h"
+#include "Source/PCG/EnvironmentGeneration.h"
+#include "Source/TileMap/TileMap.h"
 
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -84,6 +90,12 @@ void SpawnItem1()
 	ItemDatabase::Instance()->CreateInstanceOfItem(3);
 	ItemDatabase::Instance()->CreateInstanceOfItem(21);
 }
+
+void GenerateBiomeUI()
+{
+	//BiomeGeneration::Instance()->Render();
+}
+
 
 void SetupDebugUI()
 {
@@ -235,6 +247,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		// Player
 		player = new PlayerEntity();
 
+		// Grass
+		SpriteEntity* test2 = new SpriteEntity();
+		test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
+		test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
+		test2->GetSpriteComponent()->layer = 16;
+		
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemySpawner();
@@ -260,6 +278,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
 		//collider->drawCollider = true;
 		//collider->radius = 4.25f;
+
+		// Tilemap
+		Firelight::TileMap::TileMap* tileMap = new Firelight::TileMap::TileMap();
+		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-20.0f, -20.0f));
+		tileMap->UpdateTileMapPositions();
+
+		//Biome Generation
+		BiomeInfo* biomeInfo = new BiomeInfo();
+		BiomeGeneration::Instance()->Initialise(tileMap, biomeInfo);
+		BiomeGeneration::Instance()->GenerateWorld();
+
+		tileMap->Render();
+
+		//Resource PCG spawning
+		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
+		EnvironmentGeneration::Instance()->GenerateResources();
 
 		// UI
 		canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));

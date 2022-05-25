@@ -52,6 +52,6 @@ namespace Firelight::ECS
 		m_systems.push_back(std::make_unique<TextSystem>());
 		m_systems.push_back(std::make_unique<UI::UISystem>());
 		m_systems.push_back(std::make_unique<Firelight::Physics::PhysicsSystem>());
-		m_systems.push_back(std::make_unique<TilemapSystem>());
+		//m_systems.push_back(std::make_unique<TilemapSystem>());
 	}
 }

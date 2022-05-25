@@ -17,6 +17,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
     <ClCompile Include="Source\Combat\CombatCalculations.cpp" />
     <ClCompile Include="Source\Core\ResourceEntity.cpp" />
+    <ClCompile Include="Source\PCG\EnvironmentGeneration.cpp" />
     <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="Source\AI\Transitions\AITransitionBehaviour.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIAttackingBehaviour.cpp" />
     <ClInclude Include="Source\Core\ResourceEntity.h" />
+    <ClInclude Include="Source\PCG\EnvironmentGeneration.h" />
     <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
@@ -49,6 +51,8 @@
     <ClInclude Include="Source\Systems\AISystem.h" />
     <ClInclude Include="Source\CoreComponents\AIComponent.h" />
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
+    <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
+    <ClCompile Include="Source\PCG\Noise.cpp" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +88,9 @@
     <ClInclude Include="Source\AI\Transitions\AITransitionBehaviour.h" />
     <ClInclude Include="Source\AI\Behaviours\AIAttackingBehaviour.h" />
     <ClInclude Include="Source\UI\MainMenuUI.h" />
+    <ClInclude Include="Source\PCG\BiomeGeneration.h" />
+    <ClInclude Include="Source\PCG\Noise.h" />
+    <ClInclude Include="Source\PCG\BiomeInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Sprites\ObjectSprites\Tree.png" />

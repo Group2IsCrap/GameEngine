@@ -67,6 +67,14 @@ void ImGuiDebugLayer::RenderItemWindow()
 	{
 		spawnItemCommand[1]();
 	}
+	/// <summary>
+	/// PCG Testing
+	/// </summary>
+	if (ImGui::Button("Generate Biomes"))
+	{
+		spawnItemCommand[2]();
+	}
+
 	ImGui::End();
 }
 
