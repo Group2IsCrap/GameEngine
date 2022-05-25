@@ -18,14 +18,25 @@ public:
 private:
 	void SpawnTree(Vec3f position);
 	void SpawnRock(Vec3f position);
+	void SpawnBush(Vec3f position);
+	//void SpawnBerryBush(Vec3f position);
 
-	bool CanSpawnTreeFromNoise(int noiseIndex);
-	bool CanSpawnRockFromNoise(int noiseIndex);
+	void SpawnCroc(Vec3f position);
+	void SpawnDeer(Vec3f position);
+
+
+	bool CanSpawnFromNoise(int noiseIndex, float spawnChance);
 
 	static EnvironmentGeneration* sm_instance;
 
 	Noise* m_spawnRateNoise;
 	BiomeInfo* m_biomeInfo;
 	Firelight::TileMap::TileMap* m_tileMap;
+
+	float m_treeSpawnRate;
+	float m_rockSpawnRate;
+	float m_enemySpawnRate;
+	float m_bushSpawnRate;
+	float m_berryBushSpawnRate;
 };
 

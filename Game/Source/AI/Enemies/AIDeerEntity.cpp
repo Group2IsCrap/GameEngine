@@ -20,7 +20,7 @@ AIDeerEntity::AIDeerEntity(bool isTemplate, Firelight::ECS::EntityID entityID) :
 {
 	GetIDComponent()->name = "Deer";
 	GetSpriteComponent()->pixelsPerUnit = 50;
-	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/Deer.png");
 	GetRigidBodyComponent()->interpolate = true;
 	GetHealthComponent()->maxHealth = 3;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
