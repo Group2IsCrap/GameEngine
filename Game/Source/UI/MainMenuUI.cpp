@@ -93,6 +93,7 @@ void MainMenuUI::PlayFunction()
 {
 	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::TogglePauseEvent>();
 	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::PlayGameEvent>();
+	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::GameStartEvent>();
 	
 	playButton->PlayAudioClip();
 
