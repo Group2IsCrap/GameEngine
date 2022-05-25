@@ -31,6 +31,11 @@ PlayerEntity::PlayerEntity()
 	GetTransformComponent()->AddChild(weaponSocket);
 	GetComponent<PlayerComponent>()->weaponSocket = weaponSocket;
 
+	GameEntity* hatSocket = new GameEntity();
+	hatSocket->GetTransformComponent()->SetPosition({ 0.65f, -0.45f, 0.0f });
+	GetTransformComponent()->AddChild(hatSocket);
+	GetComponent<PlayerComponent>()->hatSocket = hatSocket;
+
 	SpriteEntity* hat = new SpriteEntity();
 	hat->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Items/Armor/LeatherHat.png");
 	hat->GetSpriteComponent()->layer = static_cast<int>(RenderLayer::Player) + 1;
@@ -100,7 +105,17 @@ void PlayerEntity::RemoveHealth(int amount)
 
 	audioComponent->soundPos = Vector3D(this->GetTransformComponent()->GetPosition().x, this->GetTransformComponent()->GetPosition().y, this->GetTransformComponent()->GetPosition().z);
 
+	int damage = 0;
+
 	this->PlayAudioClip();
+	if (reduction >= amount)
+	{
+		damage = 1;
+	}
+	else
+	{
+		damage = amount - reduction;
+	}
 	CharacterEntity::RemoveHealth(amount-reduction);
 	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)GetHealth());
 }

@@ -13,7 +13,8 @@ BackgroundMusicEntity::BackgroundMusicEntity()
 	audioComponent->is3d = false;
 	audioComponent->streaming = true;
 	audioComponent->channel = "Background";
-
+	audioComponent->soundName = "Forest Music.wav";
+	this->PlayAudioClip();
 	Firelight::Events::EventDispatcher::AddListener<Firelight::Events::PCGEvents::OnPlayerCrossBridge>(this);
 }
 
@@ -31,36 +32,42 @@ BackgroundMusicEntity::BackgroundMusicEntity(bool isTemplate, Firelight::ECS::En
 
 void BackgroundMusicEntity::HandleEvents(DescriptorType event, void* data)
 {
+	
 	BiomeMusicData biomeMusicData = *(reinterpret_cast<BiomeMusicData*>(data));
 
 	switch (biomeMusicData.biome)
 	{
 	case BiomeType::Forest:
-		audioComponent->soundName = "Forest Music.wav";
+		if (audioComponent->soundName == "Forest Music.wav")
+		{
+			isSame = true;
+		}
+		else
+		{
+			audioComponent->soundName = "Forest Music.wav";
+			isSame = false;
+		}
 		break;
 	case BiomeType::Swamp:
-		audioComponent->soundName = "Swamp Music.wav";
+		if (audioComponent->soundName == "Swamp Music.wav")
+		{
+			isSame = true;
+		}
+		else
+		{
+			audioComponent->soundName = "Swamp Music.wav";
+			isSame = false;
+		}
 		break;
 	case BiomeType::Snow:
 		break;
 	}
 
-	audioComponent->soundPos = biomeMusicData.playerPosition;
-	this->PlayAudioClip();
-}
-
-void BackgroundMusicEntity::ChangeMusic(int biome, Vector3D playerPos)
-{
-	if (biome == 0)
+	if (!isSame)
 	{
-		audioComponent->soundName = "Forest Music.wav";
-	}
-	if (biome == 1)
-	{
-		audioComponent->soundName = "Swamp Music.wav";
-	}
+		this->StopAudio();
 
-	audioComponent->soundPos = playerPos;
-
-	this->PlayAudioClip();
+		audioComponent->soundPos = biomeMusicData.playerPosition;
+		this->PlayAudioClip();
+	}
 }
