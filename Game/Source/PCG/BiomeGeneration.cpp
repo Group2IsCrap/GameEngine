@@ -13,8 +13,7 @@ using namespace Firelight::Events;
 unsigned int BiomeGeneration::sm_mapSeed = 1234;
 
 BiomeGeneration::BiomeGeneration()
-	: testPosition(Rectf(0.0f, 0.0f, 1.0f, 1.0f))
-	, m_biomeNoise(nullptr)
+	: m_biomeNoise(nullptr)
 	, m_islandDirectionNoise(nullptr)
 	, m_islandShapeNoise(nullptr)
 	, m_biomeInfo(nullptr)
@@ -23,16 +22,8 @@ BiomeGeneration::BiomeGeneration()
 	, m_bridgeWidth(2)
 	, m_bridgeLength(3)
 	, m_islandRadii(3)
+	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 {}
-
-void BiomeGeneration::Render()
-{
-	ImGui::Begin("Debug Info");
-
-	ImGui::Text("Is In Void: "); ImGui::SameLine();
-	ImGui::Text(std::to_string(IsInVoid(testPosition)).c_str());
-	ImGui::End();
-}
 
 BiomeGeneration* BiomeGeneration::sm_instance = nullptr;
 
@@ -137,7 +128,7 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, Rectf currentIslandCent
 			}
 			else
 			{
-				// This is adding variety to the island shapes
+				// This is adding variety to the island outlines
 				int numberOfExtraTiles = CalculateIslandShape(rand() + index);
 				for (unsigned int i = 0; i < numberOfExtraTiles; ++i)
 				{
@@ -218,10 +209,6 @@ void BiomeGeneration::FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpa
 
 void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf currentIslandCentre, IslandSpawnDirection direction)
 {
-	//dont need these two once tile map is used.
-	int m_layer = 32;
-	double m_rotation = 0.0;
-
 	switch (direction)
 	{
 		case IslandSpawnDirection::North:
@@ -395,7 +382,9 @@ bool BiomeGeneration::IsInVoid(Rectf position)
 
 	for (auto box : m_walkableBoxZones)
 	{
-		if (IsPositionBetweenTwoPoints(position, Vec2f(box.x, box.y), Vec2f(box.x + box.w + 1, box.y + box.h + 1)))
+		Vec2f position1 = Vec2f(box.x, box.y);
+		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
+		if (IsPositionBetweenTwoPoints(position, position1, position2))
 		{
 			return false;
 		}
@@ -408,7 +397,21 @@ bool BiomeGeneration::IsInVoid(Rectf position)
 			return false;
 		}
 	}
-	return true;
+	return false;
+}
+
+BiomeType BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
+{
+	for (auto box : m_walkableBoxZones)
+	{
+		Vec2f position1 = Vec2f(box.x, box.y);
+		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
+		if (IsPositionBetweenTwoPoints(playerPosition, position1, position2))
+		{
+			unsigned int tileID = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y))->GetTileID();
+			return m_biomeInfo->mapOfBiomesOnTileIDs[tileID];
+		}
+	}
 }
 
 void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal)
@@ -435,7 +438,7 @@ void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highest
 bool BiomeGeneration::IsPositionBetweenTwoPoints(Rectf position, Vec2f point1, Vec2f point2)
 {
 	if ((position.x >= point1.x) &&
-		(position.x <= point2.y) &&
+		(position.x <= point2.x) &&
 		(position.y >= point1.y) &&
 		(position.y <= point2.y))
 	{

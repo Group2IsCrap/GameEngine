@@ -28,8 +28,6 @@ class BiomeGeneration : public Firelight::ImGuiUI::ImGuiLayer
 public:
 	BiomeGeneration();
 
-	virtual void Render() override;
-
 	static BiomeGeneration* Instance();
 	void Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo);
 	void Uninitialise();
@@ -41,6 +39,8 @@ public:
 	Firelight::Maths::Rectf testPosition;
 
 	bool IsInVoid(Rectf position);
+	BiomeType CheckCurrentPlayerBiomeType(Rectf playerPosition);
+
 private:
 
 	void DrawIslandCircles(Rectf& destRect, Rectf currentIslandCentre, int index);

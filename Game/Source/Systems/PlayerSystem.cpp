@@ -139,8 +139,6 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 		{
 			playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * time.GetPhysicsTimeStep();
 		}
-		BiomeGeneration::Instance()->testPosition.x = playerEntity->GetRigidBodyComponent()->nextPos.x;
-		BiomeGeneration::Instance()->testPosition.y = playerEntity->GetRigidBodyComponent()->nextPos.y;
 	}
 }
 
