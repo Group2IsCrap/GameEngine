@@ -15,7 +15,7 @@
 13,Frog Saliva ,,Sprites/Items/Frog_Saliva.png,5,Ingredient,0
 14,Frog Eye ,,Sprites/Items/Frog_eye.png,30,Ingredient,0
 15,Bug Wings ,,Sprites/Items/bug_wing.png,30,Ingredient,0
-16,Slime Clump ,,Sprites/Items/Feather.png,30,Ingredient,0
+16,Slime Clump ,,Sprites/Items/Slime_Clump.png,30,Ingredient,0
 17,Tongue,,Sprites/Items/Tongue.png,30,Ingredient,0
 18,Stinger,,Sprites/Items/Feather.png,30,Ingredient,0
 19,Poison,,Sprites/Items/Feather.png,30,Ingredient,0
@@ -45,8 +45,8 @@
 43,Stone_Sword,,Sprites/Weapons/StoneSword.png,1,Weapon,130
 44,Metal_Sword,,Sprites/Weapon/Metal_Sword.png,1,Weapon,0
 45,Croc_Sword,,Sprites/Weapon/Croc_Sword.png,1,Weapon,0
-46,sword4,,Sprites/Items/Feather.png,1,Weapon,0
-47,Berry,,Sprites/Items/Feather.png,5,Food,0
+46,Infused Sword,,Sprites/Items/Feather.png,1,Weapon,0
+47,Berry,,Sprites/Items/Berry.png,5,Food,0
 48,Meat ,,Sprites/Items/Feather.png,5,Food,0
 49,combo 1,,Sprites/Items/Feather.png,5,Food,0
 50,combo 2,,Sprites/Items/Feather.png,5,Food,0
@@ -54,3 +54,7 @@
 52,combo 4,,Sprites/Items/Feather.png,5,Food,0
 53,combo 5,,Sprites/Items/Feather.png,5,Food,0
 54,combo 6,,Sprites/Items/Feather.png,5,Food,0
+55,Metal Ore,,Sprites/Items/Metal Ore.png,12,Ingredient,150
+56,Leather  Chest,,Sprites/Items/Armor/Leather-Armour.png,1,Armor;Chest,175
+57,Leather  Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
+58,Leather  Helm,,Sprites/Items/Armor/Leather-Helmet.png,1,Armor;Helm,160
