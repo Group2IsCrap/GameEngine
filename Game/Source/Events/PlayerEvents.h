@@ -7,4 +7,6 @@ namespace Firelight::Events::PlayerEvents
 	NEW_EVENT(OnPlayerHealthChangedEvent);
 	NEW_EVENT(OnPlayerDiedEvent);
 	NEW_EVENT(OnPlayerRespawnEvent);
+	NEW_EVENT(AddHealth);
+	NEW_EVENT(ChangeWeapon);
 }

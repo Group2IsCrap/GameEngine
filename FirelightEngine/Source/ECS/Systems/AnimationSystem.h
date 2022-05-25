@@ -26,6 +26,6 @@ namespace Firelight::ECS
 	private:
 		static AnimationSystem* sm_instance;
 
-		std::map<std::string, class Firelight::Animation::Animation*> m_animations;
+		std::map<std::string, Firelight::Animation::Animation*> m_animations;
 	};
 }

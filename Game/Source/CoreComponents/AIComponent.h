@@ -27,6 +27,7 @@ struct AIComponent : Firelight::ECS::BaseComponent
 {
 	AIType m_Type;
 	Entity* m_Target;
+	bool isDead;
 
 	float m_tintTime = 0.2f;
 	float m_tintTimer;

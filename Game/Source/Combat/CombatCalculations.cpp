@@ -4,7 +4,11 @@
 #include "../Core/AIEntity.h"
 #include "../Core/ResourceEntity.h"
 
-void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
+#include <Source/Maths/Random.h>
+
+Firelight::ECS::WeaponComponent* CombatCalculations::activeComponent = nullptr;
+
+void CombatCalculations::PlaceSphere(Facing dir, Vec3f point, PlayerEntity* m_player)
 {
     /*float directionalAngle = 0.0f;
     float weaponAngle;*/
@@ -38,7 +42,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
 
     for (int i = 0; i < layers.size(); i++)
     {
-        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(point + offset, radius, layers[i]);
+        std::vector<Firelight::ECS::Entity*> targets = PhysicsHelpers::OverlapCircle(point + offset, activeComponent->Radius, layers[i]);
         if (targets.empty())
         {
             continue;
@@ -50,15 +54,33 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point)
                 if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Resource))
                 {
                     ResourceEntity* resourceEntity = new ResourceEntity(target->GetEntityID());
-                    resourceEntity->RemoveHealth(1);
+                    if ((activeComponent->HarvestType == Firelight::ECS::e_HarvestType(0) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 0) ||
+                        (activeComponent->HarvestType == Firelight::ECS::e_HarvestType(1) && resourceEntity->GetComponent<ResourceComponent>()->resourceID == 1))
+                    {
+                        resourceEntity->RemoveHealth(static_cast<int>(activeComponent->HarvestDamage));
+                    }
+                    else
+                    {
+                        resourceEntity->RemoveHealth(1);
+                    }
                 }
                 else if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Enemy))
                 {
+                    m_player->GetComponent<AudioComponent>()->soundName = "Attack.wav";
+                    m_player->GetComponent<AudioComponent>()->soundPos = Vector3D(m_player->GetTransformComponent()->GetPosition().x, m_player->GetTransformComponent()->GetPosition().y, m_player->GetTransformComponent()->GetPosition().z);
+
+                    m_player->PlayAudioClip();
+
                     AIEntity* aiEntity = new AIEntity(target->GetEntityID());
-                    aiEntity->RemoveHealth(1);
+                    aiEntity->RemoveHealth(static_cast<int>(activeComponent->Damage));
                 }
             }
             break;
         }
     }
+}
+
+void CombatCalculations::ChangeWeapon(WeaponComponent* component)
+{
+    activeComponent = component;
 }

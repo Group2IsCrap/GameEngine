@@ -48,7 +48,7 @@
 //#include "Source/ECS/Components/TilemapComponent.h"
 #include "Source/TileMap/Tile.h"
 
-#include"Inventory/InventoryManager.h"
+#include"Inventory/InventorySystem.h"
 #include"Inventory/InventoryWrapper.h"
 using namespace Firelight;
 using namespace Firelight::ECS;
@@ -156,7 +156,7 @@ void CreatUITest() {
 
 
 }
-InventoryManager* invTestA;
+InventorySystem* invTestA;
 void SpawnItem0()
 {
 	invTestA->AddItem("PlayerInv", "MainIven",ItemDatabase::Instance()->CreateInstanceOfItem(0));
@@ -200,7 +200,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	{
 		// Register Systems
 		Firelight::Engine::Instance().GetSystemManager().RegisterGameSystem<PlayerSystem>();
-		Engine::Instance().GetSystemManager().RegisterGameSystem<InventoryManager>();
+		Engine::Instance().GetSystemManager().RegisterGameSystem<InventorySystem>();
 		// Player Character
 		float playerSpeed = 10.0f;
 		PlayerEntity* player = new PlayerEntity(playerSpeed);
@@ -218,7 +218,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		//SetupDebugUI();
 
-		//invTestA = new InventoryManager(s_uiCanvas);
+		//invTestA = new InventorySystem(s_uiCanvas);
 		//invTestA->CreatInventory("PlayerInv","MainIven",Maths::Vec2f(100, 720), Maths::Vec2f(3, 10), s_uiCanvas);
 
 		// Temporary text test

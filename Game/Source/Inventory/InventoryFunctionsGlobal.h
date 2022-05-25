@@ -132,7 +132,7 @@ namespace InventorySystem::GlobalFunctions {
         Firelight::ECS::EntityID returnData;
     };
 
-    inline Firelight::ECS::EntityID GetSpecilaSlotEntity(std::string group, std::string name, std::string slotName)
+    inline Firelight::ECS::EntityID GetSpecialSlotEntity(std::string group, std::string name, std::string slotName)
     {
         SpecialItemSlotData specialItemSlotData;
         specialItemSlotData.groupName = group;
@@ -161,6 +161,14 @@ namespace InventorySystem::GlobalFunctions {
         Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::RemoveInventory::sm_descriptor, &removeInvetoryData);
 
         //return specialItemSlotData.returnData;
+    }
+
+
+    inline void RemoveAllItems(std::string group, std::string name) {
+        RemoveInvetoryData removeInvetoryData;
+        removeInvetoryData.groupName = group;
+        removeInvetoryData.inventoryName = name;
+        Firelight::Events::EventDispatcher::InvokeListeners(Firelight::Events::Inventory::DropAll::sm_descriptor, &removeInvetoryData);
     }
 
  }

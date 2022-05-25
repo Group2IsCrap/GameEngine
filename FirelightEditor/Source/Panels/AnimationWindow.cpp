@@ -107,7 +107,7 @@ void AnimationWindow::Draw()
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 0,0,0,0 });
 		ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 5, 5 });
 		ImGuiTableFlags flags = ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_PadOuterX;
-		int columnCount = mainColumnWidth / 64;
+		int columnCount = static_cast<int>(mainColumnWidth / 64);
 		if (columnCount <= 0)
 			columnCount = 1;
 
@@ -249,7 +249,7 @@ void AnimationWindow::CreateAnimation()
 			if (!std::filesystem::is_directory(newPath))
 			{
 				std::vector<std::string> textureNames;
-				SaveFile(s_animationName.c_str(), true, 1.0f, 0, textureNames);
+				SaveFile(s_animationName.c_str(), true, 1, 0, textureNames);
 			}
 			s_animationName = "";
 			ImGui::CloseCurrentPopup();
@@ -277,7 +277,7 @@ void AnimationWindow::DrawAnimation()
 		imageDimensions.x /= 2;
 		imageDimensions.y /= 2;
 	}
-	ImGui::Image((ImTextureID)texture->GetShaderResourceView().Get(), ImVec2(imageDimensions.x, imageDimensions.y));
+	ImGui::Image((ImTextureID)texture->GetShaderResourceView().Get(), ImVec2(static_cast<float>(imageDimensions.x), static_cast<float>(imageDimensions.y)));
 
 	if (!m_playAnimimation)
 		return;
@@ -304,7 +304,7 @@ void AnimationWindow::SaveAnimation(const char* fileName, rapidjson::StringBuffe
 
 void AnimationWindow::SaveFile(const char* animName)
 {
-	SaveFile(m_selectedAnimation->m_animationName.c_str(), m_selectedAnimation->m_loop, m_selectedAnimation->m_frameTime,
+	SaveFile(m_selectedAnimation->m_animationName.c_str(), m_selectedAnimation->m_loop,static_cast<int>( m_selectedAnimation->m_frameTime),
 		m_selectedAnimation->m_frameCount, m_selectedAnimation->m_textureNames);
 }
 
@@ -339,7 +339,7 @@ void AnimationWindow::SaveFile(const char* animName, bool loop, int frameTime, i
 		Firelight::Animation::Animation* animation = new Firelight::Animation::Animation();
 		animation->m_animationName = animName;
 		animation->m_loop = loop;
-		animation->m_frameTime = frameTime;
+		animation->m_frameTime = static_cast<float>(frameTime);
 		animation->m_frameCount = frameCount;
 		animation->m_textureNames = textureNames;
 
@@ -362,7 +362,7 @@ void AnimationWindow::GetAllAnimations()
 		std::string numberString = std::to_string(count);
 		const char* itemNumber = numberString.c_str();
 
-		Firelight::Graphics::Texture* icon;
+		//Firelight::Graphics::Texture* icon = nullptr;
 
 		std::string extension = path.extension().string();
 		if (extension == ".anim")

@@ -8,7 +8,7 @@
 #include <map>
 #include <vector>
 
-class AIBehaviourComponent;
+struct AIBehaviourComponent;
 class AIStateBehaviour;
 
 /// <summary>

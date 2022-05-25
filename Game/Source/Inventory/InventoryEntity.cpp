@@ -80,13 +80,13 @@ void InventoryEntity::RemoveInventory(std::string name)
 {
     for (size_t i = 0; i < GetInventoryGroup()->numberOfInventories; i++)
     {
-        if (GetInventoryComponent(i)->name != name)
+        if (GetInventoryComponent(static_cast<int>(i))->name != name)
         {
             continue;
         }
 
-        this->RemoveComponent<InventoryComponent>(i);
-        this->RemoveComponent<InventoryComponentButtonLayout>(i);
+        this->RemoveComponent<InventoryComponent>(static_cast<int>(i));
+        this->RemoveComponent<InventoryComponentButtonLayout>(static_cast<int>(i));
     }
 
     std::vector<std::string> data;
@@ -101,11 +101,37 @@ void InventoryEntity::AddOutputCommands(int invetoryNum, std::function< void(voi
     GetComponent<InventoryComponentOutPut>(invetoryNum)->outputCommand.push_back(callbackFunction);
 }
 
+void InventoryEntity::AddKeyCommands(int invetoryNum, Firelight::Keys actionKey,std::string actionName, std::string show)
+{
+    for (size_t i = GetInventoryComponent(invetoryNum)->slotStartPositon; i < GetInventoryComponent(invetoryNum)->slotStartPositon + (int)GetInventoryComponent(invetoryNum)->slotCount; i++)
+    {
+        if (GetSlot(static_cast<int>(i))->ActionIndex != -1) {
+            continue;
+        }
+        else
+        {
+            InventoryComponentKeyPressAction* Action = AddComponent<InventoryComponentKeyPressAction>();;
+           
+            Action->ActionName = actionName;
+            Action->keyToActivate = actionKey;
+            Action->DisplayText = show;
+            GetSlot(static_cast<int>(i))->ActionIndex = static_cast<int>(GetComponents<InventoryComponentKeyPressAction>().size() - 1);
+
+            break;
+        }
+
+
+    }
+   
+
+
+}
+
 void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, std::string slotTexture, Firelight::Maths::Vec2f offset, Firelight::Maths::Vec2f size, Firelight::ECS::e_AnchorSettings anchorSettings, std::vector<std::string> tags)
 {
     for (size_t i = GetInventoryComponent(InventoryNumber)->slotStartPositon; i < GetInventoryComponent(InventoryNumber)->slotStartPositon + (int)GetInventoryComponent(InventoryNumber)->slotCount; i++)
     {
-        if (GetSlot(i)->specialSlotIndex != -1) {
+        if (GetSlot(static_cast<int>(i))->specialSlotIndex != -1) {
             continue;
         }
         else
@@ -121,8 +147,8 @@ void InventoryEntity::AddSpecialSlot(int InventoryNumber, std::string slotName, 
             Slot->slotName = slotName;
             Slot->size = size;
             Slot->tags = tags;
-            int teat = GetComponents<InventoryComponentSpecialSlot>().size() - 1;
-            GetSlot(i)->specialSlotIndex = GetComponents<InventoryComponentSpecialSlot>().size() - 1;
+            
+            GetSlot(static_cast<int>(i))->specialSlotIndex = static_cast<int>(GetComponents<InventoryComponentSpecialSlot>().size() - 1);
 
             break;
         }

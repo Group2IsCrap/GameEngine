@@ -1,0 +1,19 @@
+Sound References:
+
+Swoop 004 - Yottasounds - https://freesound.org/people/yottasounds/sounds/174767/ - Crocodile Attack
+Cheerful Character - Iwan Gabovitch - https://freesound.org/people/qubodup/sounds/188432/ - Cheer Sound - Cheerful Character Copyright 2013 Iwan Gabovitch, CC-BY3 license.
+OughAhEy - Iwan Gabovitch - https://freesound.org/people/qubodup/sounds/193400/ - Hurt Sound - OughAhEy Copyright 2013 Iwan Gabovitch, CC-BY3 license.
+Game Sound Relax - Shuinvy - https://freesound.org/people/Shuinvy/sounds/323674/ - Forest Music
+Cursed Woods - Mirkosukovic - https://freesound.org/people/mirkosukovic/sounds/434017/ - Swamp Music
+Death - Haramir - https://freesound.org/people/Haramir/sounds/404014/ - Death sound
+Teleport Rpg - ColorsCrimsonTears - https://freesound.org/people/colorsCrimsonTears/sounds/563542/ - Respawn
+Slime Squish - Kuchenanderung1 - https://freesound.org/people/kuchenanderung1/sounds/340794/ - Slime Attack
+Air Portal - Humanoide9000 - https://freesound.org/people/humanoide9000/sounds/329028/ - Portal
+PickUpItem - TriqyStudio - https://freesound.org/people/TriqyStudio/sounds/467610/ - Item Pick-Up Chopping Wood - 14FPanskaSilovsky_Petr - https://freesound.org/people/14FPanskaSilovsky_Petr/sounds/419928/ - Wood Chop
+Dig4 - Igroglaz - https://freesound.org/people/igroglaz/sounds/593892/ - Mining
+Baby Deer 3 - Moitchka - https://freesound.org/people/motchka/sounds/369796/ - Deer
+UI Audio - Kenney - https://www.kenney.nl/assets/ui-audio - UI Sounds
+Pickaxe Mining Stone - Ryanconway - https://freesound.org/people/ryanconway/sounds/240801/ - Mining 2
+Rock Destroy - Bertsz - https://freesound.org/people/Bertsz/sounds/524312/ - Rock Breaking
+Bush7 - Schademans - https://freesound.org/people/schademans/sounds/2596/ - Bush Harvest
+Melee Attack 2 - unfa - https://freesound.org/people/unfa/sounds/221540/ - Attack

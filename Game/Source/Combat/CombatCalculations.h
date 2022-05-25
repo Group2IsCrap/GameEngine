@@ -4,6 +4,9 @@
 #include <Source/Physics/PhysicsHelpers.h>
 #include "../Player/PlayerComponent.h"
 #include "../Core/Layers.h"
+#include "../Player/PlayerEntity.h"
+
+#include <Source/ECS/Components/ItemComponents.h>
 
 using namespace Firelight::Maths;
 using namespace Firelight::Physics;
@@ -13,10 +16,11 @@ using namespace Firelight::Physics;
 class CombatCalculations
 {
 public:
-	float CalculateTriangleArea(int x1, int y1, int x2, int y2, int x3, int y3);
+	static void PlaceSphere(Facing dir, Vec3f Point, PlayerEntity* m_player);
 
-	bool IsPointInTriangle(int PointOneX, int PointOneY, int PointTwoX, int PointTwoY, int PointThreeX, int PointThreeY, int PointToCheckX, int PointToCheckY);
+	static void ChangeWeapon(WeaponComponent* component);
 
-	static void PlaceSphere(Facing dir, Vec3f Point);
+private:
+	static WeaponComponent* activeComponent;
 	
 };

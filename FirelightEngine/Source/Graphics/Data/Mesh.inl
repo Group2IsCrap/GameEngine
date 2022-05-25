@@ -33,6 +33,18 @@ namespace Firelight::Graphics
 	}
 
 	template<typename VertexType>
+	inline Mesh::Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, Texture* texture) :
+		m_name(name),
+
+		m_texture(texture),
+		m_material(nullptr),
+
+		m_transformMatrix(DirectX::XMMatrixIdentity())
+	{
+		CreateBuffers<VertexType>(vertices, indices);
+	}
+
+	template<typename VertexType>
 	inline Mesh::Mesh(const std::string& name, std::vector<VertexType>& vertices, std::vector<DWORD>& indices, const DirectX::XMMATRIX& transformMatrix) :
 		m_name(name),
 

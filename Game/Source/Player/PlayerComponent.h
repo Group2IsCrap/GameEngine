@@ -21,6 +21,8 @@ struct PlayerComponent : Firelight::ECS::BaseComponent
 	std::string name = "";
 	float speed = 1.5f;
 	Facing facing;
+	Entity* weapon;
+	Entity* weaponSocket;
 
 	void Serialise() override
 	{

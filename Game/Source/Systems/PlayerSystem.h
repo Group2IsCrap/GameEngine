@@ -3,10 +3,13 @@
 #include <Source/ECS/Systems/System.h>
 #include <Source/ECS/Components/UIComponents.h>
 #include <Source/Maths/Vec3.h>
+#include <Source/ECS/Components/ItemComponents.h>
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"
 #include "../ImGuiPlayerLayer.h"
+
+#include "../Items/CraftingRecipe.h"
 
 using DescriptorType = const char*;
 
@@ -22,7 +25,7 @@ public:
 
 	void SwitchWeapon();
 	void ToggleDebug();
-
+	void AddHealth(void* amount);
 private:
 	float GetSpeed();
 
@@ -37,14 +40,17 @@ private:
 	void MovePlayerRightRelease();
 
 	void HandlePlayerAnimations();
+	void UpdateCraftableItems();
 
 	void Interact();
 	void SpawnItem();
 	void Attack();
 	void RemoveHealth();
+	
 
 	void StartAttack();
 	void StopAttack();
+	void Respawn();
 
 private:
 	size_t m_playerEntityAddedCheckIndex;
@@ -62,20 +68,30 @@ private:
 	size_t m_spawnItemEventIndex;
 	size_t m_attackIndex;
 	size_t m_releaseAttackIndex;
-	size_t m_removeHealthEventIndex;
+	size_t m_respawnIndex;
   
+	size_t m_updateCraftableItemsEventIndex;
+	size_t m_removeHealthEventIndex;
+	size_t m_addHealthEventIndex;
+	size_t m_changeWeaponIndex;
+
 	Firelight::Maths::Vec3f m_velocity;
-	PlayerEntity* playerEntity;
+	PlayerEntity* m_playerEntity;
   
 	bool m_moveUp;
 	bool m_moveDown;
 	bool m_moveLeft;
 	bool m_moveRight;
-	ImGuiPlayerLayer* imguiLayer = nullptr;
+
+	std::vector<const CraftingRecipe*> m_availableCraftingRecipes;
+
+	ImGuiPlayerLayer* m_imguiLayer = nullptr;
 	bool m_drawDebugUI;
 
 	bool m_isAttacking = false;
 	float m_attackCooldown = 0.0f;
 	float m_currentWeaponCooldown = 1.0f;
 	bool m_canAttack = true;
+
+	WeaponComponent* fists;
 };

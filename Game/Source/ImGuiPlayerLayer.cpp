@@ -8,7 +8,13 @@
 #include "Source/ECS/Components/PhysicsComponents.h"
 #include "PCG/BiomeGeneration.h"
 
-ImGuiPlayerLayer::ImGuiPlayerLayer()
+#include "Items/ItemDatabase.h"
+
+#include "Inventory/InventoryEvents.h"
+
+ImGuiPlayerLayer::ImGuiPlayerLayer() :
+	m_debugCraftingMenuEnabled(false),
+	m_craftingRecipes(nullptr)
 {
 	SetupTheme();
 }
@@ -26,6 +32,7 @@ void ImGuiPlayerLayer::SetPlayer(Firelight::ECS::Entity* entity)
 void ImGuiPlayerLayer::Render()
 {
 	RenderInformation();
+	RenderDebugCraftingMenu();
 }
 
 void ImGuiPlayerLayer::RenderInformation()
@@ -44,6 +51,83 @@ void ImGuiPlayerLayer::RenderInformation()
 		ImGui::Text(std::to_string(BiomeGeneration::Instance()->IsInVoid(BiomeGeneration::Instance()->testPosition)).c_str());
 	}
 	ImGui::End();
+}
+
+void ImGuiPlayerLayer::RenderDebugCraftingMenu()
+{
+	if (m_craftingRecipes != nullptr)
+	{
+		ImGui::Begin("Crafting");
+
+		int recipeIndex = 0;
+		for (auto* recipe : *m_craftingRecipes)
+		{
+			if (auto* itemComponent = ItemDatabase::Instance()->GetItemComponentFromId(recipe->GetItemToMake()))
+			{
+				ImGui::Text(itemComponent->name.c_str()); ImGui::SameLine();
+			}
+			else
+			{
+				continue;
+			}
+
+			ImGui::Text(" [");
+
+			auto& requiredItems = recipe->GetRequiredItems();
+			int itemIndex = 0;
+			for (auto& itemRequirement : requiredItems)
+			{
+				ImGui::SameLine();
+
+				if (auto* requiredItemComponent = ItemDatabase::Instance()->GetItemComponentFromId(itemRequirement.m_itemId))
+				{
+					ImGui::Text((std::to_string(itemRequirement.m_numRequired) + " " + requiredItemComponent->name).c_str()); ImGui::SameLine();
+				}
+
+				if (itemIndex < requiredItems.size() - 1)
+				{
+					ImGui::Text(",");
+				}
+
+				++itemIndex;
+			}
+
+			ImGui::SameLine();
+
+			ImGui::Text("]");
+
+			ImGui::SameLine();
+
+			ImGui::PushID(recipeIndex);
+
+			if (ImGui::Button("Craft"))
+			{
+				recipe->Craft("PlayerInventory");
+				Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::Inventory::UpdateCraftableItemsEvent>();
+			}
+
+			ImGui::PopID();
+
+			++recipeIndex;
+		}
+
+		ImGui::End();
+	}
+}
+
+void ImGuiPlayerLayer::SetDebugCraftingMenuEnabled(bool enabled)
+{
+	m_debugCraftingMenuEnabled = enabled;
+
+	if (!enabled)
+	{
+		m_craftingRecipes = nullptr;
+	}
+}
+
+void ImGuiPlayerLayer::GiveAvailableCraftingRecipes(const std::vector<const CraftingRecipe*>* craftingRecipes)
+{
+	m_craftingRecipes = craftingRecipes;
 }
 
 void ImGuiPlayerLayer::SetupTheme()

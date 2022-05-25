@@ -108,5 +108,8 @@ namespace Firelight::Graphics
 		std::vector<LayerableEntity*> m_entityQueue;
 
 		SortMode           m_sortMode;
+
+		std::vector<UnlitColourVertex> m_vertices;
+		std::vector<DWORD>             m_indices;
 	};
 }

@@ -21,6 +21,21 @@ namespace Firelight::Events
 	}
 
 	template<typename EventType>
+	void EventDispatcher::RemoveListener(Listener* listener)
+	{
+		auto& eventListeners = sm_listeners[EventType::sm_descriptor];
+		
+		for (int listenerIndex = 0; listenerIndex < eventListeners.size(); ++listenerIndex)
+		{
+			if (eventListeners[listenerIndex] == listener)
+			{
+				eventListeners.erase(eventListeners.begin() + listenerIndex);
+				return;
+			}
+		}
+	}
+
+	template<typename EventType>
 	void EventDispatcher::RemoveAllListeners()
 	{
 		sm_listeners[EventType::sm_descriptor].clear();

@@ -12,6 +12,10 @@ public:
 
 	void HandleEvents(const char* event, void* data) override;
 
+	void PlayFunction();
+
+	void ExitFunction();
+
 private:
 	std::vector<Firelight::ECS::UIEntity*> m_UIEntities;
 };

@@ -17,6 +17,5 @@ public:
 	void Respawn();
 
 private:
-	class Firelight::ECS::UIButton* m_respawnBtn;
-	Firelight::ECS::Entity* m_text;
+	std::vector<UIEntity*> m_UIEntities;
 };

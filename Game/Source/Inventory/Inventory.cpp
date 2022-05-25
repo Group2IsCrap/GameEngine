@@ -1,7 +1,8 @@
 #include "Inventory.h"
 #include "Source/Graphics/AssetManager.h"
 #include"Source/ECS/Components/ItemComponents.h"
-
+#include"../Events/PlayerEvents.h"
+#include<Source/Engine.h>
 Inventory::Inventory():
 	m_inventoryEntityID(-1),
 	m_inventorySpace(nullptr)
@@ -59,6 +60,8 @@ void Inventory::CreateInventory(Maths::Vec2f size, Maths::Vec2f rows, Maths::Vec
 	border->widthLeftRight = margin.x;
 
 	Events::EventDispatcher::InvokeFunctions<Events::UI::UpdateUIEvent>();
+
+	
 }
 
 //draw on screen
@@ -104,12 +107,12 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 	float currX = 0;
 	float currY = 0;
 	int currentPos = inventoryData->slotStartPositon;
-	int nextFreePannle = -1;
+	int nextFreePanel = -1;
 	for (size_t i = 0; i < panelToUse->size(); i++)
 	{
 		if (!panelToUse->at(i)->GetSpriteComponent()->toDraw) 
 		{
-			nextFreePannle = i;
+			nextFreePanel = static_cast<int>(i);
 			break;
 		}
 
@@ -121,10 +124,10 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 		{
 			ECS::UIPanel* slot;
 			//panel to use
-			if (panelToUse->size() - 1 >= nextFreePannle && nextFreePannle != -1)
+			if (panelToUse->size() - 1 >= nextFreePanel && nextFreePanel != -1)
 			{
 				//use exsting pannle
-				slot = panelToUse->at(nextFreePannle);
+				slot = panelToUse->at(nextFreePanel);
 				ECS::PixelSpriteComponent* Sprite = slot->GetSpriteComponent();
 
 				Sprite->toDraw = inventoryData->isDisplay;
@@ -153,14 +156,14 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				{
 					if (!panelToUse->at(k)->GetSpriteComponent()->toDraw) 
 					{
-						nextFreePannle = k;
+						nextFreePanel = static_cast<int>(k);
 						isFound = true;
 						break;
 					}
 
 				}
 				if (!isFound) {
-					nextFreePannle++;
+					nextFreePanel++;
 				}
 			}
 			else
@@ -173,8 +176,13 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 				slot->GetWidgetComponent()->isActive = inventoryData->isDisplay;
 				slot->SetOffset(Maths::Vec2f(currX, currY) + inventoryData->slotMargin);
 				slot->SetAnchorSettings(ECS::e_AnchorSettings::TopLeft);
+				TextComponent* text = slot->AddComponent<ECS::TextComponent>();
+				text->hidden = false;
+				text->text.SetTextHeight(30);
+				text->layer = 100000;
+				text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_TopLeft);
 				panelToUse->push_back(slot);
-				nextFreePannle= panelToUse->size();
+				nextFreePanel= static_cast<int>(panelToUse->size());
 			}
 			currX += sizeX + inventoryData->slotMargin.x;
 			InventorySlots* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, currentPos);
@@ -204,7 +212,13 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 
 		ECS::UIBaseWidgetComponent* slotWidget = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID);
 
-		if (data->stackSize > 1) {
+		//if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+		//	TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+		//	textSlot->text.SetString(Action->DisplayText);
+		//	textSlot->hidden = false;
+		//	
+		//}
+		if (data->entityIDs.size() >= 1) {
 			ECS::PixelSpriteComponent* iconSprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID);
 			iconSprite->toDraw = true;
 			
@@ -224,6 +238,7 @@ void Inventory::LoadInventory(std::vector<ECS::UIPanel*>* panelToUse, bool toFit
 			text->text.SetString(std::to_string(data->entityIDs.size()));
 			
 
+
 		}
 	}
 
@@ -239,7 +254,7 @@ void Inventory::UnloadInventory()
 	inventoryData->isDisplay = false;
 	m_inventorySpace->GetSpriteComponent()->toDraw = inventoryData->isDisplay;
 	m_inventorySpace->GetWidgetComponent()->isActive = inventoryData->isDisplay;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon+inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon+static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* data = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, data->slotIndex);
@@ -249,6 +264,11 @@ void Inventory::UnloadInventory()
 			sprite->toDraw = inventoryData->isDisplay;
 			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->isActive = inventoryData->isDisplay;
 		}
+		//if (InventoryComponentKeyPressAction* Action = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID, slot->ActionIndex)) {
+		//	TextComponent* textSlot = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slot->slotID);
+		//	//textSlot->hidden = true;
+		//	
+		//}
 		slot->slotID = NULL;
 		if (ECS::PixelSpriteComponent* pix = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(data->UITexID))
 		{
@@ -257,8 +277,9 @@ void Inventory::UnloadInventory()
 			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(data->UITexID);
 			text->hidden = true;
 		}
+		
 	}
-	for (int i = 0; i < inventoryData->slotCount; i++)
+	for (int i = 0; i < static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, i);
 		if (ECS::PixelSpriteComponent* sprite = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slot->slotID)) 
@@ -290,14 +311,19 @@ void Inventory::OnLeftIimesFunction(std::vector<ECS::EntityID>* id) {
 		for (std::string tag : itemData->tags) {
 			if (tag == "Food") {
 				//health up event
+				ECS::FoodComponent* FoodData = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::FoodComponent>(itemID);
+				int healthadd = FoodData->HealthRegeneration;
+				Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::AddHealth::sm_descriptor,(void*)healthadd);
 				isUsed = true;
 				break;
 			}
 		}
 		if (isUsed) {
 			RemoveItem(itemID);
-			continue;
+
+			return;
 		}
+
 	}
 }
 
@@ -307,7 +333,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	InventoryComponentInPut* inputCommands = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentInPut>(m_inventoryEntityID);
 
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -373,6 +399,7 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 						text->hidden = true;
 						text->text.SetTextHeight(30);
 						text->layer = 100000;
+						text->text.SetColour(Firelight::Graphics::Colours::sc_black);
 						text->text.SetTextAnchor(Firelight::Graphics::TextAnchor::e_BotRight);
 
 						if (inventoryData->isDisplay) {
@@ -381,15 +408,22 @@ bool Inventory::AddItem(Firelight::ECS::EntityID item)
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 								ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 								0));
-							
+
 							text->hidden = false;
-							
+
 						}
 						icon->AddComponent<ECS::UIDraggableComponent>();
 						icon->GetComponent<ECS::UIDraggableComponent>()->onDropFunctions.push_back(std::bind(&Inventory::Place, this, slotData));
 						icon->GetComponent<ECS::UIDraggableComponent>()->onPickUpFunctions.push_back(std::bind(&OnDragChangeScaleSettings, icon->GetEntityID()));
-						UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
-						press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+						if (inventoryData->name=="MainInventory"){
+							UIPressableComponent* press = icon->AddComponent<ECS::UIPressableComponent>();
+							press->onRightPressFunctions.push_back(std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+
+							InventoryComponentKeyPressAction* actionData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentKeyPressAction>(m_inventoryEntityID,slot->ActionIndex);
+							actionData->EventID= Events::EventDispatcher::SubscribeFunction(actionData->ActionName.c_str(), std::bind(&Inventory::OnLeftIimesFunction, this, &slotData->entityIDs));
+							Firelight::Engine::Instance().GetKeyBinder().BindKeyboardActionEvent(actionData->ActionName.c_str(), actionData->keyToActivate, Firelight::KeyEventType::KeyPressSingle);
+							
+						}
 						slotData->UITexID = icon->GetEntityID();
 					}
 					if (inventoryData->isDisplay) {
@@ -424,7 +458,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	
 	
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -454,6 +488,8 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				for (size_t j = 0; j < specialSlot->tags.size(); j++)
 				{
 					if (std::find(tagData.begin(), tagData.end(), specialSlot->tags[j]) == tagData.end()) {
+
+
 						isGood = false;
 						
 					} 
@@ -462,6 +498,7 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 			if (!isGood) {
 				if (useSlotPlacement) {
 					isFail = AddItem(item, false);
+
 					break;
 				}
 
@@ -513,6 +550,16 @@ bool Inventory::AddItem(InventoryStoreData item, bool useSlotPlacement )
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.x / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.x,
 				ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultDimensions.y / ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slot->slotID)->defaultScale.y,
 				0);
+
+			if (specialSlot)
+			{
+				if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
+					Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
+				}
+			}
+
+
+
 			isFail = false;
 			break;
 		}
@@ -529,13 +576,14 @@ bool Inventory::RemoveItem(Firelight::ECS::Entity* item)
 
 bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 {
+
 	bool isFail = true;
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
-
+		InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, slot->specialSlotIndex);
 		if (!slot->isUsed) {
 			continue;
 		}
@@ -555,6 +603,17 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
 						text->hidden = true;
 					}
+
+					if (specialSlot)
+					{
+						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
+							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
+						}
+					}
+
+					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+					text->text.SetString( std::to_string(slotData->entityIDs.size()));
+				 
 					isFail = false;
 					
 				}
@@ -565,6 +624,7 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 			}
 		}
 	}
+	
 	return isFail;
 }
 
@@ -574,7 +634,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 	InventorySlots* currSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
 
 
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* placeSlotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* placeSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, placeSlotData->slotIndex);
@@ -676,7 +736,7 @@ void Inventory::Place(InventoryStoreData* slotData)
 ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 {
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -685,12 +745,58 @@ ECS::EntityID Inventory::GetSpecialSlot(std::string name)
 		{
 			if (specialSlot->slotName == name) 
 			{
-				return m_inventoryEntityID;
+				if (slotData->entityIDs.size() > 0)
+				{
+					return slotData->entityIDs[0];
+				}
+				else
+				{
+					return UINT16_MAX;
+				}
 			}
 		}
 
 	}
-	return -1;
+	return UINT16_MAX;
+}
+
+void Inventory::DropAllItems()
+{
+	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
+	{
+		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
+		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
+
+		if (!slot->isUsed) {
+			continue;
+		}
+		else
+		{
+			//drop code here
+			InventoryComponentOutPut* data = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponentOutPut>(m_inventoryEntityID, m_groupInventoryID);
+
+			if (data) {
+				InventoryStoreData a = *slotData;
+				for (auto& out : data->outputCommand)
+				{
+					out((void*)&a.entityIDs);
+				}
+			}
+
+			slot->isUsed = false;
+			slotData->stackSize = -1;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::PixelSpriteComponent>(slotData->UITexID)->toDraw = false;
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(slotData->UITexID)->isActive = false;
+			TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+			ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(slotData->UITexID)->onDropFunctions.clear();
+			text->hidden = true;
+
+			slotData->stackSize = -1;
+			slotData->entityIDs.clear();
+		}
+	}
+
 }
 
 bool Inventory::FindItem(Firelight::ECS::Entity* item)
@@ -729,7 +835,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> dataToRemove;
 	int countToRemove = howMany;
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -737,7 +843,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 		{
 			continue;
 		}
-		countToRemove -= slotData->entityIDs.size();
+		countToRemove -= static_cast<int>(slotData->entityIDs.size());
 		dataToRemove.push_back(slotData);
 
 		if (countToRemove <= 0) {
@@ -758,6 +864,9 @@ bool Inventory::RemoveItemType(int howMany, int type)
 						text->hidden = true;
 						break;
 					}
+					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
+					text->hidden = false;
+					text->text.SetString(std::to_string(slotData->entityIDs.size()));
 				}
 			}
 			isFail = false;
@@ -771,7 +880,7 @@ int Inventory::GetItemTypeTotal(int type)
 {
 	InventoryComponent* inventoryData = ECS::EntityComponentSystem::Instance()->GetComponent<InventoryComponent>(m_inventoryEntityID, m_groupInventoryID);
 	int total = 0;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -779,7 +888,7 @@ int Inventory::GetItemTypeTotal(int type)
 		{
 			continue;
 		}
-		total += slotData->entityIDs.size();
+		total += static_cast<int>(slotData->entityIDs.size());
 	}
 	return total;
 }
@@ -790,7 +899,7 @@ std::vector<ECS::EntityID> Inventory::GetItemType(int howMany, int type)
 	std::vector<InventoryStoreData*> dataToGet;
 	std::vector<ECS::EntityID> returnIDData;
 	int countToAdd = howMany;
-	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + inventoryData->slotCount; i++)
+	for (int i = inventoryData->slotStartPositon; i < inventoryData->slotStartPositon + static_cast<int>(inventoryData->slotCount); i++)
 	{
 		InventoryStoreData* slotData = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryStoreData >(m_inventoryEntityID, i);
 		InventorySlots* slot = ECS::EntityComponentSystem::Instance()->GetComponent< InventorySlots >(m_inventoryEntityID, slotData->slotIndex);
@@ -798,7 +907,7 @@ std::vector<ECS::EntityID> Inventory::GetItemType(int howMany, int type)
 		{
 			continue;
 		}
-		countToAdd -= slotData->entityIDs.size();
+		countToAdd -= static_cast<int>(slotData->entityIDs.size());
 		dataToGet.push_back(slotData);
 
 		if (countToAdd <= 0)

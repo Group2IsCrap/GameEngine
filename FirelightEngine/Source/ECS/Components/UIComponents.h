@@ -43,7 +43,7 @@ namespace Firelight::ECS
 		UINT index = 10;
 
 		e_AnchorSettings anchorSettings = e_AnchorSettings::None;
-		Maths::Vec2f offSet = (0, 0);
+		Maths::Vec2f offSet = { 0, 0 };
 
 		Maths::Vec3f defaultPosition = Maths::Vec3f(0, 0, 0);
 		Maths::Vec3f defaultDimensions = Maths::Vec3f(100, 100, 0);

@@ -17,7 +17,7 @@ void AIWanderBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::Ti
 	if (m_radii.empty())
 		return;
 
-	m_curWanderTime += time.GetDeltaTime();
+	m_curWanderTime += static_cast<float>(time.GetDeltaTime());
 
 	if (m_curWanderTime > m_wanderInterval)
 	{
@@ -41,5 +41,5 @@ void AIWanderBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::Ti
 	}
 
 	// Walk towards point here
-	m_rigidBodyComponent->velocity += m_wanderLocation * m_speed * time.GetDeltaTime();
+	m_rigidBodyComponent->velocity += m_wanderLocation * m_speed * static_cast<float>(time.GetDeltaTime());
 }

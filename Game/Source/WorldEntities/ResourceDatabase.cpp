@@ -62,8 +62,11 @@ void ResourceDatabase::LoadResources(std::string filepath)
 		Template* resourceTemplate = new SpriteEntityTemplate("Resource Template - " + resourceData[i][1]);
 
 		SpriteComponent* spriteComponent = resourceTemplate->GetComponent<SpriteComponent>();
-		spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
-		spriteComponent->pixelsPerUnit = std::stoi(resourceData[i][6]);
+		if (resourceData[i][2] != "")
+		{
+			spriteComponent->texture = Graphics::AssetManager::Instance().GetTexture(resourceData[i][2]);
+		}
+		spriteComponent->pixelsPerUnit = std::stof(resourceData[i][6]);
 		int layer = std::stoi(resourceData[i][7]);
 		spriteComponent->layer = layer == 0 ? static_cast<int>(RenderLayer::Items) : layer;
 
@@ -79,6 +82,13 @@ void ResourceDatabase::LoadResources(std::string filepath)
 
 		resourceTemplate->AddComponent<HealthComponent>()->currentHealth = std::stoi(resourceData[i][3]);
 		resourceTemplate->AddComponent<RigidBodyComponent>();
+
+		AudioComponent* audioComponent = new AudioComponent();
+		resourceTemplate->AddComponent<Firelight::ECS::AudioComponent>(audioComponent);	
+		audioComponent->looping = false;
+		audioComponent->is3d = false;
+		audioComponent->streaming = false;
+		audioComponent->channel = "Game";
 
 		resourceTemplates.insert(std::make_pair(resourceComponent->resourceID, resourceTemplate));
 

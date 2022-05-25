@@ -35,7 +35,7 @@ void AIFleeingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::T
 	Vec3f targetDir = Vec3f(colliderWidth * dir.x, colliderHeight * dir.y, 0.0f);
 	targetDir.Normalise();
 
-	m_rigidBodyComponent->velocity -= targetDir * m_speed * time.GetDeltaTime();
+	m_rigidBodyComponent->velocity -= targetDir * m_speed * static_cast<float>(time.GetDeltaTime());
 	float magnitude = m_rigidBodyComponent->velocity.Length();
 	if (m_walkAnimation != "" && magnitude > 0.05f)
 	{

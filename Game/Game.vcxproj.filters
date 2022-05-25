@@ -7,7 +7,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Source\ImGuiDebugLayer.cpp" />
     <ClCompile Include="Source\Inventory\Inventory.cpp" />
-    <ClCompile Include="Source\Inventory\InventoryManager.cpp" />
+    <ClCompile Include="Source\Inventory\InventorySystem.cpp" />
     <ClCompile Include="Source\Inventory\InventoryEntity.cpp" />
     <ClCompile Include="Source\Items\ItemDatabase.cpp" />
     <ClCompile Include="Source\Player\PlayerEntity.cpp" />
@@ -21,9 +21,12 @@
     <ClCompile Include="Source\WorldEntities\ResourceDatabase.cpp" />
     <ClCompile Include="Source\AI\Behaviours\AIFleeingBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AISlimeEntity.cpp" />
+    <ClCompile Include="Source\WorldEntities\EntitySpawnerSystem.cpp" />
+    <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
+    <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
+    <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Combat\WeaponComponent.h" />
     <ClCompile Include="Source\Core\AIEntity.cpp" />
     <ClCompile Include="Source\AI\AIStateBehaviour.cpp" />
     <ClCompile Include="Source\AI\Enemies\AICrocodileEntity.cpp" />
@@ -36,7 +39,13 @@
     <ClInclude Include="Source\WorldEntities\ResourceDatabase.h" />
     <ClInclude Include="Source\CoreComponents\ResourceComponent.h" />
     <ClInclude Include="Source\AI\Behaviours\AIFleeingBehaviour.h" />
+    <ClInclude Include="Source\Events\GameEvents.h" />
     <ClInclude Include="Source\AI\Enemies\AISlimeEntity.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawner.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerComponent.h" />
+    <ClInclude Include="Source\WorldEntities\EntitySpawnerSystem.h" />
+    <ClInclude Include="Source\Items\CraftingRecipeDatabase.h" />
+    <ClInclude Include="Source\Items\CraftingRecipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Systems\AISystem.h" />
@@ -44,6 +53,7 @@
     <ClCompile Include="Source\UI\MainMenuUI.cpp" />
     <ClCompile Include="Source\PCG\BiomeGeneration.cpp" />
     <ClCompile Include="Source\PCG\Noise.cpp" />
+    <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
@@ -56,7 +66,7 @@
     <ClInclude Include="Source\Inventory\InventoryComponents.h" />
     <ClInclude Include="Source\Inventory\InventoryEvents.h" />
     <ClInclude Include="Source\Inventory\InventoryFunctionsGlobal.h" />
-    <ClInclude Include="Source\Inventory\InventoryManager.h" />
+    <ClInclude Include="Source\Inventory\InventorySystem.h" />
     <ClInclude Include="Source\Inventory\InventoryEntity.h" />
     <ClInclude Include="Source\Items\ItemDatabase.h" />
     <ClInclude Include="Source\Player\PlayerEntity.h" />
