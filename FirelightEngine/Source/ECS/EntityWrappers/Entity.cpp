@@ -42,6 +42,11 @@ namespace Firelight::ECS
 		}
 	}
 
+	void Entity::StopAudio()
+	{
+		snowFallAudio::FModAudio::AudioEngine::engine->StopAllChannels();
+	}
+
 	void Entity::PlaySound_Internal(AudioComponent* audioComponent)
 	{
 		//const std::string& soundName, const Vector3D& soundPos, bool looping, bool is3d, bool streaming, AudioChannel channel

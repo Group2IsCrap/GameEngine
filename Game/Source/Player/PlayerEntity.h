@@ -16,4 +16,3 @@ public:
 	void AddHealth(int amount) override;
 	void PlayerHealthUpdated();
 };
-

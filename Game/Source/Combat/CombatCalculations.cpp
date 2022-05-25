@@ -39,6 +39,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point, PlayerEntity* m_pl
 
     std::vector<int> layers = {static_cast<int>(GameLayer::Enemy), static_cast<int>(GameLayer::Resource)};
     
+    bool hit = false;
 
     for (int i = 0; i < layers.size(); i++)
     {
@@ -49,6 +50,7 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point, PlayerEntity* m_pl
         }
         else
         {
+            hit = true;
             for (auto* target : targets)
             {
                 if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Resource))
@@ -77,6 +79,14 @@ void CombatCalculations::PlaceSphere(Facing dir, Vec3f point, PlayerEntity* m_pl
             }
             break;
         }
+    }
+
+    if (!hit)
+    {
+        m_player->GetComponent<AudioComponent>()->soundName = "Attack.wav";
+        m_player->GetComponent<AudioComponent>()->soundPos = Vector3D(m_player->GetTransformComponent()->GetPosition().x, m_player->GetTransformComponent()->GetPosition().y, m_player->GetTransformComponent()->GetPosition().z);
+
+        m_player->PlayAudioClip();
     }
 }
 

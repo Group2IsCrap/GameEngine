@@ -39,6 +39,7 @@
 #include "Source/Inventory/InventoryFunctionsGlobal.h"
 #include "Source/WorldEntities/EntitySpawnerComponent.h"
 #include "Source/WorldEntities/EntitySpawnerSystem.h"
+#include "Source/WorldEntities/BackgroundMusicEntity.h"
 #include "Source/Events/PlayerEvents.h"
 
 
@@ -78,7 +79,9 @@ void TogglePause()
 void SpawnItem0()
 {
 	//ItemDatabase::Instance()->CreateInstanceOfItem(0);
-	ItemDatabase::Instance()->CreateInstanceOfItem(40);
+	ItemDatabase::Instance()->CreateInstanceOfItem(31);
+	ItemDatabase::Instance()->CreateInstanceOfItem(33);
+	ItemDatabase::Instance()->CreateInstanceOfItem(43);
 	
 }
 
@@ -333,6 +336,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
 
 		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
+
+		BackgroundMusicEntity* backgroundMusic = new BackgroundMusicEntity();
 
 
 		while (Engine::Instance().ProcessMessages())

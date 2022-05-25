@@ -15,8 +15,9 @@ public:
 	BackgroundMusicEntity(Firelight::ECS::EntityID entityID);
 	BackgroundMusicEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
-	void ChangeMusic(int biome, Vector3D playerPos);
 	virtual void HandleEvents(DescriptorType event, void* data) override;
 
 	Firelight::ECS::AudioComponent* audioComponent;
+private:
+	bool isSame = false;
 };

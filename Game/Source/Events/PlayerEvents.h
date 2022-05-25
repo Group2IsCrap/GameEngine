@@ -9,4 +9,6 @@ namespace Firelight::Events::PlayerEvents
 	NEW_EVENT(OnPlayerRespawnEvent);
 	NEW_EVENT(AddHealth);
 	NEW_EVENT(ChangeWeapon);
+	NEW_EVENT(ChangeHat);
+	NEW_EVENT(ChangeArmour);
 }
