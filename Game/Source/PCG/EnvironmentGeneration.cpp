@@ -54,12 +54,15 @@ void EnvironmentGeneration::GenerateResources()
 			if (!(*column)->IsOccupied())
 			{
 				Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
-				//if (CanSpawnFromNoise(noiseTreeIndex, m_treeSpawnRate))
-				//{
-				//	SpawnTree(position);
-				//	(*column)->SetIsOccupied(true);
-				//	numberoftreesspawn++;
-				//}
+				if (CanSpawnFromNoise(noiseTreeIndex, m_treeSpawnRate))
+				{
+					if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
+					{
+						SpawnTree(position);
+						(*column)->SetIsOccupied(true);
+						numberoftreesspawn++;
+					}
+				}
 				//else if (CanSpawnFromNoise(noiseRockIndex, m_rockSpawnRate))
 				//{
 				//	SpawnRock(position);
