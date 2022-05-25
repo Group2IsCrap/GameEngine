@@ -395,7 +395,7 @@ bool BiomeGeneration::IsInVoid(Rectf position)
 			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)

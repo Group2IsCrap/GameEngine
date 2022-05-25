@@ -70,7 +70,6 @@ PlayerSystem::PlayerSystem()
 	fists->Cooldown = 1.0f;
 	fists->HarvestType = Firelight::ECS::e_HarvestType(0);
 	fists->HarvestDamage = 1.0f;
-
 }
 
 PlayerSystem::~PlayerSystem()
@@ -169,6 +168,13 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 		{
 			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
+
+		if (BiomeGeneration::Instance()->IsInVoid(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f)))
+		{
+			//m_playerEntity->GetRigidBodyComponent()->velocity.x = -m_playerEntity->GetRigidBodyComponent()->velocity.x + 0.2;
+			//m_playerEntity->GetRigidBodyComponent()->velocity.y = -m_playerEntity->GetRigidBodyComponent()->velocity.y +0.2;
+		}
+		BiomeGeneration::Instance()->CheckCurrentPlayerBiomeType(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f));
 	}
 }
 
