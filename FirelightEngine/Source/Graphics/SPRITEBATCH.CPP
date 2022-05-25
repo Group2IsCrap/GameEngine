@@ -29,8 +29,15 @@ namespace Firelight::Graphics
 
     void SpriteBatch::NDCDraw(const Maths::Rectf& destRectNDC, Texture* texture, int layer, double rotation, const Colour::RGBA& colour, const Maths::Rectf& sourceRect, bool flipX, bool flipY)
     {
-        // If there is already an entry in the queue overwrite the existing data,
-        // otherwise create push back new data
+        static const Maths::Rectf ndcScreenRect(-1.0f, -1.0f, 2.0f, 2.0f);
+
+        // Not in view of the screen
+        if (!ndcScreenRect.IsOverlappingRect(destRectNDC))
+        {
+            return;
+        }
+
+        // Create push back new data
         QuadEntity* quad = new QuadEntity();
         m_entityQueue.push_back(quad);
         

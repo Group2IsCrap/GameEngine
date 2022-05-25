@@ -65,4 +65,14 @@ namespace Firelight::Maths
 			(smallRect.h / worldRect.h) * 2.0f
 			);
 	}
+
+	template<typename T>
+	inline bool Rect<T>::IsOverlappingRect(const Rect<T>& otherRect) const
+	{
+		if (x > otherRect.x + otherRect.w || x + w < otherRect.x || y > otherRect.y + otherRect.h || y + h < otherRect.y)
+		{
+			return false;
+		}
+		return true;
+	}
 }
