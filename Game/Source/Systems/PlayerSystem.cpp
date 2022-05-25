@@ -346,21 +346,7 @@ void PlayerSystem::Attack()
 
 void PlayerSystem::RemoveHealth()
 {
-	AudioComponent* audioComponent = m_playerEntity->GetComponent<AudioComponent>();
-
-	switch (Firelight::Maths::Random::RandomRange(0, 1))
-	{
-	case 0:
-		audioComponent->soundName = "Hurt 1.wav";
-		break;
-	case 1:
-		audioComponent->soundName = "Hurt 2.wav";
-		break;
-	}
-
-	audioComponent->soundPos = Vector3D(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, m_playerEntity->GetTransformComponent()->GetPosition().z);
-
-	m_playerEntity->PlayAudioClip();
+	
 
 	m_playerEntity->RemoveHealth(1);
 }

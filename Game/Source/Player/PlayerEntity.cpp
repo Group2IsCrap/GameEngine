@@ -3,8 +3,11 @@
 #include <Source/Graphics/AssetManager.h>
 #include <Source/Events/EventDispatcher.h>
 #include <Source/ECS/Components/PhysicsComponents.h>
+#include <Source/ECS/Components/ItemComponents.h>
 #include "../Events/PlayerEvents.h"
 #include "../Core/Layers.h"
+
+#include"../Inventory/InventoryFunctionsGlobal.h"
 
 #include "PlayerComponent.h"
 #include <Source/ECS/Components/AnimationComponent.h>
@@ -20,7 +23,7 @@ PlayerEntity::PlayerEntity()
 	GetSpriteComponent()->pixelsPerUnit *= 2;
 	AddComponent<Firelight::ECS::AnimationComponent>();
 
-	GetHealthComponent()->maxHealth = 5;
+	GetHealthComponent()->maxHealth = 20;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
 
 	GameEntity* weaponSocket = new GameEntity();
@@ -58,7 +61,47 @@ void PlayerEntity::HealthBelowZero()
 
 void PlayerEntity::RemoveHealth(int amount)
 {
-	CharacterEntity::RemoveHealth(amount);
+	int reduction = 0;
+	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Head");
+	EntityID id2 = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Body");
+
+	ArmourComponent* armour = nullptr;
+
+	if (id != UINT16_MAX)
+	{
+		Entity activeHat = Entity(id);
+		armour= activeHat.GetComponent<ArmourComponent>();
+		if (armour != nullptr)
+		{
+			reduction += armour->armourValue;
+		}
+	}
+	if (id2 != UINT16_MAX)
+	{
+		Entity activeChest = Entity(id2);
+		armour = activeChest.GetComponent<ArmourComponent>();
+		if (armour != nullptr)
+		{
+			reduction += armour->armourValue;
+		}
+	}
+
+	AudioComponent* audioComponent = this->GetComponent<AudioComponent>();
+
+	switch (Firelight::Maths::Random::RandomRange(0, 1))
+	{
+	case 0:
+		audioComponent->soundName = "Hurt 1.wav";
+		break;
+	case 1:
+		audioComponent->soundName = "Hurt 2.wav";
+		break;
+	}
+
+	audioComponent->soundPos = Vector3D(this->GetTransformComponent()->GetPosition().x, this->GetTransformComponent()->GetPosition().y, this->GetTransformComponent()->GetPosition().z);
+
+	this->PlayAudioClip();
+	CharacterEntity::RemoveHealth(amount-reduction);
 	Firelight::Events::EventDispatcher::InvokeListeners<Firelight::Events::PlayerEvents::OnPlayerHealthChangedEvent>((void*)GetHealth());
 }
 

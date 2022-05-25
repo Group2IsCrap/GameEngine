@@ -42,7 +42,7 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 	borderPanel->SetOffset(Firelight::Maths::Vec2f(0, 100));
 	m_UIEntities.push_back(borderPanel);
 
-	Firelight::ECS::UIButton* playButton = new Firelight::ECS::UIButton("Play Button");
+	playButton = new Firelight::ECS::UIButton("Play Button");
 	playButton->GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/ButtonTest.png");
 	playButton->GetSpriteComponent()->toDraw = true;
 	playButton->SetParent(borderPanel->GetEntityID());
@@ -94,6 +94,8 @@ void MainMenuUI::PlayFunction()
 	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::TogglePauseEvent>();
 	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::PlayGameEvent>();
 	
+	playButton->PlayAudioClip();
+
 	for (size_t i = 0; i < m_UIEntities.size(); ++i)
 	{
 		m_UIEntities[i]->GetSpriteComponent()->toDraw = false;

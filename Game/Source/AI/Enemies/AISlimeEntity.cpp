@@ -45,7 +45,7 @@ AISlimeEntity::AISlimeEntity(bool isTemplate, Firelight::ECS::EntityID entityID)
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 0.5f, radii);
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 
-	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "SlimeIdle", "SlimeWalk", 1, 0.8f, 2.0f, 2.0f, 1.0f);
+	AIStateBehaviour* attackingBehaviour = new AIAttackingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "SlimeIdle", "SlimeWalk", 1, 0.8f, 2.0f, 2.0f, 1.0f, "Slime Attack.wav");
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Attacking] = attackingBehaviour;
 
 	std::map<AIState, std::function<bool()>> idleTransitions;

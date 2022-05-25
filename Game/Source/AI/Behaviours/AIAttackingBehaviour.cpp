@@ -5,16 +5,17 @@
 #include "../../Player/PlayerEntity.h"
 #include <Source/ECS/Systems/AnimationSystem.h>
 
-AIAttackingBehaviour::AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string animation, std::string walkAnimation, int damage, float speed, float attackRange, float attackCooldown, float attackRadius) :
+AIAttackingBehaviour::AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string animation, std::string walkAnimation, int damage, float speed, float attackRange, float attackCooldown, float attackRadius, std::string attackSound) :
 	m_entityID(id),
-	m_rigidBodyComponent(rigidbodyComponent), 
-	m_targetAIComponent(targetAIComponent), 
+	m_rigidBodyComponent(rigidbodyComponent),
+	m_targetAIComponent(targetAIComponent),
 	m_attackAnimation(animation),
 	m_walkAnimation(walkAnimation),
 	m_damage(damage),
-	m_speed(speed), m_attackCooldown(attackCooldown), 
+	m_speed(speed), m_attackCooldown(attackCooldown),
 	m_attackRange(attackRange),
-	m_attackRadius(attackRadius)
+	m_attackRadius(attackRadius),
+	m_attackSound(attackSound)
 {
 	m_attackTimer = 0.0f;
 }
@@ -74,13 +75,6 @@ void AIAttackingBehaviour::Attack(Firelight::ECS::Entity* entity, Firelight::Mat
 		AnimationSystem::Instance()->Play(entity, m_attackAnimation);
 	}
 
-	
-
-	/*entity->GetComponent<AudioComponent>()->soundName = "Crocodile Attack.wav";
-	entity->GetComponent<AudioComponent>()->soundPos = Vector3D(entity->GetComponent<TransformComponent>()->GetPosition().x, entity->GetComponent<TransformComponent>()->GetPosition().y, entity->GetComponent<TransformComponent>()->GetPosition().z);
-
-	entity->PlayAudioClip();*/
-
 	m_isAttacking = true;
 	std::vector<Firelight::ECS::Entity*> targets = Firelight::Physics::PhysicsHelpers::OverlapCircle(attackPoint, m_attackRadius,
 		std::vector<int>
@@ -98,11 +92,19 @@ void AIAttackingBehaviour::Attack(Firelight::ECS::Entity* entity, Firelight::Mat
 
 		if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Player))
 		{
+			entity->GetComponent<AudioComponent>()->soundName = m_attackSound;
+			entity->GetComponent<AudioComponent>()->soundPos = Vector3D(m_rigidBodyComponent->nextPos.x, m_rigidBodyComponent->nextPos.y, m_rigidBodyComponent->nextPos.z);
+			entity->PlayAudioClip();
+
 			PlayerEntity* playerEntity = new PlayerEntity(target->GetEntityID());
 			playerEntity->RemoveHealth(m_damage);
 		}
 		else if (target->GetComponent<LayerComponent>()->layer == static_cast<int>(GameLayer::Enemy))
 		{
+			entity->GetComponent<AudioComponent>()->soundName = m_attackSound;
+			entity->GetComponent<AudioComponent>()->soundPos = Vector3D(m_rigidBodyComponent->nextPos.x, m_rigidBodyComponent->nextPos.y, m_rigidBodyComponent->nextPos.z);
+			entity->PlayAudioClip();
+
 			AIEntity* aiEntity = new AIEntity(target->GetEntityID());
 			aiEntity->RemoveHealth(m_damage);
 		}
