@@ -118,12 +118,12 @@ void AudioEngine::Initialise()
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
-	AudioChannel UIchannel("UI", 1, 10);
-	AudioChannel GameplayChannel("Game", 2, 6);
-	AudioChannel PlayerChannel("Player", 3, 7.5);
-	AudioChannel AmbienceChannel("Ambience", 2, 5);
-	AudioChannel backgroundMusicChannel("Background", 2, 5);
-	AudioChannel enemiesChannel("Enemies", 3, 7);
+	AudioChannel* UIchannel = new AudioChannel("UI", 1, 1.0f);
+	AudioChannel* GameplayChannel = new AudioChannel("Game", 2, 0.6f);
+	AudioChannel* PlayerChannel = new AudioChannel("Player", 3, 0.75f);
+	AudioChannel* AmbienceChannel = new AudioChannel("Ambience", 2, 0.5f);
+	AudioChannel* backgroundMusicChannel = new AudioChannel("Background", 2, 0.02f);
+	AudioChannel* enemiesChannel = new AudioChannel("Enemies", 3, 0.7f);
 	AudioEngine::engine->Update();
 }
 
@@ -211,21 +211,20 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 		//if holding 3D parameter
 		if (currentMode & FMOD_3D)
 		{
-			//Setup the annoying FMOD_VECTOR
-			FMOD_VECTOR position;
-			position.x = soundPos.x;
-			position.y = soundPos.y;
-			position.z = soundPos.z;
-
-			//set the 3d position
-			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
+			SetChannelPos(nextChannelId, soundPos);
 		}
 		/*if (currentMode & FMOD_LOOP_NORMAL)
 		{
 			engine->ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
 		}*/
 
-		Ducking();
+		//Ducking();
+		int ok = engine->ErrorCheck(channel->setVolume(VolumeTodB(audioChannel.channelVol)));
+		//SetChannelVolume(nextChannelId, audioChannel.channelVol);
+
+		/*float volume = 0.0f;
+
+		engine->ErrorCheck(channel->getVolume(&volume));*/
 
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
@@ -361,13 +360,13 @@ void AudioEngine::Ducking()
 					switch (it.first)
 					{
 					case 1:
-						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 						break;
 					case 2:
-						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
 						break;
 					case 3:
-						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6));
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6);
 						break;
 					}
 				}
@@ -379,10 +378,10 @@ void AudioEngine::Ducking()
 					switch (it.first)
 					{
 					case 1:
-						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 						break;
 					case 2:
-						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
+						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
 						break;
 					}
 				}
@@ -397,10 +396,10 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 1:
-					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 					break;
 				case 3:
-					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
 					break;
 				}
 			}
@@ -410,7 +409,7 @@ void AudioEngine::Ducking()
 			switch (it.first)
 			{
 			case 2:
-				it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+				it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 				break;
 
 			}
@@ -425,10 +424,10 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 2:
-					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 					break;
 				case 3:
-					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
 					break;
 				}
 			}
@@ -440,11 +439,18 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 2:
-					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
+					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 					break;
 
 				}
 			}
+		}
+	}
+	else
+	{
+		for (auto it : channelByPriority)
+		{
+			it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 		}
 	}
 }

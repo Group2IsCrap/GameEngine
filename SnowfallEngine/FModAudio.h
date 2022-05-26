@@ -25,7 +25,7 @@ namespace snowFallAudio
 			~AudioChannel();
 
 			int channelPriority = 0;
-			float channelVol = 50.0f;
+			float channelVol = 0.5f;
 		};
 
 		struct Instance
