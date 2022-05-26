@@ -70,16 +70,19 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 			}
 		}
 
-		if (Firelight::Maths::Vec3f::Dist(m_playerEntity->GetTransformComponent()->GetPosition(), currentEntity.GetComponent<TransformComponent>()->GetPosition()) > entitySpawnerComponent->spawnRadiusThreshold)
+		if (entitySpawnerComponent->spawnedEntity != nullptr)
 		{
-			if (entitySpawnerComponent->spawnedEntity != nullptr && entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
+			if (Firelight::Maths::Vec3f::Dist(m_playerEntity->GetTransformComponent()->GetPosition(), currentEntity.GetComponent<TransformComponent>()->GetPosition()) > entitySpawnerComponent->spawnRadiusThreshold)
 			{
-				if (entitySpawnerComponent->resourceID != -1)
+				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
 				{
-					entitySpawnerComponent->initialSpawn = false;
-					entitySpawnerComponent->spawnedEntity->Destroy();
-					entitySpawnerComponent->spawnedEntity = nullptr;
-					continue;
+					if (entitySpawnerComponent->resourceID != -1)
+					{
+						entitySpawnerComponent->initialSpawn = false;
+						entitySpawnerComponent->spawnedEntity->Destroy();
+						entitySpawnerComponent->spawnedEntity = nullptr;
+						continue;
+					}
 				}
 			}
 			continue;
