@@ -99,4 +99,6 @@ private:
 	bool m_canAttack = true;
 
 	WeaponComponent* fists;
+	ArmourComponent* m_helm;
+	ArmourComponent* m_chest;
 };
