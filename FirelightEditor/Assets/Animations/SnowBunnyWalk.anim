@@ -1,0 +1,12 @@
+{
+    "AnimationName": "SnowBunnyWalk",
+    "Loop": true,
+    "FrameTime": 128,
+    "FrameCount": 4,
+    "TextureNames": [
+        "Sprites\\Enemies\\SnowBunnyIdle.png",
+        "Sprites\\Enemies\\SnowBunnyWalk1.png",
+        "Sprites\\Enemies\\SnowBunnyWalk2.png",
+        "Sprites\\Enemies\\SnowBunnyWalk3.png"
+    ]
+}

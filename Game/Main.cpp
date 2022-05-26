@@ -60,6 +60,8 @@ using namespace snowFallAudio::FModAudio;
 static bool g_RenderDebug = false;
 static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
 
+Firelight::Maths::Vec3f g_cameraVelocityRef;
+
 static void ToggleDebugLayer()
 {
 	g_RenderDebug = !g_RenderDebug;
@@ -251,17 +253,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Camera
 		CameraEntity* camera = Engine::Instance().GetActiveCamera();
-		
 
 		// Player
 		player = new PlayerEntity();
 
-		// Grass
-		//SpriteEntity* test2 = new SpriteEntity();
-		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		//test2->GetSpriteComponent()->layer = 16;
-		//
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemySpawner();
@@ -282,7 +277,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//Resource PCG spawning
 		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
 		EnvironmentGeneration::Instance()->GenerateResources();
-
 		BiomeGeneration::Instance()->KillVoidTiles();
 
 		// UI
@@ -324,8 +318,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
 
-
-		PortalEntity* m_portalEntity = new PortalEntity();
+		// Portal
+		PortalEntity* portalEntity = new PortalEntity();
+		portalEntity->GetTransformComponent()->SetPosition(Vec3f(0.0f, 5.0f, 0.0f));
 
 		BackgroundMusicEntity* backgroundMusic = new BackgroundMusicEntity();
 
@@ -334,8 +329,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().Update();
 
 			Maths::Vec3f desiredPosition = player->GetTransformComponent()->GetPosition();
-			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->GetPosition(), desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
-			camera->GetTransformComponent()->SetPosition(smoothPosition);
+			TransformComponent* transformComponent = camera->GetTransformComponent();
+			camera->GetTransformComponent()->SetPosition(
+				Firelight::Maths::Vec3f::SmoothDamp(transformComponent->GetPosition(), desiredPosition, g_cameraVelocityRef, 0.35f, 10, Engine::Instance().GetTime().GetDeltaTime()));
 
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();

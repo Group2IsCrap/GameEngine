@@ -123,7 +123,17 @@ void ResourceEntity::HealthBelowZero()
 
 	this->PlayAudioClip();
 
-	this->GetComponent<ResourceComponent>()->isDead = true;
+	if (resourceComponent->resourceID >= 5)
+	{
+		this->Destroy();
+	}
+	else
+	{
+		this->GetComponent<ResourceComponent>()->isDead = true;
+	}
+
+
+	
 }
 
 void ResourceEntity::DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location)

@@ -15,11 +15,11 @@
 13,Frog Saliva ,,Sprites/Items/Frog_Saliva.png,5,Ingredient,0
 14,Frog Eye ,,Sprites/Items/Frog_eye.png,30,Ingredient,0
 15,Bug Wings ,,Sprites/Items/bug_wing.png,30,Ingredient,0
-16,Slime Clump ,,Sprites/Items/Feather.png,30,Ingredient,0
+16,Slime Clump ,,Sprites/Items/Slime_Clump.png,30,Ingredient,0
 17,Tongue,,Sprites/Items/Tongue.png,30,Ingredient,0
 18,Stinger,,Sprites/Items/Feather.png,30,Ingredient,0
-19,Poison,,Sprites/Items/Feather.png,30,Ingredient,0
-20,Bone,,Sprites/Items/Feather.png,30,Ingredient,0
+19,Poison,,Sprites/Items/Poison.png,30,Ingredient,0
+20,Bone,,Sprites/Items/Bone.png,30,Ingredient,0
 21,Potions 1,,Sprites/Items/Potion_Blue_V1.png,5,Food;Potions,0
 22,Potions 2,,Sprites/Items/Potion_Blue_V2.png,5,Food;Potions,0
 23,Potions 3,,Sprites/Items/Potion_Green_V1.png,5,Food;Potions,0
@@ -33,24 +33,29 @@
 31,Metal  Chest,,Sprites/Items/Armor/Metal-Armour.png,1,Armor;Chest,175
 32,Metal  Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
 33,Metal  Helm,,Sprites/Items/Armor/Metal-Helmet.png,1,Armor;Helm,130
-34,Scale   Chest,,Sprites/Items/Feather.png,1,Armor;Chest,0
+34,Scale   Chest,,Sprites/Items/Armor/Scale-Armour.png,1,Armor;Chest,175
 35,Scale   Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
-36,Scale   Helm,,Sprites/Items/Feather.png,1,Armor;Helm,0
+36,Scale   Helm,,Sprites/Items/Armor/Scale-Helmet.png,1,Armor;Helm,160
 37,Stone Pickaxe,,Sprites/Weapons/StonePickaxe.png,1,Weapon;Pickaxe,130
-38,Metal Pickaxe,,Sprites/Weapon/Metal_Pickaxe.png,1,Weapon;Pickaxe,0
-39,Infused Pickaxe,,Sprites/Weapon/Infused_Pickaxe.png,1,Weapon;Pickaxe,0
+38,Metal Pickaxe,,Sprites/Weapons/MetalPickaxe.png,1,Weapon;Pickaxe,130
+39,Infused Pickaxe,,Sprites/Weapons/InfusedPickaxe.png,1,Weapon;Pickaxe,130
 40,Stone Axe,,Sprites/Weapons/StoneAxe.png,1,Weapon;Axe,130
-41,Metal Axe,,Sprites/Weapon/Metal_Axe.png,1,Weapon;Axe,0
-42,Infused Axe,,Sprites/Weapon/Infused_Axe.png,1,Weapon;Axe,0
+41,Metal Axe,,Sprites/Weapons/MetalAxe.png,1,Weapon;Axe,130
+42,Infused Axe,,Sprites/Weapons/InfusedAxe.png,1,Weapon;Axe,130
 43,Stone_Sword,,Sprites/Weapons/StoneSword.png,1,Weapon,130
-44,Metal_Sword,,Sprites/Weapon/Metal_Sword.png,1,Weapon,0
-45,Croc_Sword,,Sprites/Weapon/Croc_Sword.png,1,Weapon,0
-46,sword4,,Sprites/Items/Feather.png,1,Weapon,0
-47,Berry,,Sprites/Items/Feather.png,5,Food,0
-48,Meat ,,Sprites/Items/Feather.png,5,Food,0
+44,Metal_Sword,,Sprites/Weapons/MetalSword.png,1,Weapon,130
+45,Croc_Sword,,Sprites/Weapons/CrocSword.png,1,Weapon,130
+46,Infused Sword,,Sprites/Weapons/InfusedSword.png,1,Weapon,130
+47,Berry,,Sprites/Items/Berry.png,5,Food,0
+48,Meat ,,Sprites/Items/Meat.png,5,Food,0
 49,combo 1,,Sprites/Items/Feather.png,5,Food,0
 50,combo 2,,Sprites/Items/Feather.png,5,Food,0
 51,combo 3,,Sprites/Items/Feather.png,5,Food,0
 52,combo 4,,Sprites/Items/Feather.png,5,Food,0
 53,combo 5,,Sprites/Items/Feather.png,5,Food,0
 54,combo 6,,Sprites/Items/Feather.png,5,Food,0
+55,Metal Ore,,Sprites/Items/Metal Ore.png,12,Ingredient,150
+56,Leather  Chest,,Sprites/Items/Armor/Leather-Armour.png,1,Armor;Chest,175
+57,Leather  Legs,,Sprites/Items/Feather.png,1,Armor;Legs,0
+58,Leather  Helm,,Sprites/Items/Armor/Leather-Helmet.png,1,Armor;Helm,160
+59,White Fur,,Sprites/Items/WhiteFur.png,30,Ingredient,0

@@ -131,8 +131,6 @@ void AudioEngine::Initialise()
 	AudioEngine::engine->Update();
 }
 
-
-
 void AudioEngine::Update()
 {
 	//update the current instance
