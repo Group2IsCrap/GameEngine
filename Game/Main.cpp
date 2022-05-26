@@ -60,6 +60,8 @@ using namespace snowFallAudio::FModAudio;
 static bool g_RenderDebug = false;
 static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
 
+Firelight::Maths::Vec3f g_cameraVelocityRef;
+
 static void ToggleDebugLayer()
 {
 	g_RenderDebug = !g_RenderDebug;
@@ -327,8 +329,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().Update();
 
 			Maths::Vec3f desiredPosition = player->GetTransformComponent()->GetPosition();
-			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->GetPosition(), desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
-			camera->GetTransformComponent()->SetPosition(smoothPosition);
+			TransformComponent* transformComponent = camera->GetTransformComponent();
+			camera->GetTransformComponent()->SetPosition(
+				Firelight::Maths::Vec3f::SmoothDamp(transformComponent->GetPosition(), desiredPosition, g_cameraVelocityRef, 0.35f, 10, Engine::Instance().GetTime().GetDeltaTime()));
 
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();
