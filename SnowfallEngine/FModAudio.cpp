@@ -15,8 +15,6 @@ AudioEngine::~AudioEngine()
 	delete engine;
 }
 
-
-
 //Instance functions
 Instance::Instance()
 {
