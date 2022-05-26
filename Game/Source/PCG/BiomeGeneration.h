@@ -11,7 +11,7 @@
 
 #include <map>
 
-#define SMALL_FLOAT_VAL 0.2
+#define SMALL_FLOAT_VAL 0.4
 
 using namespace Firelight::Graphics;
 using namespace Firelight::Maths;

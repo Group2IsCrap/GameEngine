@@ -46,6 +46,8 @@ private:
 	float m_rockSpawnRate;
 	float m_enemySpawnRate;
 	float m_passiveAISpawnRate;
+	float m_snowAISpawnRate;
+	float m_snowEnemySpawnRate;
 	float m_bushSpawnRate;
 	float m_berryBushSpawnRate;
 

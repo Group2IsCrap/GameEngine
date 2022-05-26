@@ -9,11 +9,13 @@ EnvironmentGeneration::EnvironmentGeneration()
 	: m_spawnRateNoise(nullptr)
 	, m_biomeInfo(nullptr)
 	, m_tileMap(nullptr)
-	, m_treeSpawnRate(0.05f)
+	, m_treeSpawnRate(0.1f)
 	, m_rockSpawnRate(0.05f)
-	, m_enemySpawnRate(0.005f)
-	, m_passiveAISpawnRate(0.05f)
-	, m_bushSpawnRate(0.05f)
+	, m_enemySpawnRate(0.009f)
+	, m_passiveAISpawnRate(0.04f)
+	, m_snowAISpawnRate(0.04)
+	, m_snowEnemySpawnRate(0.01)
+	, m_bushSpawnRate(0.1f)
 	, m_berryBushSpawnRate(0.05f)
 	, m_respawnCooldown(20.0)
 	, m_noiseIndices({0, 3, 6, 9})
@@ -218,14 +220,14 @@ void EnvironmentGeneration::SpawnForestResources(Firelight::TileMap::Tile* tile,
 		switch (randomVal)
 		{
 		case 0:
-			if (CanSpawnFromNoise(m_noiseIndices[0], m_treeSpawnRate))
+			if (CanSpawnFromNoise(m_noiseIndices[0], m_enemySpawnRate))
 			{
 				SpawnBear(position);
 				tile->SetIsOccupied(true);
 			}
 			break;
 		case 1:
-			if (CanSpawnFromNoise(m_noiseIndices[1], m_rockSpawnRate))
+			if (CanSpawnFromNoise(m_noiseIndices[1], m_passiveAISpawnRate))
 			{
 				SpawnBunny(position);
 				tile->SetIsOccupied(true);
@@ -268,14 +270,14 @@ void EnvironmentGeneration::SpawnSnowResources(Firelight::TileMap::Tile* tile, V
 		switch (randomVal)
 		{
 		case 0:
-			if (CanSpawnFromNoise(m_noiseIndices[0], m_enemySpawnRate))
+			if (CanSpawnFromNoise(m_noiseIndices[0], m_snowEnemySpawnRate))
 			{
 				SpawnSnowBear(position);
 				tile->SetIsOccupied(true);
 			}
 			break;
 		case 1:
-			if (CanSpawnFromNoise(m_noiseIndices[1], m_passiveAISpawnRate))
+			if (CanSpawnFromNoise(m_noiseIndices[1], m_snowAISpawnRate))
 			{
 				SpawnSnowBunny(position);
 				tile->SetIsOccupied(true);
@@ -290,6 +292,8 @@ bool EnvironmentGeneration::CanSpawnFromNoise(int noiseIndex, float spawnChance)
 {
 	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
+		int randomVal = Random::InRange(0, 1);
+
 		float* noiseData = m_spawnRateNoise->GetNoiseData();
 		float data = noiseData[noiseIndex];
 
@@ -300,7 +304,7 @@ bool EnvironmentGeneration::CanSpawnFromNoise(int noiseIndex, float spawnChance)
 		{
 			return true;
 		}
-		if (data >= compareMin - spawnChance && data < compareMax)
+		if (data >= compareMin + spawnChance && data < compareMax)
 		{
 			return false;
 		}
