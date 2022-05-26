@@ -251,17 +251,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Camera
 		CameraEntity* camera = Engine::Instance().GetActiveCamera();
-		
 
 		// Player
 		player = new PlayerEntity();
 
-		// Grass
-		//SpriteEntity* test2 = new SpriteEntity();
-		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		//test2->GetSpriteComponent()->layer = 16;
-		//
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
 		SetupEnemySpawner();
@@ -282,7 +275,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//Resource PCG spawning
 		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
 		EnvironmentGeneration::Instance()->GenerateResources();
-
 		BiomeGeneration::Instance()->KillVoidTiles();
 
 		// UI
@@ -324,8 +316,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
 
-
-		PortalEntity* m_portalEntity = new PortalEntity();
+		// Portal
+		PortalEntity* portalEntity = new PortalEntity();
+		portalEntity->GetTransformComponent()->SetPosition(Vec3f(0.0f, 5.0f, 0.0f));
 
 		BackgroundMusicEntity* backgroundMusic = new BackgroundMusicEntity();
 

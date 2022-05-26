@@ -4,6 +4,7 @@
 #include "../../Core/Layers.h"
 #include "../../Player/PlayerEntity.h"
 #include <Source/ECS/Systems/AnimationSystem.h>
+#include "../../PCG/BiomeGeneration.h"
 
 AIAttackingBehaviour::AIAttackingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string animation, std::string walkAnimation, int damage, float speed, float attackRange, float attackCooldown, float attackRadius, std::string attackSound) :
 	m_entityID(id),
@@ -60,6 +61,14 @@ void AIAttackingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils:
 	{
 		// Out of range, move to target
 		m_rigidBodyComponent->velocity += dir * m_speed * static_cast<float>(time.GetDeltaTime());
+
+		Vec2f tilePos = Vec2f(targetDir.x, targetDir.y) + Vec2f(m_rigidBodyComponent->nextPos.x, m_rigidBodyComponent->nextPos.y);
+
+		if (BiomeGeneration::Instance()->IsInVoid(tilePos))
+		{
+			m_rigidBodyComponent->velocity = Vec3f(0.0f, 0.0f, 0.0f);
+		}
+
 		float magnitude = m_rigidBodyComponent->velocity.Length();
 		if (m_walkAnimation != "" && magnitude > 0.05f)
 		{
