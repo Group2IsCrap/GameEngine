@@ -12,7 +12,7 @@ namespace Firelight::TileMap
 
 		void SetTileTexture(Graphics::Texture* texture);
 		void SetDestinationRect(float x, float y, float w, float h);
-		void SetTileID(unsigned int m_tileID);
+		void SetTileID(int m_tileID);
 		void SetIsDrawn(bool isDrawn);
 		void SetIsOccupied(bool occupied);
 

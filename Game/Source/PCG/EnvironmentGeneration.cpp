@@ -1,6 +1,7 @@
 #include "EnvironmentGeneration.h"
 #include "../Game/Source/WorldEntities/ResourceDatabase.h"
 #include "../WorldEntities/EntitySpawnerComponent.h"
+#include "../Source/Maths/Random.h"
 
 EnvironmentGeneration* EnvironmentGeneration::sm_instance = nullptr;
 
@@ -20,7 +21,7 @@ void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, Bio
 	m_tileMap = tileMap;
 	m_biomeInfo = biomeInfo;
 	m_spawnRateNoise = new Noise();
-	m_spawnRateNoise->SetSeed(3007);
+	m_spawnRateNoise->SetSeed(Firelight::Maths::Random::RandomRange(100, 2000));
 	m_spawnRateNoise->SetNoiseScale(250.0f);
 	m_spawnRateNoise->CreateNoise();
 }
@@ -46,7 +47,6 @@ void EnvironmentGeneration::GenerateResources()
 	int noiseRockIndex = 7;
 	int noiseEnemyIndex = 12;
 	int noiseBushIndex = 16;
-	int numberoftreesspawn = 0;
 	for (row = tiles.begin(); row != tiles.end(); row++)
 	{
 		for (column = row->begin(); column != row->end(); column++)
@@ -56,31 +56,32 @@ void EnvironmentGeneration::GenerateResources()
 				Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
 				if (CanSpawnFromNoise(noiseTreeIndex, m_treeSpawnRate))
 				{
-					if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
+					if (m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest
+						|| m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Swamp
+						|| m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Snow)
 					{
 						SpawnTree(position);
 						(*column)->SetIsOccupied(true);
-						numberoftreesspawn++;
 					}
 				}
-				//else if (CanSpawnFromNoise(noiseRockIndex, m_rockSpawnRate))
-				//{
-				//	SpawnRock(position);
-				//	(*column)->SetIsOccupied(true);
-				//}
-				//else if (CanSpawnFromNoise(noiseEnemyIndex, m_enemySpawnRate))
-				//{
-				//	if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
-				//	{
-				//		SpawnCroc(position);
-				//		(*column)->SetIsOccupied(true);
-				//	}
-				//}
-				//else if (CanSpawnFromNoise(noiseBushIndex, m_bushSpawnRate))
-				//{
-				//	SpawnBush(position);
-				//	(*column)->SetIsOccupied(true);
-				//}
+				if (CanSpawnFromNoise(noiseRockIndex, m_rockSpawnRate))
+				{
+					SpawnRock(position);
+					(*column)->SetIsOccupied(true);
+				}
+				if (CanSpawnFromNoise(noiseEnemyIndex, m_enemySpawnRate))
+				{
+					if (m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Swamp)
+					{
+						SpawnCroc(position);
+						(*column)->SetIsOccupied(true);
+					}
+				}
+				if (CanSpawnFromNoise(noiseBushIndex, m_bushSpawnRate))
+				{
+					SpawnBush(position);
+					(*column)->SetIsOccupied(true);
+				}
 			}
 			noiseRockIndex = noiseRockIndex + 10;
 			noiseBushIndex = noiseBushIndex + 20;
@@ -97,7 +98,7 @@ void EnvironmentGeneration::SpawnTree(Vec3f position)
 	spawnerComponent->resourceID = 0;
 	spawnerComponent->respawnCooldown = 3;
 	treeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
-	treeSpawner->GetTransformComponent()->SetPosition(position);
+	treeSpawner->GetTransformComponent()->SetPosition(Vec3f(position.x, position.y + 5, position.z));
 }
 
 void EnvironmentGeneration::SpawnRock(Vec3f position)
