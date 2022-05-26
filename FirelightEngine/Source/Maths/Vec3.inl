@@ -274,7 +274,7 @@ namespace Firelight::Maths
     }
 
     template<typename T>
-    inline Vec3<T> Vec3<T>::SmoothDamp(const Vec3<T>& Vector1, const Vec3<T>& Vector2, const Vec3<T>& currentVelocity, float smoothTime, float maxSpeed, double deltaTime)
+    inline Vec3<T> Vec3<T>::SmoothDamp(const Vec3<T>& Vector1, Vec3<T>& Vector2, Vec3<T>& currentVelocity, float smoothTime, float maxSpeed, double deltaTime)
     {
         float output_x = 0.0f;
         float output_y = 0.0f;
