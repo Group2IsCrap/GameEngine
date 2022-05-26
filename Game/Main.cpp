@@ -101,7 +101,7 @@ void SpawnItem1()
 	ItemDatabase::Instance()->CreateInstanceOfItem(1);
 	ItemDatabase::Instance()->CreateInstanceOfItem(2);
 	ItemDatabase::Instance()->CreateInstanceOfItem(3);
-	ItemDatabase::Instance()->CreateInstanceOfItem(21);
+	ItemDatabase::Instance()->CreateInstanceOfItem(31);
 }
 
 void GenerateBiomeUI()
