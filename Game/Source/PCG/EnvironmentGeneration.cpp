@@ -15,6 +15,7 @@ EnvironmentGeneration::EnvironmentGeneration()
 	, m_passiveAISpawnRate(0.1f)
 	, m_bushSpawnRate(0.05f)
 	, m_berryBushSpawnRate(0.05f)
+	, m_respawnCooldown(20.0)
 	, m_noiseIndices({0, 3, 6, 9})
 {}
 
@@ -72,7 +73,7 @@ void EnvironmentGeneration::SpawnTree(Vec3f position)
 	GameEntity* treeSpawner = new GameEntity("Tree Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->resourceID = 0;
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	treeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	treeSpawner->GetTransformComponent()->SetPosition(Vec3f(position.x, position.y + 5, position.z));
 }
@@ -82,7 +83,7 @@ void EnvironmentGeneration::SpawnRock(Vec3f position)
 	GameEntity* rockSpawner = new GameEntity("Rock Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->resourceID = 1;
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	rockSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	rockSpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -92,7 +93,7 @@ void EnvironmentGeneration::SpawnCroc(Vec3f position)
 	GameEntity* enemySpawner = new GameEntity("Crocodile Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Crocodile";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	enemySpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	enemySpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -102,7 +103,7 @@ void EnvironmentGeneration::SpawnDeer(Vec3f position)
 	GameEntity* enemySpawner = new GameEntity("Deer Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Deer";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	enemySpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	enemySpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -123,7 +124,7 @@ void EnvironmentGeneration::SpawnBear(Vec3f position)
 	GameEntity* bushSpawner = new GameEntity("Bear Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Bear";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	bushSpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -133,7 +134,7 @@ void EnvironmentGeneration::SpawnBunny(Vec3f position)
 	GameEntity* bushSpawner = new GameEntity("Bunny Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Bunny";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	bushSpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -143,7 +144,7 @@ void EnvironmentGeneration::SpawnSnowBear(Vec3f position)
 	GameEntity* bushSpawner = new GameEntity("Snow Bear Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "SnowBear";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	bushSpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -153,7 +154,7 @@ void EnvironmentGeneration::SpawnSnowBunny(Vec3f position)
 	GameEntity* bushSpawner = new GameEntity("Snow Bunny Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "SnowBunny";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	bushSpawner->GetTransformComponent()->SetPosition(position);
 }
@@ -163,7 +164,7 @@ void EnvironmentGeneration::SpawnSlime(Vec3f position)
 	GameEntity* SlimeSpawner = new GameEntity("Slime Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Slime";
-	spawnerComponent->respawnCooldown = 3;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
 	SlimeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	SlimeSpawner->GetTransformComponent()->SetPosition(position);
 }

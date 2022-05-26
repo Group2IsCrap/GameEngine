@@ -439,7 +439,7 @@ BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 		{
 			return BiomeType::Swamp;
 		}
-		if (data >= compareMax - adjustmentSize && data < compareMax)
+		if (data >= compareMax - adjustmentSize && data <= compareMax)
 		{
 			return BiomeType::Snow;
 		}

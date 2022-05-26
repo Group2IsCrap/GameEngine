@@ -49,6 +49,8 @@ private:
 	float m_bushSpawnRate;
 	float m_berryBushSpawnRate;
 
+	double m_respawnCooldown;
+
 	std::vector<unsigned int> m_noiseIndices;
 };
 
