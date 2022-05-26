@@ -111,7 +111,6 @@ namespace Firelight::Physics
 
 	void PhysicsSystem::Update(const Utils::Time& time, const bool& isPaused)
 	{
-
 		if (!isPaused)
 		{
 			for (int i = 0; i < m_entities.size(); ++i)
@@ -150,14 +149,14 @@ namespace Firelight::Physics
 			{
 				rigidBodyComponent->interpolationTime = 0.0f;
 				rigidBodyComponent->nextPos += rigidBodyComponent->velocity;
-
 			}
 			else
 			{
 				Maths::Vec3f position = transformComponent->GetPosition();
-				transformComponent->SetPosition(transformComponent->GetPosition() + rigidBodyComponent->velocity);;
+				transformComponent->SetPosition(transformComponent->GetPosition() + rigidBodyComponent->velocity);
 				rigidBodyComponent->nextPos = transformComponent->GetPosition();
 			}
+
 
 			float val = (1 - fixedDeltaTime * rigidBodyComponent->dragCoefficient);
 

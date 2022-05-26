@@ -57,6 +57,10 @@ using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
 
+static UICanvas* canvas = nullptr;
+static PlayerEntity* player = nullptr;
+static PlayerHealthUI* playerHealthUI = nullptr;
+
 static bool g_RenderDebug = false;
 static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
 
@@ -190,9 +194,7 @@ void ReAddToPlayer(void* toAdd)
 //
 //}
 
-static UICanvas* canvas = nullptr;
-static PlayerEntity* player = nullptr;
-static PlayerHealthUI* playerHealthUI = nullptr;
+
 
 void PlayGame()
 {
@@ -287,6 +289,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Debug UI
 		SetupDebugUI();
+
+		// Player Event
+		Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::OnPlayerCreated::sm_descriptor, (void*)player->GetEntityID());
 
 		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();

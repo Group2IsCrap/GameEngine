@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Source/ECS/EntityWrappers/SpriteEntity.h>
+#include "../Core/CharacterEntity.h"
 #include <Source/ECS/Components/PhysicsComponents.h>
 
 #include "../CoreComponents/HealthComponent.h"
@@ -9,7 +9,7 @@
 #include <Source/ECS/ECSDefines.h>
 #include <Source/Maths/Vec3.h>
 
-class ResourceEntity : public Firelight::ECS::SpriteEntity
+class ResourceEntity : public CharacterEntity
 {
 public:
 
