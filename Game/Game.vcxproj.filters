@@ -28,6 +28,8 @@
     <ClCompile Include="Source\WorldEntities\PortalEntity.cpp" />
     <ClCompile Include="Source\AI\Enemies\AIBunnyEntity.cpp" />
     <ClCompile Include="Source\AI\Enemies\AIBearEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISnowBearEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISnowBunnyEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\AIEntity.cpp" />
@@ -61,6 +63,8 @@
     <ClInclude Include="Source\WorldEntities\PortalEntity.h" />
     <ClInclude Include="Source\AI\Enemies\AIBunnyEntity.h" />
     <ClInclude Include="Source\AI\Enemies\AIBearEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AISnowBearEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AISnowBunnyEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />

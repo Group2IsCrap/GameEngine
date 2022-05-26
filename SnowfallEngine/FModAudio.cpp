@@ -3,10 +3,6 @@
 #include <Windows.h>
 using namespace snowFallAudio::FModAudio;
 
-
-
-
-
 AudioEngine* AudioEngine::engine = new AudioEngine;
 
 AudioEngine::AudioEngine()
@@ -122,12 +118,12 @@ void AudioEngine::Initialise()
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
-	AudioChannel UIchannel("UI", 1, 100);
-	AudioChannel GameplayChannel("Game", 2, 60);
-	AudioChannel PlayerChannel("Player", 3, 75);
-	AudioChannel AmbienceChannel("Ambience", 2, 50);
-	AudioChannel backgroundMusicChannel("Background", 2, 50);
-	AudioChannel enemiesChannel("Enemies", 3, 70);
+	AudioChannel UIchannel("UI", 1, 10);
+	AudioChannel GameplayChannel("Game", 2, 6);
+	AudioChannel PlayerChannel("Player", 3, 7.5);
+	AudioChannel AmbienceChannel("Ambience", 2, 5);
+	AudioChannel backgroundMusicChannel("Background", 2, 5);
+	AudioChannel enemiesChannel("Enemies", 3, 7);
 	AudioEngine::engine->Update();
 }
 
@@ -365,13 +361,13 @@ void AudioEngine::Ducking()
 					switch (it.first)
 					{
 					case 1:
-						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 						break;
 					case 2:
-						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
 						break;
 					case 3:
-						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6);
+						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.6));
 						break;
 					}
 				}
@@ -383,10 +379,10 @@ void AudioEngine::Ducking()
 					switch (it.first)
 					{
 					case 1:
-						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 						break;
 					case 2:
-						it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+						it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
 						break;
 					}
 				}
@@ -401,10 +397,10 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 1:
-					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 					break;
 				case 3:
-					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
 					break;
 				}
 			}
@@ -414,7 +410,7 @@ void AudioEngine::Ducking()
 			switch (it.first)
 			{
 			case 2:
-				it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+				it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 				break;
 
 			}
@@ -429,10 +425,10 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 2:
-					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 					break;
 				case 3:
-					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8);
+					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol * 0.8));
 					break;
 				}
 			}
@@ -444,7 +440,7 @@ void AudioEngine::Ducking()
 				switch (it.first)
 				{
 				case 2:
-					it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
+					it.second->setVolume(VolumeTodB(fmodInstance->m_listOfChannels[it.second].channelVol));
 					break;
 
 				}

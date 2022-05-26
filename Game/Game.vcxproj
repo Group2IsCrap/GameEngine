@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClCompile Include="Source\AI\Enemies\AIBearEntity.cpp" />
     <ClCompile Include="Source\AI\Enemies\AIBunnyEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISnowBearEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AISnowBunnyEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
@@ -192,6 +194,8 @@
   <ItemGroup>
     <ClInclude Include="Source\AI\Enemies\AIBearEntity.h" />
     <ClInclude Include="Source\AI\Enemies\AIBunnyEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AISnowBearEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AISnowBunnyEntity.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
     <ClInclude Include="Source\PCG\PCGEvents.h" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
