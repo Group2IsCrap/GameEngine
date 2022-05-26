@@ -114,6 +114,11 @@ void BiomeGeneration::GenerateWorld()
 		curIslandCentre.y = (float)m_OccupiedIslandSpaces[randomIndex].y;
 
 		FindNextIslandCentre(curIslandCentre, direction, destinationRect, iterator);
+
+		if (iterator >= m_numberOfIslands * 4)
+		{
+			break;
+		}
 	}
 
 	m_OccupiedIslandSpaces.clear();
@@ -252,10 +257,13 @@ void BiomeGeneration::FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpa
 				currentIslandCentre.x = (float)potentialNewIslandPosition.x;
 				isIslandPositionEmpty = true;
 			}
-
 			break;
 		}
 		iterator++;
+		if (iterator >= m_numberOfIslands * 4)
+		{
+			return;
+		}
 		direction = CalculateNextIslandDirection(iterator);
 	}
 }
@@ -352,73 +360,81 @@ bool BiomeGeneration::IsIslandSpaceFree(Vec2i newIslandPosition)
 
 IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int noiseIndex)
 {
-	float* noiseData = m_islandDirectionNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
+	{
+		float* noiseData = m_islandDirectionNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
 
-	if (data >= -1.0 && data <= -0.5)
-	{
-		return IslandSpawnDirection::North;
-	}
-	if (data > -0.5 && data <= 0.0)
-	{
-		return IslandSpawnDirection::East;
-	}
-	if (data >= 0.0f && data < 0.5f)
-	{
-		return IslandSpawnDirection::South;
-	}
-	if (data >= 0.5 && data <= 1)
-	{
-		return IslandSpawnDirection::West;
+		if (data >= -1.0 && data <= -0.5)
+		{
+			return IslandSpawnDirection::North;
+		}
+		if (data > -0.5 && data <= 0.0)
+		{
+			return IslandSpawnDirection::East;
+		}
+		if (data >= 0.0f && data < 0.5f)
+		{
+			return IslandSpawnDirection::South;
+		}
+		if (data >= 0.5 && data <= 1)
+		{
+			return IslandSpawnDirection::West;
+		}
 	}
 	return IslandSpawnDirection::North;
 }
 
-unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
+unsigned int BiomeGeneration::CalculateIslandShape(int noiseIndex)
 {
-	float* noiseData = m_islandShapeNoise->GetNoiseData();
-	float data = noiseData[perlinIndex];
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
+	{
+		float* noiseData = m_islandShapeNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
 
-	if (data >= -1.0f && data <= 0.0f)
-	{
-		return 0;
+		if (data >= -1.0f && data <= 0.0f)
+		{
+			return 0;
+		}
+		if (data > 0.0f && data <= 0.5)
+		{
+			return 1;
+		}
+		if (data >= 0.5 && data <= 1.0f)
+		{
+			return 2;
+		}
 	}
-	if (data > 0.0f && data <= 0.5)
-	{
-		return 1;
-	}
-	if (data >= 0.5 && data <= 1.0f)
-	{
-		return 2;
-	}
-
 	return 0;
 }
 
 
 BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 {
-	float* noiseData = m_biomeNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	float compareMin = -1.0f;
-	float compareMax = 1.0f;
-
-	float comparisonSampleSize = compareMax - compareMin;
-	float adjustmentSize = comparisonSampleSize / m_biomeCount;
-
-
-	if (data >= compareMin && data <= compareMin + adjustmentSize)
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
-		return BiomeType::Forest;
-	}
-	if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize)
-	{
-		return BiomeType::Swamp;
-	}
-	if (data >= compareMax - adjustmentSize && data < compareMax)
-	{
-		return BiomeType::Snow;
+		float* noiseData = m_biomeNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
+
+		float compareMin = -1.0f;
+		float compareMax = 1.0f;
+
+		float comparisonSampleSize = compareMax - compareMin;
+		float adjustmentSize = comparisonSampleSize / m_biomeCount;
+
+
+		if (data >= compareMin && data <= compareMin + adjustmentSize)
+		{
+			return BiomeType::Forest;
+		}
+		if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize)
+		{
+			return BiomeType::Swamp;
+		}
+		if (data >= compareMax - adjustmentSize && data < compareMax)
+		{
+			return BiomeType::Snow;
+		}
 	}
 	return BiomeType::Forest;
 }
@@ -475,6 +491,30 @@ void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
 		}
 	}
+}
+
+void BiomeGeneration::KillVoidTiles()
+{
+	auto& tileMap = m_tileMap->GetTileMap();
+	for (size_t rowIndex = tileMap.size() - 1; rowIndex > 0; --rowIndex)
+	{
+		auto& rowObject = tileMap[rowIndex];
+
+		for (size_t columnIndex = rowObject.size() - 1; columnIndex > 0; --columnIndex)
+		{
+			if (!rowObject[columnIndex]->IsDrawn())
+			{
+				rowObject[columnIndex] = nullptr;
+				delete rowObject[columnIndex];
+				rowObject.erase(rowObject.begin() + columnIndex);
+			}
+			if (rowObject.size() == 0)
+			{
+				tileMap.erase(tileMap.begin() + rowIndex);
+			}
+		}
+	}
+	m_tileMap->SetTileMap(tileMap);
 }
 
 void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal)

@@ -21,6 +21,8 @@ namespace Firelight::Maths
 
         static Rect<T> CreateNDCRectInWorldRect(const Rect<T>& smallRect, const Rect<T>& worldRect);
 
+        bool    IsOverlappingRect(const Rect<T>& otherRect) const;
+
     public:
         T x, y, w, h;
     };

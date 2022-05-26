@@ -1,5 +1,6 @@
 #include "EnvironmentGeneration.h"
 #include "../Game/Source/WorldEntities/ResourceDatabase.h"
+#include "../WorldEntities/EntitySpawnerComponent.h"
 
 EnvironmentGeneration* EnvironmentGeneration::sm_instance = nullptr;
 
@@ -7,6 +8,11 @@ EnvironmentGeneration::EnvironmentGeneration()
 	: m_spawnRateNoise(nullptr)
 	, m_biomeInfo(nullptr)
 	, m_tileMap(nullptr)
+	, m_treeSpawnRate(0.05f)
+	, m_rockSpawnRate(0.05f)
+	, m_enemySpawnRate(0.05f)
+	, m_bushSpawnRate(0.05f)
+	, m_berryBushSpawnRate(0.05f)
 {}
 
 void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo)
@@ -36,50 +42,112 @@ void EnvironmentGeneration::GenerateResources()
 
 	std::vector<std::vector<Firelight::TileMap::Tile*>> tiles = m_tileMap->GetTileMap();
 
-	int noiseTreeindex = 0;
-	int noiseRockindex = 10;
+	int noiseTreeIndex = 0;
+	int noiseRockIndex = 7;
+	int noiseEnemyIndex = 12;
+	int noiseBushIndex = 16;
+	int numberoftreesspawn = 0;
 	for (row = tiles.begin(); row != tiles.end(); row++)
 	{
 		for (column = row->begin(); column != row->end(); column++)
 		{
-			if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
+			if (!(*column)->IsOccupied())
 			{
-				if (!(*column)->IsOccupied())
+				Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
+				if (CanSpawnFromNoise(noiseTreeIndex, m_treeSpawnRate))
 				{
-					Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
-					if (CanSpawnTreeFromNoise(noiseTreeindex))
+					if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
 					{
 						SpawnTree(position);
 						(*column)->SetIsOccupied(true);
-					}
-					else if (CanSpawnRockFromNoise(noiseRockindex))
-					{
-						SpawnRock(position);
-						(*column)->SetIsOccupied(true);
+						numberoftreesspawn++;
 					}
 				}
-				noiseRockindex = noiseRockindex + 10;
-				noiseTreeindex++;
+				//else if (CanSpawnFromNoise(noiseRockIndex, m_rockSpawnRate))
+				//{
+				//	SpawnRock(position);
+				//	(*column)->SetIsOccupied(true);
+				//}
+				//else if (CanSpawnFromNoise(noiseEnemyIndex, m_enemySpawnRate))
+				//{
+				//	if (m_biomeInfo->mapOfBiomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest)
+				//	{
+				//		SpawnCroc(position);
+				//		(*column)->SetIsOccupied(true);
+				//	}
+				//}
+				//else if (CanSpawnFromNoise(noiseBushIndex, m_bushSpawnRate))
+				//{
+				//	SpawnBush(position);
+				//	(*column)->SetIsOccupied(true);
+				//}
 			}
+			noiseRockIndex = noiseRockIndex + 10;
+			noiseBushIndex = noiseBushIndex + 20;
+			noiseEnemyIndex = noiseEnemyIndex + 30;
+			noiseTreeIndex++;
 		}
 	}
 }
 
 void EnvironmentGeneration::SpawnTree(Vec3f position)
 {
-	ResourceEntity* treeEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(0);
-	treeEntity->GetTransformComponent()->SetPosition(position);
+	GameEntity* treeSpawner = new GameEntity("Tree Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 0;
+	spawnerComponent->respawnCooldown = 3;
+	treeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	treeSpawner->GetTransformComponent()->SetPosition(position);
 }
 
 void EnvironmentGeneration::SpawnRock(Vec3f position)
 {
-	ResourceEntity* rockEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(1);
-	rockEntity->GetTransformComponent()->SetPosition(position);
+	GameEntity* rockSpawner = new GameEntity("Rock Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 1;
+	spawnerComponent->respawnCooldown = 3;
+	rockSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	rockSpawner->GetTransformComponent()->SetPosition(position);
 }
 
-bool EnvironmentGeneration::CanSpawnTreeFromNoise(int noiseIndex)
+void EnvironmentGeneration::SpawnCroc(Vec3f position)
 {
-	if (noiseIndex > NOISE_DATA_SIZE * NOISE_DATA_SIZE)
+	GameEntity* enemySpawner = new GameEntity("Crocodile Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Crocodile";
+	spawnerComponent->respawnCooldown = 3;
+	enemySpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	enemySpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnDeer(Vec3f position)
+{
+	GameEntity* enemySpawner = new GameEntity("Crocodile Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Deer";
+	spawnerComponent->respawnCooldown = 3;
+	enemySpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	enemySpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnBush(Vec3f position)
+{
+	GameEntity* bushSpawner = new GameEntity("Bush Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 2;
+	spawnerComponent->respawnCooldown = 3;
+	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+//void EnvironmentGeneration::SpawnBerryBush(Vec3f position)
+//{
+//
+//}
+
+bool EnvironmentGeneration::CanSpawnFromNoise(int noiseIndex, float spawnChance)
+{
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
 		float* noiseData = m_spawnRateNoise->GetNoiseData();
 		float data = noiseData[noiseIndex];
@@ -87,31 +155,6 @@ bool EnvironmentGeneration::CanSpawnTreeFromNoise(int noiseIndex)
 		float compareMin = -1.0f;
 		float compareMax = 1.0f;
 
-		float spawnChance = 0.05f;
-
-		if (data >= compareMin && data <= compareMin + spawnChance)
-		{
-			return true;
-		}
-		if (data >= compareMin - spawnChance && data < compareMax)
-		{
-			return false;
-		}
-	}
-	return false;
-}
-
-bool EnvironmentGeneration::CanSpawnRockFromNoise(int noiseIndex)
-{
-	if (noiseIndex > NOISE_DATA_SIZE * NOISE_DATA_SIZE)
-	{
-		float* noiseData = m_spawnRateNoise->GetNoiseData();
-		float data = noiseData[noiseIndex];
-
-		float compareMin = -1.0f;
-		float compareMax = 1.0f;
-
-		float spawnChance = 0.05f;
 		if (data >= compareMin && data <= compareMin + spawnChance)
 		{
 			return true;

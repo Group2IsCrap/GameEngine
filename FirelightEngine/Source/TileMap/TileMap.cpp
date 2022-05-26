@@ -68,11 +68,13 @@ namespace Firelight::TileMap
 
     void TileMap::DrawTiles()
     {
-        for (auto row = m_tileMap.begin(); row != m_tileMap.end(); ++row)
+        for (size_t rowIndex = 0; rowIndex < m_tileMap.size(); ++rowIndex)
         {
-            for (auto column = row->begin(); column != row->end(); ++column)
+            auto& rowObject = m_tileMap[rowIndex];
+
+            for (size_t columnIndex = 0; columnIndex < rowObject.size(); ++columnIndex)
             {
-                (*column)->DrawTile();
+                rowObject[columnIndex]->DrawTile();
             }
         }
     }
@@ -97,6 +99,11 @@ namespace Firelight::TileMap
         m_tileMapWidth = tileMapWidth;
     }
 
+    void TileMap::SetTileMap(std::vector<std::vector<Tile*>> tileMap)
+    {
+        m_tileMap = tileMap;
+    }
+
     Tile* TileMap::GetTileAtPosition(Maths::Vec2f position)
     {
         for (auto& tilesVec : m_tileMap)
@@ -112,7 +119,7 @@ namespace Firelight::TileMap
                 }
             }
         }
-        m_emptyTilePtr->SetTileID(-1);
+        m_emptyTilePtr->SetTileID(0);
         return m_emptyTilePtr;
     }
 

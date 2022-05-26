@@ -66,4 +66,8 @@ namespace Firelight::TileMap
 	{
 		return m_isOccupied;
 	}
+	bool Tile::IsDrawn() const
+	{
+		return m_isDrawn;
+	}
 }
