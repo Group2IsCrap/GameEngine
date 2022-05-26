@@ -49,19 +49,19 @@ void AIEntity::HealthBelowZero()
 	if (this->GetIDComponent()->name == "Deer")
 	{
 		this->GetComponent<AudioComponent>()->soundName = "Deer.wav";
-		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(5);
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(6);
 		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
 		resourceEntity->RemoveHealth(1);
 	}
 	if (this->GetIDComponent()->name == "Crocodile")
 	{
-		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(4);
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(5);
 		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
 		resourceEntity->RemoveHealth(1);
 	}
 	if (this->GetIDComponent()->name == "Slime")
 	{
-		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(6);
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(7);
 		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
 		resourceEntity->RemoveHealth(1);
 	}
