@@ -72,19 +72,28 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				{
 					AICrocodileEntity* croc = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = croc;
+					croc->GetRigidBodyComponent()->interpolate = false;
+					croc->GetTransformComponent()->SetPosition(spawnPos);
 					croc->GetRigidBodyComponent()->nextPos = spawnPos;
+					croc->GetRigidBodyComponent()->interpolate = true;
 				}
 				else if (entitySpawnerComponent->enemyName == "Slime")
 				{
 					AISlimeEntity* slime = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = slime;
+					slime->GetRigidBodyComponent()->interpolate = false;
+					slime->GetTransformComponent()->SetPosition(spawnPos);
 					slime->GetRigidBodyComponent()->nextPos = spawnPos;
+					slime->GetRigidBodyComponent()->interpolate = true;
 				}
 				else if (entitySpawnerComponent->enemyName == "Deer")
 				{
 					AIDeerEntity* deer = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = deer;
+					deer->GetRigidBodyComponent()->interpolate = false;
+					deer->GetTransformComponent()->SetPosition(spawnPos);
 					deer->GetRigidBodyComponent()->nextPos = spawnPos;
+					deer->GetRigidBodyComponent()->interpolate = true;
 				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)
@@ -92,7 +101,10 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				// Spawn new resource
 				ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(entitySpawnerComponent->resourceID);
 				entitySpawnerComponent->spawnedEntity = resourceEntity;
+				resourceEntity->GetRigidBodyComponent()->interpolate = false;
+				resourceEntity->GetTransformComponent()->SetPosition(spawnPos);
 				resourceEntity->GetRigidBodyComponent()->nextPos = spawnPos;
+				resourceEntity->GetRigidBodyComponent()->interpolate = true;
 			}
 		}
 	}
