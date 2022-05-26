@@ -23,7 +23,16 @@ private:
 
 	void SpawnCroc(Vec3f position);
 	void SpawnDeer(Vec3f position);
+	void SpawnBear(Vec3f position);
+	void SpawnBunny(Vec3f position);
+	void SpawnSnowBear(Vec3f position);
+	void SpawnSnowBunny(Vec3f position);
+	void SpawnSlime(Vec3f position);
 
+	void SpawnResourcesForAllBiomes(Firelight::TileMap::Tile* tile, Vec3f position);
+	void SpawnForestResources(Firelight::TileMap::Tile* tile, Vec3f position);
+	void SpawnSwampResources(Firelight::TileMap::Tile* tile, Vec3f position);
+	void SpawnSnowResources(Firelight::TileMap::Tile* tile, Vec3f position);
 
 	bool CanSpawnFromNoise(int noiseIndex, float spawnChance);
 
@@ -36,7 +45,10 @@ private:
 	float m_treeSpawnRate;
 	float m_rockSpawnRate;
 	float m_enemySpawnRate;
+	float m_passiveAISpawnRate;
 	float m_bushSpawnRate;
 	float m_berryBushSpawnRate;
+
+	std::vector<unsigned int> m_noiseIndices;
 };
 

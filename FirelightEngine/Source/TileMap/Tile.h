@@ -26,7 +26,7 @@ namespace Firelight::TileMap
 		Graphics::Texture* m_texture;
 		Maths::Rectf m_sourceRect;
 		Maths::Rectf m_destinationRect;
-		unsigned int m_tileID;
+		int m_tileID;
 		int m_layer;
 		int m_rotation;
 		bool m_isDrawn;

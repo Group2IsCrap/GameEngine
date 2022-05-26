@@ -11,9 +11,11 @@ EnvironmentGeneration::EnvironmentGeneration()
 	, m_tileMap(nullptr)
 	, m_treeSpawnRate(0.05f)
 	, m_rockSpawnRate(0.05f)
-	, m_enemySpawnRate(0.05f)
+	, m_enemySpawnRate(0.005f)
+	, m_passiveAISpawnRate(0.1f)
 	, m_bushSpawnRate(0.05f)
 	, m_berryBushSpawnRate(0.05f)
+	, m_noiseIndices({0, 3, 6, 9})
 {}
 
 void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo* biomeInfo)
@@ -22,7 +24,7 @@ void EnvironmentGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, Bio
 	m_biomeInfo = biomeInfo;
 	m_spawnRateNoise = new Noise();
 	m_spawnRateNoise->SetSeed(Firelight::Maths::Random::RandomRange(100, 2000));
-	m_spawnRateNoise->SetNoiseScale(250.0f);
+	m_spawnRateNoise->SetNoiseScale(100.0f);
 	m_spawnRateNoise->CreateNoise();
 }
 
@@ -43,10 +45,6 @@ void EnvironmentGeneration::GenerateResources()
 
 	std::vector<std::vector<Firelight::TileMap::Tile*>> tiles = m_tileMap->GetTileMap();
 
-	int noiseTreeIndex = 0;
-	int noiseRockIndex = 7;
-	int noiseEnemyIndex = 12;
-	int noiseBushIndex = 16;
 	for (row = tiles.begin(); row != tiles.end(); row++)
 	{
 		for (column = row->begin(); column != row->end(); column++)
@@ -54,39 +52,17 @@ void EnvironmentGeneration::GenerateResources()
 			if (!(*column)->IsOccupied())
 			{
 				Vec3f position = Vec3f((*column)->GetDestinationRect().x, (*column)->GetDestinationRect().y, 0.0f);
-				if (CanSpawnFromNoise(noiseTreeIndex, m_treeSpawnRate))
+
+				SpawnResourcesForAllBiomes((*column), position);
+				SpawnForestResources((*column), position);
+				SpawnSwampResources((*column), position);
+				SpawnSnowResources((*column), position);
+
+				for (size_t index = 0; index < m_noiseIndices.size(); ++index)
 				{
-					if (m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Forest
-						|| m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Swamp
-						|| m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Snow)
-					{
-						SpawnTree(position);
-						(*column)->SetIsOccupied(true);
-					}
-				}
-				if (CanSpawnFromNoise(noiseRockIndex, m_rockSpawnRate))
-				{
-					SpawnRock(position);
-					(*column)->SetIsOccupied(true);
-				}
-				if (CanSpawnFromNoise(noiseEnemyIndex, m_enemySpawnRate))
-				{
-					if (m_biomeInfo->biomesOnTileIDs[(*column)->GetTileID()] == BiomeType::Swamp)
-					{
-						SpawnCroc(position);
-						(*column)->SetIsOccupied(true);
-					}
-				}
-				if (CanSpawnFromNoise(noiseBushIndex, m_bushSpawnRate))
-				{
-					SpawnBush(position);
-					(*column)->SetIsOccupied(true);
+					m_noiseIndices[index] += 1;
 				}
 			}
-			noiseRockIndex = noiseRockIndex + 10;
-			noiseBushIndex = noiseBushIndex + 20;
-			noiseEnemyIndex = noiseEnemyIndex + 30;
-			noiseTreeIndex++;
 		}
 	}
 }
@@ -123,7 +99,7 @@ void EnvironmentGeneration::SpawnCroc(Vec3f position)
 
 void EnvironmentGeneration::SpawnDeer(Vec3f position)
 {
-	GameEntity* enemySpawner = new GameEntity("Crocodile Spawner");
+	GameEntity* enemySpawner = new GameEntity("Deer Spawner");
 	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
 	spawnerComponent->enemyName = "Deer";
 	spawnerComponent->respawnCooldown = 3;
@@ -141,10 +117,173 @@ void EnvironmentGeneration::SpawnBush(Vec3f position)
 	bushSpawner->GetTransformComponent()->SetPosition(position);
 }
 
+
+void EnvironmentGeneration::SpawnBear(Vec3f position)
+{
+	GameEntity* bushSpawner = new GameEntity("Bear Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Bear";
+	spawnerComponent->respawnCooldown = 3;
+	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnBunny(Vec3f position)
+{
+	GameEntity* bushSpawner = new GameEntity("Bunny Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Bunny";
+	spawnerComponent->respawnCooldown = 3;
+	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnSnowBear(Vec3f position)
+{
+	GameEntity* bushSpawner = new GameEntity("Snow Bear Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "SnowBear";
+	spawnerComponent->respawnCooldown = 3;
+	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnSnowBunny(Vec3f position)
+{
+	GameEntity* bushSpawner = new GameEntity("Snow Bunny Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "SnowBunny";
+	spawnerComponent->respawnCooldown = 3;
+	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnSlime(Vec3f position)
+{
+	GameEntity* SlimeSpawner = new GameEntity("Slime Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->enemyName = "Slime";
+	spawnerComponent->respawnCooldown = 3;
+	SlimeSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	SlimeSpawner->GetTransformComponent()->SetPosition(position);
+}
+
 //void EnvironmentGeneration::SpawnBerryBush(Vec3f position)
 //{
 //
 //}
+
+void EnvironmentGeneration::SpawnResourcesForAllBiomes(Firelight::TileMap::Tile* tile, Vec3f position)
+{
+	if (m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Forest
+		|| m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Swamp
+		|| m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Snow)
+	{
+		int randomVal = Firelight::Maths::Random::RandomRange(0, 2);
+		
+		switch (randomVal)
+		{
+		case 0:
+			if (CanSpawnFromNoise(m_noiseIndices[0], m_treeSpawnRate))
+			{
+				SpawnTree(position);
+				tile->SetIsOccupied(true);
+			}
+		break;
+		case 1:
+			if (CanSpawnFromNoise(m_noiseIndices[1], m_rockSpawnRate))
+			{
+				SpawnRock(position);
+				tile->SetIsOccupied(true);
+			}
+		break;
+		case 2:
+			if (CanSpawnFromNoise(m_noiseIndices[2], m_bushSpawnRate))
+			{
+				SpawnBush(position);
+				tile->SetIsOccupied(true);
+			}
+		break;
+		}
+	}
+}
+
+void EnvironmentGeneration::SpawnForestResources(Firelight::TileMap::Tile* tile, Vec3f position)
+{
+	if (m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Forest)
+	{
+		int randomVal = Firelight::Maths::Random::RandomRange(0, 3);
+
+		switch (randomVal)
+		{
+		case 0:
+			if (CanSpawnFromNoise(m_noiseIndices[0], m_treeSpawnRate))
+			{
+				SpawnBear(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		case 1:
+			if (CanSpawnFromNoise(m_noiseIndices[1], m_rockSpawnRate))
+			{
+				SpawnBunny(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		case 2:
+			if (CanSpawnFromNoise(m_noiseIndices[2], m_enemySpawnRate))
+			{
+				SpawnSlime(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		case 3:
+			if (CanSpawnFromNoise(m_noiseIndices[2], m_passiveAISpawnRate))
+			{
+				SpawnDeer(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		}
+	}
+}
+void EnvironmentGeneration::SpawnSwampResources(Firelight::TileMap::Tile* tile, Vec3f position)
+{
+	if (m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Swamp)
+	{
+		if (CanSpawnFromNoise(m_noiseIndices[2], m_enemySpawnRate))
+		{
+			SpawnCroc(position);
+			tile->SetIsOccupied(true);
+		}
+	}
+}
+void EnvironmentGeneration::SpawnSnowResources(Firelight::TileMap::Tile* tile, Vec3f position)
+{
+	if (m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Snow)
+	{
+		int randomVal = Firelight::Maths::Random::RandomRange(0, 1);
+
+		switch (randomVal)
+		{
+		case 0:
+			if (CanSpawnFromNoise(m_noiseIndices[0], m_enemySpawnRate))
+			{
+				SpawnSnowBear(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		case 1:
+			if (CanSpawnFromNoise(m_noiseIndices[1], m_passiveAISpawnRate))
+			{
+				SpawnSnowBunny(position);
+				tile->SetIsOccupied(true);
+			}
+			break;
+		}
+	}
+}
+
 
 bool EnvironmentGeneration::CanSpawnFromNoise(int noiseIndex, float spawnChance)
 {
