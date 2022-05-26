@@ -72,6 +72,11 @@ PlayerSystem::PlayerSystem()
 	fists->Cooldown = 1.0f;
 	fists->HarvestType = Firelight::ECS::e_HarvestType(0);
 	fists->HarvestDamage = 1.0f;
+
+	m_helm = new ArmourComponent;
+	m_helm->armourValue = 0;
+	m_chest = new ArmourComponent;
+	m_chest->armourValue = 0;
 }
 
 PlayerSystem::~PlayerSystem()
@@ -426,6 +431,14 @@ void PlayerSystem::SwitchHat()
 		playerComponent->hat->GetComponent<TransformComponent>()->SetPosition(playerComponent->hatSocket->GetComponent<TransformComponent>()->GetPosition());
 		playerComponent->hat->GetComponent<TransformComponent>()->FlipX(playerComponent->hatSocket->GetComponent<TransformComponent>()->GetFlipped(), false);
 	}
+	else
+	{
+		armour = m_helm;
+		if (playerComponent->hat != nullptr)
+		{
+			playerComponent->hat->GetComponent<SpriteComponent>()->colour = Firelight::Graphics::Colour::RGBA(0, 0, 0, 0);
+		}
+	}
 }
 
 void PlayerSystem::SwitchArmour()
@@ -457,6 +470,15 @@ void PlayerSystem::SwitchArmour()
 		playerComponent->body->GetComponent<TransformComponent>()->SetPosition(playerComponent->bodySocket->GetComponent<TransformComponent>()->GetPosition());
 		playerComponent->body->GetComponent<TransformComponent>()->FlipX(playerComponent->bodySocket->GetComponent<TransformComponent>()->GetFlipped(), false);
 	}
+	else
+	{
+		armour = m_chest;
+		if (playerComponent->body != nullptr)
+		{
+			playerComponent->body->GetComponent<SpriteComponent>()->colour = Firelight::Graphics::Colour::RGBA(0, 0, 0, 0);
+		}
+	}
+	
 }
 
 void PlayerSystem::SwitchWeapon()

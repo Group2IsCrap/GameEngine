@@ -78,6 +78,17 @@ void ResourceEntity::RemoveHealth(int amount)
 		case 3:
 			audioComponent->soundName = "Bush Harvest.wav";
 			break;
+		case 4:
+			switch (Firelight::Maths::Random::RandomRange(0, 1))
+			{
+			case 0:
+				audioComponent->soundName = "Mining.wav";
+				break;
+			case 1:
+				audioComponent->soundName = "Mining 2.wav";
+				break;
+			}
+			break;
 		}
 
 		audioComponent->soundPos = Vector3D(GetTransformComponent()->GetPosition().x, GetTransformComponent()->GetPosition().y, GetTransformComponent()->GetPosition().z);

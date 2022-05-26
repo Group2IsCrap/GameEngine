@@ -615,6 +615,12 @@ bool Inventory::RemoveItem(Firelight::ECS::EntityID item)
 						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
 							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
 						}
+						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Helm") != specialSlot->tags.end()) {
+							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeHat::sm_descriptor);
+						}
+						if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Chest") != specialSlot->tags.end()) {
+							Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeArmour::sm_descriptor);
+						}
 					}
 
 					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
@@ -735,6 +741,20 @@ void Inventory::Place(InventoryStoreData* slotData)
 	slotData->stackSize = -1;
 	//slotData->UITexID = 0;
 
+	InventoryComponentSpecialSlot* specialSlot = ECS::EntityComponentSystem::Instance()->GetComponent< InventoryComponentSpecialSlot >(m_inventoryEntityID, currSlot->specialSlotIndex);
+
+	if (specialSlot)
+	{
+		if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Weapon") != specialSlot->tags.end()) {
+			Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeWeapon::sm_descriptor);
+		}
+		if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Helm") != specialSlot->tags.end()) {
+			Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeHat::sm_descriptor);
+		}
+		if (std::find(specialSlot->tags.begin(), specialSlot->tags.end(), "Chest") != specialSlot->tags.end()) {
+			Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::ChangeArmour::sm_descriptor);
+		}
+	}
 	//to be used somewere else
 	m_outOfInventoryData.push_back(dataCopy);
 
