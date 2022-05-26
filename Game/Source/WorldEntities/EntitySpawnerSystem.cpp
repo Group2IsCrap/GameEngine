@@ -8,6 +8,8 @@
 #include "../AI/Enemies/AIDeerEntity.h"
 #include "../AI/Enemies/AIBunnyEntity.h"
 #include "../AI/Enemies/AIBearEntity.h"
+#include "../AI/Enemies/AISnowBunnyEntity.h"
+#include "../AI/Enemies/AISnowBearEntity.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include "../Core/Layers.h"
 #include <Source/Graphics/AssetManager.h>
@@ -106,6 +108,18 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 					AIBearEntity* bear= new AIBearEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = bear;
 					bear->GetRigidBodyComponent()->nextPos = spawnPos;
+				}
+				else if (entitySpawnerComponent->enemyName == "SnowBear")
+				{
+					AISnowBearEntity* SnowBear = new AISnowBearEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = SnowBear;
+					SnowBear->GetRigidBodyComponent()->nextPos = spawnPos;
+				}
+				else if (entitySpawnerComponent->enemyName == "SnowBunny")
+				{
+					AISnowBunnyEntity* SnowBunny = new AISnowBunnyEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = SnowBunny;
+					SnowBunny->GetRigidBodyComponent()->nextPos = spawnPos;
 				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)

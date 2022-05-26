@@ -77,6 +77,18 @@ void AIEntity::HealthBelowZero()
 		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
 		resourceEntity->RemoveHealth(1);
 	}
+	if (this->GetIDComponent()->name == "SnowBunny")
+	{
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(10);
+		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
+		resourceEntity->RemoveHealth(1);
+	}
+	if (this->GetIDComponent()->name == "SnowBear")
+	{
+		ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(11);
+		resourceEntity->GetComponent<TransformComponent>()->SetPosition(this->GetTransformComponent()->GetPosition());
+		resourceEntity->RemoveHealth(1);
+	}
 
 	
 

@@ -1,26 +1,26 @@
-#include "AIBunnyEntity.h"
+#include "AISnowBunnyEntity.h"
 
 #include <Source/Graphics/AssetManager.h>
 #include "../AIBehaviourComponent.h"
 #include "../Behaviours/AIWanderBehaviour.h"
 #include "../Behaviours/AIFleeingBehaviour.h"
 
-AIBunnyEntity::AIBunnyEntity() : AIEntity()
+AISnowBunnyEntity::AISnowBunnyEntity() : AIEntity()
 {
 	GetComponent<TransformComponent>()->SetPosition({ 10.0f, 0.0f, 0.0f });
-	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/BunnyIdle.png");
+	GetComponent<SpriteComponent>()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/SnowBunnyIdle.png");
 
 }
 
-AIBunnyEntity::AIBunnyEntity(Firelight::ECS::EntityID entityID) : AIEntity(entityID)
+AISnowBunnyEntity::AISnowBunnyEntity(Firelight::ECS::EntityID entityID) : AIEntity(entityID)
 {
 }
 
-AIBunnyEntity::AIBunnyEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : AIEntity(isTemplate, entityID)
+AISnowBunnyEntity::AISnowBunnyEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : AIEntity(isTemplate, entityID)
 {
-	GetIDComponent()->name = "Bunny";
+	GetIDComponent()->name = "SnowBunny";
 	GetSpriteComponent()->pixelsPerUnit = 50;
-	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/BunnyIdle.png");
+	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/SnowBunnyIdle.png");
 	GetRigidBodyComponent()->interpolate = true;
 	GetHealthComponent()->maxHealth = 3;
 	GetHealthComponent()->currentHealth = GetHealthComponent()->maxHealth;
@@ -40,7 +40,7 @@ AIBunnyEntity::AIBunnyEntity(bool isTemplate, Firelight::ECS::EntityID entityID)
 	aiBehaviourComponent->m_CurrentTransitions = new AITransitionBehaviour(aiBehaviourComponent, GetAIComponent(), GetRigidBodyComponent(), AIState::None);
 
 	AIStateBehaviour* wanderBehaviour = new AIWanderBehaviour(GetRigidBodyComponent(), 4.0f, 0.5f, radii);
-	AIStateBehaviour* fleeBehaviour = new AIFleeingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "BunnyWalk", 1.0f);
+	AIStateBehaviour* fleeBehaviour = new AIFleeingBehaviour(GetEntityID(), GetRigidBodyComponent(), GetAIComponent(), "SnowBunnyWalk", 1.0f);
 
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Wandering] = wanderBehaviour;
 	aiBehaviourComponent->m_CurrentTransitions->m_StateBehaviours[AIState::Fleeing] = fleeBehaviour;
@@ -49,7 +49,7 @@ AIBunnyEntity::AIBunnyEntity(bool isTemplate, Firelight::ECS::EntityID entityID)
 	idleTransitions[AIState::Wandering] = std::bind(&AITransitionBehaviour::IdleToWander, aiBehaviourComponent->m_CurrentTransitions);
 	aiBehaviourComponent->m_CurrentTransitions->m_Transitions[AIState::Idle] = idleTransitions;
 
-	std::vector<std::string> targets = { "Player", "Crocodile", "Bear", "SnowBear" };
+	std::vector<std::string> targets = { "Player", "Crocodile", "Bear" };
 
 	std::map<AIState, std::function<bool()>> wanderTransitions;
 	wanderTransitions[AIState::Fleeing] = std::bind(&AITransitionBehaviour::WanderToFlee, aiBehaviourComponent->m_CurrentTransitions, 10.0f, targets);
