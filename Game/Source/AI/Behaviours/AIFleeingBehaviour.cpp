@@ -12,7 +12,7 @@ AIFleeingBehaviour::AIFleeingBehaviour(EntityID id, RigidBodyComponent* rigidbod
 
 void AIFleeingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::Time& time)
 {
-	if (m_targetAIComponent == nullptr || m_targetAIComponent->m_Target == nullptr)
+	if (m_targetAIComponent == nullptr || m_targetAIComponent->m_Target == nullptr || m_targetAIComponent->isDead)
 		return;
 
 	RigidBodyComponent* targetRigidbody = m_targetAIComponent->m_Target->GetComponent<RigidBodyComponent>();
