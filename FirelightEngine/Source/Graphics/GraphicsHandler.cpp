@@ -68,7 +68,7 @@ namespace Firelight::Graphics
 
 		swapChainDescription.BufferDesc.Width = dimensions.x;
 		swapChainDescription.BufferDesc.Height = dimensions.y;
-		swapChainDescription.BufferDesc.RefreshRate.Numerator = 120; // VSync fps
+		swapChainDescription.BufferDesc.RefreshRate.Numerator = 144; // VSync fps
 		swapChainDescription.BufferDesc.RefreshRate.Denominator = 1;
 
 		swapChainDescription.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

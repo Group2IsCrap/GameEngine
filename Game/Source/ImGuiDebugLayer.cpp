@@ -203,6 +203,13 @@ void ImGuiDebugLayer::RenderKeyBindingPrototype()
 void ImGuiDebugLayer::RenderDebugInformation()
 {
 	ImGui::Begin("Debug Info");
+	m_fpsUpdateDelay += Firelight::Engine::Instance().GetTime().GetDeltaTime();
+	if (m_fpsUpdateDelay > 1.0f)
+	{
+		m_fpsUpdateDelay -= 1.0f;
+		m_currentFPS = 1.0f / (float)Firelight::Engine::Instance().GetTime().GetDeltaTime();
+	}
+	ImGui::Text((std::string("FPS: ") + std::to_string(m_currentFPS)).c_str());
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::Text("Keys down:");  for (int i = 0; i < IM_ARRAYSIZE(io.KeysDown); i++) if (ImGui::IsKeyDown(i)) { ImGui::SameLine(); ImGui::Text("%d (0x%X)", i, i); }
 	ImGui::End();

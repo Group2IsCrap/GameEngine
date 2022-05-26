@@ -31,4 +31,7 @@ private:
 	void RenderKeyBindingPrototype();
 	void RenderDebugInformation();
 private:
+
+	float m_currentFPS;
+	float m_fpsUpdateDelay;
 };
