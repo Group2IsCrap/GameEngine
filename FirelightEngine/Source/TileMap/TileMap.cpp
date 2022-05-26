@@ -77,6 +77,7 @@ namespace Firelight::TileMap
                 rowObject[columnIndex]->DrawTile();
             }
         }
+
     }
 
    void TileMap::SetTileHeight(int tileHeight)

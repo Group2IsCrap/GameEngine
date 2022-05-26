@@ -47,8 +47,6 @@ void ImGuiPlayerLayer::RenderInformation()
 		ImGui::Text("Velocity: "); ImGui::SameLine();
 		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::RigidBodyComponent>()->velocity.x).c_str());  ImGui::SameLine();
 		ImGui::Text(std::to_string(playerEntity->GetComponent<Firelight::ECS::RigidBodyComponent>()->velocity.y).c_str());
-		ImGui::Text("Is In Void: "); ImGui::SameLine();
-		ImGui::Text(std::to_string(BiomeGeneration::Instance()->IsInVoid(BiomeGeneration::Instance()->testPosition)).c_str());
 	}
 	ImGui::End();
 }

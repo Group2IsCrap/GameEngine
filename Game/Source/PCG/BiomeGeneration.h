@@ -3,6 +3,7 @@
 #include "BiomeInfo.h"
 
 #include "..\FirelightEngine\Source\Maths\Rect.h"
+#include <Source/Maths/Vec2.h>
 #include "..\FirelightEngine\Source\TileMap\TileMap.h"
 #include "..\FirelightEngine\Source\Graphics\Data\Texture.h"
 #include "Vector3D.h"
@@ -36,10 +37,11 @@ public:
 
 	Firelight::Maths::Rectf testPosition;
 
-	bool IsInVoid(Rectf position);
+	bool IsInVoid(Firelight::Maths::Vec2f position);
 	void CheckCurrentPlayerBiomeType(Rectf playerPosition);
 
 	void KillVoidTiles();
+	Firelight::TileMap::TileMap* GetTileMap();
 
 private:
 

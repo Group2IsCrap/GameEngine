@@ -317,7 +317,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
 		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
 		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
-		
+
 		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");

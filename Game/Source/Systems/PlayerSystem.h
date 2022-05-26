@@ -4,6 +4,7 @@
 #include <Source/ECS/Components/UIComponents.h>
 #include <Source/Maths/Vec3.h>
 #include <Source/ECS/Components/ItemComponents.h>
+#include <Source/TileMap/TileMap.h>
 
 #include "../Player/PlayerEntity.h"
 #include "../Events/InputEvents.h"

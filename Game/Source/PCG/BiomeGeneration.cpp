@@ -439,35 +439,11 @@ BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 	return BiomeType::Forest;
 }
 
-bool BiomeGeneration::IsInVoid(Rectf position)
+bool BiomeGeneration::IsInVoid(Firelight::Maths::Vec2f position)
 {
-	Vec2f tileMapBot = m_tileMap->GetBottomLeftTilePos();
-	Vec2f tileMapTop = m_tileMap->GetTopRightTilePos();
+	Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(position);
 
-
-	if (!IsPositionBetweenTwoPoints(position, tileMapBot, tileMapTop))
-	{
-		return true;
-	}
-
-	for (auto box : m_walkableBoxZones)
-	{
-		Vec2f position1 = Vec2f(box.x, box.y);
-		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
-		if (IsPositionBetweenTwoPoints(position, position1, position2))
-		{
-			return false;
-		}
-	}
-
-	for (auto centre : m_islandCentres)
-	{
-		if (Vec2i::Dist(Vec2i((int)position.x, (int)position.y), Vec2i((int)centre.x, (int)centre.y)) <= m_islandRadii)
-		{
-			return false;
-		}
-	}
-	return true;
+	return tile->GetTileID() == 0;
 }
 
 void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
@@ -515,6 +491,11 @@ void BiomeGeneration::KillVoidTiles()
 		}
 	}
 	m_tileMap->SetTileMap(tileMap);
+}
+
+Firelight::TileMap::TileMap* BiomeGeneration::GetTileMap()
+{
+	return m_tileMap;
 }
 
 void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal)

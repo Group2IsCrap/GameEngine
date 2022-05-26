@@ -19,7 +19,7 @@ enum class Facing
 struct PlayerComponent : Firelight::ECS::BaseComponent
 {
 	std::string name = "";
-	float speed = 1.5f;
+	float speed = 5.5f;
 	Facing facing;
 	Entity* weapon;
 	Entity* weaponSocket;
