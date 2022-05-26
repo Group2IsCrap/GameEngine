@@ -90,6 +90,16 @@ void EnvironmentGeneration::SpawnRock(Vec3f position)
 	rockSpawner->GetTransformComponent()->SetPosition(position);
 }
 
+void EnvironmentGeneration::SpawnOre(Vec3f position)
+{
+	GameEntity* oreSpawner = new GameEntity("Ore Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 4;
+	spawnerComponent->respawnCooldown = m_respawnCooldown;
+	oreSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	oreSpawner->GetTransformComponent()->SetPosition(position);
+}
+
 void EnvironmentGeneration::SpawnCroc(Vec3f position)
 {
 	GameEntity* enemySpawner = new GameEntity("Crocodile Spawner");
@@ -118,6 +128,16 @@ void EnvironmentGeneration::SpawnBush(Vec3f position)
 	spawnerComponent->respawnCooldown = 3;
 	bushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
 	bushSpawner->GetTransformComponent()->SetPosition(position);
+}
+
+void EnvironmentGeneration::SpawnBerryBush(Vec3f position)
+{
+	GameEntity* berryBushSpawner = new GameEntity("Berry Bush Spawner");
+	EntitySpawnerComponent* spawnerComponent = new EntitySpawnerComponent();
+	spawnerComponent->resourceID = 3;
+	spawnerComponent->respawnCooldown = 3;
+	berryBushSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+	berryBushSpawner->GetTransformComponent()->SetPosition(position);
 }
 
 
@@ -183,6 +203,7 @@ void EnvironmentGeneration::SpawnResourcesForAllBiomes(Firelight::TileMap::Tile*
 		|| m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] == BiomeType::Snow)
 	{
 		int randomVal = Firelight::Maths::Random::RandomRange(0, 2);
+		int randomVal2 = Firelight::Maths::Random::RandomRange(0, 1);
 		
 		switch (randomVal)
 		{
@@ -196,14 +217,28 @@ void EnvironmentGeneration::SpawnResourcesForAllBiomes(Firelight::TileMap::Tile*
 		case 1:
 			if (CanSpawnFromNoise(m_noiseIndices[1], m_rockSpawnRate))
 			{
-				SpawnRock(position);
+				if (randomVal2 == 0)
+				{
+					SpawnRock(position);
+				}
+				else
+				{
+					SpawnOre(position);
+				}
 				tile->SetIsOccupied(true);
 			}
 		break;
 		case 2:
 			if (CanSpawnFromNoise(m_noiseIndices[2], m_bushSpawnRate))
 			{
-				SpawnBush(position);
+				if (randomVal2 == 0)
+				{
+					SpawnBush(position);
+				}
+				else
+				{
+					SpawnBerryBush(position);
+				}
 				tile->SetIsOccupied(true);
 			}
 		break;
