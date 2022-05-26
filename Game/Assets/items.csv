@@ -19,7 +19,7 @@
 17,Tongue,,Sprites/Items/Tongue.png,30,Ingredient,0
 18,Stinger,,Sprites/Items/Feather.png,30,Ingredient,0
 19,Poison,,Sprites/Items/Poison.png,30,Ingredient,0
-20,Bone,,Sprites/Items/Feather.png,30,Ingredient,0
+20,Bone,,Sprites/Items/Bone.png,30,Ingredient,0
 21,Potions 1,,Sprites/Items/Potion_Blue_V1.png,5,Food;Potions,0
 22,Potions 2,,Sprites/Items/Potion_Blue_V2.png,5,Food;Potions,0
 23,Potions 3,,Sprites/Items/Potion_Green_V1.png,5,Food;Potions,0
@@ -47,7 +47,7 @@
 45,Croc_Sword,,Sprites/Weapons/CrocSword.png,1,Weapon,130
 46,Infused Sword,,Sprites/Weapons/InfusedSword.png,1,Weapon,130
 47,Berry,,Sprites/Items/Berry.png,5,Food,0
-48,Meat ,,Sprites/Items/Feather.png,5,Food,0
+48,Meat ,,Sprites/Items/Meat.png,5,Food,0
 49,combo 1,,Sprites/Items/Feather.png,5,Food,0
 50,combo 2,,Sprites/Items/Feather.png,5,Food,0
 51,combo 3,,Sprites/Items/Feather.png,5,Food,0

@@ -49,7 +49,7 @@ AIBunnyEntity::AIBunnyEntity(bool isTemplate, Firelight::ECS::EntityID entityID)
 	idleTransitions[AIState::Wandering] = std::bind(&AITransitionBehaviour::IdleToWander, aiBehaviourComponent->m_CurrentTransitions);
 	aiBehaviourComponent->m_CurrentTransitions->m_Transitions[AIState::Idle] = idleTransitions;
 
-	std::vector<std::string> targets = { "Player", "Crocodile" };
+	std::vector<std::string> targets = { "Player", "Crocodile", "Bear" };
 
 	std::map<AIState, std::function<bool()>> wanderTransitions;
 	wanderTransitions[AIState::Fleeing] = std::bind(&AITransitionBehaviour::WanderToFlee, aiBehaviourComponent->m_CurrentTransitions, 10.0f, targets);

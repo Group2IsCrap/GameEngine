@@ -7,6 +7,7 @@
 #include "../AI/Enemies/AISlimeEntity.h"
 #include "../AI/Enemies/AIDeerEntity.h"
 #include "../AI/Enemies/AIBunnyEntity.h"
+#include "../AI/Enemies/AIBearEntity.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include "../Core/Layers.h"
 #include <Source/Graphics/AssetManager.h>
@@ -99,6 +100,12 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 					AIBunnyEntity* bunny = new AIBunnyEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = bunny;
 					bunny->GetRigidBodyComponent()->nextPos = spawnPos;
+				}
+				else if (entitySpawnerComponent->enemyName == "Bear")
+				{
+					AIBearEntity* bear= new AIBearEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = bear;
+					bear->GetRigidBodyComponent()->nextPos = spawnPos;
 				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)

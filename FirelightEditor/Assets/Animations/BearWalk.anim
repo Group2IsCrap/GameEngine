@@ -1,0 +1,12 @@
+{
+    "AnimationName": "BearWalk",
+    "Loop": true,
+    "FrameTime": 256,
+    "FrameCount": 4,
+    "TextureNames": [
+        "Sprites\\Enemies\\BearIdle.png",
+        "Sprites\\Enemies\\BearWalk1.png",
+        "Sprites\\Enemies\\BearIdle.png",
+        "Sprites\\Enemies\\BearWalk2.png"
+    ]
+}

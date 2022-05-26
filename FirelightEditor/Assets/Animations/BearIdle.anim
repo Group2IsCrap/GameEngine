@@ -1,0 +1,9 @@
+{
+    "AnimationName": "BearIdle",
+    "Loop": false,
+    "FrameTime": 1,
+    "FrameCount": 1,
+    "TextureNames": [
+        "Sprites\\Enemies\\BearIdle.png"
+    ]
+}
