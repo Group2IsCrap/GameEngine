@@ -69,10 +69,10 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				}
 			}
 		}
-
-		if (entitySpawnerComponent->spawnedEntity != nullptr)
+		
+		if (Firelight::Maths::Vec3f::Dist(m_playerEntity->GetTransformComponent()->GetPosition(), currentEntity.GetComponent<TransformComponent>()->GetPosition()) > entitySpawnerComponent->spawnRadiusThreshold)
 		{
-			if (Firelight::Maths::Vec3f::Dist(m_playerEntity->GetTransformComponent()->GetPosition(), currentEntity.GetComponent<TransformComponent>()->GetPosition()) > entitySpawnerComponent->spawnRadiusThreshold)
+			if (entitySpawnerComponent->spawnedEntity != nullptr)
 			{
 				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
 				{
@@ -87,6 +87,7 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 			}
 			continue;
 		}
+		
 
 		if (entitySpawnerComponent->spawnedEntity != nullptr)
 		{

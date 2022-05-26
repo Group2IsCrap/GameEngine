@@ -39,6 +39,7 @@ namespace Firelight::Physics
 	
 	void PhysicsSystem::Render()
 	{
+#ifdef DEBUG
 		for (int i = 0; i < m_entities.size(); ++i)
 		{
 			Firelight::ECS::Entity* entity = m_entities[i];
@@ -107,6 +108,7 @@ namespace Firelight::Physics
 				}
 			}			
 		}
+#endif
 	}
 
 	void PhysicsSystem::Update(const Utils::Time& time, const bool& isPaused)

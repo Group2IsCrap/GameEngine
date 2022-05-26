@@ -112,10 +112,11 @@ namespace Firelight::TileMap
         {
             for (auto tile : tilesVec)
             {
-                if ((position.x >= tile->GetDestinationRect().x) &&
-                    (position.x <= tile->GetDestinationRect().x + tile->GetDestinationRect().w) &&
-                    (position.y >= tile->GetDestinationRect().y) &&
-                    (position.y <= tile->GetDestinationRect().y + tile->GetDestinationRect().h))
+                Firelight::Maths::Rectf rect = tile->GetDestinationRect();
+                if ((position.x >= rect.x) &&
+                    (position.x <= rect.x + rect.w) &&
+                    (position.y >= rect.y) &&
+                    (position.y <= rect.y + rect.h))
                 {
                     return tile;
                 }
