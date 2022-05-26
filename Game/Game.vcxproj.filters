@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
     <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\PortalEntity.cpp" />
+    <ClCompile Include="Source\AI\Enemies\AIBunnyEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\AIEntity.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
     <ClInclude Include="Source\PCG\PCGEvents.h" />
     <ClInclude Include="Source\WorldEntities\PortalEntity.h" />
+    <ClInclude Include="Source\AI\Enemies\AIBunnyEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Layers.h" />
