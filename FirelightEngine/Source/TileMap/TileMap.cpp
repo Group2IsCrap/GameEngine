@@ -10,9 +10,10 @@ namespace Firelight::TileMap
     TileMap::TileMap()
         : m_tileHeight(1)
         , m_tileWidth(1)
-        , m_tileMapHeight(400)
-        , m_tileMapWidth(400)
+        , m_tileMapHeight(200)
+        , m_tileMapWidth(200)
         , m_tileDistance(1)
+        , m_tileMapSize(m_tileMapHeight * m_tileMapWidth)
         , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_topRightTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_tileMap()
@@ -145,5 +146,10 @@ namespace Firelight::TileMap
     Firelight::Maths::Vec2f TileMap::GetTopRightTilePos()
     {
         return m_topRightTilePos;
+    }
+
+    size_t TileMap::GetTileMapSize()
+    {
+        return m_tileMapSize;
     }
 }
