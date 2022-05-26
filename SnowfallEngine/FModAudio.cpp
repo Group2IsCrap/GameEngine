@@ -122,7 +122,7 @@ void AudioEngine::Initialise()
 	AudioChannel* GameplayChannel = new AudioChannel("Game", 2, 0.025f);
 	AudioChannel* PlayerChannel = new AudioChannel("Player", 3, 0.03f);
 	AudioChannel* AmbienceChannel = new AudioChannel("Ambience", 2, 0.015f);
-	AudioChannel* backgroundMusicChannel = new AudioChannel("Background", 2, 0.02f);
+	AudioChannel* backgroundMusicChannel = new AudioChannel("Background", 2, 0.005f);
 	AudioChannel* enemiesChannel = new AudioChannel("Enemies", 3, 0.025f);
 	AudioEngine::engine->Update();
 }

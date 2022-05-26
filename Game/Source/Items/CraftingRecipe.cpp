@@ -23,7 +23,6 @@ bool CraftingRecipe::CanCraft(const std::string& inventoryGroup) const
             return false;
         }
     }
-    
     return true;
 }
 
@@ -36,7 +35,11 @@ void CraftingRecipe::Craft(const std::string& inventoryGroup) const
 
     for (int itemIndex = 0; itemIndex < m_countMaking; ++itemIndex)
     {
-        InventorySystem::GlobalFunctions::AddItem(inventoryGroup, "MainInventory", ItemDatabase::Instance()->CreateInstanceOfItem(m_itemToMake));
+        Entity* newItem = ItemDatabase::Instance()->CreateInstanceOfItem(m_itemToMake);
+        if (!InventorySystem::GlobalFunctions::AddItem(inventoryGroup, "MainInventory", newItem))
+        {
+            newItem->GetComponent<TransformComponent>()->SetPosition(Firelight::Maths::Vec3f(100000.0f, 0.0f, 0.0f));
+        }
     }
 }
 

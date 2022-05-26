@@ -20,7 +20,7 @@ AISnowBearEntity::AISnowBearEntity(bool isTemplate, Firelight::ECS::EntityID ent
 	GetIDComponent()->name = "SnowBear";
 	//GetComponent<RigidBodyComponent>()->nextPos = { 2.0f, 0.0f, 0.0f };
 	GetSpriteComponent()->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/SnowBearIdle.png");
-	GetSpriteComponent()->pixelsPerUnit = 100;
+	GetSpriteComponent()->pixelsPerUnit = 125;
 
 	GetRigidBodyComponent()->interpolate = true;
 

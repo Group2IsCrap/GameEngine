@@ -871,6 +871,7 @@ bool Inventory::RemoveItemType(int howMany, int type)
 						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIBaseWidgetComponent>(dataToRemove[i]->UITexID)->isActive = false;
 						TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(dataToRemove[i]->UITexID);
 						text->hidden = true;
+						ECS::EntityComponentSystem::Instance()->GetComponent<ECS::UIDraggableComponent>(dataToRemove[i]->UITexID)->onDropFunctions.clear();
 						break;
 					}
 					TextComponent* text = ECS::EntityComponentSystem::Instance()->GetComponent<ECS::TextComponent>(slotData->UITexID);
