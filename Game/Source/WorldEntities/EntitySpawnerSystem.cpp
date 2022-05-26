@@ -47,9 +47,10 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 
 		if (entitySpawnerComponent->spawnedEntity != nullptr)
 		{
-			if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>() != nullptr)
+			AIComponent* aiComponent = entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>();
+			if (aiComponent != nullptr)
 			{
-				if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>()->isDead)
+				if (aiComponent->isDead)
 				{
 					entitySpawnerComponent->spawnedEntity->Destroy();
 					entitySpawnerComponent->spawnedEntity = nullptr;
@@ -57,9 +58,10 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				}
 			}
 
-			if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
+			ResourceComponent* resourceComponent = entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>();
+			if (resourceComponent != nullptr)
 			{
-				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>()->isDead)
+				if (resourceComponent->isDead)
 				{
 					entitySpawnerComponent->spawnedEntity->Destroy();
 					entitySpawnerComponent->spawnedEntity = nullptr;
