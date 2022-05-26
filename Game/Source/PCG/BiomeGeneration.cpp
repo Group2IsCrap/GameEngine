@@ -28,6 +28,7 @@ BiomeGeneration::BiomeGeneration()
 	, m_seed(0)
 	, m_numberOfIslands(6)
 	, m_playerWasOnBridge(false)
+	, m_hasPlayerCollidedRecently(false)
 	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 {}
 
@@ -58,7 +59,7 @@ void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo
 
 	m_biomeNoise = new Noise();
 	m_biomeNoise->SetSeed(m_seed);
-	m_biomeNoise->SetNoiseScale(250.0f);
+	m_biomeNoise->SetNoiseScale(150.0f);
 	m_biomeNoise->CreateNoise();
 
 	m_islandDirectionNoise = new Noise();
@@ -435,11 +436,11 @@ BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 		{
 			return BiomeType::Forest;
 		}
-		if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize)
+		if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize - (float)SMALLER_FLOAT_VAL)
 		{
 			return BiomeType::Swamp;
 		}
-		if (data >= compareMax - adjustmentSize && data <= compareMax)
+		if (data >= compareMax - adjustmentSize - (float)SMALLER_FLOAT_VAL && data <= compareMax)
 		{
 			return BiomeType::Snow;
 		}
@@ -460,19 +461,26 @@ void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 	{
 		Vec2f position1 = Vec2f(box.x - 1, box.y - 1);
 		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
-		if (IsPositionBetweenTwoPoints(Rectf(playerPosition.x, playerPosition.y - 1, playerPosition.w, playerPosition.h), position1, position2))
+		if (!m_playerWasOnBridge)
 		{
-			m_playerWasOnBridge = true;
+			if (IsPositionBetweenTwoPoints(Rectf((int)playerPosition.x, (int)playerPosition.y - 1, (int)playerPosition.w, (int)playerPosition.h), position1, position2))
+			{
+				m_playerWasOnBridge = true;
+			}
 		}
-		else if (m_playerWasOnBridge)
+		else
 		{
-			m_playerWasOnBridge = false;
-			Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y - 2));
-			unsigned int tileID = tile->GetTileID();
-			BiomeMusicData biomeMusicData;
-			biomeMusicData.biome = m_biomeInfo->biomesOnTileIDs[tileID];
-			biomeMusicData.playerPosition = Vector3D(playerPosition.x, playerPosition.y, 0.0f);
-			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
+			if (!IsPositionBetweenTwoPointsLeeway(Rectf((int)playerPosition.x, (int)playerPosition.y - 1, (int)playerPosition.w, (int)playerPosition.h), position1, position2))
+			{
+				m_playerWasOnBridge = false;
+				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y - 2));
+				unsigned int tileID = tile->GetTileID();
+				BiomeMusicData biomeMusicData;
+				biomeMusicData.biome = m_biomeInfo->biomesOnTileIDs[tileID];
+				biomeMusicData.playerPosition = Vector3D(playerPosition.x, playerPosition.y, 0.0f);
+				Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
+				m_hasPlayerCollidedRecently = true;
+			}
 		}
 	}
 }
@@ -529,10 +537,22 @@ void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highest
 
 bool BiomeGeneration::IsPositionBetweenTwoPoints(Rectf position, Vec2f point1, Vec2f point2)
 {
-	if ((position.x >= point1.x) &&
-		(position.x <= point2.x) &&
-		(position.y >= point1.y) &&
-		(position.y <= point2.y))
+	if (((int)position.x >= (int)point1.x) &&
+		((int)position.x <= (int)point2.x) &&
+		((int)position.y >= (int)point1.y) &&
+		((int)position.y <= (int)point2.y))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool BiomeGeneration::IsPositionBetweenTwoPointsLeeway(Rectf position, Vec2f point1, Vec2f point2)
+{
+	if ((position.x >= point1.x - SMALL_FLOAT_VAL &&
+		(position.x <= point2.x) + SMALL_FLOAT_VAL &&
+		(position.y >= point1.y - SMALL_FLOAT_VAL) &&
+		(position.y <= point2.y + SMALL_FLOAT_VAL)))
 	{
 		return true;
 	}
