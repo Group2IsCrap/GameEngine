@@ -13,7 +13,7 @@
 
 using namespace Firelight::ECS;
 
-class PortalEntity : public Firelight::ECS::Entity
+class PortalEntity : public Firelight::ECS::SpriteEntity
 {
 public:
 	PortalEntity();
@@ -21,13 +21,7 @@ public:
 	PortalEntity(Firelight::ECS::EntityID entityID);
 	PortalEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
-	SpriteComponent* sprite;
-	TransformComponent* transformComponent;
-	AnimationComponent* animationComponent;
-
 	void Play();
-
-	AudioComponent* audioComponent;
 
 	size_t m_playEventIndex;
 

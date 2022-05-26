@@ -1,6 +1,7 @@
 #include "AIFleeingBehaviour.h"
 
 #include <Source/ECS/Systems/AnimationSystem.h>
+#include "../../PCG/BiomeGeneration.h"
 
 AIFleeingBehaviour::AIFleeingBehaviour(EntityID id, RigidBodyComponent* rigidbodyComponent, AIComponent* targetAIComponent, std::string walkAnimation, float speed) :
 	m_entityID(id),
@@ -33,9 +34,18 @@ void AIFleeingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::T
 	}
 
 	Vec3f targetDir = Vec3f(colliderWidth * dir.x, colliderHeight * dir.y, 0.0f);
-	targetDir.Normalise();
 
+	Vec2f tilePos = Vec2f(targetDir.x, targetDir.y) + Vec2f(m_rigidBodyComponent->nextPos.x, m_rigidBodyComponent->nextPos.y);
+
+	targetDir.Normalise();
 	m_rigidBodyComponent->velocity -= targetDir * m_speed * static_cast<float>(time.GetDeltaTime());
+
+
+	if (BiomeGeneration::Instance()->IsInVoid(tilePos))
+	{
+		m_rigidBodyComponent->velocity = Vec3f(0.0f, 0.0f, 0.0f);
+	}
+
 	float magnitude = m_rigidBodyComponent->velocity.Length();
 	if (m_walkAnimation != "" && magnitude > 0.05f)
 	{
