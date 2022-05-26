@@ -12,7 +12,7 @@ PortalEntity::PortalEntity()
 
 	AudioComponent* audioComponent = AddComponent<AudioComponent>();
 	audioComponent->looping = true;
-	audioComponent->is3d = false;
+	audioComponent->is3d = true;
 	audioComponent->streaming = true;
 	audioComponent->channel = "Ambience";
 	//audioComponent->soundName = "Portal.wav";

@@ -73,7 +73,7 @@ void Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
-	AudioEngine::engine->Ducking();
+	//AudioEngine::engine->Ducking();
 	AudioEngine::engine->ErrorCheck(fmodSystem->update());
 	//AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 	
@@ -118,12 +118,12 @@ void AudioEngine::Initialise()
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
-	AudioChannel* UIchannel = new AudioChannel("UI", 1, 1.0f);
-	AudioChannel* GameplayChannel = new AudioChannel("Game", 2, 0.6f);
-	AudioChannel* PlayerChannel = new AudioChannel("Player", 3, 0.75f);
-	AudioChannel* AmbienceChannel = new AudioChannel("Ambience", 2, 0.5f);
+	AudioChannel* UIchannel = new AudioChannel("UI", 1, 0.05f);
+	AudioChannel* GameplayChannel = new AudioChannel("Game", 2, 0.025f);
+	AudioChannel* PlayerChannel = new AudioChannel("Player", 3, 0.03f);
+	AudioChannel* AmbienceChannel = new AudioChannel("Ambience", 2, 0.015f);
 	AudioChannel* backgroundMusicChannel = new AudioChannel("Background", 2, 0.02f);
-	AudioChannel* enemiesChannel = new AudioChannel("Enemies", 3, 0.7f);
+	AudioChannel* enemiesChannel = new AudioChannel("Enemies", 3, 0.025f);
 	AudioEngine::engine->Update();
 }
 
@@ -211,7 +211,14 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 		//if holding 3D parameter
 		if (currentMode & FMOD_3D)
 		{
-			SetChannelPos(nextChannelId, soundPos);
+			FMOD_VECTOR position;
+			position.x = soundPos.x;
+			position.y = soundPos.y;
+			position.z = soundPos.z;
+
+
+			//use position
+			engine->ErrorCheck(channel->set3DAttributes(&position, NULL));
 		}
 		/*if (currentMode & FMOD_LOOP_NORMAL)
 		{
@@ -219,7 +226,7 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 		}*/
 
 		//Ducking();
-		int ok = engine->ErrorCheck(channel->setVolume(VolumeTodB(audioChannel.channelVol)));
+		int ok = engine->ErrorCheck(channel->setVolume(audioChannel.channelVol));
 		//SetChannelVolume(nextChannelId, audioChannel.channelVol);
 
 		/*float volume = 0.0f;

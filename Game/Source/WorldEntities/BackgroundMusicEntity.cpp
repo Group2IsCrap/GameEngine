@@ -60,6 +60,15 @@ void BackgroundMusicEntity::HandleEvents(DescriptorType event, void* data)
 		}
 		break;
 	case BiomeType::Snow:
+		if (audioComponent->soundName == "Snow Music.wav")
+		{
+			isSame = true;
+		}
+		else
+		{
+			audioComponent->soundName = "Snow Music.wav";
+			isSame = false;
+		}
 		break;
 	}
 
