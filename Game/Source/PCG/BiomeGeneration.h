@@ -11,8 +11,7 @@
 
 #include <map>
 
-#define SMALL_FLOAT_VAL 1.5
-#define SMALLER_FLOAT_VAL 0.2
+#define SMALL_FLOAT_VAL 0.2
 
 using namespace Firelight::Graphics;
 using namespace Firelight::Maths;
@@ -61,7 +60,6 @@ private:
 
 	void OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal);
 	bool IsPositionBetweenTwoPoints(Rectf position, Vec2f point1, Vec2f point2);
-	bool IsPositionBetweenTwoPointsLeeway(Rectf position, Vec2f point1, Vec2f point2);
 
 	Noise* m_biomeNoise;
 	Noise* m_islandDirectionNoise;
@@ -85,7 +83,8 @@ private:
 	unsigned int m_bridgeLength;
 	int m_islandRadii;
 	int m_seed;
+	int m_numberOfBridges;
 	size_t m_numberOfIslands;
-	bool m_playerWasOnBridge;
+	std::vector<bool> m_wasPlayerOnBridges;
 	bool m_hasPlayerCollidedRecently;
 };
