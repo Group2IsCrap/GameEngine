@@ -1,0 +1,12 @@
+{
+    "AnimationName": "BunnyWalk",
+    "Loop": true,
+    "FrameTime": 128,
+    "FrameCount": 4,
+    "TextureNames": [
+        "Sprites\\Enemies\\BunnyIdle.png",
+        "Sprites\\Enemies\\BunnyWalk1.png",
+        "Sprites\\Enemies\\BunnyWalk2.png",
+        "Sprites\\Enemies\\BunnyWalk3.png"
+    ]
+}

@@ -57,8 +57,14 @@ using namespace Firelight::ECS;
 using namespace Firelight::Events::InputEvents;
 using namespace snowFallAudio::FModAudio;
 
+static UICanvas* canvas = nullptr;
+static PlayerEntity* player = nullptr;
+static PlayerHealthUI* playerHealthUI = nullptr;
+
 static bool g_RenderDebug = false;
 static ImGuiDebugLayer* g_debugLayer = new ImGuiDebugLayer();
+
+Firelight::Maths::Vec3f g_cameraVelocityRef;
 
 static void ToggleDebugLayer()
 {
@@ -119,6 +125,8 @@ void SetupEnemySpawner()
 	spawnerComponent->enemyName = "Crocodile";
 	spawnerComponent->respawnCooldown = 3;
 	crocodileSpawner->AddComponent<EntitySpawnerComponent>(spawnerComponent);
+
+	crocodileSpawner->GetTransformComponent()->SetPosition(Vec3f(50.0f, 0.0f, 0.0f));
 }
 
 void SetupResourceSpawner()
@@ -186,9 +194,7 @@ void ReAddToPlayer(void* toAdd)
 //
 //}
 
-static UICanvas* canvas = nullptr;
-static PlayerEntity* player = nullptr;
-static PlayerHealthUI* playerHealthUI = nullptr;
+
 
 void PlayGame()
 {
@@ -249,41 +255,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Camera
 		CameraEntity* camera = Engine::Instance().GetActiveCamera();
-		
 
 		// Player
 		player = new PlayerEntity();
 
-		// Grass
-		//SpriteEntity* test2 = new SpriteEntity();
-		//test2->GetSpriteComponent()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/grassTexture.png");
-		//test2->GetSpriteComponent()->pixelsPerUnit = 20.0f;
-		//test2->GetSpriteComponent()->layer = 16;
-		//
 		//AI
 		ResourceDatabase::Instance()->LoadResources("Assets/ResourceDatabase.csv");
-		SetupEnemySpawner();
-		SetupResourceSpawner();
-
-		// World
-		WorldEntity* world = new WorldEntity();
-
-		SpriteEntity* barn = new SpriteEntity("Barn");
-		barn->GetComponent<TransformComponent>()->SetPosition(Firelight::Maths::Vec3f(10.0f, 10.0f, 0.0f));
-		barn->GetComponent<SpriteComponent>()->texture = Graphics::AssetManager::Instance().GetTexture("Sprites/barn.png");
-		barn->GetComponent<SpriteComponent>()->pixelsPerUnit = 50;
-		barn->GetComponent<SpriteComponent>()->layer = 33;
-		barn->AddComponent<RigidBodyComponent>();
-		barn->GetComponent<StaticComponent>()->isStatic = true;
-		BoxColliderComponent* boxCollider = dynamic_cast<BoxColliderComponent*>(barn->AddComponent<ColliderComponent>(new BoxColliderComponent()));
-		boxCollider->rect = Firelight::Maths::Rectf(-0.2f, -1.0f, 6.4f, 5.0f);
-		//CircleColliderComponent* collider = dynamic_cast<Firelight::ECS::CircleColliderComponent*>(barn->AddComponent<Firelight::ECS::ColliderComponent>(new Firelight::ECS::CircleColliderComponent()));
-		//collider->drawCollider = true;
-		//collider->radius = 4.25f;
+		//SetupEnemySpawner();
+		//SetupResourceSpawner();
 
 		// Tilemap
 		Firelight::TileMap::TileMap* tileMap = new Firelight::TileMap::TileMap();
-		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-100.0f, -100.0f));
+		tileMap->SetBottomLeftTilePos(Firelight::Maths::Vec2f(-50.0f, -50.0f));
 		tileMap->UpdateTileMapPositions();
 
 		//Biome Generation
@@ -296,6 +279,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		//Resource PCG spawning
 		EnvironmentGeneration::Instance()->Initialise(tileMap, biomeInfo);
 		EnvironmentGeneration::Instance()->GenerateResources();
+		BiomeGeneration::Instance()->KillVoidTiles();
 
 		// UI
 		canvas = new UICanvas(Firelight::Maths::Vec3f(1920, 1080, 0), static_cast<int>(RenderLayer::UI));
@@ -305,6 +289,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 		// Debug UI
 		SetupDebugUI();
+
+		// Player Event
+		Firelight::Events::EventDispatcher::InvokeFunctions(Firelight::Events::PlayerEvents::OnPlayerCreated::sm_descriptor, (void*)player->GetEntityID());
 
 		// Load All Items
 		InventorySystem::UIParentID = canvas->GetEntityID();
@@ -329,15 +316,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 		inv1->AddOutputCommands(0,std::bind(&DropItemAtPlayer,std::placeholders::_1, player->GetEntityID()));
 		inv1->AddOutputCommands(1, std::bind(&ReAddToPlayer, std::placeholders::_1));
 		inv1->AddOutputCommands(1, std::bind(&DropItemAtPlayer, std::placeholders::_1, player->GetEntityID()));
-		
+
 		// Load all items and recipes
 		ItemDatabase::Instance()->LoadItems("Assets/items.csv");
 		CraftingRecipeDatabase::Instance().LoadCraftingRecipes("Assets/crafting_recipes.csv");
 
 		Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::PlayerEvents::ChangeWeapon>();
 
-
-		PortalEntity* m_portalEntity = new PortalEntity();
+		// Portal
+		PortalEntity* portalEntity = new PortalEntity();
+		portalEntity->GetTransformComponent()->SetPosition(Vec3f(0.0f, 5.0f, 0.0f));
 
 		BackgroundMusicEntity* backgroundMusic = new BackgroundMusicEntity();
 
@@ -346,8 +334,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 			Engine::Instance().Update();
 
 			Maths::Vec3f desiredPosition = player->GetTransformComponent()->GetPosition();
-			Maths::Vec3f smoothPosition = Maths::Vec3f::Lerp(camera->GetTransformComponent()->GetPosition(), desiredPosition, 5 * Firelight::Engine::Instance().GetTime().GetDeltaTime());
-			camera->GetTransformComponent()->SetPosition(smoothPosition);
+			TransformComponent* transformComponent = camera->GetTransformComponent();
+			camera->GetTransformComponent()->SetPosition(
+				Firelight::Maths::Vec3f::SmoothDamp(transformComponent->GetPosition(), desiredPosition, g_cameraVelocityRef, 0.35f, 10, Engine::Instance().GetTime().GetDeltaTime()));
 
 			snowFallAudio::FModAudio::AudioEngine::engine->Update();
 			Engine::Instance().RenderFrame();

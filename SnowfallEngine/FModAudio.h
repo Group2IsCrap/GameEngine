@@ -4,7 +4,6 @@
 #define _FModAudio_H_
 
 #include "FMod/fmod.hpp"
-#include "FMod/fmod_studio.hpp"
 #include "Vector2D.h"
 #include "Vector3D.h"
 #include <iostream>
@@ -25,7 +24,7 @@ namespace snowFallAudio
 			~AudioChannel();
 
 			int channelPriority = 0;
-			float channelVol = 50.0f;
+			float channelVol = 0.5f;
 		};
 
 		struct Instance
@@ -35,7 +34,6 @@ namespace snowFallAudio
 
 			void Update();
 
-			FMOD::Studio::System* fModStudioSystem;
 			FMOD::System* fmodSystem;
 
 			int m_nextChannelId;

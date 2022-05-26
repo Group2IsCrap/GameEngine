@@ -17,8 +17,10 @@ public:
 
 	Entity* spawnedEntity;
 
+	float spawnRadiusThreshold = 30.0f;
 	double respawnCooldown;
 	double respawnTimer;
+	bool initialSpawn;
 
 	EntitySpawnerComponent* Clone() override
 	{

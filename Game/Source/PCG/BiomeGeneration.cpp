@@ -22,12 +22,14 @@ BiomeGeneration::BiomeGeneration()
 	, m_OccupiedIslandSpaces()
 	, m_initialCentre(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 	, m_biomeCount((unsigned int)BiomeType::Bridge)
-	, m_bridgeWidth(2)
-	, m_bridgeLength(3)
+	, m_bridgeWidth(4)
+	, m_bridgeLength(8)
 	, m_islandRadii(15)
 	, m_seed(0)
+	, m_numberOfBridges(0)
 	, m_numberOfIslands(6)
-	, m_playerWasOnBridge(false)
+	, m_wasPlayerOnBridges()
+	, m_hasPlayerCollidedRecently(false)
 	, testPosition(Firelight::Maths::Rectf(0.0f, 0.0f, 1.0f, 1.0f))
 {}
 
@@ -58,7 +60,7 @@ void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo
 
 	m_biomeNoise = new Noise();
 	m_biomeNoise->SetSeed(m_seed);
-	m_biomeNoise->SetNoiseScale(250.0f);
+	m_biomeNoise->SetNoiseScale(150.0f);
 	m_biomeNoise->CreateNoise();
 
 	m_islandDirectionNoise = new Noise();
@@ -69,6 +71,14 @@ void BiomeGeneration::Initialise(Firelight::TileMap::TileMap* tileMap, BiomeInfo
 	m_islandShapeNoise = new Noise();
 	m_islandShapeNoise->SetNoiseScale(1.0f);
 	m_islandShapeNoise->CreateNoise();
+
+
+	m_biomeInfo->biomesOnTileIDs.resize(tileMap->GetTileMapSize());
+
+	for (int index = 0; index < m_biomeInfo->biomesOnTileIDs.size(); ++index)
+	{
+		m_biomeInfo->biomesOnTileIDs[index] = BiomeType::Void;
+	}
 }
 
 void BiomeGeneration::Uninitialise()
@@ -114,6 +124,16 @@ void BiomeGeneration::GenerateWorld()
 		curIslandCentre.y = (float)m_OccupiedIslandSpaces[randomIndex].y;
 
 		FindNextIslandCentre(curIslandCentre, direction, destinationRect, iterator);
+
+		if (iterator >= m_numberOfIslands * 4)
+		{
+			break;
+		}
+	}
+
+	for (int index = 0; index < m_numberOfBridges; ++index)
+	{
+		m_wasPlayerOnBridges.emplace_back(false);
 	}
 
 	m_OccupiedIslandSpaces.clear();
@@ -133,7 +153,7 @@ void BiomeGeneration::DrawFirstIsland(Rectf& destRect, const Rectf currentIsland
 				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 				if (tile != nullptr)
 				{
-					m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
+					m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
 					tile->SetTileTexture(sm_biomeTextures[(int)BiomeType::Forest]);
 					tile->SetIsDrawn(true);
 				}
@@ -150,7 +170,7 @@ void BiomeGeneration::DrawFirstIsland(Rectf& destRect, const Rectf currentIsland
 					Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 					if (tile != nullptr)
 					{
-						m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
+						m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] = BiomeType::Forest;
 						tile->SetTileTexture(sm_biomeTextures[(int)BiomeType::Forest]);
 						tile->SetIsDrawn(true);
 					}
@@ -174,7 +194,7 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, const Rectf currentIsla
 				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 				if (tile != nullptr)
 				{
-					m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+					m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
 					tile->SetTileTexture(sm_biomeTextures[(int)RandomBiomeType(index)]);
 					tile->SetIsDrawn(true);
 				}
@@ -191,7 +211,7 @@ void BiomeGeneration::DrawIslandCircles(Rectf& destRect, const Rectf currentIsla
 					Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
 					if (tile != nullptr)
 					{
-						m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
+						m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] = RandomBiomeType(index);
 						tile->SetTileTexture(sm_biomeTextures[(int)RandomBiomeType(index)]);
 						tile->SetIsDrawn(true);
 					}
@@ -252,10 +272,14 @@ void BiomeGeneration::FindNextIslandCentre(Rectf& currentIslandCentre, IslandSpa
 				currentIslandCentre.x = (float)potentialNewIslandPosition.x;
 				isIslandPositionEmpty = true;
 			}
-
 			break;
 		}
+		m_numberOfBridges++;
 		iterator++;
+		if (iterator >= m_numberOfIslands * 4)
+		{
+			return;
+		}
 		direction = CalculateNextIslandDirection(iterator);
 	}
 }
@@ -292,7 +316,7 @@ void BiomeGeneration::DrawBridge(Rectf& destRect, Rectf currentIslandCentre, Isl
 		{
 			OutputLowestAndHighestVec(lowestPos, highestPos, destRect);
 			Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(destRect.x, destRect.y));
-			m_biomeInfo->mapOfBiomesOnTileIDs[tile->GetTileID()] = BiomeType::Bridge;
+			m_biomeInfo->biomesOnTileIDs[tile->GetTileID()] = BiomeType::Bridge;
 			tile->SetTileTexture(sm_biomeTextures[(int)BiomeType::Bridge + 1]);
 			tile->SetIsDrawn(true);
 
@@ -352,129 +376,149 @@ bool BiomeGeneration::IsIslandSpaceFree(Vec2i newIslandPosition)
 
 IslandSpawnDirection BiomeGeneration::CalculateNextIslandDirection(unsigned int noiseIndex)
 {
-	float* noiseData = m_islandDirectionNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
+	{
+		float* noiseData = m_islandDirectionNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
 
-	if (data >= -1.0 && data <= -0.5)
-	{
-		return IslandSpawnDirection::North;
-	}
-	if (data > -0.5 && data <= 0.0)
-	{
-		return IslandSpawnDirection::East;
-	}
-	if (data >= 0.0f && data < 0.5f)
-	{
-		return IslandSpawnDirection::South;
-	}
-	if (data >= 0.5 && data <= 1)
-	{
-		return IslandSpawnDirection::West;
+		if (data >= -1.0 && data <= -0.5)
+		{
+			return IslandSpawnDirection::North;
+		}
+		if (data > -0.5 && data <= 0.0)
+		{
+			return IslandSpawnDirection::East;
+		}
+		if (data >= 0.0f && data < 0.5f)
+		{
+			return IslandSpawnDirection::South;
+		}
+		if (data >= 0.5 && data <= 1)
+		{
+			return IslandSpawnDirection::West;
+		}
 	}
 	return IslandSpawnDirection::North;
 }
 
-unsigned int BiomeGeneration::CalculateIslandShape(int perlinIndex)
+unsigned int BiomeGeneration::CalculateIslandShape(int noiseIndex)
 {
-	float* noiseData = m_islandShapeNoise->GetNoiseData();
-	float data = noiseData[perlinIndex];
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
+	{
+		float* noiseData = m_islandShapeNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
 
-	if (data >= -1.0f && data <= 0.0f)
-	{
-		return 0;
+		if (data >= -1.0f && data <= 0.0f)
+		{
+			return 0;
+		}
+		if (data > 0.0f && data <= 0.5)
+		{
+			return 1;
+		}
+		if (data >= 0.5 && data <= 1.0f)
+		{
+			return 2;
+		}
 	}
-	if (data > 0.0f && data <= 0.5)
-	{
-		return 1;
-	}
-	if (data >= 0.5 && data <= 1.0f)
-	{
-		return 2;
-	}
-
 	return 0;
 }
 
 
 BiomeType BiomeGeneration::RandomBiomeType(unsigned int noiseIndex)
 {
-	float* noiseData = m_biomeNoise->GetNoiseData();
-	float data = noiseData[noiseIndex];
-
-	float compareMin = -1.0f;
-	float compareMax = 1.0f;
-
-	float comparisonSampleSize = compareMax - compareMin;
-	float adjustmentSize = comparisonSampleSize / m_biomeCount;
-
-
-	if (data >= compareMin && data <= compareMin + adjustmentSize)
+	if (noiseIndex < NOISE_DATA_SIZE * NOISE_DATA_SIZE)
 	{
-		return BiomeType::Forest;
-	}
-	if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize)
-	{
-		return BiomeType::Swamp;
-	}
-	if (data >= compareMax - adjustmentSize && data < compareMax)
-	{
-		return BiomeType::Snow;
+		float* noiseData = m_biomeNoise->GetNoiseData();
+		float data = noiseData[noiseIndex];
+
+		float compareMin = -1.0f;
+		float compareMax = 1.0f;
+
+		float comparisonSampleSize = compareMax - compareMin;
+		float adjustmentSize = comparisonSampleSize / m_biomeCount;
+
+
+		if (data >= compareMin && data <= compareMin + adjustmentSize)
+		{
+			return BiomeType::Forest;
+		}
+		if (data > compareMin + adjustmentSize && data <= compareMax - adjustmentSize - (float)SMALL_FLOAT_VAL)
+		{
+			return BiomeType::Swamp;
+		}
+		if (data >= compareMax - adjustmentSize - (float)SMALL_FLOAT_VAL && data <= compareMax)
+		{
+			return BiomeType::Snow;
+		}
 	}
 	return BiomeType::Forest;
 }
 
-bool BiomeGeneration::IsInVoid(Rectf position)
+bool BiomeGeneration::IsInVoid(Firelight::Maths::Vec2f position)
 {
-	Vec2f tileMapBot = m_tileMap->GetBottomLeftTilePos();
-	Vec2f tileMapTop = m_tileMap->GetTopRightTilePos();
+	Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(position);
 
-
-	if (!IsPositionBetweenTwoPoints(position, tileMapBot, tileMapTop))
-	{
-		return true;
-	}
-
-	for (auto box : m_walkableBoxZones)
-	{
-		Vec2f position1 = Vec2f(box.x, box.y);
-		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
-		if (IsPositionBetweenTwoPoints(position, position1, position2))
-		{
-			return false;
-		}
-	}
-
-	for (auto centre : m_islandCentres)
-	{
-		if (Vec2i::Dist(Vec2i((int)position.x, (int)position.y), Vec2i((int)centre.x, (int)centre.y)) <= m_islandRadii)
-		{
-			return false;
-		}
-	}
-	return true;
+	return tile->GetTileID() == 0;
 }
 
 void BiomeGeneration::CheckCurrentPlayerBiomeType(Rectf playerPosition)
 {
-	for (auto box : m_walkableBoxZones)
+	for (int i = 0; i < m_walkableBoxZones.size(); ++i)
 	{
-		Vec2f position1 = Vec2f(box.x - 1, box.y - 1);
-		Vec2f position2 = Vec2f(box.x + box.w + 1, box.y + box.h + 1);
-		if (IsPositionBetweenTwoPoints(Rectf(playerPosition.x, playerPosition.y - 1, playerPosition.w, playerPosition.h), position1, position2))
+		Vec2f position1 = Vec2f(m_walkableBoxZones[i].x - 1, m_walkableBoxZones[i].y - 1);
+		Vec2f position2 = Vec2f(m_walkableBoxZones[i].x + m_walkableBoxZones[i].w + 1, m_walkableBoxZones[i].y + m_walkableBoxZones[i].h + 1);
+		if (!m_wasPlayerOnBridges[i])
 		{
-			m_playerWasOnBridge = true;
+			if (IsPositionBetweenTwoPoints(Rectf(playerPosition.x, playerPosition.y - 1, playerPosition.w, playerPosition.h), position1, position2))
+			{
+				m_wasPlayerOnBridges[i] = true;
+			}
 		}
-		else if (m_playerWasOnBridge)
+		else
 		{
-			m_playerWasOnBridge = false;
-			Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y - 2));
-			unsigned int tileID = tile->GetTileID();
-			BiomeMusicData biomeMusicData;
-			biomeMusicData.biome = m_biomeInfo->mapOfBiomesOnTileIDs[tileID];
-			biomeMusicData.playerPosition = Vector3D(playerPosition.x, playerPosition.y, 0.0f);
-			Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
+			if (!IsPositionBetweenTwoPoints(Rectf(playerPosition.x, playerPosition.y - 1, playerPosition.w, playerPosition.h), position1, position2))
+			{
+				m_wasPlayerOnBridges[i] = false;
+				Firelight::TileMap::Tile* tile = m_tileMap->GetTileAtPosition(Vec2f(playerPosition.x, playerPosition.y - 2));
+				unsigned int tileID = tile->GetTileID();
+				BiomeMusicData biomeMusicData;
+				biomeMusicData.biome = m_biomeInfo->biomesOnTileIDs[tileID];
+				biomeMusicData.playerPosition = Vector3D(playerPosition.x, playerPosition.y, 0.0f);
+				Firelight::Events::EventDispatcher::InvokeListeners<PCGEvents::OnPlayerCrossBridge>((void*)&biomeMusicData);
+				m_hasPlayerCollidedRecently = true;
+			}
 		}
 	}
+}
+
+void BiomeGeneration::KillVoidTiles()
+{
+	auto& tileMap = m_tileMap->GetTileMap();
+	for (size_t rowIndex = tileMap.size() - 1; rowIndex > 0; --rowIndex)
+	{
+		auto& rowObject = tileMap[rowIndex];
+
+		for (size_t columnIndex = rowObject.size() - 1; columnIndex > 0; --columnIndex)
+		{
+			if (!rowObject[columnIndex]->IsDrawn())
+			{
+				rowObject[columnIndex] = nullptr;
+				delete rowObject[columnIndex];
+				rowObject.erase(rowObject.begin() + columnIndex);
+			}
+			if (rowObject.size() == 0)
+			{
+				tileMap.erase(tileMap.begin() + rowIndex);
+			}
+		}
+	}
+	m_tileMap->SetTileMap(tileMap);
+}
+
+Firelight::TileMap::TileMap* BiomeGeneration::GetTileMap()
+{
+	return m_tileMap;
 }
 
 void BiomeGeneration::OutputLowestAndHighestVec(Vec2f& lowestPos, Vec2f& highestPos, Rectf rectVal)
@@ -507,5 +551,6 @@ bool BiomeGeneration::IsPositionBetweenTwoPoints(Rectf position, Vec2f point1, V
 	{
 		return true;
 	}
+
 	return false;
 }

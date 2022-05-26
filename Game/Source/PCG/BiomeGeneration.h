@@ -3,12 +3,15 @@
 #include "BiomeInfo.h"
 
 #include "..\FirelightEngine\Source\Maths\Rect.h"
+#include <Source/Maths/Vec2.h>
 #include "..\FirelightEngine\Source\TileMap\TileMap.h"
 #include "..\FirelightEngine\Source\Graphics\Data\Texture.h"
 #include "Vector3D.h"
 #include "Source/ImGuiUI/ImGuiLayer.h"
 
 #include <map>
+
+#define SMALL_FLOAT_VAL 0.4
 
 using namespace Firelight::Graphics;
 using namespace Firelight::Maths;
@@ -36,8 +39,11 @@ public:
 
 	Firelight::Maths::Rectf testPosition;
 
-	bool IsInVoid(Rectf position);
+	bool IsInVoid(Firelight::Maths::Vec2f position);
 	void CheckCurrentPlayerBiomeType(Rectf playerPosition);
+
+	void KillVoidTiles();
+	Firelight::TileMap::TileMap* GetTileMap();
 
 private:
 
@@ -77,6 +83,8 @@ private:
 	unsigned int m_bridgeLength;
 	int m_islandRadii;
 	int m_seed;
+	int m_numberOfBridges;
 	size_t m_numberOfIslands;
-	bool m_playerWasOnBridge;
+	std::vector<bool> m_wasPlayerOnBridges;
+	bool m_hasPlayerCollidedRecently;
 };

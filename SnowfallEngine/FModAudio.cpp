@@ -3,10 +3,6 @@
 #include <Windows.h>
 using namespace snowFallAudio::FModAudio;
 
-
-
-
-
 AudioEngine* AudioEngine::engine = new AudioEngine;
 
 AudioEngine::AudioEngine()
@@ -77,7 +73,7 @@ void Instance::Update()
 		m_channels.erase(it);
 	}
 	//Call the FMOD update
-	AudioEngine::engine->Ducking();
+	//AudioEngine::engine->Ducking();
 	AudioEngine::engine->ErrorCheck(fmodSystem->update());
 	//AudioEngine::engine->ErrorCheck(fModStudioSystem->update());
 	
@@ -122,16 +118,14 @@ void AudioEngine::Initialise()
 	//create new instance
 	fmodInstance = new Instance;
 	//Start update chain
-	AudioChannel UIchannel("UI", 1, 100);
-	AudioChannel GameplayChannel("Game", 2, 60);
-	AudioChannel PlayerChannel("Player", 3, 75);
-	AudioChannel AmbienceChannel("Ambience", 2, 50);
-	AudioChannel backgroundMusicChannel("Background", 2, 50);
-	AudioChannel enemiesChannel("Enemies", 3, 70);
+	AudioChannel* UIchannel = new AudioChannel("UI", 1, 0.05f);
+	AudioChannel* GameplayChannel = new AudioChannel("Game", 2, 0.025f);
+	AudioChannel* PlayerChannel = new AudioChannel("Player", 3, 0.03f);
+	AudioChannel* AmbienceChannel = new AudioChannel("Ambience", 2, 0.015f);
+	AudioChannel* backgroundMusicChannel = new AudioChannel("Background", 2, 0.005f);
+	AudioChannel* enemiesChannel = new AudioChannel("Enemies", 3, 0.025f);
 	AudioEngine::engine->Update();
 }
-
-
 
 void AudioEngine::Update()
 {
@@ -217,21 +211,27 @@ int AudioEngine::PlayfModSound(const std::string& soundName, const Vector3D& sou
 		//if holding 3D parameter
 		if (currentMode & FMOD_3D)
 		{
-			//Setup the annoying FMOD_VECTOR
 			FMOD_VECTOR position;
 			position.x = soundPos.x;
 			position.y = soundPos.y;
 			position.z = soundPos.z;
 
-			//set the 3d position
-			engine->ErrorCheck(channel->set3DAttributes(&position, nullptr));
+
+			//use position
+			engine->ErrorCheck(channel->set3DAttributes(&position, NULL));
 		}
 		/*if (currentMode & FMOD_LOOP_NORMAL)
 		{
 			engine->ErrorCheck(channel->setMode(FMOD_LOOP_NORMAL));
 		}*/
 
-		Ducking();
+		//Ducking();
+		int ok = engine->ErrorCheck(channel->setVolume(audioChannel.channelVol));
+		//SetChannelVolume(nextChannelId, audioChannel.channelVol);
+
+		/*float volume = 0.0f;
+
+		engine->ErrorCheck(channel->getVolume(&volume));*/
 
 		//unpause
 		engine->ErrorCheck(channel->setPaused(false));
@@ -451,6 +451,13 @@ void AudioEngine::Ducking()
 
 				}
 			}
+		}
+	}
+	else
+	{
+		for (auto it : channelByPriority)
+		{
+			it.second->setVolume(fmodInstance->m_listOfChannels[it.second].channelVol);
 		}
 	}
 }

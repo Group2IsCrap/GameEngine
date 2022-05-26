@@ -3,7 +3,7 @@
 #include <Source/Input/GetInput.h>
 #include <Source/ECS/Components/BasicComponents.h>
 #include <Source/Engine.h>
-#include <Source/Physics/PhysicsHelpers.h>s
+#include <Source/Physics/PhysicsHelpers.h>
 #include <Source/ImGuiUI/ImGuiManager.h>
 #include <Source/Graphics/Data/Colour.h>
 
@@ -154,27 +154,52 @@ void PlayerSystem::FixedUpdate(const Firelight::Utils::Time& time, const bool& i
 {
 	if (!isPaused)
 	{
+		Vec3f movement = Vec3f(0.0f, 0.0f, 0.0f);
 		if (m_moveUp)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.y += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
+			movement.y = 1;
 		}
 		if (m_moveDown)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.y -= GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
+			movement.y = -1;
 		}
 		if (m_moveLeft)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.x -= GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
+			movement.x = -1;
 		}
 		if (m_moveRight)
 		{
-			m_playerEntity->GetRigidBodyComponent()->velocity.x += GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
+			movement.x = 1;
+		}
+		if (movement != Vec3f(0.0f, 0.0f, 0.0f))
+		{
+			movement.Normalise();
+			m_playerEntity->GetRigidBodyComponent()->velocity = movement * GetSpeed() * static_cast<float>(time.GetPhysicsTimeStep());
 		}
 
-		if (BiomeGeneration::Instance()->IsInVoid(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f)))
+		float colliderWidth = 0.0f;
+		float colliderHeight = 0.0f;
+		if (m_playerEntity->HasComponent<ColliderComponent, CircleColliderComponent>())
 		{
-			//m_playerEntity->GetRigidBodyComponent()->velocity.x = -m_playerEntity->GetRigidBodyComponent()->velocity.x + 0.2;
-			//m_playerEntity->GetRigidBodyComponent()->velocity.y = -m_playerEntity->GetRigidBodyComponent()->velocity.y +0.2;
+			colliderWidth = m_playerEntity->GetComponent<ColliderComponent, CircleColliderComponent>()->radius / 2;
+			colliderHeight = colliderWidth;
+		}
+		else if (m_playerEntity->HasComponent<ColliderComponent, BoxColliderComponent>())
+		{
+			BoxColliderComponent* boxCollider = m_playerEntity->GetComponent<ColliderComponent, BoxColliderComponent>();
+			colliderWidth = boxCollider->rect.w / 2;
+			colliderHeight = boxCollider->rect.h / 2;
+		}
+
+		Vec3f dir = m_playerEntity->GetRigidBodyComponent()->velocity;
+		dir.Normalise();
+		Vec3f targetDir = Vec3f(colliderWidth * dir.x, colliderHeight * dir.y, 0.0f) + m_playerEntity->GetRigidBodyComponent()->nextPos;
+		Vec2f tilePos = Vec2f(targetDir.x, targetDir.y);
+
+		if (BiomeGeneration::Instance()->IsInVoid(tilePos))
+		{
+			m_playerEntity->GetRigidBodyComponent()->velocity = Vec3f(0.0f, 0.0f, 0.0f);
+			bool test = true;
 		}
 		BiomeGeneration::Instance()->CheckCurrentPlayerBiomeType(Rectf(m_playerEntity->GetTransformComponent()->GetPosition().x, m_playerEntity->GetTransformComponent()->GetPosition().y, 1.0f, 1.0f));
 	}
@@ -378,8 +403,6 @@ void PlayerSystem::SwitchHat()
 	PlayerComponent* playerComponent = m_playerEntity->GetComponent<PlayerComponent>();
 
 	EntityID id = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Head");
-	ArmourComponent* armourComponent = nullptr;
-	//EntityID id2 = InventorySystem::GlobalFunctions::GetSpecialSlotEntity("PlayerInventory", "Equipment", "Body");
 
 	ArmourComponent* armour = nullptr;
 

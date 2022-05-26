@@ -1,25 +1,23 @@
 #include "ResourceEntity.h"
+
 #include "../Items/ItemDatabase.h"
 
 ResourceEntity::ResourceEntity()
 {
-	AddComponent<Firelight::ECS::RigidBodyComponent>();
-	AddComponent<HealthComponent>();
-	
-	this->GetIDComponent()->name = "Resource";
+	GetIDComponent()->name = "Resource";
 }
 
 ResourceEntity::ResourceEntity(std::string name) : ResourceEntity()
 {
-	this->GetIDComponent()->name = name;
+	GetIDComponent()->name = name;
 }
 
-ResourceEntity::ResourceEntity(Firelight::ECS::EntityID entityID) : Firelight::ECS::SpriteEntity(entityID)
+ResourceEntity::ResourceEntity(Firelight::ECS::EntityID entityID) : CharacterEntity(entityID)
 {
 
 }
 
-ResourceEntity::ResourceEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : SpriteEntity(isTemplate, entityID)
+ResourceEntity::ResourceEntity(bool isTemplate, Firelight::ECS::EntityID entityID) : CharacterEntity(isTemplate, entityID)
 {
 }
 
@@ -123,7 +121,17 @@ void ResourceEntity::HealthBelowZero()
 
 	this->PlayAudioClip();
 
-	this->GetComponent<ResourceComponent>()->isDead = true;
+	if (resourceComponent->resourceID >= 5)
+	{
+		this->Destroy();
+	}
+	else
+	{
+		this->GetComponent<ResourceComponent>()->isDead = true;
+	}
+
+
+	
 }
 
 void ResourceEntity::DropItems(Firelight::ECS::EntityID drop, Firelight::Maths::Vec3f location)

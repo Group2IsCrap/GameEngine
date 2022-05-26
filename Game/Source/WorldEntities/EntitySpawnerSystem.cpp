@@ -6,11 +6,16 @@
 #include "../AI/Enemies/AICrocodileEntity.h"
 #include "../AI/Enemies/AISlimeEntity.h"
 #include "../AI/Enemies/AIDeerEntity.h"
+#include "../AI/Enemies/AIBunnyEntity.h"
+#include "../AI/Enemies/AIBearEntity.h"
+#include "../AI/Enemies/AISnowBunnyEntity.h"
+#include "../AI/Enemies/AISnowBearEntity.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include "../Core/Layers.h"
 #include <Source/Graphics/AssetManager.h>
 #include <Source/ECS/Components/AnimationComponent.h>
 #include "../AI/AIBehaviourComponent.h"
+#include "../Events/PlayerEvents.h"
 
 using namespace Firelight::ECS;
 
@@ -18,7 +23,14 @@ EntitySpawnerSystem::EntitySpawnerSystem()
 {
 	AddWhitelistComponent<EntitySpawnerComponent>();
 
+	Firelight::Events::EventDispatcher::SubscribeFunction(Firelight::Events::PlayerEvents::OnPlayerCreated::sm_descriptor, std::bind(&EntitySpawnerSystem::SetPlayer, this, std::placeholders::_1));
+
 	SetupEntityTemplate();
+}
+
+void EntitySpawnerSystem::SetPlayer(void* data)
+{
+	m_playerEntity = new PlayerEntity((EntityID)data);
 }
 
 void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool& isPaused)
@@ -32,11 +44,13 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 	{
 		Entity currentEntity = Entity(m_entities[entityIndex]->GetEntityID());
 		EntitySpawnerComponent* entitySpawnerComponent = currentEntity.GetComponent<EntitySpawnerComponent>();
+
 		if (entitySpawnerComponent->spawnedEntity != nullptr)
 		{
-			if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>() != nullptr)
+			AIComponent* aiComponent = entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>();
+			if (aiComponent != nullptr)
 			{
-				if (entitySpawnerComponent->spawnedEntity->GetComponent<AIComponent>()->isDead)
+				if (aiComponent->isDead)
 				{
 					entitySpawnerComponent->spawnedEntity->Destroy();
 					entitySpawnerComponent->spawnedEntity = nullptr;
@@ -44,25 +58,47 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				}
 			}
 
-			if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
+			ResourceComponent* resourceComponent = entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>();
+			if (resourceComponent != nullptr)
 			{
-				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>()->isDead)
+				if (resourceComponent->isDead)
 				{
 					entitySpawnerComponent->spawnedEntity->Destroy();
 					entitySpawnerComponent->spawnedEntity = nullptr;
 					continue;
 				}
 			}
+		}
+		
+		if (Firelight::Maths::Vec3f::Dist(m_playerEntity->GetTransformComponent()->GetPosition(), currentEntity.GetComponent<TransformComponent>()->GetPosition()) > entitySpawnerComponent->spawnRadiusThreshold)
+		{
+			if (entitySpawnerComponent->spawnedEntity != nullptr)
+			{
+				if (entitySpawnerComponent->spawnedEntity->GetComponent<ResourceComponent>() != nullptr)
+				{
+					if (entitySpawnerComponent->resourceID != -1)
+					{
+						entitySpawnerComponent->initialSpawn = false;
+						entitySpawnerComponent->spawnedEntity->Destroy();
+						entitySpawnerComponent->spawnedEntity = nullptr;
+						continue;
+					}
+				}
+			}
+			continue;
+		}
+		
 
-			
-
+		if (entitySpawnerComponent->spawnedEntity != nullptr)
+		{
 			continue;
 		}
 
 		entitySpawnerComponent->respawnTimer += time.GetDeltaTime();
-		if (entitySpawnerComponent->respawnTimer >= entitySpawnerComponent->respawnCooldown)
+		if (entitySpawnerComponent->respawnTimer >= entitySpawnerComponent->respawnCooldown || !entitySpawnerComponent->initialSpawn)
 		{
 			entitySpawnerComponent->respawnTimer = 0.0f;
+			entitySpawnerComponent->initialSpawn = true;
 			
 			Firelight::Maths::Vec3f spawnPos = currentEntity.GetComponent<TransformComponent>()->GetPosition();
 			if (entitySpawnerComponent->enemyName != "")
@@ -72,19 +108,43 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				{
 					AICrocodileEntity* croc = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = croc;
-					croc->GetRigidBodyComponent()->nextPos = spawnPos;
+					croc->Warp(spawnPos);
 				}
 				else if (entitySpawnerComponent->enemyName == "Slime")
 				{
 					AISlimeEntity* slime = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = slime;
-					slime->GetRigidBodyComponent()->nextPos = spawnPos;
+					slime->Warp(spawnPos);
 				}
 				else if (entitySpawnerComponent->enemyName == "Deer")
 				{
 					AIDeerEntity* deer = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = deer;
-					deer->GetRigidBodyComponent()->nextPos = spawnPos;
+					deer->Warp(spawnPos);
+				}
+				else if (entitySpawnerComponent->enemyName == "Bunny")
+				{
+					AIBunnyEntity* bunny = new AIBunnyEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = bunny;
+					bunny->Warp(spawnPos);
+				}
+				else if (entitySpawnerComponent->enemyName == "Bear")
+				{
+					AIBearEntity* bear = new AIBearEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = bear;
+					bear->Warp(spawnPos);
+				}
+				else if (entitySpawnerComponent->enemyName == "SnowBear")
+				{
+					AISnowBearEntity* snowBear = new AISnowBearEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = snowBear;
+					snowBear->Warp(spawnPos);
+				}
+				else if (entitySpawnerComponent->enemyName == "SnowBunny")
+				{
+					AISnowBunnyEntity* snowBunny = new AISnowBunnyEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = snowBunny;
+					snowBunny->Warp(spawnPos);
 				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)
@@ -92,7 +152,7 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				// Spawn new resource
 				ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(entitySpawnerComponent->resourceID);
 				entitySpawnerComponent->spawnedEntity = resourceEntity;
-				resourceEntity->GetRigidBodyComponent()->nextPos = spawnPos;
+				resourceEntity->Warp(spawnPos);
 			}
 		}
 	}
@@ -104,7 +164,7 @@ void EntitySpawnerSystem::SetupEntityTemplate()
 	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
 	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
 	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/DeerIdle.png");
 	spriteComponent->pixelsPerUnit = 50;
 	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
 	enemyTemplate->AddComponent<RigidBodyComponent>();
@@ -117,4 +177,12 @@ void EntitySpawnerSystem::SetupEntityTemplate()
 	audioComponent->is3d = false;
 	audioComponent->streaming = false;
 	audioComponent->channel = "Enemies";
+}
+
+void EntitySpawnerSystem::SpawnEnemy()
+{
+}
+
+void EntitySpawnerSystem::SpawnResource()
+{
 }

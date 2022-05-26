@@ -2,6 +2,7 @@
 
 #include "../Core/AIEntity.h"
 #include "../AI/AIBehaviourComponent.h"
+#include "../PCG/BiomeGeneration.h"
 
 using namespace Firelight::ECS;
 

@@ -16,6 +16,11 @@ namespace Firelight::Graphics
     SpriteBatch::SpriteBatch() :
         m_sortMode(SortMode::e_None)
     {
+        m_quadEntityQueue = std::queue<QuadEntity*>();
+        for (int i = 0; i < 5000; i++)
+        {
+            m_quadEntityQueue.push(new QuadEntity());
+        }
     }
 
     SpriteBatch::~SpriteBatch()
@@ -37,9 +42,16 @@ namespace Firelight::Graphics
             return;
         }
 
-        // Create push back new data
-        QuadEntity* quad = new QuadEntity();
+        // If there is already an entry in the queue overwrite the existing data,
+        // otherwise create push back new data
+        if (m_quadEntityQueue.empty())
+        {
+            m_quadEntityQueue.push(new QuadEntity());
+        }
+
+        QuadEntity* quad = m_quadEntityQueue.front();
         m_entityQueue.push_back(quad);
+        m_quadEntityQueue.pop();
         
         // Use a blank white texture if none is specified
         if (texture != nullptr)
@@ -322,7 +334,15 @@ namespace Firelight::Graphics
     {
         for (int entityIndex = 0; entityIndex < m_entityQueue.size(); ++entityIndex)
         {
-            delete m_entityQueue[entityIndex];
+            QuadEntity* quad = dynamic_cast<QuadEntity*>(m_entityQueue[entityIndex]);
+            if (quad != nullptr)
+            {
+                m_quadEntityQueue.push(quad);
+            }
+            else
+            {
+                delete m_entityQueue[entityIndex];
+            }
         }
         m_entityQueue.clear();
     }

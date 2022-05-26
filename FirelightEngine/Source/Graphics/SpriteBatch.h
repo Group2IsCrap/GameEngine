@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <queue>
 
 #include "Data/Mesh.h"
 #include "Data/VertexTypes.h"
@@ -9,6 +10,7 @@
 #include "Text/Text.h"
 
 #include "../Maths/Rect.h"
+
 
 // Forward declarations
 namespace Firelight::Graphics
@@ -106,6 +108,7 @@ namespace Firelight::Graphics
 
 	private:
 		std::vector<LayerableEntity*> m_entityQueue;
+		std::queue<QuadEntity*> m_quadEntityQueue;
 
 		SortMode           m_sortMode;
 

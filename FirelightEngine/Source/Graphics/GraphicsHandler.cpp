@@ -285,7 +285,7 @@ namespace Firelight::Graphics
 
 		m_deviceContext->OMSetRenderTargets(1, m_finalImage.m_renderTargetView.GetAddressOf(), m_depthStencil.m_depthStencilView.Get());
 
-		float clearColour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		float clearColour[4] = { 0.52f, 0.8f, 0.92f, 1.0f };
 		m_deviceContext->ClearRenderTargetView(m_finalImage.m_renderTargetView.Get(), clearColour);
 		m_deviceContext->ClearDepthStencilView(m_depthStencil.m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 

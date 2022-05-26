@@ -68,6 +68,8 @@ namespace InventorySystem
         {
             GlobalFunctions::RemoveItemTypeData* data = (GlobalFunctions::RemoveItemTypeData*)eventData;
 
+            
+
             data->returnData = RemoveItem(data->groupName, data->inventoryName, data->Type,data->Number);
         }
         else if (event == Events::Inventory::GetItemType::sm_descriptor)

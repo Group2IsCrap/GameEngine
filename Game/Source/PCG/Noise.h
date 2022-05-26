@@ -2,7 +2,7 @@
 
 #include "FastNoiseLite/FastNoiseLite.h"
 
-#define NOISE_DATA_SIZE 128
+#define NOISE_DATA_SIZE 256
 
 class Noise
 {

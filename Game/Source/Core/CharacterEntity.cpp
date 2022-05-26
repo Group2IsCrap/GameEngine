@@ -22,6 +22,15 @@ CharacterEntity::CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entit
 {
 }
 
+void CharacterEntity::Warp(Firelight::Maths::Vec3f pos)
+{
+	RigidBodyComponent* rb = GetRigidBodyComponent();
+	rb->nextPos = pos;
+	rb->lastPos = pos;
+	rb->velocity = Firelight::Maths::Vec3f(0.0f, 0.0f, 0.0f);
+	GetTransformComponent()->SetPosition(pos);
+}
+
 HealthComponent* CharacterEntity::GetHealthComponent()
 {
 	return GetComponent<HealthComponent>();

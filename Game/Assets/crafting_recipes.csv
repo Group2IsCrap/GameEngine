@@ -1,3 +1,24 @@
 ﻿ItemMaking,CountMaking,RequiredItems
-Rock,2,Rock:2|Stick:5
-Stick,2,Rock:2|Stick:5
+Metal Chest,1,Metal Scrap:8
+Metal Helm,1,Metal Scrap:5
+Metal Scrap,1,Metal Ore:2
+Planks,1,Wood:3
+Infused Wood,1,Wood:2|Slime Clump:1
+Potions 1,1,Fur:1|Berry:1|Bone:1
+Potions 3,1,Slime Clump:1|Berry:1
+Potions 5,1,Tongue:1|Berry:1
+Stone Axe,1,Stick:2|Rock:3
+Stone Pickaxe,1,Stick:2|Rock:3
+Stone_Sword,1,Stick:2|Rock:2
+Metal Axe,1,Planks:2|Metal Scrap:3
+Metal Pickaxe,1,Planks:2|Metal Scrap:3
+Metal_Sword,1,Planks:2|Metal Scrap:2
+Infused Axe,1,Infused Wood:2|Metal Scraps:6
+Infused Pickaxe,1,Infused Wood:2|Metal Scraps:6
+Croc_Sword,1,Planks:1|Crocodile Teeth:5|Scales:2
+Scale   Chest,1,Scales:8|Fibre:2
+Scale   Helm,1,Scales:5|Fibre:2
+Leather  Chest,1,Leather:8|Fibre:2
+Leather  Helm,1,Leather:5|Fibre:2
+Infused Sword,1,Infused Wood:2|Metal Scraps:6|Poison:1
+Poison,1,Tongue:1|Bone:1|Slime Clump:1

@@ -1,0 +1,12 @@
+{
+    "AnimationName": "SnowBearWalk",
+    "Loop": true,
+    "FrameTime": 256,
+    "FrameCount": 4,
+    "TextureNames": [
+        "Sprites\\Enemies\\SnowBearIdle.png",
+        "Sprites\\Enemies\\SnowBearWalk1.png",
+        "Sprites\\Enemies\\SnowBearIdle.png",
+        "Sprites\\Enemies\\SnowBearWalk2.png"
+    ]
+}

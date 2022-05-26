@@ -80,6 +80,7 @@ void ResourceDatabase::LoadResources(std::string filepath)
 
 		AddDrops(resourceComponent, resourceData[i][4]);
 
+		resourceTemplate->GetComponent<StaticComponent>()->isStatic = true;
 		resourceTemplate->AddComponent<HealthComponent>()->currentHealth = std::stoi(resourceData[i][3]);
 		resourceTemplate->AddComponent<RigidBodyComponent>();
 

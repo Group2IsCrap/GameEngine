@@ -10,9 +10,10 @@ namespace Firelight::TileMap
     TileMap::TileMap()
         : m_tileHeight(1)
         , m_tileWidth(1)
-        , m_tileMapHeight(400)
-        , m_tileMapWidth(400)
+        , m_tileMapHeight(200)
+        , m_tileMapWidth(200)
         , m_tileDistance(1)
+        , m_tileMapSize(m_tileMapHeight * m_tileMapWidth)
         , m_bottomLeftTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_topRightTilePos(Maths::Vec2f(0.0f, 0.0f))
         , m_tileMap()
@@ -77,6 +78,7 @@ namespace Firelight::TileMap
                 rowObject[columnIndex]->DrawTile();
             }
         }
+
     }
 
    void TileMap::SetTileHeight(int tileHeight)
@@ -99,22 +101,28 @@ namespace Firelight::TileMap
         m_tileMapWidth = tileMapWidth;
     }
 
+    void TileMap::SetTileMap(std::vector<std::vector<Tile*>> tileMap)
+    {
+        m_tileMap = tileMap;
+    }
+
     Tile* TileMap::GetTileAtPosition(Maths::Vec2f position)
     {
         for (auto& tilesVec : m_tileMap)
         {
             for (auto tile : tilesVec)
             {
-                if ((position.x >= tile->GetDestinationRect().x) &&
-                    (position.x <= tile->GetDestinationRect().x + tile->GetDestinationRect().w) &&
-                    (position.y >= tile->GetDestinationRect().y) &&
-                    (position.y <= tile->GetDestinationRect().y + tile->GetDestinationRect().h))
+                Firelight::Maths::Rectf rect = tile->GetDestinationRect();
+                if ((position.x >= rect.x) &&
+                    (position.x <= rect.x + rect.w) &&
+                    (position.y >= rect.y) &&
+                    (position.y <= rect.y + rect.h))
                 {
                     return tile;
                 }
             }
         }
-        m_emptyTilePtr->SetTileID(-1);
+        m_emptyTilePtr->SetTileID(0);
         return m_emptyTilePtr;
     }
 
@@ -139,5 +147,10 @@ namespace Firelight::TileMap
     Firelight::Maths::Vec2f TileMap::GetTopRightTilePos()
     {
         return m_topRightTilePos;
+    }
+
+    size_t TileMap::GetTileMapSize()
+    {
+        return m_tileMapSize;
     }
 }

@@ -17,7 +17,8 @@ enum class BiomeType
 
 struct BiomeInfo
 {
-	std::map<unsigned int, BiomeType> mapOfBiomesOnTileIDs;
+	//std::map<unsigned int, BiomeType> biomesOnTileIDs;
+	std::vector<BiomeType> biomesOnTileIDs;
 };
 
 struct BiomeMusicData

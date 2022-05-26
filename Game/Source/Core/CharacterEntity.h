@@ -14,6 +14,8 @@ public:
 	CharacterEntity(Firelight::ECS::EntityID entityID);
 	CharacterEntity(bool isTemplate, Firelight::ECS::EntityID entityID);
 
+	void Warp(Firelight::Maths::Vec3f pos);
+
 	HealthComponent* GetHealthComponent();
 	Firelight::ECS::RigidBodyComponent* GetRigidBodyComponent();
 	int GetHealth();
