@@ -18,7 +18,9 @@ public:
 private:
 	void SpawnTree(Vec3f position);
 	void SpawnRock(Vec3f position);
+	void SpawnOre(Vec3f position);
 	void SpawnBush(Vec3f position);
+	void SpawnBerryBush(Vec3f position);
 	//void SpawnBerryBush(Vec3f position);
 
 	void SpawnCroc(Vec3f position);
