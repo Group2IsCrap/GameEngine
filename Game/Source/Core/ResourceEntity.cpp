@@ -123,7 +123,7 @@ void ResourceEntity::HealthBelowZero()
 
 	this->PlayAudioClip();
 
-	if (resourceComponent->resourceID >= 4)
+	if (resourceComponent->resourceID >= 5)
 	{
 		this->Destroy();
 	}

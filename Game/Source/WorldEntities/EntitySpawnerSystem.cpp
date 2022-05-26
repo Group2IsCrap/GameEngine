@@ -6,6 +6,7 @@
 #include "../AI/Enemies/AICrocodileEntity.h"
 #include "../AI/Enemies/AISlimeEntity.h"
 #include "../AI/Enemies/AIDeerEntity.h"
+#include "../AI/Enemies/AIBunnyEntity.h"
 #include <Source/ECS/EntityWrappers/SpriteEntityTemplate.h>
 #include "../Core/Layers.h"
 #include <Source/Graphics/AssetManager.h>
@@ -84,6 +85,12 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 					entitySpawnerComponent->spawnedEntity = deer;
 					deer->GetRigidBodyComponent()->nextPos = spawnPos;
 				}
+				else if (entitySpawnerComponent->enemyName == "Bunny")
+				{
+					AIBunnyEntity* bunny = new AIBunnyEntity(true, enemyTemplate->GetTemplateID());
+					entitySpawnerComponent->spawnedEntity = bunny;
+					bunny->GetRigidBodyComponent()->nextPos = spawnPos;
+				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)
 			{
@@ -102,7 +109,7 @@ void EntitySpawnerSystem::SetupEntityTemplate()
 	AIComponent* aiComponent = enemyTemplate->AddComponent<AIComponent>();
 	enemyTemplate->GetComponent<LayerComponent>()->layer = static_cast<int>(GameLayer::Enemy);
 	SpriteComponent* spriteComponent = enemyTemplate->GetComponent<SpriteComponent>();
-	spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/ShitDeer.png");
+	spriteComponent->texture = Firelight::Graphics::AssetManager::Instance().GetTexture("Sprites/Enemies/DeerIdle.png");
 	spriteComponent->pixelsPerUnit = 50;
 	spriteComponent->layer = static_cast<int>(RenderLayer::Enemy);
 	enemyTemplate->AddComponent<RigidBodyComponent>();

@@ -1,0 +1,14 @@
+{
+    "AnimationName": "DeerWalk",
+    "Loop": true,
+    "FrameTime": 128,
+    "FrameCount": 6,
+    "TextureNames": [
+        "Sprites\\Enemies\\DeerIdle.png",
+        "Sprites\\Enemies\\DeerWalk1.png",
+        "Sprites\\Enemies\\DeerWalk2.png",
+        "Sprites\\Enemies\\DeerIdle.png",
+        "Sprites\\Enemies\\DeerWalk3.png",
+        "Sprites\\Enemies\\DeerWalk4.png"
+    ]
+}

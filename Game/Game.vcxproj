@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AI\Enemies\AIBunnyEntity.cpp" />
     <ClCompile Include="Source\WorldEntities\BackgroundMusicEntity.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipeDatabase.cpp" />
     <ClCompile Include="Source\Items\CraftingRecipe.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Source\Core\WorldEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AI\Enemies\AIBunnyEntity.h" />
     <ClInclude Include="Source\PCG\BiomeInfo.h" />
     <ClInclude Include="Source\PCG\PCGEvents.h" />
     <ClInclude Include="Source\WorldEntities\BackgroundMusicEntity.h" />
