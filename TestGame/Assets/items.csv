@@ -1,6 +1,0 @@
-﻿ItemID,ItemName,ItemDescription,IconPath,StackSize
-0,Log,"""Captain's Log…""",Sprites/ball.png,1
-1,Grass,420 Blazin,Sprites/grassTexture.png,2
-2,Rock,It's like a hard place,Sprites/barn.png,3
-3,Slime,Slimy,Sprites/circle.png,4
-4,Scale,It still has some crocodile flesh attached,Sprites/character_idle.png,5
