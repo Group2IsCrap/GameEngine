@@ -73,42 +73,6 @@ namespace Firelight::ECS
 		UNREFERENCED_PARAMETER(isPaused);
 	}
 
-	/*
-	void System::UpdateEntityList(void* data)
-	{
-		m_entities.clear();
-
-		Entity* newEntity = new Entity((EntityID)data);
-
-		std::vector<EntityID> ids = EntityComponentSystem::Instance()->GetEntities();
-
-		for (auto entity : ids)
-		{
-			Signature entitySignature = EntityComponentSystem::Instance()->GetSignature(entity);
-
-			bool validEntity = true;
-			for (int i = 0; i < entitySignature.size(); ++i)
-			{
-				if (m_whitelist[i] == true && entitySignature[i] == false)
-				{
-					validEntity = false;
-					break;
-				}
-				if (m_blacklist[i] == true && entitySignature[i] == true)
-				{
-					validEntity = false;
-					break;
-				}
-			}
-			if (!validEntity)
-			{
-				continue;
-			}
-			this->m_entities.push_back(new Entity(entity));
-		}
-	}
-	*/
-
 	void System::AddToEntityList(void* data)
 	{
 		Entity* newEntity = new Entity((EntityID)data);

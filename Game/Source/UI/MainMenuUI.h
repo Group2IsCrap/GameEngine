@@ -5,12 +5,10 @@
 #include <Source/ECS/EntityWrappers/UIButton.h>
 #include <Source/Events/Listener.h>
 
-class MainMenuUI : public Firelight::ECS::UIPanel, Firelight::Events::Listener
+class MainMenuUI : public Firelight::ECS::UIPanel
 {
 public:
 	MainMenuUI(Firelight::ECS::Entity* canvas);
-
-	void HandleEvents(const char* event, void* data) override;
 
 	void PlayFunction();
 

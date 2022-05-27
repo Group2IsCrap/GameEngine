@@ -84,11 +84,6 @@ MainMenuUI::MainMenuUI(Firelight::ECS::Entity* canvas)
 
 }
 
-void MainMenuUI::HandleEvents(const char* event, void* data)
-{
-
-}
-
 void MainMenuUI::PlayFunction()
 {
 	Firelight::Events::EventDispatcher::InvokeFunctions<Firelight::Events::InputEvents::TogglePauseEvent>();
