@@ -16,6 +16,9 @@ void AIFleeingBehaviour::HandleState(AIEntity* entity, const Firelight::Utils::T
 		return;
 
 	RigidBodyComponent* targetRigidbody = m_targetAIComponent->m_Target->GetComponent<RigidBodyComponent>();
+	if (!targetRigidbody)
+		return;
+
 	Firelight::Maths::Vec3f dir = targetRigidbody->nextPos - m_rigidBodyComponent->nextPos;
 	dir.Normalise();
 
