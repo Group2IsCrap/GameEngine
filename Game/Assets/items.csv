@@ -9,7 +9,7 @@
 7,Shell ,,Sprites/Items/shell.png,5,Ingredient,0
 8,Feather ,,Sprites/Items/Feather.png,30,Ingredient,0
 9,Scales ,,Sprites/Items/Scale.png,25,Ingredient,0
-10,Metal Scrap ,,Sprites/Items/Metal_Scrap.png,20,Ingredient,0
+10,Metal Scrap,,Sprites/Items/Metal_Scrap.png,20,Ingredient,0
 11,Infused Wood ,,Sprites/Items/Infused_Wood.png,20,Ingredient,0
 12,Crocodile Teeth ,,Sprites/Items/Croc_Tooth.png,30,Ingredient,0
 13,Frog Saliva ,,Sprites/Items/Frog_Saliva.png,5,Ingredient,0

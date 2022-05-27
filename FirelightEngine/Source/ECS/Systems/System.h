@@ -48,7 +48,6 @@ namespace Firelight::ECS
 			m_blacklist[typeID] = false;
 		}
 
-		//void UpdateEntityList(void* data);
 		void AddToEntityList(void* data);
 		void RemoveFromEntityList(void* data);
 		void RemoveFromEntityListWhenDestroyed(void* data);

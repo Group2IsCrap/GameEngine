@@ -451,8 +451,6 @@
     <ClInclude Include="Source\Physics\IntersectData.h" />
     <ClInclude Include="Source\Physics\PhysicsHelpers.h" />
     <ClInclude Include="Source\Physics\PhysicsSystem.h" />
-    <ClInclude Include="Source\SceneManagement\Scene.h" />
-    <ClInclude Include="Source\SceneManagement\SceneManager.h" />
     <ClInclude Include="Source\Maths\Vec4.h" />
     <ClInclude Include="Source\Serialisation\Serialiser.h" />
     <ClInclude Include="Source\TileMap\Tile.h" />
@@ -538,8 +536,6 @@
     <ClCompile Include="Source\Input\MouseInput.cpp" />
     <ClCompile Include="Source\Input\ProcessInput.cpp" />
     <ClCompile Include="Source\Physics\PhysicsSystem.cpp" />
-    <ClCompile Include="Source\SceneManagement\Scene.cpp" />
-    <ClCompile Include="Source\SceneManagement\SceneManager.cpp" />
     <ClCompile Include="Source\Serialisation\Serialiser.cpp" />
     <ClCompile Include="Source\TileMap\Tile.cpp" />
     <ClCompile Include="Source\TileMap\TileMap.cpp" />

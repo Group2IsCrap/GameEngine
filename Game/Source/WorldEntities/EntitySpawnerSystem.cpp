@@ -109,42 +109,49 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 					AICrocodileEntity* croc = new AICrocodileEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = croc;
 					croc->Warp(spawnPos);
+					croc->GetSpriteComponent()->layer += croc->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "Slime")
 				{
 					AISlimeEntity* slime = new AISlimeEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = slime;
 					slime->Warp(spawnPos);
+					slime->GetSpriteComponent()->layer += slime->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "Deer")
 				{
 					AIDeerEntity* deer = new AIDeerEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = deer;
 					deer->Warp(spawnPos);
+					deer->GetSpriteComponent()->layer += deer->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "Bunny")
 				{
 					AIBunnyEntity* bunny = new AIBunnyEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = bunny;
 					bunny->Warp(spawnPos);
+					bunny->GetSpriteComponent()->layer += bunny->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "Bear")
 				{
 					AIBearEntity* bear = new AIBearEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = bear;
 					bear->Warp(spawnPos);
+					bear->GetSpriteComponent()->layer += bear->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "SnowBear")
 				{
 					AISnowBearEntity* snowBear = new AISnowBearEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = snowBear;
 					snowBear->Warp(spawnPos);
+					snowBear->GetSpriteComponent()->layer += snowBear->GetTransformComponent()->GetPosition().y;
 				}
 				else if (entitySpawnerComponent->enemyName == "SnowBunny")
 				{
 					AISnowBunnyEntity* snowBunny = new AISnowBunnyEntity(true, enemyTemplate->GetTemplateID());
 					entitySpawnerComponent->spawnedEntity = snowBunny;
 					snowBunny->Warp(spawnPos);
+					snowBunny->GetSpriteComponent()->layer += snowBunny->GetTransformComponent()->GetPosition().y;
 				}
 			}
 			else if (entitySpawnerComponent->resourceID != -1)
@@ -153,6 +160,7 @@ void EntitySpawnerSystem::Update(const Firelight::Utils::Time& time, const bool&
 				ResourceEntity* resourceEntity = ResourceDatabase::Instance()->CreateInstanceOfResource(entitySpawnerComponent->resourceID);
 				entitySpawnerComponent->spawnedEntity = resourceEntity;
 				resourceEntity->Warp(spawnPos);
+				resourceEntity->GetSpriteComponent()->layer += resourceEntity->GetTransformComponent()->GetPosition().y;
 			}
 		}
 	}
