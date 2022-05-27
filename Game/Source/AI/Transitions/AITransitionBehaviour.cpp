@@ -102,7 +102,8 @@ bool AITransitionBehaviour::WanderToFlee(float fleeingSearchRadius, std::vector<
 
 bool AITransitionBehaviour::AttackToWander(RigidBodyComponent* rigidbodyComponent, AIComponent* aiComponent, float aggroRadius)
 {
-	if (aiComponent->m_Target == nullptr || aiComponent->m_Target->GetComponent<RigidBodyComponent>() == nullptr)
+
+	if (aiComponent->m_Target == nullptr || aiComponent->m_Target->GetComponent<RigidBodyComponent>() == nullptr || aiComponent->m_Target->GetComponent<AIComponent>() == nullptr || (aiComponent->m_Target->GetComponent<AIComponent>() != nullptr && aiComponent->m_Target->GetComponent<AIComponent>()->isDead))
 		return true;
 
 	return Firelight::Maths::Vec3f::Dist(rigidbodyComponent->nextPos, aiComponent->m_Target->GetComponent<RigidBodyComponent>()->nextPos) >= aggroRadius;
